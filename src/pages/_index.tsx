@@ -1,5 +1,4 @@
 const Index = () => {
-
   return (
     <div>
       <span>mypolitics</span>
