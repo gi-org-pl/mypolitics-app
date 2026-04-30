@@ -41,3 +41,6 @@ dist-ssr
 
 *storybook.log
 storybook-static
+
+# i18n
+/src/locales/**/*.ts
