@@ -1,6 +1,6 @@
 import { i18n } from "@lingui/core";
-import { Outlet, Scripts } from "react-router";
 import { I18nProvider } from "@lingui/react";
+import { Outlet, Scripts } from "react-router";
 import "@gi/athena/athena.css";
 
 import { messages as enMessages } from "../src/locales/en/messages";
