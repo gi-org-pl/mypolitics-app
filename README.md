@@ -25,6 +25,7 @@ Project's main dependencies are listed below.
 | Axios        | ^1.x    |
 | Zustand      | ^5.x    |
 | Storybook    | ^10.x   |
+| Lingui       | ^6.x    |
 | @gi/athena   | latest  |
 
 ### Package descriptions
@@ -38,6 +39,7 @@ Project's main dependencies are listed below.
 - **Playwright** - End-to-end testing framework for reliable cross-browser testing
 - **Zustand** - Lightweight state management library for React applications
 - **Storybook** - UI development environment and playground for building, previewing, and testing isolated components interactively
+- **Lingui** - Internationalization (i18n) library for React with compile-time message extraction and type-safe translations
 - **@gi/athena** - Our front-end component package which you can [modify here](https://github.com/Generacja-Innowacja/athena)
 
 ## Infrastructure
@@ -100,6 +102,8 @@ yarn lint             # Run Biome linter
 yarn lint:fix         # Fix linting issues automatically
 yarn storybook        # Run Storybook in development mode
 yarn storybook:build  # Build Storybook for production
+yarn i18n:extract     # Extract messages from source files into .po catalogs
+yarn i18n:compile     # Compile .po catalogs into TypeScript message files
 ```
 
 ## Build
@@ -156,6 +160,23 @@ Run Storybook with:
 yarn storybook        # Start Storybook development server (http://localhost:6006)
 yarn storybook:build  # Build Storybook for production deployment
 ```
+
+## Internationalization
+
+This project uses LinguiJS for internationalization. The source locale is Polish (`pl`) and the supported locales are `pl` and `en`. Message catalogs are stored as `.po` files in `src/locales/{locale}/messages.po`.
+
+- **Message extraction**: Scans source files for `` t`...` `` macros and `Trans` components and updates the `.po` catalogs
+- **Compilation**: Compiles `.po` catalogs into optimized TypeScript message files used at runtime
+- **Pre-commit hook**: Extraction runs automatically on staged files before each commit
+
+Run i18n commands with:
+
+```bash
+yarn i18n:extract     # Extract messages from source files into .po catalogs
+yarn i18n:compile     # Compile .po catalogs into TypeScript message files
+```
+
+The project is configured in `lingui.config.js`.
 
 ## Working with Athena
 
