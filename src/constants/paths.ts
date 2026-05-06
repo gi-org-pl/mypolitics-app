@@ -1,4 +1,4 @@
 export const PATHS = {
-  home: '/',
+  home: "/",
   // ... other entries
 } as const;
