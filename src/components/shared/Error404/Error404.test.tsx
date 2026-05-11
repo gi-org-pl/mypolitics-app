@@ -1,9 +1,3 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router";
-import { PATHS } from "@/constants/paths";
-import { Error404 } from "./Error404";
-
 vi.mock("@lingui/react/macro", () => ({
   Trans: ({ children }: any) => children,
   useLingui: () => ({ t: (strings: TemplateStringsArray) => strings[0] }),
@@ -12,6 +6,12 @@ vi.mock("@lingui/react/macro", () => ({
 vi.mock("@lingui/core/macro", () => ({
   t: (strings: TemplateStringsArray) => strings[0],
 }));
+
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router";
+import { PATHS } from "@/constants/paths";
+import { Error404 } from "./Error404";
 
 const renderError = () => {
   render(
@@ -27,15 +27,13 @@ describe("<Error404 />", () => {
       renderError();
 
       expect(
-        screen.getByRole("heading", {
-          name: /to jest błąd 404/i,
-        }),
+        screen.getByText(/to jest błąd 404/i).closest("h1"),
       ).toBeInTheDocument();
     });
 
     it("renders the teal highlighted portion of the heading", () => {
       renderError();
-
+      
       expect(
         screen.getByText(/na miarę naszych możliwości/i),
       ).toBeInTheDocument();
@@ -43,7 +41,7 @@ describe("<Error404 />", () => {
 
     it("renders the body text", () => {
       renderError();
-
+      
       expect(
         screen.getByText(/my tym błędem otwieramy oczy niedowiarkom!/i),
       ).toBeInTheDocument();
@@ -51,10 +49,8 @@ describe("<Error404 />", () => {
 
     it("renders the bear illustration with an alt attribute", () => {
       renderError();
-
-      const img = screen.getByRole("img", {
-        name: /ilustracja misia/i,
-      });
+      
+      const img = screen.getByAltText(/ilustracja misia/i);
 
       expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute("src");
@@ -64,7 +60,6 @@ describe("<Error404 />", () => {
   describe('when "Strona główna" button is clicked', () => {
     it("navigates to the home path", async () => {
       const user = userEvent.setup();
-
       render(
         <MemoryRouter initialEntries={["/404"]}>
           <Error404 />
