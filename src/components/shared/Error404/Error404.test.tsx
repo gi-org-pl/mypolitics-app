@@ -10,6 +10,7 @@ vi.mock("@lingui/core/macro", () => ({
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
+import { describe, expect, it, vi } from "vitest";
 import { PATHS } from "@/constants/paths";
 import { Error404 } from "./Error404";
 
@@ -33,7 +34,7 @@ describe("<Error404 />", () => {
 
     it("renders the teal highlighted portion of the heading", () => {
       renderError();
-      
+
       expect(
         screen.getByText(/na miarę naszych możliwości/i),
       ).toBeInTheDocument();
@@ -41,7 +42,7 @@ describe("<Error404 />", () => {
 
     it("renders the body text", () => {
       renderError();
-      
+
       expect(
         screen.getByText(/my tym błędem otwieramy oczy niedowiarkom!/i),
       ).toBeInTheDocument();
@@ -49,7 +50,7 @@ describe("<Error404 />", () => {
 
     it("renders the bear illustration with an alt attribute", () => {
       renderError();
-      
+
       const img = screen.getByAltText(/ilustracja misia/i);
 
       expect(img).toBeInTheDocument();
