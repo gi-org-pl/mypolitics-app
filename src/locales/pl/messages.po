@@ -13,17 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/shared/Header/Header.tsx:49
-#: src/components/shared/Header/Header.tsx:113
+#: src/components/shared/Header/Header.tsx:52
+#: src/components/shared/Header/Header.tsx:141
 msgid "Debaty"
 msgstr "Debaty"
 
-#: src/components/shared/Header/Header.tsx:69
-#: src/components/shared/Header/Header.tsx:93
+#: src/components/shared/Header/Header.tsx:82
+#: src/components/shared/Header/Header.tsx:111
 msgid "Quizy"
 msgstr "Quizy"
 
-#: src/components/shared/Header/Header.tsx:60
-#: src/components/shared/Header/Header.tsx:104
+#: src/components/shared/Header/Header.tsx:67
+#: src/components/shared/Header/Header.tsx:126
 msgid "Sondaże"
 msgstr "Sondaże"
