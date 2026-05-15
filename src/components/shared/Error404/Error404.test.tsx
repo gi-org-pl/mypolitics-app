@@ -1,3 +1,10 @@
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router";
+import { describe, expect, it, vi } from "vitest";
+import { PATHS } from "@/constants/paths";
+import { Error404 } from "./Error404";
+
 vi.mock("@lingui/react/macro", () => ({
   Trans: ({ children }: any) => children,
   useLingui: () => ({ t: (strings: TemplateStringsArray) => strings[0] }),
@@ -6,13 +13,6 @@ vi.mock("@lingui/react/macro", () => ({
 vi.mock("@lingui/core/macro", () => ({
   t: (strings: TemplateStringsArray) => strings[0],
 }));
-
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
-import { PATHS } from "@/constants/paths";
-import { Error404 } from "./Error404";
 
 const renderError = () => {
   render(
@@ -59,7 +59,7 @@ describe("<Error404 />", () => {
   });
 
   describe('when "Strona główna" button is clicked', () => {
-    it("navigates to the home path", async () => {
+    it("navigates to the home path", () => {
       const user = userEvent.setup();
       render(
         <MemoryRouter initialEntries={["/404"]}>
@@ -73,7 +73,7 @@ describe("<Error404 />", () => {
 
       expect(link).toHaveAttribute("href", PATHS.home);
 
-      await user.click(link);
+      user.click(link);
     });
   });
 });
