@@ -1,4 +1,4 @@
-import { Header } from "@/components/shared/Header/Header";
+import Header from "@/components/shared/Header/Header";
 
 const Index = () => {
   return <Header></Header>;

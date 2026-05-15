@@ -11,18 +11,21 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
-  initialActiveButton = "debaty",
+  initialActiveButton = "quizy",
   initialIsMenuOpen = false,
   viewport = "desktop",
 }) => {
   const [activeButton, setActiveButton] = useState(initialActiveButton);
   const [isMenuOpen, setIsMenuOpen] = useState(initialIsMenuOpen);
+
   useEffect(() => {
     setIsMenuOpen(initialIsMenuOpen);
   }, [initialIsMenuOpen]);
+
   useEffect(() => {
     setActiveButton(initialActiveButton);
   }, [initialActiveButton]);
+
   const menuRef = useRef<HTMLDivElement>(null);
   const isMobileView = viewport === "mobile";
 
@@ -49,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
           onClick={() => buttonClick("debaty")}
         >
           <img
-            src="src/assets/vectors/debaty_icon.svg"
+            src="src/assets/vectors/debaty-icon.svg"
             className={activeButton === "debaty" ? "brightness-0 invert" : ""}
             alt=""
           />
@@ -62,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
           onClick={() => buttonClick("sondaze")}
         >
           <img
-            src="src/assets/vectors/sondaze_icon.svg"
+            src="src/assets/vectors/sondaze-icon.svg"
             className={activeButton === "sondaze" ? "brightness-0 invert" : ""}
             alt=""
           />
@@ -75,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({
           onClick={() => buttonClick("quizy")}
         >
           <img
-            src="src/assets/vectors/quizy_icon.svg"
+            src="src/assets/vectors/quizy-icon.svg"
             className={activeButton === "quizy" ? "brightness-0 invert" : ""}
             alt=""
           />
@@ -92,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({
           <img src="src/assets/vectors/logo.svg" alt="logo" />
         </Link>
 
-        <nav className={`${isMobileView ? "hidden" : "hidden md:flex"} gap-4`}>
+        <nav data-testid="desktopNav" className={`${isMobileView ? "hidden" : "hidden md:flex"} gap-4`}>
           <NavLinks />
         </nav>
 
@@ -105,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
 
       {isMenuOpen && (
-        <div
+        <div data-testid="mobileMenu"
           ref={menuRef}
           className={`absolute top-full left-0 w-full bg-white shadow-md flex flex-col gap-2 p-4 z-50 ${
             isMobileView ? "flex" : "md:hidden"
