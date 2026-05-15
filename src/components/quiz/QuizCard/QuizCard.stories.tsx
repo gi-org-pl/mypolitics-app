@@ -15,7 +15,7 @@ const meta = {
     onButtonClick: noop,
     tags: ["+1.5M osób", "15 min"],
     description:
-      "Opis quizu — w produkcji może zawierać pogrubienia i formatowanie.",
+      "Quiz description — in production this may include bold spans and formatting.",
   },
 } satisfies Meta<typeof QuizCard>;
 
@@ -23,11 +23,20 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/** Standard card; from `md` up the body stays expanded and the chevron is hidden (Tailwind `md:` = 768px). */
 export const Default: Story = {
-  name: "Default (zawsze rozwinięte)",
+  name: "Default",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Standard card, expanded on desktop (viewport ≥768px): description and tags visible, chevron hidden. Below `md`, use the chevron to expand/collapse.",
+      },
+    },
+  },
   decorators: [
     (Story): ReactElement => (
-      <div className="w-[800px] max-w-full">
+      <div className="w-full max-w-[960px]">
         <Story />
       </div>
     ),
@@ -35,17 +44,25 @@ export const Default: Story = {
   args: {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
-    isAlwaysExpanded: true,
-    description:
-      "Opis i tagi widoczne od razu — `isAlwaysExpanded` wyłącza zwijanie i chevron.",
+    cta: "Kiedyś to było... no właśnie, jak?",
+    isAlwaysExpanded: false,
   },
 };
 
+/** Collapsed on viewports below `md` (<768px). Narrow the Storybook preview to see the chevron. */
 export const Collapsed: Story = {
-  name: "Zwinięta (chevron)",
+  name: "Collapsed",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Mobile viewport: card starts collapsed with chevron. Resize the Storybook preview below 768px width. At `md` and up, the card matches desktop (expanded, no chevron).",
+      },
+    },
+  },
   decorators: [
     (Story): ReactElement => (
-      <div className="w-[360px] max-w-full">
+      <div className="mx-auto w-full max-w-[360px]">
         <Story />
       </div>
     ),
@@ -54,51 +71,83 @@ export const Collapsed: Story = {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
     isAlwaysExpanded: false,
-    description:
-      "Karta startuje zwinięta — rozwiń chevronem, by zobaczyć opis i tagi.",
   },
 };
 
 export const WithBackground: Story = {
+  name: "WithBackground",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`backgroundUrl` forces always-expanded behavior (no chevron on any viewport).",
+      },
+    },
+  },
   args: {
     backgroundUrl: lata90Background,
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
-    isAlwaysExpanded: true,
-    description:
-      "Karta z obrazem w nagłówku — pełna treść po ustawieniu `isAlwaysExpanded`.",
   },
 };
 
 export const WithCTA: Story = {
+  name: "WithCTA",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`cta` + `backgroundUrl`: same corner badge strip as without image — directly under the hero, `rounded-br-2xl` on the primary chip.",
+      },
+    },
+  },
   args: {
     backgroundUrl: lata90Background,
     title: "Polskie Lata 90.",
     cta: "Kiedyś to było... no właśnie, jak?",
-    description: "Przypięta etykieta CTA na dolnym brzegu zdjęcia.",
+    description: "Card with hero image and CTA overlay on the image.",
   },
 };
 
 export const Highlighted: Story = {
+  name: "Highlighted",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`isHighlighted` + `isMainAction` + `isShowStartText`: dark teal shell, primary play button with “Rozpocznij”, always expanded.",
+      },
+    },
+  },
   args: {
     isHighlighted: true,
     isMainAction: true,
     isShowStartText: true,
     cta: "Nowy Quiz Tożsamościowy!",
-    logoUrl: myPoliticsLogo,
+    title: "Polskie Lata 90.",
     logoHeight: 24,
-    description: "Ciemna karta wyróżniona z przyciskiem „Rozpocznij”.",
+    description: "Featured quiz card with primary start action.",
   },
 };
 
 export const TitleLogo: Story = {
+  name: "TitleLogo",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "No `logoUrl`: `title` is rendered as the text logo in the header row.",
+      },
+    },
+  },
   args: {
     title: "Generacja Innowacja",
-    description: "Brak logoUrl — tytuł w polu logo.",
+    description: "Title-only logo row (no image).",
   },
 };
 
 export const Loading: Story = {
+  name: "Loading",
   args: {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
@@ -107,6 +156,7 @@ export const Loading: Story = {
 };
 
 export const DisabledButton: Story = {
+  name: "DisabledButton",
   args: {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,

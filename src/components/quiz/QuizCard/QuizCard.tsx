@@ -1,30 +1,21 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import type { ReactElement, ReactNode } from "react";
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import chevronDownVectorUrl from "@/assets/vectors/fa-solid_chevron-down.svg";
-import playVectorUrl from "@/assets/vectors/fa-solid_play.svg";
+import chevronDownIconUrl from "@/assets/icons/chevron-down.svg";
+import chevronUpIconUrl from "@/assets/icons/chevron-up.svg";
+import playIconUrl from "@/assets/icons/play.svg";
+import { useMinWidthMd } from "@/utils/useMinWidthMd";
 
+import {
+  quizCardDefaultBorderClass,
+  quizCardDefaultSurfaceBgClass,
+} from "./QuizCard.constants";
 import type { QuizCardProps } from "./QuizCard.types";
 
 const HERO_IMAGE_HEIGHT_PX = 102;
-
-/** Tailwind `md` breakpoint — desktop cards stay expanded with no chevron (see product spec). */
-const MD_MIN_WIDTH_QUERY = "(min-width: 48rem)";
-
-function useMinMd(): boolean {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      const mq = window.matchMedia(MD_MIN_WIDTH_QUERY);
-      mq.addEventListener("change", onStoreChange);
-      return () => mq.removeEventListener("change", onStoreChange);
-    },
-    () => window.matchMedia(MD_MIN_WIDTH_QUERY).matches,
-    () => false,
-  );
-}
 
 function cn(...parts: Array<string | false | undefined>): string {
   return twMerge(parts.filter(Boolean).join(" "));
@@ -33,23 +24,38 @@ function cn(...parts: Array<string | false | undefined>): string {
 const playButtonFocusClass =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-secondary";
 
-/** Filled primary — when `isMainAction` is true */
-const playButtonFilledClass = cn(
+/** `isMainAction` — filled primary (Figma / design-system primary CTA). */
+const playButtonPrimaryClass = cn(
   "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border-0 bg-gi-primary text-white hover:bg-gi-primary-hover",
   playButtonFocusClass,
 );
 
-/** Outline on default (ash) card — border + play icon uses `currentColor` (= theme primary via `text-gi-primary`) */
-const playButtonOutlineDefaultClass = cn(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-gi-primary bg-transparent text-gi-primary hover:bg-gi-dark-ash/20",
+/** Default play control: ghost / icon ring (outline on ash card). */
+const playButtonGhostDefaultClass = cn(
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border-0 bg-transparent text-gi-primary ring-1 ring-inset ring-gi-primary hover:bg-gi-dark-ash/20",
   playButtonFocusClass,
 );
 
-/** Outline on highlighted (primary) card — light border + light icon for contrast */
-const playButtonOutlineHighlightedClass = cn(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/20",
+/** Ghost on highlighted (teal) shell — light ring for contrast. */
+const playButtonGhostHighlightedClass = cn(
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border-0 bg-white/10 text-white ring-1 ring-inset ring-white/30 hover:bg-white/20",
   playButtonFocusClass,
 );
+
+/** Labeled play on default card when `isShowStartText` && !`isMainAction` — matches expand chevron (light surface + inset ring). */
+const playButtonLabeledLightDefaultClass = cn(
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full border-0 ring-1 ring-inset ring-gi-primary",
+  quizCardDefaultSurfaceBgClass,
+  "text-gi-primary hover:bg-gi-dark-ash/20",
+  playButtonFocusClass,
+);
+
+/** Start label — on `<span>` so `text-[16px]` is not dropped by `twMerge` vs `text-gi-primary` / `text-white` on the button. */
+const playStartLabelTypographyClass =
+  "text-[16px] font-bold leading-[100%] text-current";
+
+const playIconSlotClass =
+  "pointer-events-none inline-flex size-4 shrink-0 items-center justify-center";
 
 export function QuizCard({
   title,
@@ -69,14 +75,15 @@ export function QuizCard({
   onCardClick,
 }: QuizCardProps): ReactElement {
   const [isExpanded, setIsExpanded] = useState(false);
-  const isMdUp = useMinMd();
+  const isMdUp = useMinWidthMd();
   const logoAlt = title?.trim() ?? "";
 
-  /** Image cards behave like `isAlwaysExpanded` on every viewport (spec §3). */
+  /** Matches spec: image / highlighted / explicit always-expanded. */
   const effectiveAlwaysExpanded =
     isAlwaysExpanded || Boolean(backgroundUrl) || isHighlighted;
-  /** Standard cards: chevron only on small viewports; ≥ md always expanded (spec §2). */
-  const showExpandChrome = !effectiveAlwaysExpanded && !isMdUp;
+
+  /** Chevron only when the card can collapse on small screens; hidden from `md:` up via CSS. */
+  const showExpandChrome = !effectiveAlwaysExpanded;
 
   const handleCardClick = (): void => {
     onCardClick?.();
@@ -87,7 +94,11 @@ export function QuizCard({
     onCardClick && "cursor-pointer",
     isHighlighted
       ? "border-gi-primary bg-gi-primary text-white"
-      : "border-gi-dark-ash bg-gi-ash text-gi-primary",
+      : cn(
+          quizCardDefaultBorderClass,
+          quizCardDefaultSurfaceBgClass,
+          "text-gi-primary",
+        ),
   );
 
   const titleClass = cn(
@@ -110,20 +121,36 @@ export function QuizCard({
     );
 
   const expandToggleClass = cn(
-    "inline-flex size-12 shrink-0 items-center justify-center rounded-full border",
+    "inline-flex size-12 shrink-0 items-center justify-center rounded-full border-0 ring-1 ring-inset md:hidden",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-secondary",
     isHighlighted
-      ? "border-white/30 bg-white/10 text-white hover:bg-white/20"
-      : "border-gi-primary bg-gi-ash hover:bg-gi-dark-ash/20",
+      ? "ring-white/30 bg-white/10 text-white hover:bg-white/20"
+      : cn(
+          "ring-gi-primary",
+          quizCardDefaultSurfaceBgClass,
+          "hover:bg-gi-dark-ash/20",
+        ),
   );
 
   const chevronIconClass = "pointer-events-none h-4 w-4 shrink-0";
 
-  const playButtonVariantClass = isMainAction
-    ? playButtonFilledClass
-    : isHighlighted
-      ? playButtonOutlineHighlightedClass
-      : playButtonOutlineDefaultClass;
+  const playButtonBaseClass =
+    isShowStartText && !isMainAction
+      ? isHighlighted
+        ? playButtonGhostHighlightedClass
+        : playButtonLabeledLightDefaultClass
+      : isMainAction
+        ? playButtonPrimaryClass
+        : isHighlighted
+          ? playButtonGhostHighlightedClass
+          : playButtonGhostDefaultClass;
+
+  const playButtonClassName = cn(
+    playButtonBaseClass,
+    isShowStartText
+      ? "w-auto min-h-12 gap-[12px] p-[16px] items-center justify-center text-center"
+      : "size-12",
+  );
 
   const playSpinnerSizeClass = isShowStartText ? "size-5" : "size-4";
 
@@ -132,7 +159,7 @@ export function QuizCard({
     "align-middle text-[16px] font-bold not-italic leading-[100%]",
     isHighlighted
       ? "border-white/30 text-white"
-      : "border-[#0045541A] text-gi-primary",
+      : "border-gi-primary/10 text-gi-primary",
   );
 
   const expandedBody = (
@@ -150,18 +177,44 @@ export function QuizCard({
     </div>
   );
 
+  const ctaPaddingClass = backgroundUrl
+    ? "px-[12px] py-[8px]"
+    : "px-[16px] py-[12px]";
+
+  const ctaBadgeInnerClass = cn(
+    "bg-gi-primary text-left text-[14px] font-[700] leading-[120%] text-white",
+    "rounded-br-2xl",
+    ctaPaddingClass,
+  );
+
+  const ctaStrip = cta ? (
+    <div
+      className={cn(
+        "flex w-full",
+        isHighlighted ? "bg-gi-primary" : quizCardDefaultSurfaceBgClass,
+      )}
+    >
+      <div className={ctaBadgeInnerClass}>{cta}</div>
+    </div>
+  ) : null;
+
   const mainBlock = (
-    <div className={cn("p-4", isHighlighted ? "bg-gi-primary" : "bg-gi-ash")}>
+    <div
+      className={cn(
+        "p-4",
+        isHighlighted ? "bg-gi-primary" : quizCardDefaultSurfaceBgClass,
+      )}
+    >
       <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <div className="min-w-0 flex-1 self-center">
+        <div className="flex h-12 min-h-12 items-center gap-2">
+          <div className="flex min-h-0 min-w-0 flex-1 items-center">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt={logoAlt}
                 height={logoHeight}
                 className="h-auto w-auto max-w-[200px] object-contain"
-                style={{ height: logoHeight }}
+                style={{ height: logoHeight, width: "auto" }}
               />
             ) : title?.trim() ? (
               <h2 className={titleClass}>{title.trim()}</h2>
@@ -181,11 +234,11 @@ export function QuizCard({
                 }}
               >
                 <img
-                  src={chevronDownVectorUrl}
+                  src={isExpanded ? chevronUpIconUrl : chevronDownIconUrl}
                   alt=""
                   width={16}
                   height={16}
-                  className={cn(chevronIconClass, isExpanded && "rotate-180")}
+                  className={chevronIconClass}
                 />
               </button>
             ) : null}
@@ -194,12 +247,7 @@ export function QuizCard({
               <button
                 type="button"
                 aria-busy={isButtonLoading ? true : undefined}
-                className={cn(
-                  playButtonVariantClass,
-                  isShowStartText
-                    ? "w-auto gap-[12px] p-[16px] text-center text-[16px] font-bold leading-[100%]"
-                    : "size-12",
-                )}
+                className={playButtonClassName}
                 aria-label={t`Rozpocznij quiz`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -207,79 +255,65 @@ export function QuizCard({
                 }}
               >
                 {isShowStartText ? (
-                  <span>
+                  <span className={playStartLabelTypographyClass}>
                     <Trans>Rozpocznij</Trans>
                   </span>
                 ) : null}
                 {isButtonLoading ? (
                   <span
                     className={cn(
-                      "inline-flex shrink-0 items-center justify-center text-current",
+                      "inline-block shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none",
                       playSpinnerSizeClass,
                     )}
                     aria-hidden
-                  >
+                  />
+                ) : !isMainAction && !isHighlighted ? (
+                  <span className={playIconSlotClass} aria-hidden>
                     <svg
-                      className="size-full animate-spin motion-reduce:animate-none"
-                      viewBox="0 0 24 24"
-                      fill="none"
+                      className="size-4"
+                      width={16}
+                      height={16}
+                      viewBox="0 0 14 16"
                       xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden
                     >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                      />
                       <path
-                        className="opacity-90"
                         fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        d="M13.2625 6.70935L2.2625 0.206225C1.36875 -0.3219 0 0.1906 0 1.49685V14.5C0 15.6719 1.27188 16.3781 2.2625 15.7906L13.2625 9.2906C14.2437 8.71247 14.2469 7.28747 13.2625 6.70935Z"
                       />
                     </svg>
                   </span>
-                ) : !isMainAction && !isHighlighted ? (
-                  <svg
-                    className="pointer-events-none h-4 w-4 shrink-0"
-                    width={16}
-                    height={16}
-                    viewBox="0 0 14 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M13.2625 6.70935L2.2625 0.206225C1.36875 -0.3219 0 0.1906 0 1.49685V14.5C0 15.6719 1.27188 16.3781 2.2625 15.7906L13.2625 9.2906C14.2437 8.71247 14.2469 7.28747 13.2625 6.70935Z"
-                    />
-                  </svg>
                 ) : (
-                  <img
-                    src={playVectorUrl}
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="pointer-events-none h-4 w-4 shrink-0 brightness-0 invert"
-                  />
+                  <span className={playIconSlotClass} aria-hidden>
+                    <img
+                      src={playIconUrl}
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="size-4 brightness-0 invert"
+                    />
+                  </span>
                 )}
               </button>
             ) : null}
           </div>
         </div>
 
-        {effectiveAlwaysExpanded || isMdUp ? (
+        {effectiveAlwaysExpanded ? (
           expandedBody
         ) : (
           <div
             className={cn(
               "grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none",
               isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+              "md:grid-rows-[1fr]",
             )}
-            aria-hidden={!isExpanded}
+            aria-hidden={!isExpanded && !isMdUp ? true : undefined}
           >
             <div className="min-h-0 overflow-hidden">
-              <div inert={!isExpanded ? true : undefined}>{expandedBody}</div>
+              <div inert={!isExpanded && !isMdUp ? true : undefined}>
+                {expandedBody}
+              </div>
             </div>
           </div>
         )}
@@ -287,33 +321,19 @@ export function QuizCard({
     </div>
   );
 
-  const ctaPaddingClass = backgroundUrl
-    ? "px-[12px] py-[8px]"
-    : "px-[16px] py-[12px]";
-
-  const ctaStrip = cta ? (
-    <div className="flex w-full bg-gi-ash">
-      <div
-        className={cn(
-          "bg-gi-primary text-left text-[14px] font-[700] leading-[120%] text-white",
-          "rounded-br-2xl",
-          ctaPaddingClass,
-        )}
-      >
-        {cta}
-      </div>
-    </div>
-  ) : null;
-
   return (
     <article
       className={shell}
       onClick={onCardClick ? handleCardClick : undefined}
     >
-      {isHighlighted && ctaStrip}
+      {isHighlighted && cta && !backgroundUrl ? ctaStrip : null}
+
       {backgroundUrl ? (
         <div
-          className="relative w-full overflow-hidden bg-gi-ash"
+          className={cn(
+            "relative w-full overflow-hidden",
+            quizCardDefaultSurfaceBgClass,
+          )}
           style={{ height: HERO_IMAGE_HEIGHT_PX }}
         >
           <img
@@ -325,7 +345,9 @@ export function QuizCard({
         </div>
       ) : null}
 
-      {!isHighlighted && ctaStrip}
+      {cta && backgroundUrl ? ctaStrip : null}
+
+      {cta && !backgroundUrl && !isHighlighted ? ctaStrip : null}
 
       {mainBlock}
     </article>
