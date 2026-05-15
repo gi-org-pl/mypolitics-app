@@ -9,7 +9,7 @@ export const FooterLeft: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="flex flex-row items-center justify-center md:justify-start gap-2">
+    <div className="flex flex-row items-center justify-center md:justify-start gap-2 h-4">
       <span className="text-base leading-6 text-gi-gray whitespace-nowrap flex items-center">
         {i18n._(msg`© ${currentYear}`)}
       </span>

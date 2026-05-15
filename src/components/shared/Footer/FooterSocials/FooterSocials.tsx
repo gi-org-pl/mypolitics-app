@@ -13,6 +13,7 @@ export const FooterSocials: React.FC = () => {
           isIconButton
           type="ghost"
           variant="primary"
+          size="regular"
           className="rounded-full"
         >
           <a
@@ -24,7 +25,7 @@ export const FooterSocials: React.FC = () => {
             <img
               src={new URL(`../../../../assets/icons/${social.platform}logo.svg`, import.meta.url).href}
               alt={`${social.platform} logo`}
-              className="w-5 h-5"
+              className="h-4 w-auto"
             />
           </a>
         </Button>
