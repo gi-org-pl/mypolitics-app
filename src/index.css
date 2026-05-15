@@ -4,3 +4,14 @@
 :root {
   --font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
 }
+@layer utilities {
+  .bg-banner-gradient {
+    background: linear-gradient(
+      to right,
+      #001a1f 10%,
+      #000508 35%,
+      #000508 70%,
+      #1a0505
+    );
+  }
+}
