@@ -12,3 +12,55 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
+msgid "© {currentYear}"
+msgstr "© {currentYear}"
+
+#: src/components/shared/Footer/Footer.constants.ts:12
+msgid "Facebook"
+msgstr "Facebook"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:31
+msgid "Generacja Innowacja"
+msgstr "Generacja Innowacja"
+
+#: src/components/shared/Footer/Footer.constants.ts:17
+msgid "GitHub"
+msgstr "GitHub"
+
+#: src/components/shared/Footer/Footer.constants.ts:14
+msgid "Instagram"
+msgstr "Instagram"
+
+#: src/components/shared/Footer/Footer.constants.ts:15
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
+msgid "myPolitics"
+msgstr "myPolitics"
+
+#: src/components/shared/Footer/Footer.constants.ts:8
+msgid "O nas"
+msgstr "About"
+
+#: src/components/shared/Footer/Footer.constants.ts:7
+msgid "Prywatność"
+msgstr "Privacy"
+
+#: src/components/shared/Footer/Footer.constants.ts:6
+msgid "Regulamin"
+msgstr "Terms"
+
+#: src/components/shared/Footer/Footer.constants.ts:16
+msgid "Telegram"
+msgstr "Telegram"
+
+#: src/components/shared/Footer/Footer.constants.ts:13
+msgid "X (Twitter)"
+msgstr "X (Twitter)"
+
+#: src/components/shared/Footer/Footer.constants.ts:18
+msgid "YouTube"
+msgstr "YouTube"
