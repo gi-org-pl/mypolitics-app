@@ -1,9 +1,7 @@
+import Header from "@/components/shared/Header/Header";
+
 const Index = () => {
-  return (
-    <div>
-      <span>mypolitics</span>
-    </div>
-  );
+  return <Header></Header>;
 };
 
 export default Index;

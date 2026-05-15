@@ -12,3 +12,18 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/shared/Header/Header.tsx:52
+#: src/components/shared/Header/Header.tsx:141
+msgid "Debaty"
+msgstr "Debaty"
+
+#: src/components/shared/Header/Header.tsx:82
+#: src/components/shared/Header/Header.tsx:111
+msgid "Quizy"
+msgstr "Quizy"
+
+#: src/components/shared/Header/Header.tsx:67
+#: src/components/shared/Header/Header.tsx:126
+msgid "Sondaże"
+msgstr "Sondaże"
