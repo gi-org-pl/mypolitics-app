@@ -5,7 +5,7 @@ import { LEGAL_LINKS } from '../Footer.constants';
 
 export const FooterLegal: React.FC = () => {
   return (
-    <nav className="flex flex-wrap justify-center md:justify-end gap-x-4 gap-y-2 text-sm order-1 md:order-2">
+    <nav className="flex flex-wrap justify-center md:justify-end gap-x-4 gap-y-2 text-xs order-1 md:order-2">
       {LEGAL_LINKS.map((link) => (
         <div key={link.href} className="flex items-center">
           <Link
