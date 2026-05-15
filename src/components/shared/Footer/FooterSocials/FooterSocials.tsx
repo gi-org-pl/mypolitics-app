@@ -5,7 +5,7 @@ import { Button } from '@gi/athena';
 
 export const FooterSocials: React.FC = () => {
   return (
-    <div className="flex flex-wrap justify-center gap-4 max-w-[208px] md:max-w-none md:flex-nowrap order-2 md:order-1">
+    <div className="flex flex-wrap justify-center gap-3 max-w-[208px] md:max-w-none md:flex-nowrap order-2 md:order-1">
       {SOCIAL_LINKS.map((social) => (
         <Button
           key={social.platform}

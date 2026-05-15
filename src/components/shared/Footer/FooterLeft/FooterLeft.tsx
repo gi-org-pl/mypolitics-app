@@ -9,18 +9,18 @@ export const FooterLeft: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="flex flex-row items-center justify-center md:justify-start gap-3 md:gap-4 h-4 ">
+    <div className="flex flex-row items-center justify-center md:justify-start gap-2">
       <span className="text-base leading-6 text-gi-gray whitespace-nowrap flex items-center">
         {i18n._(msg`© ${currentYear}`)}
       </span>
-      <div className="w-px h-6 bg-gray-300 mx-1" />
+      <div className="w-px h-3 bg-current text-gi-gray shrink-0" />
       <img
         src={myPoliticsLogo}
         alt={i18n._(msg`myPolitics`)}
         className="h-4 w-auto"
         data-testid="footer-mypolitics-logo"
       />
-      <div className="w-px h-6 bg-gray-300 mx-1" />
+      <div className="w-px h-3 bg-current text-gi-gray shrink-0" />
       <a
         href={PATHS.generacjaInnowacja}
         target="_blank"
