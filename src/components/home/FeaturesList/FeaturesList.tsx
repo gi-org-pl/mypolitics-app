@@ -4,8 +4,8 @@ import React from "react";
 const FeatureCard = ({ feature }: { feature: Feature }) => {
     return (
         <article className="flex flex-col gap-2 p-6 rounded-3xl border border-gi-primary/10 bg-white shadow-sm md:rounded-[2rem]">
-            <h3 className="text-xl font-bold text-gi-primary">{feature.title}</h3>
-            <p className="text-sm text-gi-primary m-0 leading-[1.33] [&_a]:underline">{feature.description}</p>
+            <h3 className="text-[24px] leading-[1.4] text-gi-primary font-bold">{feature.title}</h3>
+            <p className="text-[16px] leading-[1.4] text-gi-primary m-0 [&_a]:underline">{feature.description}</p>
         </article>
     );
 };
