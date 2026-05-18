@@ -14,8 +14,7 @@ const meta = {
   args: {
     onButtonClick: noop,
     tags: ["+1.5M osób", "15 min"],
-    description:
-      "Quiz description",
+    description: "Quiz description",
   },
 } satisfies Meta<typeof QuizCard>;
 
@@ -95,8 +94,7 @@ export const WithCTA: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "`cta` + `backgroundUrl`",
+        story: "`cta` + `backgroundUrl`",
       },
     },
   },

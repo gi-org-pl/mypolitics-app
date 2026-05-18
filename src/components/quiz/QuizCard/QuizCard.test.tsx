@@ -425,7 +425,7 @@ describe("<QuizCard />", () => {
         const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
         expect(play.className).toContain("bg-gi-primary/10");
         expect(play.className).toContain("border-gi-primary");
-        expect(play.querySelector("svg")).toBeTruthy();
+        expect(play.querySelector("img")).toBeTruthy();
       });
     });
 

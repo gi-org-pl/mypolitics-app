@@ -1,5 +1,5 @@
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import type { MessageDescriptor } from "@lingui/core";
+import { Trans, useLingui } from "@lingui/react";
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -12,6 +12,13 @@ import { useMinWidthMd } from "@/utils/useMinWidthMd";
 import type { QuizCardProps } from "./QuizCard.types";
 
 const HERO_IMAGE_HEIGHT_PX = 102;
+
+const quizCardMessages = {
+  startQuiz: { id: "Rozpocznij quiz", message: "Rozpocznij quiz" },
+  start: { id: "Rozpocznij", message: "Rozpocznij" },
+  expand: { id: "Rozwiń", message: "Rozwiń" },
+  collapse: { id: "Zwiń", message: "Zwiń" },
+} as const satisfies Record<string, MessageDescriptor>;
 
 function cn(...parts: Array<string | false | undefined>): string {
   return twMerge(parts.filter(Boolean).join(" "));
@@ -58,6 +65,7 @@ export function QuizCard({
   onButtonClick,
   onCardClick,
 }: QuizCardProps): ReactElement {
+  const { i18n } = useLingui();
   const [isExpandedValue, setIsExpandedValue] = useState(false);
   const isMdUp = useMinWidthMd();
   const logoAlt = title?.trim() ?? "";
@@ -67,8 +75,7 @@ export function QuizCard({
   const isContentExpanded =
     isLayoutAlwaysExpanded || isHighlighted || isMdUp || isExpandedValue;
 
-  const showExpandChrome =
-    !isHighlighted && !isLayoutAlwaysExpanded && !isMdUp;
+  const showExpandChrome = !isHighlighted && !isLayoutAlwaysExpanded && !isMdUp;
 
   const handleCardClick = (): void => {
     onCardClick?.();
@@ -157,13 +164,7 @@ export function QuizCard({
   ) : null;
 
   const mainBlock = (
-    <div
-      className={cn(
-        "p-4",
-        "bg-gi-ash",
-        isHighlighted && "md:p-6",
-      )}
-    >
+    <div className={cn("p-4", "bg-gi-ash", isHighlighted && "md:p-6")}>
       <div className="flex flex-col">
         <div className="flex h-12 min-h-12 items-center gap-2">
           <div className="flex min-h-0 min-w-0 flex-1 items-center">
@@ -186,7 +187,11 @@ export function QuizCard({
                 type="button"
                 className={expandToggleClass}
                 aria-expanded={isContentExpanded}
-                aria-label={isContentExpanded ? t`Zwiń` : t`Rozwiń`}
+                aria-label={i18n._(
+                  isContentExpanded
+                    ? quizCardMessages.collapse
+                    : quizCardMessages.expand,
+                )}
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsExpandedValue((v) => !v);
@@ -210,7 +215,7 @@ export function QuizCard({
                 type="button"
                 aria-busy={isButtonLoading ? true : undefined}
                 className={playButtonClassName}
-                aria-label={t`Rozpocznij quiz`}
+                aria-label={i18n._(quizCardMessages.startQuiz)}
                 onClick={(e) => {
                   e.stopPropagation();
                   onButtonClick();
@@ -218,7 +223,10 @@ export function QuizCard({
               >
                 {isShowStartText ? (
                   <span className={playStartLabelTypographyClass}>
-                    <Trans>Rozpocznij</Trans>
+                    <Trans
+                      id={quizCardMessages.start.id}
+                      message={quizCardMessages.start.message}
+                    />
                   </span>
                 ) : null}
                 {isButtonLoading ? (
@@ -285,15 +293,9 @@ export function QuizCard({
 
       {backgroundUrl ? (
         <div
-          className={cn(
-            "relative w-full overflow-hidden",
-            "bg-gi-ash",
-          )}
+          className={cn("relative w-full overflow-hidden", "bg-gi-ash")}
           style={{
-            height:
-              isHighlighted && backgroundUrl
-                ? 200
-                : HERO_IMAGE_HEIGHT_PX,
+            height: isHighlighted && backgroundUrl ? 200 : HERO_IMAGE_HEIGHT_PX,
           }}
         >
           <img
