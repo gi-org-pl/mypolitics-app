@@ -2,18 +2,22 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import type { ReactElement } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { messages as plMessages } from "@/locales/pl/messages";
-import { useMinWidthMd } from "@/utils/useMinWidthMd";
 
 import { QuizCard } from "./QuizCard";
 
-vi.mock("@/utils/useMinWidthMd", () => ({
-  useMinWidthMd: vi.fn(),
-}));
-
-const mockedUseMinWidthMd = vi.mocked(useMinWidthMd);
+function mockMatchMedia(matches: boolean): void {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
 
 function renderWithI18n(ui: ReactElement): ReturnType<typeof render> {
   i18n.load({ pl: plMessages });
@@ -25,7 +29,11 @@ const noop = (): void => {};
 
 describe("<QuizCard />", () => {
   beforeEach(() => {
-    mockedUseMinWidthMd.mockReturnValue(false);
+    mockMatchMedia(false);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   describe("given a logoUrl", () => {
@@ -323,7 +331,7 @@ describe("<QuizCard />", () => {
 
     describe("when viewport is at least md", () => {
       it("does not set aria-hidden on the collapsible grid", () => {
-        mockedUseMinWidthMd.mockReturnValue(true);
+        mockMatchMedia(true);
         renderWithI18n(
           <QuizCard
             description="Desktop opis"

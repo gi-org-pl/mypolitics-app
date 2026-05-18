@@ -1,17 +1,32 @@
 import type { MessageDescriptor } from "@lingui/core";
 import { Trans, useLingui } from "@lingui/react";
 import type { ReactElement, ReactNode } from "react";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { twMerge } from "tailwind-merge";
 
 import chevronIconUrl from "@/assets/icons/fa-solid_chevron-down.svg";
 import playIconUrl from "@/assets/icons/fa-solid_play.svg";
 import playIconDarkUrl from "@/assets/icons/fa-solid_play-dark.svg";
-import { useMinWidthMd } from "@/utils/useMinWidthMd";
 
 import type { QuizCardProps } from "./QuizCard.types";
 
 const HERO_IMAGE_HEIGHT_PX = 102;
+
+/** Tailwind `md` — 48rem. */
+const MD_MIN_WIDTH_MEDIA_QUERY = "(min-width: 48rem)";
+
+/** Subscribes to viewport width for a11y state CSS cannot express (`aria-hidden`, `inert`). */
+function useIsMdViewport(): boolean {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mediaQuery = window.matchMedia(MD_MIN_WIDTH_MEDIA_QUERY);
+      mediaQuery.addEventListener("change", onStoreChange);
+      return () => mediaQuery.removeEventListener("change", onStoreChange);
+    },
+    () => window.matchMedia(MD_MIN_WIDTH_MEDIA_QUERY).matches,
+    () => false,
+  );
+}
 
 const quizCardMessages = {
   startQuiz: { id: "Rozpocznij quiz", message: "Rozpocznij quiz" },
@@ -67,7 +82,7 @@ export function QuizCard({
 }: QuizCardProps): ReactElement {
   const { i18n } = useLingui();
   const [isExpandedValue, setIsExpandedValue] = useState(false);
-  const isMdUp = useMinWidthMd();
+  const isMdUp = useIsMdViewport();
   const logoAlt = title?.trim() ?? "";
   const hasHeroImage = Boolean(backgroundUrl);
   const isLayoutAlwaysExpanded = isAlwaysExpanded || hasHeroImage;
