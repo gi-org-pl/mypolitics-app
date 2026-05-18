@@ -10,7 +10,7 @@ export const FooterLegal: React.FC = () => {
         <div key={link.href} className="flex items-center">
           <Link
             to={link.href}
-            className="text-chart-3 hover:text-gi-dark-gray transition-colors"
+            className="text-chart-3 hover:text-gi-primary-hover transition-colors"
           >
             {i18n._(link.label)}
           </Link>
