@@ -10,8 +10,8 @@ export interface QuizCardProps {
   tags: string[];                  // info chips, e.g. ["+1.5M osób", "15 min"]
   isHighlighted?: boolean;         // dark-background featured variant, default: false
   isAlwaysExpanded?: boolean;      // never collapses, no chevron, default: false
-  isShowStartText?: boolean;       // show "Rozpocznij" + play; with `isMainAction` toggles primary vs light (chevron-like) surface
-  isMainAction?: boolean;          // primary filled play; when false with start text, light bordered control like expand toggle
+  isShowStartText?: boolean;       // show "Rozpocznij" + play icon
+  isMainAction?: boolean;          // full darkSea play; otherwise transparentize(0.9, darkSea) tint
   isButtonLoading?: boolean;       // play button shows spinner instead of icon
   isButtonDisabled?: boolean;      // hides the play button entirely
   onButtonClick: () => void;       // play / start button handler

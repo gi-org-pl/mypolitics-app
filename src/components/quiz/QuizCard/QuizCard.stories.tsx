@@ -15,7 +15,7 @@ const meta = {
     onButtonClick: noop,
     tags: ["+1.5M osób", "15 min"],
     description:
-      "Quiz description — in production this may include bold spans and formatting.",
+      "Quiz description",
   },
 } satisfies Meta<typeof QuizCard>;
 
@@ -23,7 +23,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-/** Standard card; from `md` up the body stays expanded and the chevron is hidden (Tailwind `md:` = 768px). */
 export const Default: Story = {
   name: "Default",
   parameters: {
@@ -46,10 +45,10 @@ export const Default: Story = {
     logoHeight: 24,
     cta: "Kiedyś to było... no właśnie, jak?",
     isAlwaysExpanded: false,
+    isMainAction: true,
   },
 };
 
-/** Collapsed on viewports below `md` (<768px). Narrow the Storybook preview to see the chevron. */
 export const Collapsed: Story = {
   name: "Collapsed",
   parameters: {
@@ -80,7 +79,7 @@ export const WithBackground: Story = {
     docs: {
       description: {
         story:
-          "`backgroundUrl` forces always-expanded behavior (no chevron on any viewport).",
+          "`backgroundUrl` adds a hero image; description and tags are always visible (no chevron).",
       },
     },
   },
@@ -97,7 +96,7 @@ export const WithCTA: Story = {
     docs: {
       description: {
         story:
-          "`cta` + `backgroundUrl`: same corner badge strip as without image — directly under the hero, `rounded-br-2xl` on the primary chip.",
+          "`cta` + `backgroundUrl`",
       },
     },
   },
@@ -115,7 +114,7 @@ export const Highlighted: Story = {
     docs: {
       description: {
         story:
-          "`isHighlighted` + `isMainAction` + `isShowStartText`: dark teal shell, primary play button with “Rozpocznij”, always expanded.",
+          "`isHighlighted` + `isMainAction` + `isShowStartText`: same ash background as default, primary play button with “Rozpocznij”, always expanded on mobile.",
       },
     },
   },

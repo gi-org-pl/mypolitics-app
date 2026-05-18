@@ -8,7 +8,6 @@ import { messages as plMessages } from "@/locales/pl/messages";
 import { useMinWidthMd } from "@/utils/useMinWidthMd";
 
 import { QuizCard } from "./QuizCard";
-import { quizCardDefaultSurfaceBgClass } from "./QuizCard.constants";
 
 vi.mock("@/utils/useMinWidthMd", () => ({
   useMinWidthMd: vi.fn(),
@@ -80,6 +79,43 @@ describe("<QuizCard />", () => {
       ) as HTMLImageElement | null;
       expect(bg).not.toBeNull();
       expect(bg).toHaveClass("object-cover");
+    });
+
+    describe("on mobile", () => {
+      it("does not show the chevron and always shows description and tags", () => {
+        renderWithI18n(
+          <QuizCard
+            backgroundUrl="https://example.com/bg.jpg"
+            description="Widoczny opis z tłem"
+            tags={["Chip"]}
+            onButtonClick={noop}
+          />,
+        );
+
+        expect(
+          screen.queryByRole("button", { name: "Rozwiń" }),
+        ).not.toBeInTheDocument();
+        expect(
+          screen.queryByRole("button", { name: "Zwiń" }),
+        ).not.toBeInTheDocument();
+        expect(screen.getByText("Widoczny opis z tłem")).toBeVisible();
+        expect(screen.getByText("Chip")).toBeVisible();
+      });
+
+      it("uses the default card surface below the hero image", () => {
+        renderWithI18n(
+          <QuizCard
+            backgroundUrl="https://example.com/bg.jpg"
+            description="Opis"
+            tags={[]}
+            onButtonClick={noop}
+          />,
+        );
+
+        const description = screen.getByText("Opis");
+        const contentBlock = description.closest(".p-4");
+        expect(contentBlock?.className).toContain("bg-gi-ash");
+      });
     });
   });
 
@@ -177,8 +213,9 @@ describe("<QuizCard />", () => {
       );
 
       expect(screen.getByText("Corner CTA")).toBeInTheDocument();
-      const badge = screen.getByText("Corner CTA").parentElement;
-      expect(badge?.className).toContain("rounded-br-2xl");
+      expect(screen.getByText("Corner CTA").className).toContain(
+        "rounded-br-2xl",
+      );
     });
   });
 
@@ -238,20 +275,14 @@ describe("<QuizCard />", () => {
           );
 
           const chevronBtn = screen.getByRole("button", { name: "Rozwiń" });
-          const srcBefore = chevronBtn
-            .querySelector("img")
-            ?.getAttribute("src");
+          const imgBefore = chevronBtn.querySelector("img");
+          expect(imgBefore?.className).not.toContain("rotate-180");
 
           fireEvent.click(chevronBtn);
 
           const chevronBtnAfter = screen.getByRole("button", { name: "Zwiń" });
-          const srcAfter = chevronBtnAfter
-            .querySelector("img")
-            ?.getAttribute("src");
-
-          expect(srcBefore).toBeTruthy();
-          expect(srcAfter).toBeTruthy();
-          expect(srcAfter).not.toBe(srcBefore);
+          const imgAfter = chevronBtnAfter.querySelector("img");
+          expect(imgAfter?.className).toContain("rotate-180");
         });
       });
     });
@@ -291,7 +322,7 @@ describe("<QuizCard />", () => {
     });
 
     describe("when viewport is at least md", () => {
-      it("does not set aria-hidden on the collapsible grid when expanded state is false", () => {
+      it("does not set aria-hidden on the collapsible grid", () => {
         mockedUseMinWidthMd.mockReturnValue(true);
         renderWithI18n(
           <QuizCard
@@ -381,7 +412,7 @@ describe("<QuizCard />", () => {
     });
 
     describe("when isHighlighted is true and isMainAction is false", () => {
-      it("renders the ghost-on-teal play control with image icon", () => {
+      it("renders the secondary play control with play icon", () => {
         renderWithI18n(
           <QuizCard
             isHighlighted
@@ -392,8 +423,9 @@ describe("<QuizCard />", () => {
         );
 
         const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("ring-white/30");
-        expect(play.querySelector("img")).toBeTruthy();
+        expect(play.className).toContain("bg-gi-primary/10");
+        expect(play.className).toContain("border-gi-primary");
+        expect(play.querySelector("svg")).toBeTruthy();
       });
     });
 
@@ -445,7 +477,7 @@ describe("<QuizCard />", () => {
         expect(play.className).toContain("text-white");
       });
 
-      it("uses light bordered styling like expand when isMainAction is false", () => {
+      it("uses transparentized primary background when isMainAction is false", () => {
         renderWithI18n(
           <QuizCard
             isShowStartText
@@ -456,11 +488,10 @@ describe("<QuizCard />", () => {
         );
 
         const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("ring-gi-primary");
-        expect(play.className).toContain("ring-inset");
-        expect(play.className).toContain(quizCardDefaultSurfaceBgClass);
+        expect(play.className).toContain("bg-gi-primary/10");
+        expect(play.className).toContain("border-gi-primary");
         expect(play.className).toContain("text-gi-primary");
-        expect(play.className).not.toContain("bg-gi-primary");
+        expect(play.className).not.toContain("text-white");
       });
     });
 
