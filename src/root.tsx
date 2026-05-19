@@ -6,6 +6,8 @@ import "@gi/athena/athena.css";
 import { messages as enMessages } from "../src/locales/en/messages";
 import { messages as plMessages } from "../src/locales/pl/messages";
 import { DEFAULT_LANGUAGE } from "./constants/common";
+import { Header } from "./components/shared/Header/Header";
+import { Footer } from "./components/shared/Footer/Footer";
 
 import "./index.css";
 
@@ -20,7 +22,13 @@ export default function App() {
       </head>
       <body>
         <I18nProvider i18n={i18n}>
-          <Outlet />
+            <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex-1">
+                    <Outlet />
+                </main>
+                <Footer />
+            </div>
         </I18nProvider>
         <Scripts />
       </body>
