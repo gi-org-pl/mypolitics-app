@@ -12,7 +12,7 @@ export const Error404: React.FC = () => {
       <img
         src={bear404}
         alt={t`Ilustracja misia — błąd 404`}
-        className="w-16 h-16 md:w-40 md:h-40"
+        className="w-16 h-16 md:w-48 md:h-48"
       />
 
       <div className="flex flex-col md:justify-center items-start h-auto gap-2.5">
@@ -23,7 +23,7 @@ export const Error404: React.FC = () => {
           </Trans>
         </h1>
 
-        <p className="max-md:text-base text-xl text-gi-primary">
+        <p className="max-md:text-base text-2xl text-gi-primary">
           <Trans>
             My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz
             błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!
