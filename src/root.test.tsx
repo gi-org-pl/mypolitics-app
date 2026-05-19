@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import App from "./root";
 
-
 vi.mock("react-router", async () => {
   const actual = await vi.importActual("react-router");
   return {
@@ -27,7 +26,7 @@ describe("root App", () => {
       render(
         <MemoryRouter>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
       expect(screen.getByTestId("header")).toBeInTheDocument();
     });
@@ -36,7 +35,7 @@ describe("root App", () => {
       render(
         <MemoryRouter>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
       expect(screen.getByTestId("footer")).toBeInTheDocument();
     });
@@ -45,7 +44,7 @@ describe("root App", () => {
       render(
         <MemoryRouter>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
       expect(document.querySelector("main")).toBeInTheDocument();
     });
@@ -56,12 +55,12 @@ describe("root App", () => {
       render(
         <MemoryRouter>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       );
-      
+
       const container = document.querySelector(".flex.min-h-screen.flex-col");
       const main = document.querySelector("main");
-      
+
       expect(container).toBeInTheDocument();
       expect(main).toHaveClass("flex-1");
     });
