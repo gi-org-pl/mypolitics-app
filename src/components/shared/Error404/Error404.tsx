@@ -31,7 +31,7 @@ export const Error404: React.FC = () => {
         </p>
 
         <Link to={PATHS.home}>
-          <Button variant="primary">
+          <Button variant="primary" className="text-base font-bold">
             <Trans>Strona główna</Trans>
           </Button>
         </Link>
