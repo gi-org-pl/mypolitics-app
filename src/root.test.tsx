@@ -47,7 +47,6 @@ describe("root App", () => {
           <App />
         </MemoryRouter>
       );
-      // Sprawdzamy czy tag main istnieje - to w nim siedzi Outlet
       expect(document.querySelector("main")).toBeInTheDocument();
     });
   });
