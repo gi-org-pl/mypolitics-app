@@ -10,20 +10,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof FeaturesList>;
 
-const defaultFeatures: Feature[] = [    
+const defaultFeatures: Feature[] = [
   {
     title: "+4 000 000 osób",
-    description: "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe.",
+    description:
+      "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe.",
   },
   {
     title: "Nikt nas nie finansuje",
-    description: "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych.",
+    description:
+      "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych.",
   },
   {
     title: "Algorytm jest jawny",
     description: (
       <>
-        Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkowników. <a href="/whitepaper">Sprawdź jak działa algorytm.</a>
+        Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy
+        użytkowników. <a href="/whitepaper">Sprawdź jak działa algorytm.</a>
       </>
     ),
   },

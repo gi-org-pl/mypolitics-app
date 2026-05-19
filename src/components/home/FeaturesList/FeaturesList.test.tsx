@@ -57,7 +57,7 @@ describe("<FeaturesList />", () => {
 
       expect(screen.getByRole("link", { name: "here" })).toHaveAttribute(
         "href",
-        "/docs"
+        "/docs",
       );
     });
   });
