@@ -8,7 +8,7 @@ import { PATHS } from "@/constants/paths";
 
 export const Error404: React.FC = () => {
   return (
-    <main className="flex max-md:flex-col items-start justify-center md:items-center min-h-160 md:min-h-100 h-full m-2.5 md:mx-auto gap-6 max-w-4xl">
+    <main className="flex max-md:flex-col items-start justify-center md:items-center min-h-160 md:min-h-100 h-full m-2.5 md:mx-auto gap-6 max-w-5xl">
       <img
         src={bear404}
         alt={t`Ilustracja misia — błąd 404`}
@@ -16,7 +16,7 @@ export const Error404: React.FC = () => {
       />
 
       <div className="flex flex-col md:justify-center items-start h-auto gap-2.5">
-        <h1 className="max-md:text-xl text-3xl font-bold text-gi-primary">
+        <h1 className="max-md:text-xl text-[32px] font-bold text-gi-primary">
           <Trans>
             To jest błąd 404{" "}
             <span className="text-cyan-500">na miarę naszych możliwości</span>!

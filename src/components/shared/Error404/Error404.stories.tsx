@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { INITIAL_VIEWPORTS } from 'storybook/viewport';
 import { MemoryRouter } from "react-router";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { Error404 } from "./Error404";
 
@@ -18,7 +18,7 @@ const meta: Meta<typeof Error404> = {
     viewport: {
       options: INITIAL_VIEWPORTS,
     },
-  }
+  },
 };
 
 export default meta;
