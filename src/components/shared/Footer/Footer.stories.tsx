@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { MemoryRouter } from 'react-router';
-import { Footer } from './Footer';
+import type { Meta, StoryObj } from "@storybook/react";
+import { MemoryRouter } from "react-router";
+import { Footer } from "./Footer";
 
 const meta: Meta<typeof Footer> = {
-  title: 'Shared/Footer',
+  title: "Shared/Footer",
   component: Footer,
   decorators: [
     (Story) => (
@@ -13,7 +13,7 @@ const meta: Meta<typeof Footer> = {
     ),
   ],
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
 };
 
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof Footer>;
 export const Desktop: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'responsive',
+      defaultViewport: "responsive",
     },
   },
 };
@@ -31,7 +31,7 @@ export const Desktop: Story = {
 export const Mobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: "mobile1",
     },
   },
 };

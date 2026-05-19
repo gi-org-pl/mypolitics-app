@@ -1,16 +1,16 @@
-import React from 'react';
-import { i18n } from '@lingui/core';
-import { msg } from '@lingui/core/macro';
-import { PATHS } from '@/constants/paths';
-import myPoliticsLogo from '@/assets/icons/mypoliticslogo.svg';
-import giLogo from '@/assets/icons/gilogo.svg';
+import { i18n } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import React from "react";
+import giLogo from "@/assets/icons/gilogo.svg";
+import myPoliticsLogo from "@/assets/icons/mypoliticslogo.svg";
+import { PATHS } from "@/constants/paths";
 
 export const FooterLeft: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <div className="flex flex-row items-center justify-center md:justify-start gap-2 h-4">
-      <span className="text-base leading-6 text-gi-gray whitespace-nowrap flex items-center">
+      <span className="text-base leading-6 text-gi-primary whitespace-nowrap flex items-center">
         {i18n._(msg`© ${currentYear}`)}
       </span>
       <div className="w-px h-3 bg-current text-gi-gray shrink-0" />

@@ -1,7 +1,7 @@
-import React from 'react';
-import { i18n } from '@lingui/core';
-import { SOCIAL_LINKS } from '../Footer.constants.ts';
-import { Button } from '@gi/athena';
+import { Button } from "@gi/athena";
+import { i18n } from "@lingui/core";
+import React from "react";
+import { SOCIAL_LINKS } from "../Footer.constants.ts";
 
 export const FooterSocials: React.FC = () => {
   return (
@@ -23,7 +23,12 @@ export const FooterSocials: React.FC = () => {
             aria-label={i18n._(social.ariaLabel)}
           >
             <img
-              src={new URL(`../../../../assets/icons/${social.platform}logo.svg`, import.meta.url).href}
+              src={
+                new URL(
+                  `../../../../assets/icons/${social.platform}logo.svg`,
+                  import.meta.url,
+                ).href
+              }
               alt={`${social.platform} logo`}
               className="h-4 w-auto"
             />

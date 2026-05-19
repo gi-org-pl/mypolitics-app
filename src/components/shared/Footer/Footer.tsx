@@ -1,7 +1,7 @@
-import React from 'react';
-import { FooterLeft } from './FooterLeft/FooterLeft';
-import { FooterSocials } from './FooterSocials/FooterSocials';
-import { FooterLegal } from './FooterLegal/FooterLegal';
+import React from "react";
+import { FooterLeft } from "./FooterLeft/FooterLeft";
+import { FooterLegal } from "./FooterLegal/FooterLegal";
+import { FooterSocials } from "./FooterSocials/FooterSocials";
 
 export const Footer: React.FC = () => {
   return (
