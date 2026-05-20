@@ -12,3 +12,7 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:9
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
