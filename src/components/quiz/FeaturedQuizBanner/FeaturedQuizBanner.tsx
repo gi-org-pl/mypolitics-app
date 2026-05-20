@@ -1,5 +1,5 @@
-import React from "react";
 import { t } from "@lingui/core/macro";
+import React from "react";
 import quizBannerContent from "@/assets/images/home/quiz-banner-content.png";
 
 const FeaturedQuizBanner: React.FC = () => {
