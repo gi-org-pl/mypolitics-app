@@ -3,7 +3,7 @@ import React from "react";
 
 const FeatureCard = ({ feature }: { feature: Feature }) => {
   return (
-    <article className="flex flex-col gap-2 p-6 rounded-3xl border border-gi-primary/10 bg-white shadow-sm md:rounded-[2rem]">
+    <article className="flex flex-col gap-2 p-6 rounded-3xl border border-gi-primary/10 bg-white md:rounded-[2rem]">
       <h3 className="text-[24px] leading-[1.4] text-gi-primary font-bold">
         {feature.title}
       </h3>
