@@ -76,14 +76,3 @@ export const NoLinks: Story = {
     ],
   },
 };
-
-export const MobileViewport: Story = {
-  args: {
-    sections: defaultSections,
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: "mobile1",
-    },
-  },
-};

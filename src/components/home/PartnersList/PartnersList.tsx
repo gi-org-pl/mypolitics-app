@@ -39,15 +39,21 @@ export const PartnersList: React.FC<PartnersListProps> = ({ sections }) => {
       {sections.map((section, sectionIndex) => (
         <div
           key={sectionIndex}
-          className="flex flex-col items-center gap-4 border-y border-gi-primary/10 py-4 md:flex-row md:flex-wrap md:gap-6 md:py-6"
+          className="grid gap-y-2 border-y border-gi-primary/10 py-4 md:grid-cols-[auto_1fr] md:items-center md:gap-x-6 md:gap-y-4 md:py-6"
         >
           {section.title ? (
-            <span className="text-center text-[16px] font-bold leading-[140%] tracking-[-0.01em] text-gi-primary">
+            <span className="text-center text-[16px] font-bold leading-[140%] tracking-[-0.01em] text-gi-primary md:text-left">
               {section.title}:
             </span>
           ) : null}
 
-          <ul className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
+          <ul
+            className={
+              section.title
+                ? "flex flex-wrap items-center justify-center gap-x-6 gap-y-4 md:justify-start"
+                : "flex flex-wrap items-center justify-center gap-x-6 gap-y-4 md:col-span-2 md:justify-start"
+            }
+          >
             {section.partners.map((partner) => (
               <li key={partner.title} className="flex items-center">
                 <PartnerLogo partner={partner} />
