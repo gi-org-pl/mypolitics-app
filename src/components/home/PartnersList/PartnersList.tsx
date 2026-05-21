@@ -11,7 +11,7 @@ function PartnerLogo({ partner }: PartnerLogoProps) {
       src={partner.logoUrl}
       alt={partner.title}
       title={partner.title}
-      className="max-h-4 w-auto max-w-full object-contain"
+      className="max-h-4 w-auto object-contain"
     />
   );
 
@@ -20,7 +20,7 @@ function PartnerLogo({ partner }: PartnerLogoProps) {
       href={partner.www}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex max-w-full items-center"
+      className="inline-flex items-center"
     >
       {image}
     </a>
@@ -39,17 +39,17 @@ export const PartnersList: React.FC<PartnersListProps> = ({ sections }) => {
       {sections.map((section, sectionIndex) => (
         <div
           key={sectionIndex}
-          className="grid gap-4 py-4 md:py-6 md:flex md:flex-wrap md:items-center md:gap-6 border-y border-gi-primary/10"
+          className="flex flex-col items-center gap-4 border-y border-gi-primary/10 py-4 md:flex-row md:flex-wrap md:gap-6 md:py-6"
         >
           {section.title ? (
-            <span className="text-[16px] font-bold leading-[140%] tracking-[-0.01em] text-gi-primary text-center">
+            <span className="text-center text-[16px] font-bold leading-[140%] tracking-[-0.01em] text-gi-primary">
               {section.title}:
             </span>
           ) : null}
 
-          <ul className="grid grid-cols-4 items-center gap-4 md:flex md:flex-wrap md:gap-6">
+          <ul className="flex flex-wrap items-center justify-center gap-6 md:justify-start">
             {section.partners.map((partner) => (
-              <li key={partner.title} className="flex min-w-0 items-center">
+              <li key={partner.title} className="flex items-center">
                 <PartnerLogo partner={partner} />
               </li>
             ))}
