@@ -283,14 +283,16 @@ describe("<QuizCard />", () => {
           );
 
           const chevronBtn = screen.getByRole("button", { name: "Rozwiń" });
-          const imgBefore = chevronBtn.querySelector("img");
-          expect(imgBefore?.className).not.toContain("rotate-180");
+          const svgBefore = chevronBtn.querySelector("svg");
+          expect(svgBefore?.getAttribute("class") ?? "").not.toContain(
+            "rotate-180",
+          );
 
           fireEvent.click(chevronBtn);
 
           const chevronBtnAfter = screen.getByRole("button", { name: "Zwiń" });
-          const imgAfter = chevronBtnAfter.querySelector("img");
-          expect(imgAfter?.className).toContain("rotate-180");
+          const svgAfter = chevronBtnAfter.querySelector("svg");
+          expect(svgAfter?.getAttribute("class") ?? "").toContain("rotate-180");
         });
       });
     });
@@ -431,8 +433,8 @@ describe("<QuizCard />", () => {
         );
 
         const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("bg-gi-primary/10");
-        expect(play.className).toContain("border-gi-primary");
+        expect(play.className).toContain("ring-gi-primary");
+        expect(play.className).toContain("bg-gi-ash");
         expect(play.querySelector("img")).toBeTruthy();
       });
     });
@@ -485,7 +487,7 @@ describe("<QuizCard />", () => {
         expect(play.className).toContain("text-white");
       });
 
-      it("uses transparentized primary background when isMainAction is false", () => {
+      it("uses ghost chrome styling when isMainAction is false", () => {
         renderWithI18n(
           <QuizCard
             isShowStartText
@@ -496,8 +498,8 @@ describe("<QuizCard />", () => {
         );
 
         const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("bg-gi-primary/10");
-        expect(play.className).toContain("border-gi-primary");
+        expect(play.className).toContain("ring-gi-primary");
+        expect(play.className).toContain("bg-gi-ash");
         expect(play.className).toContain("text-gi-primary");
         expect(play.className).not.toContain("text-white");
       });

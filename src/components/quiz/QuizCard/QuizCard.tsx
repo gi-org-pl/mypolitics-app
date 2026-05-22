@@ -1,10 +1,10 @@
+import { Button } from "@gi/athena";
 import type { MessageDescriptor } from "@lingui/core";
 import { Trans, useLingui } from "@lingui/react";
 import type { ReactElement, ReactNode } from "react";
 import { useState, useSyncExternalStore } from "react";
 import { twMerge } from "tailwind-merge";
 
-import chevronIconUrl from "@/assets/icons/fa-solid_chevron-down.svg";
 import playIconUrl from "@/assets/icons/fa-solid_play.svg";
 import playIconDarkUrl from "@/assets/icons/fa-solid_play-dark.svg";
 
@@ -12,10 +12,8 @@ import type { QuizCardProps } from "./QuizCard.types";
 
 const HERO_IMAGE_HEIGHT_PX = 102;
 
-/** Tailwind `md` — 48rem. */
 const MD_MIN_WIDTH_MEDIA_QUERY = "(min-width: 48rem)";
 
-/** Subscribes to viewport width for a11y state CSS cannot express (`aria-hidden`, `inert`). */
 function useIsMdViewport(): boolean {
   return useSyncExternalStore(
     (onStoreChange) => {
@@ -39,29 +37,37 @@ function cn(...parts: Array<string | false | undefined>): string {
   return twMerge(parts.filter(Boolean).join(" "));
 }
 
-const playButtonFocusClass =
-  "cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-secondary";
+function ChevronDown({ className }: { className?: string }): ReactElement {
+  return (
+    <svg
+      width="14"
+      height="16"
+      viewBox="0 0 14 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className={cn("pointer-events-none shrink-0 text-gi-primary", className)}
+    >
+      <path
+        d="M6.46966 11.9211L0.396437 5.84786C0.103531 5.55496 0.103531 5.08008 0.396437 4.78721L1.10478 4.07886C1.39719 3.78646 1.87109 3.7859 2.16419 4.07761L7 8.89077L11.8358 4.07761C12.1289 3.7859 12.6028 3.78646 12.8952 4.07886L13.6035 4.78721C13.8964 5.08011 13.8964 5.55499 13.6035 5.84786L7.53034 11.9211C7.23744 12.214 6.76256 12.214 6.46966 11.9211Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
 
-const playButtonSharedClass =
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full";
-
-const playButtonPrimaryClass = cn(
-  playButtonSharedClass,
-  "border-0 bg-gi-primary text-white hover:bg-gi-primary-hover",
-  playButtonFocusClass,
-);
-
-const playButtonSecondaryClass = cn(
-  playButtonSharedClass,
-  "border border-gi-primary bg-gi-primary/10 text-gi-primary hover:bg-gi-primary/20",
-  playButtonFocusClass,
-);
-
-const playStartLabelTypographyClass =
-  "text-[16px] font-bold leading-[100%] text-current";
-
-const playIconSlotClass =
-  "pointer-events-none inline-flex size-4 shrink-0 items-center justify-center";
+function PlayIcon({ isMainAction }: { isMainAction: boolean }): ReactElement {
+  return (
+    <img
+      src={isMainAction ? playIconUrl : playIconDarkUrl}
+      alt=""
+      width={16}
+      height={16}
+      className="size-4 shrink-0"
+      aria-hidden
+    />
+  );
+}
 
 export function QuizCard({
   title,
@@ -120,27 +126,17 @@ export function QuizCard({
       </div>
     );
 
-  const expandToggleClass = cn(
-    "inline-flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 ring-1 ring-inset ring-gi-primary md:hidden",
-    "bg-gi-ash",
-    "hover:bg-gi-dark-ash/20",
-    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-secondary",
-  );
+  const iconChromeButtonClass =
+    "size-12 h-12 w-12 shrink-0 ring-1 ring-inset ring-gi-primary";
 
-  const chevronIconClass = "pointer-events-none h-4 w-4 shrink-0";
-
-  const playButtonBaseClass = isMainAction
-    ? playButtonPrimaryClass
-    : playButtonSecondaryClass;
-
+  const playButtonType = isMainAction ? "primary" : "ghost";
   const playButtonClassName = cn(
-    playButtonBaseClass,
+    isMainAction && "border-0",
+    !isMainAction && iconChromeButtonClass,
     isShowStartText
-      ? "w-auto min-h-12 gap-[12px] p-[16px] items-center justify-center text-center"
-      : "size-12",
+      ? "min-h-12 gap-3 px-4 text-[16px] font-bold leading-[100%]"
+      : isMainAction && "size-12 h-12 w-12",
   );
-
-  const playSpinnerSizeClass = isShowStartText ? "size-5" : "size-4";
 
   const tagChipClass = cn(
     "inline-flex items-center justify-center rounded-full border border-gi-primary/10 p-[12px]",
@@ -198,82 +194,53 @@ export function QuizCard({
 
           <div className="flex shrink-0 items-center gap-2">
             {showExpandChrome ? (
-              <button
-                type="button"
-                className={expandToggleClass}
+              <Button
+                type="ghost"
+                variant="primary"
+                isIconButton
+                className={cn(iconChromeButtonClass, "md:hidden")}
                 aria-expanded={isContentExpanded}
                 aria-label={i18n._(
                   isContentExpanded
                     ? quizCardMessages.collapse
                     : quizCardMessages.expand,
                 )}
+                LeftIcon={
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 transition-transform duration-300 ease-in-out motion-reduce:transition-none",
+                      isContentExpanded && "rotate-180",
+                    )}
+                  />
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsExpandedValue((v) => !v);
                 }}
-              >
-                <img
-                  src={chevronIconUrl}
-                  alt=""
-                  width={16}
-                  height={16}
-                  className={cn(
-                    chevronIconClass,
-                    isContentExpanded && "rotate-180",
-                  )}
-                />
-              </button>
+              />
             ) : null}
 
             {!isButtonDisabled ? (
-              <button
-                type="button"
-                aria-busy={isButtonLoading ? true : undefined}
-                className={playButtonClassName}
-                aria-label={i18n._(quizCardMessages.startQuiz)}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onButtonClick();
-                }}
-              >
-                {isShowStartText ? (
-                  <span className={playStartLabelTypographyClass}>
+              <Button
+                  type={playButtonType}
+                  variant="primary"
+                  isIconButton={!isShowStartText}
+                  isLoading={isButtonLoading}
+                  className={playButtonClassName}
+                  aria-label={i18n._(quizCardMessages.startQuiz)}
+                  LeftIcon={<PlayIcon isMainAction={isMainAction} />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onButtonClick();
+                  }}
+                >
+                  {isShowStartText ? (
                     <Trans
                       id={quizCardMessages.start.id}
                       message={quizCardMessages.start.message}
                     />
-                  </span>
-                ) : null}
-                {isButtonLoading ? (
-                  <span
-                    className={cn(
-                      "inline-block shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none",
-                      playSpinnerSizeClass,
-                    )}
-                    aria-hidden
-                  />
-                ) : (
-                  <span className={playIconSlotClass} aria-hidden>
-                    {isMainAction ? (
-                      <img
-                        src={playIconUrl}
-                        alt=""
-                        width={16}
-                        height={16}
-                        className="size-4"
-                      />
-                    ) : (
-                      <img
-                        src={playIconDarkUrl}
-                        alt=""
-                        width={16}
-                        height={16}
-                        className="size-4"
-                      />
-                    )}
-                  </span>
-                )}
-              </button>
+                  ) : undefined}
+              </Button>
             ) : null}
           </div>
         </div>
