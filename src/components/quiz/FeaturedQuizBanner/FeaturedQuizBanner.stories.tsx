@@ -15,7 +15,15 @@ type Story = StoryObj<typeof FeaturedQuizBanner>;
 
 export const Default: Story = {
   render: () => (
-    <div className="w-[600px] p-8 bg-white">
+    <div className="w-[800px] bg-white">
+      <FeaturedQuizBanner />
+    </div>
+  ),
+};
+
+export const InContainer: Story = {
+  render: () => (
+    <div className="max-w-[778px] mx-auto">
       <FeaturedQuizBanner />
     </div>
   ),
@@ -23,7 +31,7 @@ export const Default: Story = {
 
 export const DarkContext: Story = {
   render: () => (
-    <div className="w-[600px] p-8 bg-slate-900">
+    <div className="w-[800px] bg-slate-900">
       <FeaturedQuizBanner />
     </div>
   ),
