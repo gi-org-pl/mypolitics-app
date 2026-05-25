@@ -1,7 +1,7 @@
-import React from "react";
 import { t } from "@lingui/core/macro";
-import quizBannerContent from "@/assets/images/home/quiz-banner-content.png";
+import React from "react";
 import quizBannerBg from "@/assets/images/home/quiz-banner-bg.png";
+import quizBannerContent from "@/assets/images/home/quiz-banner-content.png";
 
 const FeaturedQuizBanner: React.FC = () => {
   return (

@@ -28,7 +28,10 @@ describe("<FeaturedQuizBanner />", () => {
       const contentImg = screen.getByAltText("mypolitics banner content");
       expect(contentImg).toBeInTheDocument();
       expect(contentImg).toHaveAttribute("src", "mock-content-path");
-      expect(contentImg).toHaveAttribute("class", expect.stringContaining("drop-shadow"));
+      expect(contentImg).toHaveAttribute(
+        "class",
+        expect.stringContaining("drop-shadow"),
+      );
     });
   });
 
