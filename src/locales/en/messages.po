@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:17
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr ""
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
