@@ -1,120 +1,140 @@
 import { Button } from "@gi/athena";
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import { PATHS } from "@/constants/paths";
 
-interface HeaderProps {
-  initialActiveButton?: string;
-  initialIsMenuOpen?: boolean;
-  viewport?: "mobile" | "desktop";
-}
+import debatesIcon from "@/assets/vectors/debaty-icon.svg";
+import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
+import logo from "@/assets/vectors/logo.svg";
+import quizzesIcon from "@/assets/vectors/quizy-icon.svg";
+import pollsIcon from "@/assets/vectors/sondaze-icon.svg";
 
-const Header: React.FC<HeaderProps> = ({
-  initialActiveButton = "quizy",
-  initialIsMenuOpen = false,
-  viewport = "desktop",
-}) => {
-  const [activeButton, setActiveButton] = useState(initialActiveButton);
-  const [isMenuOpen, setIsMenuOpen] = useState(initialIsMenuOpen);
+import { HEADER_NAV_ITEMS, MOBILE_HEADER_NAV_ITEMS } from "./Header.constants";
+import type { HeaderNavItem } from "./Header.types";
 
-  useEffect(() => {
-    setIsMenuOpen(initialIsMenuOpen);
-  }, [initialIsMenuOpen]);
+const icons = {
+  debates: debatesIcon,
+  polls: pollsIcon,
+  quizzes: quizzesIcon,
+};
 
-  useEffect(() => {
-    setActiveButton(initialActiveButton);
-  }, [initialActiveButton]);
+const HeaderLabel = ({ label }: Pick<HeaderNavItem, "label">) => {
+  if (label === "Debaty") return <Trans>Debaty</Trans>;
+  if (label === "Sondaże") return <Trans>Sondaże</Trans>;
+  return <Trans>Quizy</Trans>;
+};
+
+const Header: React.FC = () => {
+  const { pathname } = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
-  const isMobileView = viewport === "mobile";
-
-  function buttonClick(buttonName: string) {
-    setActiveButton(buttonName);
-    setIsMenuOpen(false);
-  }
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    function clickOutsideMenu(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        !hamburgerRef.current?.contains(target)
+      ) {
         setIsMenuOpen(false);
       }
-    }
-    document.addEventListener("mousedown", clickOutsideMenu);
-    return () => document.removeEventListener("mousedown", clickOutsideMenu);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  const NavLinks = () => (
-    <>
-      <Link to={PATHS.debates}>
-        <Button
-          type={activeButton === "debaty" ? "primary" : "ghost"}
-          onClick={() => buttonClick("debaty")}
-        >
-          <img
-            src="src/assets/vectors/debaty-icon.svg"
-            className={activeButton === "debaty" ? "brightness-0 invert" : ""}
-            alt=""
-          />
-          <Trans>Debaty</Trans>
-        </Button>
-      </Link>
-      <Link to={PATHS.polls}>
-        <Button
-          type={activeButton === "sondaze" ? "primary" : "ghost"}
-          onClick={() => buttonClick("sondaze")}
-        >
-          <img
-            src="src/assets/vectors/sondaze-icon.svg"
-            className={activeButton === "sondaze" ? "brightness-0 invert" : ""}
-            alt=""
-          />
-          <Trans>Sondaze</Trans>
-        </Button>
-      </Link>
-      <Link to={PATHS.quizzes}>
-        <Button
-          type={activeButton === "quizy" ? "primary" : "ghost"}
-          onClick={() => buttonClick("quizy")}
-        >
-          <img
-            src="src/assets/vectors/quizy-icon.svg"
-            className={activeButton === "quizy" ? "brightness-0 invert" : ""}
-            alt=""
-          />
-          <Trans>Quizy</Trans>
-        </Button>
-      </Link>
-    </>
-  );
+  const renderNavItem = (item: HeaderNavItem) => {
+    const isActive = !item.external && pathname === item.path;
+
+    const icon = (
+      <img
+        src={icons[item.key]}
+        alt=""
+        className={isActive ? "brightness-0 invert" : undefined}
+      />
+    );
+
+    const link = item.external ? (
+      <a
+        href={item.path}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <HeaderLabel label={item.label} />
+      </a>
+    ) : (
+      <NavLink
+        to={item.path}
+        aria-current={isActive ? "page" : undefined}
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <HeaderLabel label={item.label} />
+      </NavLink>
+    );
+
+    return (
+      <Button
+        key={item.key}
+        asChild
+        type={isActive ? "primary" : "ghost"}
+        variant="primary"
+        size="regular"
+        className="w-fit text-base font-bold leading-none"
+        LeftIcon={icon}
+      >
+        {link}
+      </Button>
+    );
+  };
 
   return (
-    <header className="relative border-b bg-white">
-      <div className="flex justify-between items-center m-8">
-        <Link to={PATHS.home}>
-          <img src="src/assets/vectors/logo.svg" alt="logo" />
+    <header className="relative border-b border-gi-dark-ash bg-white">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 py-6">
+        <Link to={PATHS.home} aria-label={t`Strona główna`}>
+          <img src={logo} alt="myPolitics" className="h-6" />
         </Link>
 
-        <nav data-testid="desktopNav" className={`${isMobileView ? "hidden" : "hidden md:flex"} gap-4`}>
-          <NavLinks />
+        <nav data-testid="desktopNav" className="hidden gap-4 md:flex">
+          {HEADER_NAV_ITEMS.map(renderNavItem)}
         </nav>
 
-        <button
-          className={`${isMobileView ? "block" : "md:hidden"} text-3xl`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        <Button
+          ref={hamburgerRef}
+          type="ghost"
+          variant="primary"
+          size="regular"
+          isIconButton
+          className="bg-transparent hover:bg-transparent md:hidden"
+          aria-label={
+            isMenuOpen ? t`Zamknij menu nawigacji` : t`Otwórz menu nawigacji`
+          }
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setIsMenuOpen((open) => !open)}
         >
-          <img src="src/assets/vectors/hamburger-menu.svg" alt="menu" />
-        </button>
+          <img src={hamburgerIcon} alt="" />
+        </Button>
       </div>
 
       {isMenuOpen && (
-        <div data-testid="mobileMenu"
+        <div
+          id="mobile-navigation"
           ref={menuRef}
-          className={`absolute top-full left-0 w-full bg-white shadow-md flex flex-col gap-2 p-4 z-50 ${
-            isMobileView ? "flex" : "md:hidden"
-          }`}
+          data-testid="mobileMenu"
+          className="absolute left-0 top-full z-50 flex w-full flex-col items-start gap-2 border-b border-gi-dark-ash bg-white p-4 shadow-md md:hidden"
         >
-          <NavLinks />
+          {MOBILE_HEADER_NAV_ITEMS.map(renderNavItem)}
         </div>
       )}
     </header>
