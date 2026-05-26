@@ -90,23 +90,29 @@ describe("<QuizCard />", () => {
     });
 
     describe("on mobile", () => {
-      it("does not show the chevron and always shows description and tags", () => {
+      it("starts collapsed with chevron and expands on click", () => {
         renderWithI18n(
           <QuizCard
             backgroundUrl="https://example.com/bg.jpg"
-            description="Widoczny opis z tłem"
+            description="Ukryty opis z tłem"
             tags={["Chip"]}
             onButtonClick={noop}
           />,
         );
 
         expect(
-          screen.queryByRole("button", { name: "Rozwiń" }),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByRole("button", { name: "Zwiń" }),
-        ).not.toBeInTheDocument();
-        expect(screen.getByText("Widoczny opis z tłem")).toBeVisible();
+          screen.getByRole("button", { name: "Rozwiń" }),
+        ).toBeInTheDocument();
+
+        const grid = screen
+          .getByRole("button", { name: "Rozwiń" })
+          .closest("div")
+          ?.parentElement?.parentElement?.querySelector("[aria-hidden]");
+        expect(grid).toHaveAttribute("aria-hidden", "true");
+
+        fireEvent.click(screen.getByRole("button", { name: "Rozwiń" }));
+
+        expect(screen.getByText("Ukryty opis z tłem")).toBeVisible();
         expect(screen.getByText("Chip")).toBeVisible();
       });
 
@@ -191,25 +197,8 @@ describe("<QuizCard />", () => {
     });
   });
 
-  describe("given isHighlighted with cta and no backgroundUrl", () => {
-    it("renders the CTA strip at the top of the card", () => {
-      renderWithI18n(
-        <QuizCard
-          isHighlighted
-          cta="Top badge"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
-
-      const article = screen.getByRole("article");
-      expect(article.firstChild).toHaveTextContent("Top badge");
-    });
-  });
-
-  describe("given backgroundUrl and cta", () => {
-    it("renders the CTA strip under the hero with corner badge styling", () => {
+  describe("given a cta with backgroundUrl", () => {
+    it("renders the CTA strip after the hero with corner badge styling", () => {
       renderWithI18n(
         <QuizCard
           backgroundUrl="https://example.com/bg.jpg"
@@ -220,10 +209,36 @@ describe("<QuizCard />", () => {
         />,
       );
 
-      expect(screen.getByText("Corner CTA")).toBeInTheDocument();
-      expect(screen.getByText("Corner CTA").className).toContain(
-        "rounded-br-2xl",
+      const ctaBadge = screen.getByText("Corner CTA");
+      expect(ctaBadge.className).toContain("rounded-br-2xl");
+      expect(ctaBadge.className).toContain("min-h-[30px]");
+
+      const article = screen.getByRole("article");
+      const hero = document.querySelector(
+        'img[src="https://example.com/bg.jpg"]',
       );
+      expect(hero).not.toBeNull();
+      expect(article.children[0]).toContainElement(hero as HTMLElement);
+      expect(article.children[1]).toHaveTextContent("Corner CTA");
+    });
+  });
+
+  describe("given a cta without backgroundUrl", () => {
+    it("renders the CTA strip before content with taller min-height", () => {
+      renderWithI18n(
+        <QuizCard
+          cta="Badge CTA"
+          description="Opis"
+          tags={[]}
+          onButtonClick={noop}
+        />,
+      );
+
+      const ctaBadge = screen.getByText("Badge CTA");
+      expect(ctaBadge.className).toContain("min-h-[38px]");
+
+      const article = screen.getByRole("article");
+      expect(article.children[0]).toHaveTextContent("Badge CTA");
     });
   });
 
@@ -457,7 +472,8 @@ describe("<QuizCard />", () => {
     });
 
     describe("when isShowStartText is true", () => {
-      it('shows "Rozpocznij" label', () => {
+      it('shows "Rozpocznij" label on desktop only', () => {
+        mockMatchMedia(true);
         renderWithI18n(
           <QuizCard
             isShowStartText
@@ -471,7 +487,23 @@ describe("<QuizCard />", () => {
         expect(within(play).getByText("Rozpocznij")).toBeInTheDocument();
       });
 
+      it('does not show "Rozpocznij" label on mobile', () => {
+        mockMatchMedia(false);
+        renderWithI18n(
+          <QuizCard
+            isShowStartText
+            description="Opis"
+            tags={[]}
+            onButtonClick={noop}
+          />,
+        );
+
+        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        expect(within(play).queryByText("Rozpocznij")).not.toBeInTheDocument();
+      });
+
       it("uses primary filled styling when isMainAction is true", () => {
+        mockMatchMedia(true);
         renderWithI18n(
           <QuizCard
             isShowStartText
@@ -488,6 +520,7 @@ describe("<QuizCard />", () => {
       });
 
       it("uses ghost chrome styling when isMainAction is false", () => {
+        mockMatchMedia(true);
         renderWithI18n(
           <QuizCard
             isShowStartText
@@ -505,6 +538,7 @@ describe("<QuizCard />", () => {
       });
 
       it("keeps horizontal padding when loading", () => {
+        mockMatchMedia(true);
         const { rerender } = renderWithI18n(
           <QuizCard
             isShowStartText
@@ -514,7 +548,9 @@ describe("<QuizCard />", () => {
           />,
         );
 
-        const playIdle = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        const playIdle = screen.getByRole("button", {
+          name: "Rozpocznij quiz",
+        });
         const idleClasses = playIdle.className.split(/\s+/);
 
         rerender(
@@ -529,7 +565,9 @@ describe("<QuizCard />", () => {
           </I18nProvider>,
         );
 
-        const playLoading = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        const playLoading = screen.getByRole("button", {
+          name: "Rozpocznij quiz",
+        });
         const loadingClasses = playLoading.className.split(/\s+/);
 
         expect(idleClasses).toContain("px-4");
@@ -540,6 +578,7 @@ describe("<QuizCard />", () => {
       });
 
       it("does not use icon-only fixed size when isMainAction is false", () => {
+        mockMatchMedia(true);
         renderWithI18n(
           <QuizCard
             isShowStartText

@@ -90,8 +90,8 @@ export function QuizCard({
   const [isExpandedValue, setIsExpandedValue] = useState(false);
   const isMdUp = useIsMdViewport();
   const logoAlt = title?.trim() ?? "";
-  const hasHeroImage = Boolean(backgroundUrl);
-  const isLayoutAlwaysExpanded = isAlwaysExpanded || hasHeroImage;
+  const isLayoutAlwaysExpanded = isAlwaysExpanded;
+  const showStartTextLabel = isShowStartText && isMdUp;
 
   const isContentExpanded =
     isLayoutAlwaysExpanded || isHighlighted || isMdUp || isExpandedValue;
@@ -111,7 +111,7 @@ export function QuizCard({
   );
 
   const titleClass =
-    "m-0 min-w-0 text-left text-2xl font-bold leading-[120%] text-gi-light-primary";
+    "m-0 min-w-0 text-left text-2xl font-bold leading-[120%] text-gi-primary";
 
   const descExpandedClass =
     "m-0 text-left align-middle text-[16px] font-normal leading-[140%] text-gi-primary";
@@ -132,8 +132,8 @@ export function QuizCard({
   const playButtonClassName = cn(
     isMainAction && "border-0",
     !isMainAction && iconChromeRingClass,
-    !isMainAction && !isShowStartText && iconOnlyButtonSizeClass,
-    isShowStartText
+    !isMainAction && !showStartTextLabel && iconOnlyButtonSizeClass,
+    showStartTextLabel
       ? "min-h-12 flex-row-reverse gap-3 px-4 has-[>svg]:px-4 text-[16px] font-bold leading-[100%]"
       : isMainAction && iconOnlyButtonSizeClass,
   );
@@ -163,8 +163,9 @@ export function QuizCard({
     : "px-[16px] py-[12px]";
 
   const ctaBadgeInnerClass = cn(
-    "bg-gi-primary text-left text-[14px] font-[700] leading-[120%] text-white",
+    "flex w-fit items-center justify-center bg-gi-primary text-left text-[14px] font-[700] leading-[120%] text-white",
     "rounded-br-2xl",
+    backgroundUrl ? "min-h-[30px]" : "min-h-[38px]",
     ctaPaddingClass,
   );
 
@@ -228,7 +229,7 @@ export function QuizCard({
               <Button
                   type={playButtonType}
                   variant="primary"
-                  isIconButton={!isShowStartText}
+                  isIconButton={!showStartTextLabel}
                   isLoading={isButtonLoading}
                   className={playButtonClassName}
                   aria-label={i18n._(quizCardMessages.startQuiz)}
@@ -238,7 +239,7 @@ export function QuizCard({
                     onButtonClick();
                   }}
                 >
-                  {isShowStartText ? (
+                  {showStartTextLabel ? (
                     <Trans
                       id={quizCardMessages.start.id}
                       message={quizCardMessages.start.message}
@@ -275,8 +276,6 @@ export function QuizCard({
       className={shell}
       onClick={onCardClick ? handleCardClick : undefined}
     >
-      {isHighlighted && cta && !backgroundUrl ? ctaStrip : null}
-
       {backgroundUrl ? (
         <div
           className={cn("relative w-full overflow-hidden", "bg-gi-ash")}
@@ -293,9 +292,7 @@ export function QuizCard({
         </div>
       ) : null}
 
-      {cta && backgroundUrl ? ctaStrip : null}
-
-      {cta && !backgroundUrl && !isHighlighted ? ctaStrip : null}
+      {cta ? ctaStrip : null}
 
       {mainBlock}
     </article>

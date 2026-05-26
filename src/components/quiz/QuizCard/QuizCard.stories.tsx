@@ -73,7 +73,7 @@ export const WithBackground: Story = {
     docs: {
       description: {
         story:
-          "`backgroundUrl` adds a hero image; description and tags are always visible (no chevron).",
+          "`backgroundUrl` adds a hero image. On mobile, description and tags collapse like a default card; from `md` up they stay expanded.",
       },
     },
   },
@@ -107,7 +107,7 @@ export const Highlighted: Story = {
     docs: {
       description: {
         story:
-          "`isHighlighted` + `isMainAction` + `isShowStartText`: same ash background as default, primary play button with “Rozpocznij”, always expanded on mobile.",
+          "`isHighlighted` + `isMainAction` + `isShowStartText`: same ash background as default, primary play button with “Rozpocznij” from `md` up, always expanded on mobile.",
       },
     },
   },
