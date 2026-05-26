@@ -8,11 +8,6 @@
     "rules": { "recommended": false },
     "includes": ["**", "!dist"]
   },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
-    }
-  },
   "javascript": { "formatter": { "quoteStyle": "double" } },
   "overrides": [
     {

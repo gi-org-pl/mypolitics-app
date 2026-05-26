@@ -5,28 +5,6 @@
   --font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme {
-  --animate-quiz-banner-float: quiz-banner-float 4s ease-in-out infinite;
-
-  @keyframes quiz-banner-float {
-    0%,
-    100% {
-      transform: translate(0px, 0px);
-    }
-    25% {
-      transform: translate(6px, -6px);
-    }
-    50% {
-      transform: translate(0px, -10px);
-    }
-    75% {
-      transform: translate(-6px, -6px);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-quiz-banner-float {
-    animation: none !important;
-  }
+body {
+  font-family: var(--font-family);
 }

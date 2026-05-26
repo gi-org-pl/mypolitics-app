@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import FeaturedQuizBanner from "./FeaturedQuizBanner";
 
-// Mocking the image imports
 vi.mock("@/assets/images/home/quiz-banner-content.png", () => ({
   default: "mock-content-path",
 }));
@@ -10,7 +9,6 @@ vi.mock("@/assets/images/home/quiz-banner-bg.png", () => ({
   default: "mock-bg-path",
 }));
 
-// Mocking lingui macro
 vi.mock("@lingui/core/macro", () => ({
   t: (msg: any) => (Array.isArray(msg) ? msg[0] : msg),
 }));
@@ -18,9 +16,10 @@ vi.mock("@lingui/core/macro", () => ({
 describe("<FeaturedQuizBanner />", () => {
   describe("content", () => {
     it("renders the background image layer", () => {
-      const { container } = render(<FeaturedQuizBanner />);
-      const bgImg = container.querySelector('img[src="mock-bg-path"]');
+      render(<FeaturedQuizBanner />);
+      const bgImg = screen.getByAltText("mypolitics banner background");
       expect(bgImg).toBeInTheDocument();
+      expect(bgImg).toHaveAttribute("src", "mock-bg-path");
     });
 
     it("renders the floating banner image with drop shadow", () => {
@@ -38,14 +37,15 @@ describe("<FeaturedQuizBanner />", () => {
   describe("structure & styles", () => {
     it("has the correct legacy height and background color", () => {
       const { container } = render(<FeaturedQuizBanner />);
-      const wrapper = container.firstChild;
+      // We use container.lastChild because container.firstChild is the <style> tag
+      const wrapper = container.lastChild;
       expect(wrapper).toHaveClass("h-[292px]");
       expect(wrapper).toHaveClass("bg-[#01171B]");
     });
 
     it("centers the content using flexbox", () => {
       const { container } = render(<FeaturedQuizBanner />);
-      const wrapper = container.firstChild;
+      const wrapper = container.lastChild;
       expect(wrapper).toHaveClass("flex");
       expect(wrapper).toHaveClass("items-center");
       expect(wrapper).toHaveClass("justify-center");
@@ -59,8 +59,8 @@ describe("<FeaturedQuizBanner />", () => {
 
     it("applies rounded corners and overflow-hidden to the container", () => {
       const { container } = render(<FeaturedQuizBanner />);
-      const wrapper = container.firstChild;
-      expect(wrapper).toHaveClass("rounded-[32px]");
+      const wrapper = container.lastChild;
+      expect(wrapper).toHaveClass("rounded-4xl");
       expect(wrapper).toHaveClass("overflow-hidden");
     });
   });
