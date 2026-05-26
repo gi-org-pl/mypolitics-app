@@ -17,7 +17,7 @@ msgstr ""
 msgid "Debaty"
 msgstr "Debaty"
 
-#: src/components/shared/Header/Header.tsx:119
+#: src/components/shared/Header/Header.tsx:123
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
@@ -29,10 +29,10 @@ msgstr "Quizy"
 msgid "Sondaże"
 msgstr "Sondaże"
 
-#: src/components/shared/Header/Header.tsx:103
+#: src/components/shared/Header/Header.tsx:107
 msgid "Strona główna"
 msgstr "Strona główna"
 
-#: src/components/shared/Header/Header.tsx:119
+#: src/components/shared/Header/Header.tsx:123
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
