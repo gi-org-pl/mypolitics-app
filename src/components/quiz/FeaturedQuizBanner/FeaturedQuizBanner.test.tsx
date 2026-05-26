@@ -37,7 +37,6 @@ describe("<FeaturedQuizBanner />", () => {
   describe("structure & styles", () => {
     it("has the correct legacy height and background color", () => {
       const { container } = render(<FeaturedQuizBanner />);
-      // We use container.lastChild because container.firstChild is the <style> tag
       const wrapper = container.lastChild;
       expect(wrapper).toHaveClass("h-[292px]");
       expect(wrapper).toHaveClass("bg-[#01171B]");
