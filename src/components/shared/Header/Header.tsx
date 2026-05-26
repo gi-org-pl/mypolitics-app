@@ -3,11 +3,11 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
-import debatesIcon from "@/assets/vectors/debaty-icon.svg";
+import debatesIcon from "@/assets/vectors/debates-icon.svg";
 import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
 import logo from "@/assets/vectors/logo.svg";
-import quizzesIcon from "@/assets/vectors/quizy-icon.svg";
-import pollsIcon from "@/assets/vectors/sondaze-icon.svg";
+import pollsIcon from "@/assets/vectors/polls-icon.svg";
+import quizzesIcon from "@/assets/vectors/quizzes-icon.svg";
 import { PATHS } from "@/constants/paths";
 
 import { HEADER_NAV_ITEMS, MOBILE_HEADER_NAV_ITEMS } from "./Header.constants";
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  const renderNavItem = (item: HeaderNavItem) => {
+  const renderNavItem = (item: HeaderNavItem, isMobile = false) => {
     const isActive = !item.external && pathname === item.path;
 
     const icon = (
@@ -89,7 +89,11 @@ const Header: React.FC = () => {
         type={isActive ? "primary" : "ghost"}
         variant="primary"
         size="regular"
-        className="w-fit text-base font-bold leading-none"
+        className={
+          isMobile
+            ? "w-full max-w-[290px] text-sm font-bold leading-none"
+            : "w-fit text-base font-bold leading-none"
+        }
         LeftIcon={icon}
       >
         {link}
@@ -105,7 +109,7 @@ const Header: React.FC = () => {
         </Link>
 
         <nav data-testid="desktopNav" className="hidden gap-4 md:flex">
-          {HEADER_NAV_ITEMS.map(renderNavItem)}
+          {HEADER_NAV_ITEMS.map((item) => renderNavItem(item))}
         </nav>
 
         <Button
@@ -131,9 +135,9 @@ const Header: React.FC = () => {
           id="mobile-navigation"
           ref={menuRef}
           data-testid="mobileMenu"
-          className="absolute left-0 top-full z-50 flex w-full flex-col items-start gap-2 border-b border-gi-dark-ash bg-white p-4 shadow-md md:hidden"
+          className="absolute left-0 top-full z-50 flex w-full flex-col items-center gap-3 border-b border-gi-dark-ash bg-white p-4 shadow-md md:hidden"
         >
-          {MOBILE_HEADER_NAV_ITEMS.map(renderNavItem)}
+          {MOBILE_HEADER_NAV_ITEMS.map((item) => renderNavItem(item, true))}
         </div>
       )}
     </header>
