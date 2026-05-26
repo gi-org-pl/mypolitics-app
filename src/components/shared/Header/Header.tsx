@@ -3,13 +3,12 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
-import { PATHS } from "@/constants/paths";
-
 import debatesIcon from "@/assets/vectors/debaty-icon.svg";
 import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
 import logo from "@/assets/vectors/logo.svg";
 import quizzesIcon from "@/assets/vectors/quizy-icon.svg";
 import pollsIcon from "@/assets/vectors/sondaze-icon.svg";
+import { PATHS } from "@/constants/paths";
 
 import { HEADER_NAV_ITEMS, MOBILE_HEADER_NAV_ITEMS } from "./Header.constants";
 import type { HeaderNavItem } from "./Header.types";

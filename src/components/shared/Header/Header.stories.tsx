@@ -1,67 +1,40 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
+import { PATHS } from "@/constants/paths";
 import Header from "./Header";
+import type { HeaderStoryProps } from "./Header.types";
 
-const meta: Meta<typeof Header> = {
+const HeaderStory = ({ initialPath }: HeaderStoryProps) => (
+  <MemoryRouter initialEntries={[initialPath]}>
+    <Header />
+  </MemoryRouter>
+);
+
+const meta: Meta<typeof HeaderStory> = {
   title: "Components/shared/Header",
-  component: Header,
+  component: HeaderStory,
   parameters: {
     layout: "fullscreen",
   },
-  tags: ["autodocs"],
   args: {
-    initialActiveButton: "debaty",
-    initialIsMenuOpen: false,
+    initialPath: PATHS.home,
   },
-  decorators: [
-    (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
 };
 
 export default meta;
-type Story = StoryObj<typeof Header>;
+
+type Story = StoryObj<typeof HeaderStory>;
 
 export const Default: Story = {};
 
 export const ActiveDebaty: Story = {
   args: {
-    initialActiveButton: "debaty",
-  },
-};
-
-export const ActiveSondaze: Story = {
-  args: {
-    initialActiveButton: "sondaze",
+    initialPath: PATHS.debates,
   },
 };
 
 export const ActiveQuizy: Story = {
   args: {
-    initialActiveButton: "quizy",
-  },
-};
-
-export const MobileClosed: Story = {
-  parameters: {
-    viewport: "mobile",
-  },
-  args: {
-    viewport: "mobile",
-    initialActiveButton: "debaty",
-    initialIsMenuOpen: false,
-  },
-};
-
-export const MobileOpen: Story = {
-  parameters: {
-    viewport: "mobile",
-  },
-  args: {
-    viewport: "mobile",
-    initialIsMenuOpen: true,
+    initialPath: PATHS.quizzes,
   },
 };

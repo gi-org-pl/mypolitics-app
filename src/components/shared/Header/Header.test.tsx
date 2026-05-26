@@ -1,17 +1,29 @@
-
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { PATHS } from "@/constants/paths";
 import Header from "./Header";
 
 vi.mock("@lingui/react/macro", () => ({
-  Trans: ({ children }: any) => children,
-  useLingui: () => ({ t: (strings: TemplateStringsArray) => strings[0] }),
+  Trans: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 vi.mock("@lingui/core/macro", () => ({
   t: (strings: TemplateStringsArray) => strings[0],
+}));
+
+vi.mock("@/assets/vectors/debaty-icon.svg", () => ({
+  default: "debaty-icon.svg",
+}));
+vi.mock("@/assets/vectors/hamburger-menu.svg", () => ({
+  default: "hamburger-menu.svg",
+}));
+vi.mock("@/assets/vectors/logo.svg", () => ({ default: "logo.svg" }));
+vi.mock("@/assets/vectors/quizy-icon.svg", () => ({
+  default: "quizy-icon.svg",
+}));
+vi.mock("@/assets/vectors/sondaze-icon.svg", () => ({
+  default: "sondaze-icon.svg",
 }));
 
 const renderHeader = (path: string = PATHS.home) => {
@@ -22,88 +34,65 @@ const renderHeader = (path: string = PATHS.home) => {
   );
 };
 
-const viewportMobile = (width: number) => { Object.defineProperty(window, "innerWidth", {value: width}) }
-
-
 describe("<Header />", () => {
-  describe("on desktop", () => {
-    it("renders the myPolitics logo linking to home", () => {
-        renderHeader();
+  it("renders the logo linking to home", () => {
+    renderHeader();
 
-        expect(
-            screen.getByRole('link', { name: 'logo' })
-        ).toHaveAttribute('href', PATHS.home)
-    });
-    it("renders all three nav items", () => {
-        renderHeader();
-
-        expect(screen.getByRole("link", { name: /debaty/i }),).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: /sondaze/i }),).toBeInTheDocument();
-        expect(screen.getByRole("link", { name: /quizy/i }),).toBeInTheDocument();
-    });
-    it("applies the active style to the current route", () => {
-        renderHeader(PATHS.quizzes);
-
-        const quizyLink = screen.getByRole('link', { name: /quizy/i});
-        expect(quizyLink.querySelector('button')).toHaveClass("bg-gi-primary")
-    });
-    it("does not show the hamburger button", () => {
-        renderHeader();
-
-        const hamburger = screen.getByAltText(/menu/i);
-        expect(hamburger).not.toHaveClass('hidden');
-    });
+    expect(
+      screen.getByRole("link", { name: /strona główna/i }),
+    ).toHaveAttribute("href", PATHS.home);
   });
 
+  it("renders all nav items", () => {
+    renderHeader();
 
-    describe('on mobile', () => {
-        viewportMobile(375);
-        it('shows the hamburger button and hides nav items', ()=>{
-            renderHeader();
+    const desktopNav = screen.getByTestId("desktopNav");
 
-            const hamburger = screen.getByRole('button', {name: /menu/i});
-            expect(hamburger).toBeVisible();
+    expect(
+      within(desktopNav).getByRole("link", { name: /debaty/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(desktopNav).getByRole("link", { name: /sondaże/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(desktopNav).getByRole("link", { name: /quizy/i }),
+    ).toBeInTheDocument();
+  });
 
-            const menu = screen.getByTestId("desktopNav");
-            expect(menu).toHaveClass('hidden');
-        });
+  it("applies active style to current route", () => {
+    renderHeader(PATHS.quizzes);
 
-        describe('when the hamburger is clicked', () => {
+    expect(
+      screen.getByRole("link", { current: "page", name: /quizy/i }),
+    ).toHaveClass("bg-gi-primary");
+  });
 
-            it('opens the mobile navigation menu', ()=>{
-                renderHeader(PATHS.quizzes);
+  it("opens and closes mobile menu", () => {
+    renderHeader();
 
-                const hamburger = screen.getByRole('button', {name: /menu/i});
-                fireEvent.click(hamburger);
+    fireEvent.click(
+      screen.getByRole("button", { name: /otwórz menu nawigacji/i }),
+    );
 
-                const quizyLink = screen.getAllByText(/quizy/i)[0];
-                expect(quizyLink).toBeVisible();
-            });
-            it('closes the menu when a nav item is clicked', ()=>{
-                renderHeader(PATHS.quizzes);
+    expect(screen.getByTestId("mobileMenu")).toBeInTheDocument();
 
-                const hamburger = screen.getByRole('button', {name: /menu/i});
-                fireEvent.click(hamburger);
+    fireEvent.click(
+      within(screen.getByTestId("mobileMenu")).getByRole("link", {
+        name: /quizy/i,
+      }),
+    );
 
-                const menu = screen.queryByTestId("mobileMenu");
-                expect(menu).toBeVisible();
+    expect(screen.queryByTestId("mobileMenu")).not.toBeInTheDocument();
+  });
 
-                const quizyLink = screen.getAllByText(/quizy/i)[0];
-                fireEvent.click(quizyLink);
-                expect(menu).not.toBeVisible();
-            });
-            it('closes the menu when clicking outside', ()=>{
-                renderHeader();
+  it("closes mobile menu when clicking outside", () => {
+    renderHeader();
 
-                const hamburger = screen.getByRole('button', {name: /menu/i});
-                fireEvent.click(hamburger);
+    fireEvent.click(
+      screen.getByRole("button", { name: /otwórz menu nawigacji/i }),
+    );
+    fireEvent.mouseDown(document.body);
 
-                const menu = screen.getByTestId("mobileMenu");
-                expect(menu).toBeVisible();
-
-                fireEvent.mouseDown(document.body);
-                expect(menu).not.toBeVisible();
-            });
-        });
-    });
+    expect(screen.queryByTestId("mobileMenu")).not.toBeInTheDocument();
+  });
 });
