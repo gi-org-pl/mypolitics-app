@@ -503,6 +503,61 @@ describe("<QuizCard />", () => {
         expect(play.className).toContain("text-gi-primary");
         expect(play.className).not.toContain("text-white");
       });
+
+      it("keeps horizontal padding when loading", () => {
+        const { rerender } = renderWithI18n(
+          <QuizCard
+            isShowStartText
+            description="Opis"
+            tags={[]}
+            onButtonClick={noop}
+          />,
+        );
+
+        const playIdle = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        const idleClasses = playIdle.className.split(/\s+/);
+
+        rerender(
+          <I18nProvider i18n={i18n}>
+            <QuizCard
+              isShowStartText
+              isButtonLoading
+              description="Opis"
+              tags={[]}
+              onButtonClick={noop}
+            />
+          </I18nProvider>,
+        );
+
+        const playLoading = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        const loadingClasses = playLoading.className.split(/\s+/);
+
+        expect(idleClasses).toContain("px-4");
+        expect(idleClasses).toContain("has-[>svg]:px-4");
+        expect(loadingClasses).toContain("px-4");
+        expect(loadingClasses).toContain("has-[>svg]:px-4");
+        expect(loadingClasses).not.toContain("has-[>svg]:px-3");
+      });
+
+      it("does not use icon-only fixed size when isMainAction is false", () => {
+        renderWithI18n(
+          <QuizCard
+            isShowStartText
+            description="Opis"
+            tags={[]}
+            onButtonClick={noop}
+          />,
+        );
+
+        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
+        const playClasses = play.className.split(/\s+/);
+
+        expect(playClasses).toContain("min-h-12");
+        expect(playClasses).toContain("px-4");
+        expect(playClasses).not.toContain("w-12");
+        expect(playClasses).not.toContain("h-12");
+        expect(playClasses).not.toContain("size-12");
+      });
     });
 
     describe("when clicked", () => {

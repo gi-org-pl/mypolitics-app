@@ -108,7 +108,6 @@ export function QuizCard({
     "border-gi-dark-ash",
     "bg-gi-ash",
     "text-gi-primary",
-    isHighlighted && "md:rounded-[32px]",
   );
 
   const titleClass =
@@ -126,16 +125,17 @@ export function QuizCard({
       </div>
     );
 
-  const iconChromeButtonClass =
-    "size-12 h-12 w-12 shrink-0 ring-1 ring-inset ring-gi-primary";
+  const iconChromeRingClass = "shrink-0 ring-1 ring-inset ring-gi-primary";
+  const iconOnlyButtonSizeClass = "size-12 h-12 w-12";
 
   const playButtonType = isMainAction ? "primary" : "ghost";
   const playButtonClassName = cn(
     isMainAction && "border-0",
-    !isMainAction && iconChromeButtonClass,
+    !isMainAction && iconChromeRingClass,
+    !isMainAction && !isShowStartText && iconOnlyButtonSizeClass,
     isShowStartText
-      ? "min-h-12 gap-3 px-4 text-[16px] font-bold leading-[100%]"
-      : isMainAction && "size-12 h-12 w-12",
+      ? "min-h-12 flex-row-reverse gap-3 px-4 has-[>svg]:px-4 text-[16px] font-bold leading-[100%]"
+      : isMainAction && iconOnlyButtonSizeClass,
   );
 
   const tagChipClass = cn(
@@ -175,7 +175,7 @@ export function QuizCard({
   ) : null;
 
   const mainBlock = (
-    <div className={cn("p-4", "bg-gi-ash", isHighlighted && "md:p-6")}>
+    <div className={cn("p-4", "bg-gi-ash")}>
       <div className="flex flex-col">
         <div className="flex h-12 min-h-12 items-center gap-2">
           <div className="flex min-h-0 min-w-0 flex-1 items-center">
@@ -198,7 +198,11 @@ export function QuizCard({
                 type="ghost"
                 variant="primary"
                 isIconButton
-                className={cn(iconChromeButtonClass, "md:hidden")}
+                className={cn(
+                  iconChromeRingClass,
+                  iconOnlyButtonSizeClass,
+                  "md:hidden",
+                )}
                 aria-expanded={isContentExpanded}
                 aria-label={i18n._(
                   isContentExpanded

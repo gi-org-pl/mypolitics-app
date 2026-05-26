@@ -7,10 +7,19 @@ import { QuizCard } from "./QuizCard";
 
 const noop = (): void => {};
 
+const quizCardColumnDecorator = [
+  (Story): ReactElement => (
+    <div className="mx-auto w-full max-w-[400px]">
+      <Story />
+    </div>
+  ),
+];
+
 const meta = {
   title: "Quiz/QuizCard",
   component: QuizCard,
   tags: ["autodocs"],
+  decorators: quizCardColumnDecorator,
   args: {
     onButtonClick: noop,
     tags: ["+1.5M osób", "15 min"],
@@ -32,13 +41,6 @@ export const Default: Story = {
       },
     },
   },
-  decorators: [
-    (Story): ReactElement => (
-      <div className="w-full max-w-[960px]">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
@@ -58,13 +60,6 @@ export const Collapsed: Story = {
       },
     },
   },
-  decorators: [
-    (Story): ReactElement => (
-      <div className="mx-auto w-full max-w-[360px]">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     logoUrl: myPoliticsLogo,
     logoHeight: 24,
