@@ -3,4 +3,5 @@ export const PATHS = {
   terms: "/terms",
   privacy: "/privacy",
   about: "/about",
+  home: "/",
 } as const;

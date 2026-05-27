@@ -64,3 +64,18 @@ msgstr "Privacy"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Terms"
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:35
+msgid "Strona główna"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:20
+msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr ""
