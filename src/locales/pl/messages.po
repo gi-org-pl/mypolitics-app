@@ -12,3 +12,19 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
+#: src/components/shared/Error404/Error404.tsx:35
+msgid "Strona główna"
+msgstr "Strona główna"
+
+#: src/components/shared/Error404/Error404.tsx:20
+msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
