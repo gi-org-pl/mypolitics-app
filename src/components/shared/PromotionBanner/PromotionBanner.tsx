@@ -5,7 +5,7 @@ import type { Promotion, PromotionBannerProps } from "./PromotionBanner.types";
 const getCurrentPromotion = (promotions: Promotion[]): Promotion | null => {
   const now = new Date();
   const activePromotions = promotions.filter(
-    (promotion) => now >= promotion.date.start && now <= promotion.date.end,
+      (promotion) => now >= promotion.date.start && now <= promotion.date.end,
   );
 
   if (activePromotions.length === 0) {
@@ -16,11 +16,11 @@ const getCurrentPromotion = (promotions: Promotion[]): Promotion | null => {
 };
 
 export const PromotionBanner = ({
-  promotions,
-  fallback,
-}: PromotionBannerProps) => {
+                                  promotions,
+                                  fallback,
+                                }: PromotionBannerProps) => {
   const [activePromotion] = useState<Promotion | null>(() =>
-    getCurrentPromotion(promotions),
+      getCurrentPromotion(promotions),
   );
 
   if (activePromotion === null) {
@@ -28,33 +28,33 @@ export const PromotionBanner = ({
   }
 
   return (
-    <a
-      aria-label={activePromotion.name}
-      href={activePromotion.url}
-      rel="noopener noreferrer"
-      target="_blank"
-      className="w-full"
-    >
-      <div className="relative w-full overflow-hidden rounded-2xl">
-        <img
-            src={activePromotion.imageUrl.mobile}
-            alt={activePromotion.name}
-            title={activePromotion.name}
-            className="block w-full h-auto object-cover md:hidden"
-        />
-        <img
-            src={activePromotion.imageUrl.tablet}
-            alt={activePromotion.name}
-            title={activePromotion.name}
-            className="hidden w-full h-auto object-cover md:block lg:hidden"
-        />
-        <img
-            src={activePromotion.imageUrl.desktop}
-            alt={activePromotion.name}
-            title={activePromotion.name}
-            className="hidden w-full h-auto object-cover lg:block"
-        />
-      </div>
-    </a>
+      <a
+          aria-label={activePromotion.name}
+          href={activePromotion.url}
+          rel="noopener noreferrer"
+          target="_blank"
+          className="w-full"
+      >
+        <div className="relative w-full overflow-hidden rounded-2xl">
+          <img
+              src={activePromotion.imageUrl.mobile}
+              alt={activePromotion.name}
+              title={activePromotion.name}
+              className="block w-full h-auto object-cover md:hidden"
+          />
+          <img
+              src={activePromotion.imageUrl.tablet}
+              alt={activePromotion.name}
+              title={activePromotion.name}
+              className="hidden w-full h-auto object-cover md:block lg:hidden"
+          />
+          <img
+              src={activePromotion.imageUrl.desktop}
+              alt={activePromotion.name}
+              title={activePromotion.name}
+              className="hidden w-full h-auto object-cover lg:block"
+          />
+        </div>
+      </a>
   );
 };

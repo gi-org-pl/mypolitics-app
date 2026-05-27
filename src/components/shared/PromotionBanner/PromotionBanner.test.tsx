@@ -83,8 +83,8 @@ describe("<PromotionBanner />", () => {
 
       const images = screen.getAllByRole("img");
       expect(images[2]).toHaveAttribute(
-        "src",
-        activePromotion.imageUrl.desktop,
+          "src",
+          activePromotion.imageUrl.desktop,
       );
     });
 
@@ -101,7 +101,7 @@ describe("<PromotionBanner />", () => {
       render(<PromotionBanner promotions={[activePromotion]} />);
 
       expect(
-        screen.getByRole("link", { name: activePromotion.name }),
+          screen.getByRole("link", { name: activePromotion.name }),
       ).toHaveAttribute("href", activePromotion.url);
     });
 
@@ -126,35 +126,35 @@ describe("<PromotionBanner />", () => {
       vi.spyOn(Math, "random").mockReturnValue(0.75);
 
       render(
-        <PromotionBanner
-          promotions={[activePromotion, secondActivePromotion]}
-        />,
+          <PromotionBanner
+              promotions={[activePromotion, secondActivePromotion]}
+          />,
       );
 
       expect(screen.getAllByRole("img")[0]).toHaveAttribute(
-        "src",
-        secondActivePromotion.imageUrl.mobile,
+          "src",
+          secondActivePromotion.imageUrl.mobile,
       );
     });
 
     it("does not change the selected promotion on re-render", () => {
       const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0.75);
       const { rerender } = render(
-        <PromotionBanner
-          promotions={[activePromotion, secondActivePromotion]}
-        />,
+          <PromotionBanner
+              promotions={[activePromotion, secondActivePromotion]}
+          />,
       );
 
       randomSpy.mockReturnValue(0);
       rerender(
-        <PromotionBanner
-          promotions={[activePromotion, secondActivePromotion]}
-        />,
+          <PromotionBanner
+              promotions={[activePromotion, secondActivePromotion]}
+          />,
       );
 
       expect(screen.getAllByRole("img")[0]).toHaveAttribute(
-        "src",
-        secondActivePromotion.imageUrl.mobile,
+          "src",
+          secondActivePromotion.imageUrl.mobile,
       );
     });
   });
@@ -163,10 +163,10 @@ describe("<PromotionBanner />", () => {
     describe("when a fallback is provided", () => {
       it("renders the fallback", () => {
         render(
-          <PromotionBanner
-            fallback={<span>Brak aktywnej promocji</span>}
-            promotions={[expiredPromotion]}
-          />,
+            <PromotionBanner
+                fallback={<span>Brak aktywnej promocji</span>}
+                promotions={[expiredPromotion]}
+            />,
         );
 
         expect(screen.getByText("Brak aktywnej promocji")).toBeInTheDocument();
@@ -176,7 +176,7 @@ describe("<PromotionBanner />", () => {
     describe("when no fallback is provided", () => {
       it("renders nothing", () => {
         const { container } = render(
-          <PromotionBanner promotions={[expiredPromotion]} />,
+            <PromotionBanner promotions={[expiredPromotion]} />,
         );
 
         expect(container).toBeEmptyDOMElement();
@@ -187,7 +187,7 @@ describe("<PromotionBanner />", () => {
   describe("given a future promotion (not yet active)", () => {
     it("does not render it", () => {
       const { container } = render(
-        <PromotionBanner promotions={[futurePromotion]} />,
+          <PromotionBanner promotions={[futurePromotion]} />,
       );
 
       expect(container).toBeEmptyDOMElement();
@@ -197,7 +197,7 @@ describe("<PromotionBanner />", () => {
   describe("given an expired promotion", () => {
     it("does not render it", () => {
       const { container } = render(
-        <PromotionBanner promotions={[expiredPromotion]} />,
+          <PromotionBanner promotions={[expiredPromotion]} />,
       );
 
       expect(container).toBeEmptyDOMElement();
