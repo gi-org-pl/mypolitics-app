@@ -17,6 +17,22 @@ msgstr ""
 msgid "Debaty"
 msgstr "Debaty"
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr "mypolitics banner background"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
+
 #: src/components/shared/Header/Header.tsx:123
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
@@ -29,33 +45,15 @@ msgstr "Quizy"
 msgid "Sondaże"
 msgstr "Sondaże"
 
-#: src/components/shared/Header/Header.tsx:107
-msgid "Strona główna"
-msgstr "Strona główna"
-
-#: src/components/shared/Header/Header.tsx:123
-msgid "Zamknij menu nawigacji"
-msgstr "Zamknij menu nawigacji"
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr "mypolitics banner background"
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr "Ilustracja misia — błąd 404"
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-
 #: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:107
 msgid "Strona główna"
 msgstr "Strona główna"
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#: src/components/shared/Header/Header.tsx:123
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
