@@ -33,7 +33,7 @@ msgstr ""
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
-#: src/components/shared/Header/Header.tsx:123
+#: src/components/shared/Header/Header.tsx:124
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
@@ -46,7 +46,7 @@ msgid "Sondaże"
 msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:35
-#: src/components/shared/Header/Header.tsx:107
+#: src/components/shared/Header/Header.tsx:108
 msgid "Strona główna"
 msgstr ""
 
@@ -54,6 +54,6 @@ msgstr ""
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
-#: src/components/shared/Header/Header.tsx:123
+#: src/components/shared/Header/Header.tsx:124
 msgid "Zamknij menu nawigacji"
 msgstr ""
