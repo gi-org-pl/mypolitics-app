@@ -64,6 +64,14 @@ msgstr "Privacy"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Terms"
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr ""
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
+
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
 msgstr ""
