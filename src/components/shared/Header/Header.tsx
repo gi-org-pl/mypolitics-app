@@ -13,7 +13,7 @@ import { PATHS } from "@/constants/paths";
 import { HEADER_NAV_ITEMS, MOBILE_HEADER_NAV_ITEMS } from "./Header.constants";
 import type { HeaderNavItem } from "./Header.types";
 
-const icons = {
+const icons: Record<HeaderNavItem["key"], string> = {
   debates: debatesIcon,
   polls: pollsIcon,
   quizzes: quizzesIcon,
@@ -22,15 +22,16 @@ const icons = {
 const HeaderLabel = ({ label }: Pick<HeaderNavItem, "label">) => {
   if (label === "Debaty") return <Trans>Debaty</Trans>;
   if (label === "Sondaże") return <Trans>Sondaże</Trans>;
-  return <Trans>Quizy</Trans>;
+  if (label === "Quizy") return <Trans>Quizy</Trans>;
+  return <>{label}</>;
 };
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuRef = useRef<HTMLDivElement>(null);
-  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
