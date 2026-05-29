@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { PatroniteBanner } from "./PatroniteBanner";
+import React from "react";
 
 const meta: Meta<typeof PatroniteBanner> = {
-  title: "Results/PatroniteBanner",
+  title: "Shared/PatroniteBanner",
   component: PatroniteBanner,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
 };
 
@@ -13,7 +14,7 @@ export default meta;
 type Story = StoryObj<typeof PatroniteBanner>;
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="w-full max-w-[784px]">{children}</div>
+  <div className="w-full max-w-[784px] mx-auto">{children}</div>
 );
 
 export const Default: Story = {

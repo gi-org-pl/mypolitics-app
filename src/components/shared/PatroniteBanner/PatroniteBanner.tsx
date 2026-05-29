@@ -11,7 +11,7 @@ export const PatroniteBanner: React.FC<PatroniteBannerProps> = ({
   return (
     <section
       id={id}
-      className="rounded-3xl border border-gi-primary bg-gi-ash p-6 flex flex-col items-start gap-4 md:w-[784px] md:flex-row md:items-center md:justify-between"
+      className="w-full rounded-3xl border border-gi-primary bg-gi-ash p-6 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between"
     >
       <p className="text-gi-primary/50 text-base font-bold leading-[1.2] tracking-normal">
         <Trans>Nikt nas nie finansuje… poza Wami!</Trans>
