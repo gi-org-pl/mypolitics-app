@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SurveySaturatedProgressBar } from "./SurveySaturatedProgressBar";
 
 const meta: Meta<typeof SurveySaturatedProgressBar> = {
@@ -43,16 +43,16 @@ export const Flashing: Story = {
   render: () => {
     const [value, setValue] = useState(1);
 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setValue((prev) => (prev < 10 ? prev + 1 : 0));
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+
     return (
       <div className="flex flex-col gap-4">
         <SurveySaturatedProgressBar value={value} maxValue={10} />
-        <button
-          type="button"
-          onClick={() => setValue((prev) => (prev < 10 ? prev + 1 : 0))}
-          className="w-fit px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Next step ({value} / 10)
-        </button>
       </div>
     );
   },

@@ -10,7 +10,7 @@ export function SurveySaturatedProgressBar({
 }: SurveySaturatedProgressBarProps) {
   const [flash, setFlash] = useState(false);
 
-  const rawPercent = maxValue === 0 ? 0 : (value / maxValue) * 100; // if else
+  const rawPercent = maxValue > 0 ? (value / maxValue) * 100 : 0;
   const saturatedPercentValue = getSaturatedPercentValue(rawPercent);
 
   useLayoutEffect(() => {
@@ -26,13 +26,7 @@ export function SurveySaturatedProgressBar({
   }, [saturatedPercentValue]);
 
   return (
-    <div
-      className={
-        flash
-          ? "opacity-75 transition-opacity"
-          : "opacity-100 transition-opacity"
-      }
-    >
+    <div className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}>
       <ProgressBar
         size="regular"
         value={saturatedPercentValue}
