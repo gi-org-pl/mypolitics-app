@@ -1,6 +1,7 @@
 import type { StoryObj } from "@storybook/react";
 import SurveyNewsletter from "./SurveyNewsletter";
 import type SurveyNewsletterProps from "./SurveyNewsletter.types";
+
 const prop: SurveyNewsletterProps = {
   email: "",
   onEmailChange: () => {},
@@ -12,7 +13,7 @@ const meta = {
   component: SurveyNewsletter,
   tags: ["autodocs"],
   args: prop,
-}
+};
 
 export default meta;
 

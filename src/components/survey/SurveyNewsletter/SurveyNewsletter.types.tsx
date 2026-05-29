@@ -1,5 +1,4 @@
-
- export default interface SurveyNewsletterProps {
+export default interface SurveyNewsletterProps {
   email: string;
   onEmailChange: (email: string) => void;
   consent: boolean;
