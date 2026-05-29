@@ -1,21 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { PATHS } from "@/constants/paths";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { Error404 } from "./Error404";
 
-vi.mock("@lingui/react/macro", () => ({
-  Trans: ({ children }: any) => children,
-  useLingui: () => ({ t: (strings: TemplateStringsArray) => strings[0] }),
-}));
-
-vi.mock("@lingui/core/macro", () => ({
-  t: (strings: TemplateStringsArray) => strings[0],
-}));
-
 const renderError = () => {
-  render(
+  renderWithI18n(
     <MemoryRouter>
       <Error404 />
     </MemoryRouter>,
@@ -61,7 +53,7 @@ describe("<Error404 />", () => {
   describe('when "Strona główna" button is clicked', () => {
     it("navigates to the home path", () => {
       const user = userEvent.setup();
-      render(
+      renderWithI18n(
         <MemoryRouter initialEntries={["/404"]}>
           <Error404 />
         </MemoryRouter>,
