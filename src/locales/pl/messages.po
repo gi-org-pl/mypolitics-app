@@ -21,9 +21,29 @@ msgstr "© {currentYear}"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr "mypolitics banner background"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
+
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:17
+msgid "Nikt nas nie finansuje… poza Wami!"
+msgstr "Nikt nas nie finansuje… poza Wami!"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -64,21 +84,6 @@ msgstr "Prywatność"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr "mypolitics banner background"
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr "Ilustracja misia — błąd 404"
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 
 #: src/components/shared/Error404/Error404.tsx:35
 msgid "Strona główna"
@@ -87,3 +92,7 @@ msgstr "Strona główna"
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:19
+msgid "Wesprzyj naszą działalność:"
+msgstr "Wesprzyj naszą działalność:"
