@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from './src/constants/common';
+import { DEFAULT_LANGUAGE } from "./src/constants/common";
 import "@testing-library/jest-dom";
 import { i18n } from "@lingui/core";
 
