@@ -1,16 +1,15 @@
 import { Button } from "@gi/athena";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import debatesIcon from "@/assets/vectors/debates-icon.svg";
 import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
-import logo from "@/assets/vectors/logo.svg";
+import logo from "@/assets/vectors/mypoliticslogo-light.svg";
 import pollsIcon from "@/assets/vectors/polls-icon.svg";
 import quizzesIcon from "@/assets/vectors/quizzes-icon.svg";
 import { PATHS } from "@/constants/paths";
-
-import { HEADER_NAV_ITEMS, MOBILE_HEADER_NAV_ITEMS } from "./Header.constants";
+import { HEADER_NAV_ITEMS } from "./Header.constants";
 import type { HeaderNavItem } from "./Header.types";
 
 const icons: Record<HeaderNavItem["key"], string> = {
@@ -19,16 +18,10 @@ const icons: Record<HeaderNavItem["key"], string> = {
   quizzes: quizzesIcon,
 };
 
-const HeaderLabel = ({ label }: Pick<HeaderNavItem, "label">) => {
-  if (label === "Debaty") return <Trans>Debaty</Trans>;
-  if (label === "Sondaże") return <Trans>Sondaże</Trans>;
-  if (label === "Quizy") return <Trans>Quizy</Trans>;
-  return <>{label}</>;
-};
-
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { i18n } = useLingui();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
@@ -55,12 +48,18 @@ const Header: React.FC = () => {
 
   const renderNavItem = (item: HeaderNavItem, isMobile = false) => {
     const isActive = !item.external && pathname === item.path;
+    const translatedLabel = i18n._(item.label);
 
     const icon = (
-      <img
-        src={icons[item.key]}
-        alt=""
-        className={isActive ? "brightness-0 invert" : undefined}
+      <span
+        aria-hidden="true"
+        className="inline-block shrink-0 bg-current"
+        style={{
+          width: 19,
+          height: 14,
+          mask: `url("${icons[item.key]}") center / contain no-repeat`,
+          WebkitMask: `url("${icons[item.key]}") center / contain no-repeat`,
+        }}
       />
     );
 
@@ -71,7 +70,7 @@ const Header: React.FC = () => {
         rel="noopener noreferrer"
         onClick={() => setIsMenuOpen(false)}
       >
-        <HeaderLabel label={item.label} />
+        {translatedLabel}
       </a>
     ) : (
       <NavLink
@@ -79,7 +78,7 @@ const Header: React.FC = () => {
         aria-current={isActive ? "page" : undefined}
         onClick={() => setIsMenuOpen(false)}
       >
-        <HeaderLabel label={item.label} />
+        {translatedLabel}
       </NavLink>
     );
 
@@ -90,11 +89,9 @@ const Header: React.FC = () => {
         type={isActive ? "primary" : "ghost"}
         variant="primary"
         size="regular"
-        className={
-          isMobile
-            ? "w-full max-w-[290px] text-sm font-bold leading-none"
-            : "w-fit text-base font-bold leading-none"
-        }
+        className={`${
+          isMobile ? "w-full text-sm" : "w-fit text-base"
+        } font-bold leading-none ${isActive ? "text-white" : "text-gi-light-primary"}`}
         LeftIcon={icon}
       >
         {link}
@@ -106,7 +103,7 @@ const Header: React.FC = () => {
     <header className="relative border-b border-gi-dark-ash bg-white">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 py-6">
         <Link to={PATHS.home} aria-label={t`Strona główna`}>
-          <img src={logo} alt="myPolitics" className="h-6" />
+          <img src={logo} alt="" className="h-6" />
         </Link>
 
         <nav data-testid="desktopNav" className="hidden gap-4 md:flex">
@@ -138,7 +135,9 @@ const Header: React.FC = () => {
           data-testid="mobileMenu"
           className="absolute left-0 top-full z-50 flex w-full flex-col items-center gap-3 border-b border-gi-dark-ash bg-white p-4 shadow-md md:hidden"
         >
-          {MOBILE_HEADER_NAV_ITEMS.map((item) => renderNavItem(item, true))}
+          {[...HEADER_NAV_ITEMS]
+            .reverse()
+            .map((item) => renderNavItem(item, true))}
         </div>
       )}
     </header>
