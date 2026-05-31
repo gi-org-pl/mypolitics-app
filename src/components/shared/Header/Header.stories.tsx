@@ -11,7 +11,7 @@ const HeaderStory = ({ initialPath }: HeaderStoryProps) => (
 );
 
 const meta: Meta<typeof HeaderStory> = {
-  title: "Components/shared/Header",
+  title: "Shared/Header",
   component: HeaderStory,
   parameters: {
     layout: "fullscreen",
