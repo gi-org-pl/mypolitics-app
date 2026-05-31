@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { PATHS } from "@/constants/paths";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import Header from "./Header";
 
 vi.mock("@lingui/react/macro", () => ({
@@ -12,22 +13,24 @@ vi.mock("@lingui/core/macro", () => ({
   t: (strings: TemplateStringsArray) => strings[0],
 }));
 
-vi.mock("@/assets/vectors/debaty-icon.svg", () => ({
-  default: "debaty-icon.svg",
+vi.mock("@/assets/vectors/debates-icon.svg", () => ({
+  default: "debates-icon.svg",
 }));
 vi.mock("@/assets/vectors/hamburger-menu.svg", () => ({
   default: "hamburger-menu.svg",
 }));
-vi.mock("@/assets/vectors/logo.svg", () => ({ default: "logo.svg" }));
-vi.mock("@/assets/vectors/quizy-icon.svg", () => ({
-  default: "quizy-icon.svg",
+vi.mock("@/assets/vectors/mypoliticslogo-light.svg", () => ({
+  default: "mypoliticslogo-light.svg",
 }));
-vi.mock("@/assets/vectors/sondaze-icon.svg", () => ({
-  default: "sondaze-icon.svg",
+vi.mock("@/assets/vectors/quizzes-icon.svg", () => ({
+  default: "quizzes-icon.svg",
+}));
+vi.mock("@/assets/vectors/polls-icon.svg", () => ({
+  default: "polls-icon.svg",
 }));
 
 const renderHeader = (path: string = PATHS.home) => {
-  render(
+  renderWithI18n(
     <MemoryRouter initialEntries={[path]}>
       <Header />
     </MemoryRouter>,
