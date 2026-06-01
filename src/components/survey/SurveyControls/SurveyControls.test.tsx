@@ -9,8 +9,8 @@ import {
 } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import SurveyControls from "./SurveyControls";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
+import SurveyControls from "./SurveyControls";
 
 i18n.load({ pl: {} });
 i18n.activate("pl");
@@ -56,9 +56,7 @@ function mockMatchMedia(width: number) {
 async function openResetModal() {
   fireEvent.click(screen.getByTestId("reset-button"));
 
-  expect(
-    await screen.findByText(/rozpocząć od nowa\?/i),
-  ).toBeInTheDocument();
+  expect(await screen.findByText(/rozpocząć od nowa\?/i)).toBeInTheDocument();
 }
 
 function clickModalCloseButton() {
@@ -216,7 +214,9 @@ describe("<SurveyControls />", () => {
 
       await openResetModal();
 
-      expect(screen.getByText(/czy na pewno chcesz rozpocząć quiz/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/czy na pewno chcesz rozpocząć quiz/i),
+      ).toBeInTheDocument();
       expect(screen.getByText("Światopogląd")).toBeInTheDocument();
     });
   });

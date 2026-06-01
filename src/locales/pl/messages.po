@@ -16,17 +16,38 @@ msgstr ""
 #: src/components/survey/SurveyControls/SurveyControls.tsx:158
 #~ msgid " Resetuj quiz "
 #~ msgstr " Resetuj quiz "
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:161
+msgid "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr "mypolitics banner background"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -60,6 +81,10 @@ msgstr "Odwiedź nasz profil na Telegramie"
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
+#: src/components/survey/SurveyControls/SurveyControls.tsx:75
+msgid "Prawie koniec!"
+msgstr "Prawie koniec!"
+
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
@@ -67,39 +92,12 @@ msgstr "Prywatność"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr "mypolitics banner background"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:162
-msgid "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
-msgstr "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
-
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr "Ilustracja misia — błąd 404"
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr "mypolitics banner background"
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
-#: src/components/survey/SurveyControls/SurveyControls.tsx:76
-msgid "Prawie koniec!"
-msgstr "Prawie koniec!"
-
-#: src/components/survey/SurveyControls/SurveyControls.tsx:177
+#: src/components/survey/SurveyControls/SurveyControls.tsx:176
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:160
+#: src/components/survey/SurveyControls/SurveyControls.tsx:159
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 

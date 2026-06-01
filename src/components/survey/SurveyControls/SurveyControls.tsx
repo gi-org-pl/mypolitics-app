@@ -1,13 +1,12 @@
 import { Button, Modal } from "@gi/athena";
 import { Trans } from "@lingui/react/macro";
-import { useState,useEffect } from "react";
+import { useEffect, useState } from "react";
 import cardQuestionIcon from "@/assets/icons/card-question.svg";
 import arrowBackIcon from "@/assets/icons/left-arrow.svg";
 import resetIcon from "@/assets/icons/reset.svg";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
 import { NUMBER_ANIMATION_MS } from "./SurveyControls.constants";
 import { useAnimatedNumber } from "./utils/useAnimatedNumber";
-
 
 function useBreakpoint(px: number): boolean {
   const query = `(min-width: ${px + 1}px)`;
@@ -154,32 +153,32 @@ export default function SurveyControls({
       </div>
 
       {modalOpen && (
-  <Modal
-    isOpen={modalOpen}
-    onClose={() => setModalOpen(false)}
-    title={<Trans>Rozpocząć od nowa?</Trans>}
-    description={
-      <Trans>
-        Czy na pewno chcesz rozpocząć quiz <strong>{title}</strong> od nowa?{" "}
-        Twoje odpowiedzi nie zostaną zapisane.
-      </Trans>
-    }
-    actions={
-      <Button
-        type="primary"
-        variant="danger"
-        onClick={() => {
-          onReset();
-          setModalOpen(false);
-        }}
-        data-testid="reset-confirm-button"
-      >
-        <Trans>Resetuj quiz</Trans>
-      </Button>
-    }
-    dataTestId="reset-modal"
-  />
-)}
+        <Modal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          title={<Trans>Rozpocząć od nowa?</Trans>}
+          description={
+            <Trans>
+              Czy na pewno chcesz rozpocząć quiz <strong>{title}</strong> od
+              nowa? Twoje odpowiedzi nie zostaną zapisane.
+            </Trans>
+          }
+          actions={
+            <Button
+              type="primary"
+              variant="danger"
+              onClick={() => {
+                onReset();
+                setModalOpen(false);
+              }}
+              data-testid="reset-confirm-button"
+            >
+              <Trans>Resetuj quiz</Trans>
+            </Button>
+          }
+          dataTestId="reset-modal"
+        />
+      )}
     </>
   );
 }
