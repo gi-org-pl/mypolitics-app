@@ -4,5 +4,4 @@ export const PATHS = {
   privacy: "/privacy",
   about: "/about",
   home: "/",
-  privacy: "/privacy",
 } as const;
