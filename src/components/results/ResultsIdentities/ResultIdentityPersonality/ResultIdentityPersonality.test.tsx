@@ -1,16 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { ResultIdentityPersonality } from "./ResultIdentityPersonality";
 import type { IdentityInfoElement } from "./ResultIdentityPersonality.types";
-
-vi.mock("@lingui/react/macro", () => ({
-  Trans: ({ children }: { children: React.ReactNode }) => children,
-}));
-
-vi.mock("@lingui/core/macro", () => ({
-  t: (strings: TemplateStringsArray) => strings[0],
-}));
 
 const mockIdentity: IdentityInfoElement = {
   id: "1",
@@ -25,7 +20,7 @@ const mockIdentity: IdentityInfoElement = {
 describe("<ResultIdentityPersonality />", () => {
   describe("given a title prop", () => {
     it("renders the provided title before the percent", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="modal"
@@ -38,7 +33,7 @@ describe("<ResultIdentityPersonality />", () => {
 
   describe("given no title prop", () => {
     it("renders the default neutral label", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
       expect(screen.getByText(/Tożsamość/)).toBeInTheDocument();
@@ -47,7 +42,7 @@ describe("<ResultIdentityPersonality />", () => {
 
   describe("given agreementPercent", () => {
     it("renders the rounded percent", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={{ ...mockIdentity, agreementPercent: 66.6 }}
           mode="modal"
@@ -57,7 +52,7 @@ describe("<ResultIdentityPersonality />", () => {
     });
 
     it("rounds fractional percents to a whole number", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={{ ...mockIdentity, agreementPercent: 12.3 }}
           mode="modal"
@@ -67,7 +62,7 @@ describe("<ResultIdentityPersonality />", () => {
     });
 
     it("clamps values below 0 and above 100", () => {
-      const { rerender } = render(
+      const { rerender } = renderWithI18n(
         <ResultIdentityPersonality
           identity={{ ...mockIdentity, agreementPercent: -10 }}
           mode="modal"
@@ -76,10 +71,12 @@ describe("<ResultIdentityPersonality />", () => {
       expect(screen.getByText(/\(0%\)/)).toBeInTheDocument();
 
       rerender(
-        <ResultIdentityPersonality
-          identity={{ ...mockIdentity, agreementPercent: 150 }}
-          mode="modal"
-        />,
+        <I18nProvider i18n={i18n}>
+          <ResultIdentityPersonality
+            identity={{ ...mockIdentity, agreementPercent: 150 }}
+            mode="modal"
+          />
+        </I18nProvider>,
       );
       expect(screen.getByText(/\(100%\)/)).toBeInTheDocument();
     });
@@ -87,7 +84,7 @@ describe("<ResultIdentityPersonality />", () => {
 
   describe('given mode "expanded"', () => {
     it("shows a chevron-down when not expanded", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="expanded"
@@ -99,7 +96,7 @@ describe("<ResultIdentityPersonality />", () => {
     });
 
     it("shows a chevron-up when expanded", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="expanded"
@@ -113,7 +110,7 @@ describe("<ResultIdentityPersonality />", () => {
     it("calls onToggleExpanded on button click", async () => {
       const onToggleExpanded = vi.fn();
       const user = userEvent.setup();
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="expanded"
@@ -126,7 +123,7 @@ describe("<ResultIdentityPersonality />", () => {
     });
 
     it("renders slogan, shortDescription and description when expanded", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="expanded"
@@ -142,7 +139,7 @@ describe("<ResultIdentityPersonality />", () => {
 
   describe('given mode "modal"', () => {
     it("shows the info icon", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
       expect(screen.getByLabelText(/Szczegóły/)).toBeInTheDocument();
@@ -151,7 +148,7 @@ describe("<ResultIdentityPersonality />", () => {
     it("calls onToggleModal on button click", async () => {
       const onToggleModal = vi.fn();
       const user = userEvent.setup();
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality
           identity={mockIdentity}
           mode="modal"
@@ -166,7 +163,7 @@ describe("<ResultIdentityPersonality />", () => {
 
   describe("given an imageUrl", () => {
     it("renders the avatar with alt set to name", () => {
-      render(
+      renderWithI18n(
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
       // Athena Avatar uses the alt/name for aria-label on the wrapper
