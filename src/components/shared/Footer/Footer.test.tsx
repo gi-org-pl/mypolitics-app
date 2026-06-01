@@ -1,17 +1,11 @@
-import { i18n } from "@lingui/core";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { Footer } from "./Footer";
 
 describe("Footer", () => {
-  beforeAll(() => {
-    // Ensure i18n is initialized for tests
-    i18n.load("pl", {});
-    i18n.activate("pl");
-  });
-
   it("renders copyright with current year", () => {
-    render(
+    renderWithI18n(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>,
@@ -24,7 +18,7 @@ describe("Footer", () => {
   });
 
   it("renders myPolitics logo", () => {
-    render(
+    renderWithI18n(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>,
@@ -33,7 +27,7 @@ describe("Footer", () => {
   });
 
   it("renders Generacja Innowacja logo with link", () => {
-    render(
+    renderWithI18n(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>,
@@ -44,7 +38,7 @@ describe("Footer", () => {
   });
 
   it("renders social links", () => {
-    render(
+    renderWithI18n(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>,
@@ -60,7 +54,7 @@ describe("Footer", () => {
   });
 
   it("renders legal links", () => {
-    render(
+    renderWithI18n(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>,
