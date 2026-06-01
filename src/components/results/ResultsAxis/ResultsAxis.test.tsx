@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { ResultsAxis } from "./ResultsAxis";
 
 describe("<ResultsAxis />", () => {
@@ -20,13 +21,13 @@ describe("<ResultsAxis />", () => {
 
   describe("given a left and right side", () => {
     it("renders both side names", () => {
-      render(<ResultsAxis {...defaultProps} />);
+      renderWithI18n(<ResultsAxis {...defaultProps} />);
       expect(screen.getByText("Left")).toBeInTheDocument();
       expect(screen.getByText("Right")).toBeInTheDocument();
     });
 
     it("renders both side icons with alt set to each name", () => {
-      render(<ResultsAxis {...defaultProps} />);
+      renderWithI18n(<ResultsAxis {...defaultProps} />);
       const leftIcon = screen.getByRole("img", { name: "Left" });
       const rightIcon = screen.getByRole("img", { name: "Right" });
       expect(leftIcon.querySelector("img")).toHaveAttribute("src", "left.svg");
@@ -39,7 +40,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given values that do not sum to 100", () => {
     it("normalizes segment widths to fill the bar", () => {
-      const { container } = render(
+      const { container } = renderWithI18n(
         <ResultsAxis
           left={{ ...defaultProps.left, value: 30 }}
           right={{ ...defaultProps.right, value: 10 }}
@@ -58,7 +59,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given both values are 0", () => {
     it("falls back to a 50/50 split", () => {
-      const { container } = render(
+      const { container } = renderWithI18n(
         <ResultsAxis
           left={{ ...defaultProps.left, value: 0 }}
           right={{ ...defaultProps.right, value: 0 }}
@@ -77,7 +78,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given a dominant side", () => {
     it("shows the dominant side rounded percentage label", () => {
-      render(
+      renderWithI18n(
         <ResultsAxis
           left={{ ...defaultProps.left, value: 90 }}
           right={{ ...defaultProps.right, value: 10 }}
@@ -88,7 +89,7 @@ describe("<ResultsAxis />", () => {
     });
 
     it("rounds fractional percentages to whole numbers", () => {
-      render(
+      renderWithI18n(
         <ResultsAxis
           left={{ ...defaultProps.left, value: 66.6 }}
           right={{ ...defaultProps.right, value: 33.3 }}
@@ -101,7 +102,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given an equal 50/50 split", () => {
     it("renders the balanced/equal state", () => {
-      render(
+      renderWithI18n(
         <ResultsAxis
           left={{ ...defaultProps.left, value: 50 }}
           right={{ ...defaultProps.right, value: 50 }}
@@ -114,7 +115,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given isHighlighted is false", () => {
     it("renders the muted (non-colored) variant", () => {
-      const { container } = render(
+      const { container } = renderWithI18n(
         <ResultsAxis {...defaultProps} isHighlighted={false} />,
       );
       const segments = container.querySelectorAll(".bg-gi-ash");
@@ -125,21 +126,21 @@ describe("<ResultsAxis />", () => {
   describe("given onSideClick", () => {
     it('calls onSideClick("left") when the left side is clicked', () => {
       const onSideClick = vi.fn();
-      render(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
       fireEvent.click(screen.getByRole("button", { name: "Left" }));
       expect(onSideClick).toHaveBeenCalledWith("left");
     });
 
     it('calls onSideClick("right") when the right side is clicked', () => {
       const onSideClick = vi.fn();
-      render(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
       fireEvent.click(screen.getByRole("button", { name: "Right" }));
       expect(onSideClick).toHaveBeenCalledWith("right");
     });
 
     it("is operable via keyboard", () => {
       const onSideClick = vi.fn();
-      render(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
       const leftSide = screen.getByRole("button", { name: "Left" });
 
       leftSide.focus();
@@ -152,7 +153,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given no onSideClick", () => {
     it("renders sides as non-interactive", () => {
-      const { container } = render(<ResultsAxis {...defaultProps} />);
+      const { container } = renderWithI18n(<ResultsAxis {...defaultProps} />);
       const buttons = screen.queryAllByRole("button");
       expect(buttons.length).toBe(0);
 
@@ -163,7 +164,7 @@ describe("<ResultsAxis />", () => {
 
   describe("given an id", () => {
     it("applies the id to the root element", () => {
-      render(<ResultsAxis {...defaultProps} id="custom-id" />);
+      renderWithI18n(<ResultsAxis {...defaultProps} id="custom-id" />);
       const root = screen.getByTestId("results-axis");
       expect(root).toHaveAttribute("id", "custom-id");
     });
