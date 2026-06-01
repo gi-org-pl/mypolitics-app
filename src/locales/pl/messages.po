@@ -41,7 +41,7 @@ msgstr "mypolitics banner background"
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
-#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:17
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:18
 msgid "Nikt nas nie finansuje… poza Wami!"
 msgstr "Nikt nas nie finansuje… poza Wami!"
 
@@ -93,6 +93,6 @@ msgstr "Strona główna"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
-#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:19
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:21
 msgid "Wesprzyj naszą działalność:"
 msgstr "Wesprzyj naszą działalność:"
