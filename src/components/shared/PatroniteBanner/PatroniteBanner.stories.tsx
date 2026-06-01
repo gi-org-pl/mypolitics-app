@@ -32,7 +32,7 @@ export const Default: Story = {
 
 export const Mobile: Story = {
   args: {
-    href: "https://patronite.pl/mypolitics",
+    href: PATHS.patronite,
     ctaLabel: "5 zł na kawę",
   },
   parameters: {
@@ -49,7 +49,7 @@ export const Mobile: Story = {
 
 export const LongCtaLabel: Story = {
   args: {
-    href: "https://patronite.pl/mypolitics",
+    href: PATHS.patronite,
     ctaLabel: "Wesprzyj nas jednorazowo: 25 zł na rozwój projektu",
   },
   render: (args) => (
