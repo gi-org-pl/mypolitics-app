@@ -1,54 +1,62 @@
 import { screen } from "@testing-library/react";
-import React from "react";
+import type { ComponentProps } from "react";
 import { describe, expect, it } from "vitest";
-import { PatroniteBanner } from "./PatroniteBanner";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n.tsx";
+import { PatroniteBanner } from "./PatroniteBanner";
+import { PATHS } from "@/constants/paths.ts";
 
 describe("<PatroniteBanner />", () => {
-  const href = "https://patronite.pl/mypolitics";
+  const href = PATHS.patronite;
   const ctaLabel = "5 zł na kawę";
 
   const renderBanner = (
-    props?: Partial<React.ComponentProps<typeof PatroniteBanner>>,
+    props?: Partial<ComponentProps<typeof PatroniteBanner>>,
   ) =>
     renderWithI18n(
       <PatroniteBanner href={href} ctaLabel={ctaLabel} {...props} />,
     );
 
-  describe("given href and ctaLabel", () => {
-    it("renders both brand copy lines", () => {
-      renderBanner();
+  it("renders the first brand copy line", () => {
+    renderBanner();
 
-      expect(
-        screen.getByText("Nikt nas nie finansuje… poza Wami!"),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("Wesprzyj naszą działalność:"),
-      ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText("Nikt nas nie finansuje… poza Wami!"),
+    ).toBeInTheDocument();
+  });
 
-    it("renders the CTA button with ctaLabel", () => {
-      renderBanner();
+  it("renders the second brand copy line", () => {
+    renderBanner();
 
-      expect(screen.getByRole("link", { name: ctaLabel })).toBeInTheDocument();
-    });
+    expect(screen.getByText("Wesprzyj naszą działalność:")).toBeInTheDocument();
+  });
 
-    it("links the CTA to href", () => {
-      renderBanner();
+  it("renders the CTA link with ctaLabel", () => {
+    renderBanner();
 
-      expect(screen.getByRole("link", { name: ctaLabel })).toHaveAttribute(
-        "href",
-        href,
-      );
-    });
+    expect(screen.getByRole("link", { name: ctaLabel })).toBeInTheDocument();
+  });
 
-    it('opens the link in a new tab with rel="noopener noreferrer"', () => {
-      renderBanner();
+  it("links the CTA to href", () => {
+    renderBanner();
 
-      const link = screen.getByRole("link", { name: ctaLabel });
-      expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    });
+    expect(screen.getByRole("link", { name: ctaLabel })).toHaveAttribute(
+      "href",
+      href,
+    );
+  });
+
+  it('opens the link in a new tab with target="_blank"', () => {
+    renderBanner();
+
+    const link = screen.getByRole("link", { name: ctaLabel });
+    expect(link).toHaveAttribute("target", "_blank");
+  });
+
+  it('opens the link in a new tab with rel="noopener noreferrer"', () => {
+    renderBanner();
+
+    const link = screen.getByRole("link", { name: ctaLabel });
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
   describe("given an id", () => {

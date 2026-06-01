@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { ReactNode } from "react";
 import { PatroniteBanner } from "./PatroniteBanner";
-import React from "react";
+import { PATHS } from "@/constants/paths.ts";
 
 const meta: Meta<typeof PatroniteBanner> = {
   title: "Shared/PatroniteBanner",
@@ -13,13 +14,13 @@ const meta: Meta<typeof PatroniteBanner> = {
 export default meta;
 type Story = StoryObj<typeof PatroniteBanner>;
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
+const Wrapper = ({ children }: { children: ReactNode }) => (
   <div className="w-full max-w-[784px] mx-auto">{children}</div>
 );
 
 export const Default: Story = {
   args: {
-    href: "https://patronite.pl/mypolitics",
+    href: PATHS.patronite,
     ctaLabel: "5 zł na kawę",
   },
   render: (args) => (
