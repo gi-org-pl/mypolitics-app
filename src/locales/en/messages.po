@@ -13,14 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr ""
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr ""
-
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
@@ -29,9 +21,25 @@ msgstr "© {currentYear}"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr ""
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -65,21 +73,6 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:7
-msgid "Prywatność"
-msgstr "Privacy"
-
-#: src/components/shared/Footer/Footer.constants.ts:6
-msgid "Regulamin"
-msgstr "Terms"
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr ""
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:50
 msgid "Newsletter.PrivacyPolicy"
@@ -89,6 +82,14 @@ msgstr ""
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
 msgid "Newsletter.Description"
 msgstr ""
+
+#: src/components/shared/Footer/Footer.constants.ts:7
+msgid "Prywatność"
+msgstr "Privacy"
+
+#: src/components/shared/Footer/Footer.constants.ts:6
+msgid "Regulamin"
+msgstr "Terms"
 
 #: src/components/shared/Error404/Error404.tsx:35
 msgid "Strona główna"

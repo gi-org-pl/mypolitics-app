@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import SurveyNewsletter from "./SurveyNewsletter";
 
 vi.mock("@lingui/macro", () => ({
@@ -20,21 +21,21 @@ describe("SurveyNewsletter", () => {
 
   describe("given the component is rendered with initial values", () => {
     it("displays the provided email value in the input", () => {
-      render(<SurveyNewsletter {...defaultProps} email="test@example.com" />);
+      renderWithI18n(<SurveyNewsletter {...defaultProps} email="test@example.com" />);
 
       const emailInput = screen.getByRole("textbox");
       expect(emailInput).toHaveValue("test@example.com");
     });
 
     it("reflects the provided consent state in the checkbox", () => {
-      render(<SurveyNewsletter {...defaultProps} consent={true} />);
+      renderWithI18n(<SurveyNewsletter {...defaultProps} consent={true} />);
 
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).toBeChecked();
     });
 
     it("renders the form structure correctly and does not render any submit button", () => {
-      render(<SurveyNewsletter {...defaultProps} />);
+      renderWithI18n(<SurveyNewsletter {...defaultProps} />);
 
       expect(screen.getByRole("textbox")).toBeInTheDocument();
       expect(screen.getByRole("checkbox")).toBeInTheDocument();
@@ -47,7 +48,7 @@ describe("SurveyNewsletter", () => {
   describe("when the user types in the email input", () => {
     it("calls onEmailChange with the new value", async () => {
       const onEmailChangeMock = vi.fn();
-      render(
+      renderWithI18n(
         <SurveyNewsletter
           {...defaultProps}
           onEmailChange={onEmailChangeMock}
@@ -65,7 +66,7 @@ describe("SurveyNewsletter", () => {
   describe("when the user toggles the consent checkbox", () => {
     it("calls onConsentChange with the new value", async () => {
       const onConsentChangeMock = vi.fn();
-      render(
+      renderWithI18n(
         <SurveyNewsletter
           {...defaultProps}
           consent={false}
