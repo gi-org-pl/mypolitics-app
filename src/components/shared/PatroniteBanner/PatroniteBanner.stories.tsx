@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { ReactNode } from "react";
-import { PatroniteBanner } from "./PatroniteBanner";
 import { PATHS } from "@/constants/paths.ts";
+import { PatroniteBanner } from "./PatroniteBanner";
 
 const meta: Meta<typeof PatroniteBanner> = {
   title: "Shared/PatroniteBanner",

@@ -1,9 +1,9 @@
 import { screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { describe, expect, it } from "vitest";
+import { PATHS } from "@/constants/paths.ts";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n.tsx";
 import { PatroniteBanner } from "./PatroniteBanner";
-import { PATHS } from "@/constants/paths.ts";
 
 describe("<PatroniteBanner />", () => {
   const href = PATHS.patronite;
