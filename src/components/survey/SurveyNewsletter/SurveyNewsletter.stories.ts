@@ -34,6 +34,3 @@ export const Filled: Story = {
   name: "Filled",
   args: propFilled,
 };
-
-
-
