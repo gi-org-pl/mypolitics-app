@@ -66,7 +66,9 @@ export const Finish: Story = {
 export const ResetModalOpen: Story = {
   name: "ResetModalOpen",
   play: async ({ canvasElement }) => {
-    const resetButton = canvasElement.querySelector('[data-testid="reset-button"]') as HTMLElement;
+    const resetButton = canvasElement.querySelector(
+      '[data-testid="reset-button"]',
+    ) as HTMLElement;
     resetButton?.click();
   },
 };

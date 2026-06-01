@@ -1,7 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { useAnimatedNumber } from "./useAnimatedNumber";
+import { act, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NUMBER_ANIMATION_MS } from "../SurveyControls.constants";
+import { useAnimatedNumber } from "./useAnimatedNumber";
 
 describe("useAnimatedNumber()", () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe("useAnimatedNumber()", () => {
     it("triggers the animation flag for NUMBER_ANIMATION_MS milliseconds", () => {
       const { result, rerender } = renderHook(
         ({ value }) => useAnimatedNumber(value),
-        { initialProps: { value: 5 } }
+        { initialProps: { value: 5 } },
       );
 
       expect(result.current).toBe(false);
@@ -31,7 +31,7 @@ describe("useAnimatedNumber()", () => {
     it("clears the animation flag after the timeout", () => {
       const { result, rerender } = renderHook(
         ({ value }) => useAnimatedNumber(value),
-        { initialProps: { value: 5 } }
+        { initialProps: { value: 5 } },
       );
 
       act(() => {
@@ -50,7 +50,7 @@ describe("useAnimatedNumber()", () => {
     it("cancels the timeout on unmount (no state update after unmount)", () => {
       const { result, rerender, unmount } = renderHook(
         ({ value }) => useAnimatedNumber(value),
-        { initialProps: { value: 5 } }
+        { initialProps: { value: 5 } },
       );
 
       act(() => {
@@ -75,7 +75,7 @@ describe("useAnimatedNumber()", () => {
     it("does not trigger the animation flag", () => {
       const { result, rerender } = renderHook(
         ({ value }) => useAnimatedNumber(value),
-        { initialProps: { value: 5 } }
+        { initialProps: { value: 5 } },
       );
 
       act(() => {

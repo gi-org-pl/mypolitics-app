@@ -1,24 +1,41 @@
-import { useState } from "react";
-import { Trans } from "@lingui/react/macro"; 
 import { Button, Modal } from "@gi/athena";
-import arrowBackIcon from "@/assets/icons/left-arrow.svg";
+import { Trans } from "@lingui/react/macro";
+import { useState,useEffect } from "react";
 import cardQuestionIcon from "@/assets/icons/card-question.svg";
+import arrowBackIcon from "@/assets/icons/left-arrow.svg";
 import resetIcon from "@/assets/icons/reset.svg";
-
-import { NUMBER_ANIMATION_MS } from "./SurveyControls.constants";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
+import { NUMBER_ANIMATION_MS } from "./SurveyControls.constants";
 import { useAnimatedNumber } from "./utils/useAnimatedNumber";
 
+
 function useBreakpoint(px: number): boolean {
-  const mql = window.matchMedia(`(min-width: ${px + 1}px)`);
-  const [isAbove, setIsAbove] = useState(() => mql.matches);
- 
-  useState(() => {
-    const handler = (e: MediaQueryListEvent) => setIsAbove(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
+  const query = `(min-width: ${px + 1}px)`;
+
+  const [isAbove, setIsAbove] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.matchMedia(query).matches;
   });
- 
+
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsAbove(event.matches);
+    };
+
+    setIsAbove(mql.matches);
+
+    mql.addEventListener("change", handleChange);
+
+    return () => {
+      mql.removeEventListener("change", handleChange);
+    };
+  }, [query]);
+
   return isAbove;
 }
 export default function SurveyControls({
@@ -41,7 +58,10 @@ export default function SurveyControls({
   function renderPill() {
     if (phase === "CATEGORY_SELECT") {
       return (
-        <span className="text-sm font-medium truncate max-w-[8rem] text-gi-secondary text-ellipsis overflow-hidden whitespace-nowrap" data-testid="pill-title">
+        <span
+          className="text-sm font-medium truncate max-w-[8rem] text-gi-secondary text-ellipsis overflow-hidden whitespace-nowrap"
+          data-testid="pill-title"
+        >
           {title}
         </span>
       );
@@ -49,26 +69,46 @@ export default function SurveyControls({
 
     if (phase === "FINISH") {
       return (
-        <span className="text-sm font-medium text-gi-secondary" data-testid="pill-finish">
+        <span
+          className="text-sm font-medium text-gi-secondary"
+          data-testid="pill-finish"
+        >
           <Trans>Prawie koniec!</Trans>
         </span>
       );
     }
 
     return (
-      <span className="flex items-center gap-3 text-sm font-medium" data-testid="pill-question-answer">
+      <span
+        className="flex items-center gap-3 text-sm font-medium"
+        data-testid="pill-question-answer"
+      >
         {isLargeScreen && (
           <>
-            <span className="truncate max-w-[8rem] text-gi-secondary" data-testid="pill-category-name">
+            <span
+              className="truncate max-w-[8rem] text-gi-secondary"
+              data-testid="pill-category-name"
+            >
               {categoryName}
             </span>
-            <span className="w-px h-[1em] bg-current opacity-25" data-testid="pill-divider" />
+            <span
+              className="w-px h-[1em] bg-current opacity-25"
+              data-testid="pill-divider"
+            />
           </>
         )}
-        <span className="flex items-center gap-1" data-testid="pill-question-count">
-          <img src={cardQuestionIcon} alt="" aria-hidden="true" className="w-4 h-4" />
+        <span
+          className="flex items-center gap-1"
+          data-testid="pill-question-count"
+        >
+          <img
+            src={cardQuestionIcon}
+            alt=""
+            aria-hidden="true"
+            className="w-4 h-4"
+          />
           <span
-            className={`transition-all duration-[${NUMBER_ANIMATION_MS}ms] ${isAnimating ? "opacity-0 scale-90 text-gi-secondary" : "opacity-100 scale-100 text-gi-secondary"}` }
+            className={`transition-all duration-[${NUMBER_ANIMATION_MS}ms] ${isAnimating ? "opacity-0 scale-90 text-gi-secondary" : "opacity-100 scale-100 text-gi-secondary"}`}
             data-testid="pill-count-number"
           >
             {questionsLeftnCategory}
@@ -81,7 +121,6 @@ export default function SurveyControls({
   return (
     <>
       <div className="flex items-center  gap-1.5" data-testid="survey-controls">
-
         <Button
           type="outlined"
           variant="secondary"
@@ -101,7 +140,6 @@ export default function SurveyControls({
           {renderPill()}
         </div>
 
-        
         <Button
           type="outlined"
           variant="secondary"
@@ -113,31 +151,35 @@ export default function SurveyControls({
         >
           <img src={resetIcon} alt="reset" aria-hidden="true" />
         </Button>
-
       </div>
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Rozpocząć od nowa?"
-        description={
-          <Trans>
-            Czy na pewno chcesz rozpocząć quiz <strong>{title}</strong> od nowa?{" "}
-            Twoje odpowiedzi nie zostaną zapisane.
-          </Trans>
-        }
-        actions={
-          <Button
-            type="primary"
-            variant="danger"
-            onClick={() => { onReset(); setModalOpen(false); }}
-            data-testid="reset-confirm-button"
-          >
-           <Trans> Resetuj quiz </Trans>
-          </Button>
-        }
-        dataTestId="reset-modal"
-      />
+      {modalOpen && (
+  <Modal
+    isOpen={modalOpen}
+    onClose={() => setModalOpen(false)}
+    title={<Trans>Rozpocząć od nowa?</Trans>}
+    description={
+      <Trans>
+        Czy na pewno chcesz rozpocząć quiz <strong>{title}</strong> od nowa?{" "}
+        Twoje odpowiedzi nie zostaną zapisane.
+      </Trans>
+    }
+    actions={
+      <Button
+        type="primary"
+        variant="danger"
+        onClick={() => {
+          onReset();
+          setModalOpen(false);
+        }}
+        data-testid="reset-confirm-button"
+      >
+        <Trans>Resetuj quiz</Trans>
+      </Button>
+    }
+    dataTestId="reset-modal"
+  />
+)}
     </>
   );
 }

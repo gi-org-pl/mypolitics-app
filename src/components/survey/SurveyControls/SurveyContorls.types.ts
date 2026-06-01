@@ -9,4 +9,3 @@ export interface SurveyControlsProps {
   onPrevious: () => void;
   onReset: () => void;
 }
-
