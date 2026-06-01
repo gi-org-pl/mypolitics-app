@@ -21,7 +21,9 @@ describe("SurveyNewsletter", () => {
 
   describe("given the component is rendered with initial values", () => {
     it("displays the provided email value in the input", () => {
-      renderWithI18n(<SurveyNewsletter {...defaultProps} email="test@example.com" />);
+      renderWithI18n(
+        <SurveyNewsletter {...defaultProps} email="test@example.com" />,
+      );
 
       const emailInput = screen.getByRole("textbox");
       expect(emailInput).toHaveValue("test@example.com");
