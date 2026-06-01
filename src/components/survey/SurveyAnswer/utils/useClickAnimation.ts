@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { RIPPLE_FADE_MS } from "../SurveyAnswer.constants";
 
 export interface AnimationCSSProperties extends React.CSSProperties {
   "--cx": string;
@@ -6,32 +7,70 @@ export interface AnimationCSSProperties extends React.CSSProperties {
   "--size": string;
 }
 
+type AnimationPhase = "expanding" | "fading" | false;
+
 interface UseClickAnimationReturn {
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   iconRef: React.RefObject<HTMLSpanElement | null>;
   style: AnimationCSSProperties;
   triggerAnimation: () => void;
-  isAnimating: boolean;
+  animationPhase: AnimationPhase;
+  handleRippleTransitionEnd: () => void;
 }
 
+const EMPTY_DEPS: unknown[] = [];
+
 export function useClickAnimation(
-  deps: unknown[] = [],
+  deps: unknown[] = EMPTY_DEPS,
 ): UseClickAnimationReturn {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const iconRef = useRef<HTMLSpanElement>(null);
+  const fadeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generationRef = useRef(0);
 
   const [style, setStyle] = useState<AnimationCSSProperties>({
-    "--cx": "0px",
+    "--cx": "50%",
     "--cy": "50%",
     "--size": "0px",
   });
 
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<AnimationPhase>(false);
 
   const triggerAnimation = () => {
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 150);
+    if (fadeTimeoutRef.current) {
+      clearTimeout(fadeTimeoutRef.current);
+      fadeTimeoutRef.current = null;
+    }
+
+    generationRef.current += 1;
+    const generation = generationRef.current;
+
+    setAnimationPhase(false);
+    requestAnimationFrame(() => {
+      if (generationRef.current === generation) {
+        setAnimationPhase("expanding");
+      }
+    });
   };
+
+  const handleRippleTransitionEnd = () => {
+    if (animationPhase !== "expanding") return;
+
+    const generation = generationRef.current;
+    setAnimationPhase("fading");
+    fadeTimeoutRef.current = setTimeout(() => {
+      if (generationRef.current === generation) {
+        setAnimationPhase(false);
+      }
+      fadeTimeoutRef.current = null;
+    }, RIPPLE_FADE_MS);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const calculate = () => {
@@ -40,23 +79,39 @@ export function useClickAnimation(
       const btnRect = buttonRef.current.getBoundingClientRect();
       const iconRect = iconRef.current.getBoundingClientRect();
 
+      if (btnRect.width === 0) return;
+
       const cx = iconRect.left - btnRect.left + iconRect.width / 2;
       const cy = iconRect.top - btnRect.top + iconRect.height / 2;
 
-      const diagonal = Math.sqrt(btnRect.width ** 2 + btnRect.height ** 2);
-      const size = diagonal + 20;
+      const corners = [
+        [0, 0],
+        [btnRect.width, 0],
+        [0, btnRect.height],
+        [btnRect.width, btnRect.height],
+      ];
 
-      setStyle({
-        "--cx": `${cx}px`,
-        "--cy": `${cy}px`,
-        "--size": `${size}px`,
-      });
+      const size = Math.max(
+        ...corners.map(([x, y]) => Math.sqrt((cx - x) ** 2 + (cy - y) ** 2)),
+      );
+
+      setStyle({ "--cx": `${cx}px`, "--cy": `${cy}px`, "--size": `${size}px` });
     };
 
-    calculate();
+    const raf = requestAnimationFrame(calculate);
     window.addEventListener("resize", calculate);
-    return () => window.removeEventListener("resize", calculate);
-  }, deps);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", calculate);
+    };
+  }, deps ?? []);
 
-  return { buttonRef, iconRef, style, triggerAnimation, isAnimating };
+  return {
+    buttonRef,
+    iconRef,
+    style,
+    triggerAnimation,
+    animationPhase,
+    handleRippleTransitionEnd,
+  };
 }

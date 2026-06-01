@@ -3,31 +3,27 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SurveyAnswer } from "./SurveyAnswer";
 
-vi.mock("../../../assets/icons/checkmark-strong", () => ({
-  CheckmarkStrong: () => <svg data-testid="icon-checkmark-strong" />,
+vi.mock("../../../assets/icons/checkmark.svg", () => ({
+  default: "checkmark.svg",
 }));
-vi.mock("../../../assets/icons/checkmark", () => ({
-  Checkmark: () => <svg data-testid="icon-checkmark" />,
+vi.mock("../../../assets/icons/checkmark-strong.svg", () => ({
+  default: "checkmark-strong.svg",
 }));
-vi.mock("../../../assets/icons/x-strong", () => ({
-  XStrong: () => <svg data-testid="icon-x-strong" />,
+vi.mock("../../../assets/icons/circle-checked.svg", () => ({
+  default: "circle-checked.svg",
 }));
-vi.mock("../../../assets/icons/x", () => ({
-  X: () => <svg data-testid="icon-x" />,
+vi.mock("../../../assets/icons/circle-empty.svg", () => ({
+  default: "circle-empty.svg",
 }));
-vi.mock("../../../assets/icons/dash", () => ({
-  Dash: () => <svg data-testid="icon-dash" />,
-}));
-vi.mock("../../../assets/icons/circle-empty", () => ({
-  CircleEmpty: () => <svg data-testid="icon-circle-empty" />,
-}));
-vi.mock("../../../assets/icons/circle-checked", () => ({
-  CircleChecked: () => <svg data-testid="icon-circle-checked" />,
+vi.mock("../../../assets/icons/dash.svg", () => ({ default: "dash.svg" }));
+vi.mock("../../../assets/icons/x.svg", () => ({ default: "x.svg" }));
+vi.mock("../../../assets/icons/x-strong.svg", () => ({
+  default: "x-strong.svg",
 }));
 
 describe("<SurveyAnswer />", () => {
   describe("given type is strongly-agree", () => {
-    it("renders with the filled green background class", () => {
+    it("renders with the bg-background class", () => {
       const { container } = render(
         <SurveyAnswer title="Test" type="strongly-agree" onClick={vi.fn()} />,
       );
@@ -38,7 +34,10 @@ describe("<SurveyAnswer />", () => {
       render(
         <SurveyAnswer title="Test" type="strongly-agree" onClick={vi.fn()} />,
       );
-      expect(screen.getByTestId("icon-checkmark-strong")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute(
+        "src",
+        "checkmark-strong.svg",
+      );
     });
 
     it("renders the title text", () => {
@@ -54,7 +53,7 @@ describe("<SurveyAnswer />", () => {
   });
 
   describe("given type is agree", () => {
-    it("renders with the surface background class", () => {
+    it("renders with the bg-background class", () => {
       const { container } = render(
         <SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />,
       );
@@ -63,19 +62,19 @@ describe("<SurveyAnswer />", () => {
 
     it("renders the simple checkmark icon", () => {
       render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
-      expect(screen.getByTestId("icon-checkmark")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute("src", "checkmark.svg");
     });
   });
 
   describe("given type is disagree", () => {
     it("renders the X icon", () => {
       render(<SurveyAnswer title="Test" type="disagree" onClick={vi.fn()} />);
-      expect(screen.getByTestId("icon-x")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute("src", "x.svg");
     });
   });
 
   describe("given type is strongly-disagree", () => {
-    it("renders with the filled red background class", () => {
+    it("renders with the bg-background class", () => {
       const { container } = render(
         <SurveyAnswer
           title="Test"
@@ -94,14 +93,14 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByTestId("icon-x-strong")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute("src", "x-strong.svg");
     });
   });
 
   describe("given type is custom", () => {
     it("renders the dash icon", () => {
       render(<SurveyAnswer title="Test" type="custom" onClick={vi.fn()} />);
-      expect(screen.getByTestId("icon-dash")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute("src", "dash.svg");
     });
   });
 
@@ -115,7 +114,10 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByTestId("icon-circle-empty")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute(
+        "src",
+        "circle-empty.svg",
+      );
     });
   });
 
@@ -129,10 +131,13 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByTestId("icon-circle-checked")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAttribute(
+        "src",
+        "circle-checked.svg",
+      );
     });
 
-    it("applies the selected background tint class", () => {
+    it("applies the bg-background class", () => {
       const { container } = render(
         <SurveyAnswer
           title="Test"

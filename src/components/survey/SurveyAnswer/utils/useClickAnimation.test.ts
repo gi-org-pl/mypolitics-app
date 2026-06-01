@@ -12,49 +12,116 @@ describe("useClickAnimation()", () => {
   });
 
   describe("when triggerAnimation is not called", () => {
-    it("isAnimating is false by default", () => {
+    it("animationPhase is false by default", () => {
       const { result } = renderHook(() => useClickAnimation());
-      expect(result.current.isAnimating).toBe(false);
+      expect(result.current.animationPhase).toBe(false);
+    });
+
+    it("returns buttonRef and iconRef as refs", () => {
+      const { result } = renderHook(() => useClickAnimation());
+      expect(result.current.buttonRef).toBeDefined();
+      expect(result.current.iconRef).toBeDefined();
+    });
+
+    it("returns initial style with zero size and centered origin", () => {
+      const { result } = renderHook(() => useClickAnimation());
+      expect(result.current.style["--cx"]).toBe("50%");
+      expect(result.current.style["--cy"]).toBe("50%");
+      expect(result.current.style["--size"]).toBe("0px");
     });
   });
 
   describe("when triggerAnimation is called", () => {
-    it("sets isAnimating to true immediately", () => {
+    it("sets animationPhase to 'expanding' after a rAF tick", async () => {
       const { result } = renderHook(() => useClickAnimation());
 
       act(() => {
         result.current.triggerAnimation();
       });
 
-      expect(result.current.isAnimating).toBe(true);
-    });
+      // flush the requestAnimationFrame
+      await act(async () => {
+        vi.runAllTimers();
+      });
 
-    it("sets isAnimating back to false after CLICK_ANIMATION_MS", () => {
+      expect(result.current.animationPhase).toBe("expanding");
+    });
+  });
+
+  describe("when handleRippleTransitionEnd is called during 'expanding' phase", () => {
+    it("transitions animationPhase to 'fading'", async () => {
       const { result } = renderHook(() => useClickAnimation());
 
       act(() => {
         result.current.triggerAnimation();
       });
 
-      act(() => {
-        vi.advanceTimersByTime(150);
+      await act(async () => {
+        vi.runAllTimers();
       });
 
-      expect(result.current.isAnimating).toBe(false);
+      act(() => {
+        result.current.handleRippleTransitionEnd();
+      });
+
+      expect(result.current.animationPhase).toBe("fading");
     });
 
-    it("cancels the timeout on unmount (no state update after unmount)", () => {
+    it("sets animationPhase back to false after RIPPLE_FADE_MS", async () => {
+      const { result } = renderHook(() => useClickAnimation());
+
+      act(() => {
+        result.current.triggerAnimation();
+      });
+
+      await act(async () => {
+        vi.runAllTimers();
+      });
+
+      act(() => {
+        result.current.handleRippleTransitionEnd();
+      });
+
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      expect(result.current.animationPhase).toBe(false);
+    });
+  });
+
+  describe("when handleRippleTransitionEnd is called outside 'expanding' phase", () => {
+    it("does not change animationPhase when phase is false", () => {
+      const { result } = renderHook(() => useClickAnimation());
+
+      act(() => {
+        result.current.handleRippleTransitionEnd();
+      });
+
+      expect(result.current.animationPhase).toBe(false);
+    });
+  });
+
+  describe("cleanup on unmount", () => {
+    it("does not throw when unmounted during fading timeout", async () => {
       const { result, unmount } = renderHook(() => useClickAnimation());
 
       act(() => {
         result.current.triggerAnimation();
       });
 
-      // Unmount before timeout fires — should not throw React state-update warning
+      await act(async () => {
+        vi.runAllTimers();
+      });
+
+      act(() => {
+        result.current.handleRippleTransitionEnd();
+      });
+
       expect(() => {
         unmount();
         act(() => {
-          vi.advanceTimersByTime(150);
+          vi.runAllTimers();
         });
       }).not.toThrow();
     });
