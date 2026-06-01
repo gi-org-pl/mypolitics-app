@@ -24,12 +24,12 @@ export default function SurveyNewsletter({
       </div>
       <Input
         type="email"
-        className="w-[340px] h-[44px] mt-[16px] mb-[16px]"
+        className="w-[340px] h-[44px] mt-[16px] mb-[16px] p-[16px] rounded-[16px] text-gi-primary"
         value={email}
         onChange={onEmailChange}
         placeholder="twoj@mail.com "
       />
-      <div className="flex flex-row w-[340px] h-fit gap-2">
+      <div className="flex flex-row w-[340px] h-fit gap-[8px]">
         <Checkbox
           label=""
           className="w-[14px] h-[14px] bg-[#FFFFFF] border border-gi-dark-ash rounded-[2px] cursor-pointer"
@@ -41,6 +41,7 @@ export default function SurveyNewsletter({
             id="Newsletter.Consent"
             message="Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
           />
+          {' '}
           <a
             href={PATHS.privacy}
             target="_blank"
