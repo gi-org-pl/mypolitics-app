@@ -126,21 +126,27 @@ describe("<ResultsAxis />", () => {
   describe("given onSideClick", () => {
     it('calls onSideClick("left") when the left side is clicked', () => {
       const onSideClick = vi.fn();
-      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(
+        <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
+      );
       fireEvent.click(screen.getByRole("button", { name: "Left" }));
       expect(onSideClick).toHaveBeenCalledWith("left");
     });
 
     it('calls onSideClick("right") when the right side is clicked', () => {
       const onSideClick = vi.fn();
-      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(
+        <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
+      );
       fireEvent.click(screen.getByRole("button", { name: "Right" }));
       expect(onSideClick).toHaveBeenCalledWith("right");
     });
 
     it("is operable via keyboard", () => {
       const onSideClick = vi.fn();
-      renderWithI18n(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
+      renderWithI18n(
+        <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
+      );
       const leftSide = screen.getByRole("button", { name: "Left" });
 
       leftSide.focus();
