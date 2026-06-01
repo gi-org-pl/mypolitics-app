@@ -1,11 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import React, { type ReactNode } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { screen } from "@testing-library/react";
+import React from "react";
+import { describe, expect, it } from "vitest";
 import { PatroniteBanner } from "./PatroniteBanner";
-
-vi.mock("@lingui/react/macro", () => ({
-  Trans: ({ children }: { children: ReactNode }) => children,
-}));
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n.tsx";
 
 describe("<PatroniteBanner />", () => {
   const href = "https://patronite.pl/mypolitics";
@@ -13,7 +10,10 @@ describe("<PatroniteBanner />", () => {
 
   const renderBanner = (
     props?: Partial<React.ComponentProps<typeof PatroniteBanner>>,
-  ) => render(<PatroniteBanner href={href} ctaLabel={ctaLabel} {...props} />);
+  ) =>
+    renderWithI18n(
+      <PatroniteBanner href={href} ctaLabel={ctaLabel} {...props} />,
+    );
 
   describe("given href and ctaLabel", () => {
     it("renders both brand copy lines", () => {
