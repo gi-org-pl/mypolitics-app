@@ -43,6 +43,7 @@ jobs:
           path: build
 
   e2e:
+    if: false # always skip until any E2E test is created
     name: Test E2E
     needs: build
     runs-on: ubuntu-latest
