@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: side.name
-#: src/components/results/ResultsAxis/ResultsAxis.tsx:72
+#: src/components/results/ResultsAxis/ResultsAxis.tsx:71
 msgid "{0}"
 msgstr "{0}"
 

@@ -30,7 +30,10 @@ describe("<ResultsAxis />", () => {
       const leftIcon = screen.getByRole("img", { name: "Left" });
       const rightIcon = screen.getByRole("img", { name: "Right" });
       expect(leftIcon.querySelector("img")).toHaveAttribute("src", "left.svg");
-      expect(rightIcon.querySelector("img")).toHaveAttribute("src", "right.svg");
+      expect(rightIcon.querySelector("img")).toHaveAttribute(
+        "src",
+        "right.svg",
+      );
     });
   });
 
