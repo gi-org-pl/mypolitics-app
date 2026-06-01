@@ -13,28 +13,9 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr ""
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr ""
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr ""
-
-#: src/components/shared/Error404/Error404.tsx:35
-msgid "Strona główna"
-msgstr ""
-
-#: src/components/shared/Error404/Error404.tsx:20
-msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+#. placeholder {0}: side.name
+#: src/components/results/ResultsAxis/ResultsAxis.tsx:72
+msgid "{0}"
 msgstr ""
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
@@ -45,9 +26,25 @@ msgstr "© {currentYear}"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr ""
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -88,21 +85,6 @@ msgstr "Privacy"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Terms"
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr ""
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
-#: src/components/shared/Error404/Error404.tsx:14
-msgid "Ilustracja misia — błąd 404"
-msgstr ""
-
-#: src/components/shared/Error404/Error404.tsx:27
-msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:35
 msgid "Strona główna"

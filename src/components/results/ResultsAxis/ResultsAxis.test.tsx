@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ResultsAxis } from "./ResultsAxis";
 
@@ -27,10 +27,10 @@ describe("<ResultsAxis />", () => {
 
     it("renders both side icons with alt set to each name", () => {
       render(<ResultsAxis {...defaultProps} />);
-      const leftIcon = screen.getByAltText("Left");
-      const rightIcon = screen.getByAltText("Right");
-      expect(leftIcon).toHaveAttribute("src", "left.svg");
-      expect(rightIcon).toHaveAttribute("src", "right.svg");
+      const leftIcon = screen.getByRole("img", { name: "Left" });
+      const rightIcon = screen.getByRole("img", { name: "Right" });
+      expect(leftIcon.querySelector("img")).toHaveAttribute("src", "left.svg");
+      expect(rightIcon.querySelector("img")).toHaveAttribute("src", "right.svg");
     });
   });
 
@@ -42,9 +42,12 @@ describe("<ResultsAxis />", () => {
           right={{ ...defaultProps.right, value: 10 }}
         />,
       );
-      // Normalized should be 75% and 25%
-      const leftSide = container.querySelector('[aria-label="Left"]') as HTMLElement;
-      const rightSide = container.querySelector('[aria-label="Right"]') as HTMLElement;
+      const leftSide = container.querySelector(
+        '[aria-label="Left"]',
+      ) as HTMLElement;
+      const rightSide = container.querySelector(
+        '[aria-label="Right"]',
+      ) as HTMLElement;
       expect(leftSide.style.width).toBe("75%");
       expect(rightSide.style.width).toBe("25%");
     });
@@ -58,8 +61,12 @@ describe("<ResultsAxis />", () => {
           right={{ ...defaultProps.right, value: 0 }}
         />,
       );
-      const leftSide = container.querySelector('[aria-label="Left"]') as HTMLElement;
-      const rightSide = container.querySelector('[aria-label="Right"]') as HTMLElement;
+      const leftSide = container.querySelector(
+        '[aria-label="Left"]',
+      ) as HTMLElement;
+      const rightSide = container.querySelector(
+        '[aria-label="Right"]',
+      ) as HTMLElement;
       expect(leftSide.style.width).toBe("50%");
       expect(rightSide.style.width).toBe("50%");
     });
@@ -74,7 +81,6 @@ describe("<ResultsAxis />", () => {
         />,
       );
       expect(screen.getByText("90%")).toBeInTheDocument();
-      // 10% is below 25% threshold and not dominant
       expect(screen.queryByText("10%")).not.toBeInTheDocument();
     });
 
@@ -105,7 +111,9 @@ describe("<ResultsAxis />", () => {
 
   describe("given isHighlighted is false", () => {
     it("renders the muted (non-colored) variant", () => {
-      const { container } = render(<ResultsAxis {...defaultProps} isHighlighted={false} />);
+      const { container } = render(
+        <ResultsAxis {...defaultProps} isHighlighted={false} />,
+      );
       const segments = container.querySelectorAll(".bg-gi-ash");
       expect(segments.length).toBeGreaterThan(0);
     });
@@ -130,10 +138,10 @@ describe("<ResultsAxis />", () => {
       const onSideClick = vi.fn();
       render(<ResultsAxis {...defaultProps} onSideClick={onSideClick} />);
       const leftSide = screen.getByRole("button", { name: "Left" });
-      
+
       leftSide.focus();
       expect(document.activeElement).toBe(leftSide);
-      
+
       fireEvent.keyDown(leftSide, { key: "Enter", code: "Enter" });
       expect(leftSide.tagName).toBe("BUTTON");
     });
@@ -144,7 +152,7 @@ describe("<ResultsAxis />", () => {
       const { container } = render(<ResultsAxis {...defaultProps} />);
       const buttons = screen.queryAllByRole("button");
       expect(buttons.length).toBe(0);
-      
+
       const leftSide = container.querySelector('[aria-label="Left"]');
       expect(leftSide?.tagName).toBe("DIV");
     });

@@ -1,5 +1,5 @@
-import type { Feature, FeaturesListProps } from "./FeaturesList.types";
 import React from "react";
+import type { Feature, FeaturesListProps } from "./FeaturesList.types";
 
 const FeatureCard = ({ feature }: { feature: Feature }) => {
   return (
