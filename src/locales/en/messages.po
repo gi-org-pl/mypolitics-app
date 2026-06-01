@@ -29,10 +29,35 @@ msgstr ""
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:50
+msgid "Newsletter.PrivacyPolicy"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
+msgid "Newsletter.Description"
+msgstr ""
+
 #: src/components/shared/Error404/Error404.tsx:35
 msgid "Strona główna"
 msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:56
+msgid "Newsletter.DataUsage"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:40
+msgid "Newsletter.Consent"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
+msgid "Newsletter.Title"
 msgstr ""

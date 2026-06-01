@@ -29,6 +29,16 @@ msgstr "mypolitics banner background"
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:50
+msgid "Newsletter.PrivacyPolicy"
+msgstr "Polityka prywatności."
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
+msgid "Newsletter.Description"
+msgstr "Poznaj poglądy innych, porównaj się, zdobądź wiedzę o zmianach w społeczeństwie i Twoim otoczeniu!"
+
 #: src/components/shared/Error404/Error404.tsx:35
 msgid "Strona główna"
 msgstr "Strona główna"
@@ -36,3 +46,18 @@ msgstr "Strona główna"
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:56
+msgid "Newsletter.DataUsage"
+msgstr "Twoje dane osobowe nie będą w żaden sposób powiązane z wynikami."
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:40
+msgid "Newsletter.Consent"
+msgstr "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
+msgid "Newsletter.Title"
+msgstr "Zobacz więcej niż wyniki."
