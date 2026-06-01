@@ -1,3 +1,4 @@
+import { DEFAULT_LANGUAGE } from "./src/constants/common";
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
