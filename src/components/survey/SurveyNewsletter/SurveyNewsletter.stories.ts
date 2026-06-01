@@ -8,6 +8,14 @@ const prop: SurveyNewsletterProps = {
   consent: false,
   onConsentChange: () => {},
 };
+
+const propFilled: SurveyNewsletterProps = {
+  email: "twoj@mail.com",
+  onEmailChange: () => {},
+  consent: true,
+  onConsentChange: () => {},
+};
+
 const meta = {
   title: "Components/SurveyNewsletter",
   component: SurveyNewsletter,
@@ -22,3 +30,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: "Default",
 };
+export const Filled: Story = {
+  name: "Filled",
+  args: propFilled,
+};
+
+
+

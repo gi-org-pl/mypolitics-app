@@ -22,7 +22,6 @@ describe("SurveyNewsletter", () => {
     it("displays the provided email value in the input", () => {
       render(<SurveyNewsletter {...defaultProps} email="test@example.com" />);
 
-
       const emailInput = screen.getByRole("textbox");
       expect(emailInput).toHaveValue("test@example.com");
     });
@@ -57,7 +56,6 @@ describe("SurveyNewsletter", () => {
 
       const emailInput = screen.getByRole("textbox");
 
-  
       await userEvent.type(emailInput, "x");
 
       expect(onEmailChangeMock).toHaveBeenCalledWith("x");
