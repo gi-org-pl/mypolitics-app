@@ -4,13 +4,6 @@ import { describe, expect, it, vi } from "vitest";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import SurveyNewsletter from "./SurveyNewsletter";
 
-vi.mock("@lingui/macro", () => ({
-  t: (chunks: TemplateStringsArray | string) =>
-    typeof chunks === "string" ? chunks : chunks.join(""),
-  msg: (chunks: TemplateStringsArray | string) =>
-    typeof chunks === "string" ? chunks : chunks.join(""),
-}));
-
 describe("SurveyNewsletter", () => {
   const defaultProps = {
     email: "",

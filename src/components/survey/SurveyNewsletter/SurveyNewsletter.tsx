@@ -11,8 +11,8 @@ export default function SurveyNewsletter({
 }: SurveyNewsletterProps) {
   return (
     <div className="flex flex-col justify-center ">
-      <div className="flex flex-col w-[340px] h-fit bg-gi-dark-ash text-gi-primary rounded-2xl p-4 gap-[10px]">
-        <p className="font-bold text-[24px] text-gi-primary w-[308px] h-[36px] flex items-center">
+      <div className="flex flex-col w-[340px] h-fit bg-gi-dark-ash text-gi-primary rounded-2xl p-4 gap-2.5">
+        <p className="font-bold text-[24px] text-gi-primary w-[308px] h-9 flex items-center">
           <Trans id="Newsletter.Title" message="Zobacz więcej niż wyniki." />
         </p>
         <p className="font-normal  text-gi-primary w-[308px] h-[72px] flex items-center">
@@ -24,15 +24,15 @@ export default function SurveyNewsletter({
       </div>
       <Input
         type="email"
-        className="w-[340px] h-[44px] mt-[16px] mb-[16px] p-[16px] rounded-[16px] text-gi-primary"
+        className="w-[340px] h-11 mt-4 mb-4 p-4 rounded-2xl text-gi-primary"
         value={email}
         onChange={onEmailChange}
         placeholder="twoj@mail.com "
       />
-      <div className="flex flex-row w-[340px] h-fit gap-[8px]">
+      <div className="flex flex-row w-[340px] h-fit gap-2">
         <Checkbox
           label=""
-          className="w-[14px] h-[14px] bg-[#FFFFFF] border border-gi-dark-ash rounded-[2px] cursor-pointer"
+          className="w-3.5 h-3.5 border border-gi-dark-ash rounded-xs cursor-pointer"
           checked={consent}
           onCheckedChange={onConsentChange}
         />
