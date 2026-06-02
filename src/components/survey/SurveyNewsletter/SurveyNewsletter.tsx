@@ -40,8 +40,7 @@ export default function SurveyNewsletter({
           <Trans
             id="Newsletter.Consent"
             message="Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
-          />
-          {' '}
+          />{" "}
           <a
             href={PATHS.privacy}
             target="_blank"
