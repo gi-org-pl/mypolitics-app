@@ -11,7 +11,6 @@ const meta: Meta<typeof ResultIdentityPersonality> = {
     onToggleModal: { action: "toggleModal" },
   },
   render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isExpanded, setIsExpanded] = useState(args.expanded);
 
     const handleToggleExpanded = () => {

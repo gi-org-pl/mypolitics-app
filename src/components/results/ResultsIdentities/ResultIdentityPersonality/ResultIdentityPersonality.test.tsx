@@ -91,7 +91,6 @@ describe("<ResultIdentityPersonality />", () => {
           expanded={false}
         />,
       );
-      // We check for the aria-label which is t`Rozwiń`
       expect(screen.getByLabelText(/Rozwiń/)).toBeInTheDocument();
     });
 
@@ -103,7 +102,6 @@ describe("<ResultIdentityPersonality />", () => {
           expanded={true}
         />,
       );
-      // We check for the aria-label which is t`Zwiń`
       expect(screen.getByLabelText(/Zwiń/)).toBeInTheDocument();
     });
 
@@ -166,7 +164,6 @@ describe("<ResultIdentityPersonality />", () => {
       renderWithI18n(
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
-      // Athena Avatar uses the alt/name for aria-label on the wrapper
       expect(screen.getByLabelText(/Test Name/)).toBeInTheDocument();
     });
   });

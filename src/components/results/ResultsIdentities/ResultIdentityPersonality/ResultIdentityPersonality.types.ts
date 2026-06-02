@@ -13,8 +13,8 @@ export interface IdentityInfoElement {
 export interface ResultIdentityPersonalityProps {
   identity: IdentityInfoElement;
   mode: IdentityMode;
-  expanded?: boolean; // only relevant when mode === "expanded"
+  expanded?: boolean;
   onToggleExpanded?: () => void;
   onToggleModal?: () => void;
-  title?: string; // generic label shown before the percent (default e.g. "Tożsamość")
+  title?: string;
 }

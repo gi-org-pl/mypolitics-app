@@ -20,7 +20,7 @@ export const ResultIdentityPersonality: React.FC<
 
   const clampedPercent = Math.min(100, Math.max(0, agreementPercent));
   const roundedPercent = Math.round(clampedPercent);
-  const percentColorClass = getAgreementColor(clampedPercent);
+  const percentColorClass = getAgreementColor(roundedPercent);
 
   const handleAction = () => {
     if (mode === "expanded") {
@@ -51,7 +51,7 @@ export const ResultIdentityPersonality: React.FC<
         />
 
         <div className="flex-1 min-w-0">
-          <div className="text-xs font-bold text-gi-primary/50 mb-0.5">
+          <div className="text-sm font-bold text-gi-primary/50 mb-0.5">
             {title || <Trans>Tożsamość</Trans>}{" "}
             <span className={percentColorClass}>
               <Trans>({roundedPercent}%)</Trans>
