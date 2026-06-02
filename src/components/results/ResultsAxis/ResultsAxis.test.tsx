@@ -129,7 +129,6 @@ describe("<ResultsAxis />", () => {
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
-      // There are now multiple buttons for "Left" (segment and icon)
       const leftButtons = screen.getAllByRole("button", { name: "Left" });
       fireEvent.click(leftButtons[0]);
       expect(onSideClick).toHaveBeenCalledWith("left");
