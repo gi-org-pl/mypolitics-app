@@ -129,7 +129,9 @@ describe("<ResultsAxis />", () => {
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
-      fireEvent.click(screen.getByRole("button", { name: "Left" }));
+      // There are now multiple buttons for "Left" (segment and icon)
+      const leftButtons = screen.getAllByRole("button", { name: "Left" });
+      fireEvent.click(leftButtons[0]);
       expect(onSideClick).toHaveBeenCalledWith("left");
     });
 
@@ -138,7 +140,8 @@ describe("<ResultsAxis />", () => {
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
-      fireEvent.click(screen.getByRole("button", { name: "Right" }));
+      const rightButtons = screen.getAllByRole("button", { name: "Right" });
+      fireEvent.click(rightButtons[0]);
       expect(onSideClick).toHaveBeenCalledWith("right");
     });
 
@@ -147,7 +150,8 @@ describe("<ResultsAxis />", () => {
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
-      const leftSide = screen.getByRole("button", { name: "Left" });
+      const leftButtons = screen.getAllByRole("button", { name: "Left" });
+      const leftSide = leftButtons[0];
 
       leftSide.focus();
       expect(document.activeElement).toBe(leftSide);

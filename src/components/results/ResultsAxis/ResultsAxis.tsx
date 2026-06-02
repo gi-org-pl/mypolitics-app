@@ -28,11 +28,17 @@ export const ResultsAxis = ({
     const bgClass =
       isHighlighted && !isZero ? `bg-${side.color}` : "bg-gi-gray";
 
+    const Component = isInteractive ? "button" : "div";
+
     return (
-      <div
+      <Component
+        type={isInteractive ? "button" : undefined}
+        onClick={isInteractive ? () => onSideClick?.(sideKey) : undefined}
+        aria-label={t`${side.name}`}
         className={cn(
-          "absolute top-1/2 z-40 -translate-y-1/2 transition-colors",
+          "absolute top-1/2 z-50 -translate-y-1/2 transition-all",
           sideKey === "left" ? "left-[-16px]" : "right-[-16px]",
+          isInteractive ? "cursor-pointer hover:scale-110 active:scale-95" : "",
         )}
       >
         <Avatar
@@ -45,7 +51,7 @@ export const ResultsAxis = ({
             sideKey === "right" && "[&_img]:scale-x-[-1]",
           )}
         />
-      </div>
+      </Component>
     );
   };
 
@@ -102,13 +108,13 @@ export const ResultsAxis = ({
   };
 
   const renderKnob = () => {
-    const knobPosition = Math.min(Math.max(leftPercent, 4), 96);
+    const knobPosition = Math.min(Math.max(leftPercent, 6.5), 93.5);
     const activeSide = left.value >= right.value ? left : right;
 
     return (
       <div
         className={cn(
-          "absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2",
+          "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2",
         )}
         style={{
           left: `${knobPosition}%`,
