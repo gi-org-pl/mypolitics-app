@@ -22,7 +22,6 @@ export function useAnimatedNumber(value: number): boolean {
     };
   }, [value]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current !== null) {

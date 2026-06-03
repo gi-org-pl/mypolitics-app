@@ -1,5 +1,6 @@
 import { Button, Modal } from "@gi/athena";
-import { Trans } from "@lingui/react/macro";
+import {Trans } from "@lingui/react/macro";
+import { t } from "@lingui/core/macro";
 import { useEffect, useState } from "react";
 import cardQuestionIcon from "@/assets/icons/card-question.svg";
 import arrowBackIcon from "@/assets/icons/left-arrow.svg";
@@ -58,7 +59,7 @@ export default function SurveyControls({
     if (phase === "CATEGORY_SELECT") {
       return (
         <span
-          className="text-sm font-medium truncate max-w-[8rem] text-gi-secondary text-ellipsis overflow-hidden whitespace-nowrap"
+          className="flex items-center h-8 font-bold truncate text-ellipsis overflow-hidden whitespace-nowrap text-gi-primary"
           data-testid="pill-title"
         >
           {title}
@@ -69,7 +70,7 @@ export default function SurveyControls({
     if (phase === "FINISH") {
       return (
         <span
-          className="text-sm font-medium text-gi-secondary"
+          className="font-bold flex items-center h-8 text-gi-primary"
           data-testid="pill-finish"
         >
           <Trans>Prawie koniec!</Trans>
@@ -79,13 +80,13 @@ export default function SurveyControls({
 
     return (
       <span
-        className="flex items-center gap-3 text-sm font-medium"
+        className="flex items-center gap-3 h-8 font-bold text-gi-primary"
         data-testid="pill-question-answer"
       >
         {isLargeScreen && (
           <>
             <span
-              className="truncate max-w-[8rem] text-gi-secondary"
+              className="truncate text-ellipsis overflow-hidden whitespace-nowrap"
               data-testid="pill-category-name"
             >
               {categoryName}
@@ -104,10 +105,10 @@ export default function SurveyControls({
             src={cardQuestionIcon}
             alt=""
             aria-hidden="true"
-            className="w-4 h-4"
+            className="w-5 h-5"
           />
           <span
-            className={`transition-all duration-[${NUMBER_ANIMATION_MS}ms] ${isAnimating ? "opacity-0 scale-90 text-gi-secondary" : "opacity-100 scale-100 text-gi-secondary"}`}
+            className={`transition-all duration-[${NUMBER_ANIMATION_MS}ms] ${isAnimating ? "opacity-0 scale-90 text-gi-primary" : "opacity-100 scale-100 text-gi-primary"}`}
             data-testid="pill-count-number"
           >
             {questionsLeftnCategory}
@@ -119,21 +120,22 @@ export default function SurveyControls({
 
   return (
     <>
-      <div className="flex items-center  gap-1.5" data-testid="survey-controls">
+      <div className="flex items-center justify-between gap-1.5 w-full" data-testid="survey-controls">
         <Button
           type="outlined"
-          variant="secondary"
+          variant="primary"
           isIconButton
           disabled={backDisabled}
           onClick={onPrevious}
-          aria-label="Previous question"
+          aria-label={t`Previous question`}
           data-testid="back-button"
+          className="h-12 w-12 shrink-0"
         >
           <img src={arrowBackIcon} alt="back" aria-hidden="true" />
         </Button>
 
         <div
-          className="flex items-center gap-3  rounded-full border border-gi-dark-ash bg-gi-ash px-4 py-2 ml-3 mr-3 min-w-0"
+          className="flex items-center justify-center gap-3 rounded-full bg-gi-ash px-4 py-2 mx-3 min-w-0 overflow-hidden"
           data-testid="center-pill"
         >
           {renderPill()}
@@ -141,12 +143,13 @@ export default function SurveyControls({
 
         <Button
           type="outlined"
-          variant="secondary"
+          variant="primary"
           isIconButton
           disabled={resetDisabled}
           onClick={() => setModalOpen(true)}
-          aria-label="Reset"
+          aria-label={`Reset`}
           data-testid="reset-button"
+          className="h-12 w-12 shrink-0"
         >
           <img src={resetIcon} alt="reset" aria-hidden="true" />
         </Button>
@@ -166,6 +169,7 @@ export default function SurveyControls({
           actions={
             <Button
               type="primary"
+              className="mt-4"
               variant="danger"
               onClick={() => {
                 onReset();

@@ -5,6 +5,9 @@ const meta = {
   title: "Survey/SurveyControls",
   component: SurveyControls,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
   args: {
     title: "Światopogląd",
     phase: "QUESTION_ANSWER",
