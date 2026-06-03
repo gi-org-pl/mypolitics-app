@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SurveyAnswer } from "./SurveyAnswer";
@@ -151,7 +151,7 @@ describe("<SurveyAnswer />", () => {
   });
 
   describe("when the button is clicked and isDisabled is false", () => {
-    it("calls onClick", async () => {
+    it("calls onClick after animation delay for ripple types", async () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
       render(
@@ -163,7 +163,32 @@ describe("<SurveyAnswer />", () => {
         />,
       );
       await user.click(screen.getByRole("button"));
+      await waitFor(() => expect(onClick).toHaveBeenCalledTimes(1), {
+        timeout: 1000,
+      });
+    });
+
+    it("calls onClick immediately for custom-selectable type", async () => {
+      const user = userEvent.setup();
+      const onClick = vi.fn();
+      render(
+        <SurveyAnswer
+          title="Test"
+          type="custom-selectable"
+          onClick={onClick}
+          isDisabled={false}
+        />,
+      );
+      await user.click(screen.getByRole("button"));
       expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("when onClick is not provided", () => {
+    it("renders without throwing", () => {
+      expect(() =>
+        render(<SurveyAnswer title="Test" type="agree" />),
+      ).not.toThrow();
     });
   });
 

@@ -1,7 +1,6 @@
 import {
   ANSWER_TYPE_CONFIG,
   CLICK_ANIMATION_MS,
-  RIPPLE_FADE_MS,
 } from "./SurveyAnswer.constants";
 import type { SurveyAnswerProps } from "./SurveyAnswer.types";
 import { useClickAnimation } from "./utils/useClickAnimation";
@@ -33,8 +32,13 @@ export function SurveyAnswer({
     ANSWER_TYPE_CONFIG[configKey];
 
   const handleClick = () => {
-    if (!isDisabled) {
+    if (isDisabled || animationPhase) return;
+    if (rippleColor) {
       triggerAnimation();
+      setTimeout(() => {
+        onClick?.();
+      }, CLICK_ANIMATION_MS);
+    } else {
       onClick?.();
     }
   };
@@ -49,13 +53,14 @@ export function SurveyAnswer({
       onClick={handleClick}
       style={{ ...style, borderColor }}
       className={[
-        "relative w-full h-14 flex items-center gap-3 rounded-[24px] px-4 text-left border overflow-hidden",
+        "relative w-full h-14 flex items-center gap-3 rounded-[24px] px-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
         "font-roboto font-bold text-base",
         bgClass,
         textClass,
-        isDisabled
-          ? "cursor-not-allowed saturate-0 opacity-50 pointer-events-none"
+        isDisabled || animationPhase
+          ? "cursor-not-allowed pointer-events-none"
           : "",
+        isDisabled ? "saturate-0 opacity-50" : "",
       ].join(" ")}
     >
       {rippleColor && (
@@ -65,15 +70,14 @@ export function SurveyAnswer({
           style={{
             backgroundColor: rippleColor,
             clipPath:
-              animationPhase === "expanding" || animationPhase === "fading"
+              animationPhase === "expanding"
                 ? "circle(var(--size) at var(--cx) var(--cy))"
                 : "circle(0px at var(--cx) var(--cy))",
-            opacity: animationPhase === "fading" ? 0 : 1,
             transition:
               animationPhase === "expanding"
                 ? `clip-path ${CLICK_ANIMATION_MS}ms ease-out`
                 : animationPhase === "fading"
-                  ? `opacity ${RIPPLE_FADE_MS}ms ease-out`
+                  ? `clip-path ${CLICK_ANIMATION_MS}ms ease-in`
                   : "none",
           }}
         />

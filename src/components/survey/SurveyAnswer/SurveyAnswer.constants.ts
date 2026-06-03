@@ -6,32 +6,31 @@ import Dash from "../../../assets/icons/dash.svg";
 import X from "../../../assets/icons/x.svg";
 import XStrong from "../../../assets/icons/x-strong.svg";
 
-export const CLICK_ANIMATION_MS = 500;
-export const RIPPLE_FADE_MS = 150;
+export const CLICK_ANIMATION_MS = 200;
 
 export const ANSWER_TYPE_CONFIG = {
   "strongly-agree": {
     bgClass: "bg-background",
     textClass: "text-gi-dark-gray",
-    rippleColor: "color-mix(in srgb, var(--color-gi-green) 20%, transparent)",
+    rippleColor: "color-mix(in srgb, var(--color-gi-green) 25%, transparent)",
     iconName: CheckmarkStrong,
   },
   agree: {
     bgClass: "bg-background",
     textClass: "text-gi-dark-gray",
-    rippleColor: "color-mix(in srgb, var(--color-gi-green) 20%, transparent)",
+    rippleColor: "color-mix(in srgb, var(--color-gi-green) 10%, transparent)",
     iconName: Checkmark,
   },
   disagree: {
     bgClass: "bg-background",
     textClass: "text-gi-dark-gray",
-    rippleColor: "color-mix(in srgb, var(--color-gi-red) 20%, transparent)",
+    rippleColor: "color-mix(in srgb, var(--color-gi-red) 10%, transparent)",
     iconName: X,
   },
   "strongly-disagree": {
     bgClass: "bg-background",
     textClass: "text-gi-dark-gray",
-    rippleColor: "color-mix(in srgb, var(--color-gi-red) 20%, transparent)",
+    rippleColor: "color-mix(in srgb, var(--color-gi-red) 25%, transparent)",
     iconName: XStrong,
   },
   custom: {

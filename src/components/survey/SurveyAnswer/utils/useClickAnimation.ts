@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RIPPLE_FADE_MS } from "../SurveyAnswer.constants";
-
+import { CLICK_ANIMATION_MS } from "../SurveyAnswer.constants";
 export interface AnimationCSSProperties extends React.CSSProperties {
   "--cx": string;
   "--cy": string;
@@ -57,13 +56,16 @@ export function useClickAnimation(
     if (animationPhase !== "expanding") return;
 
     const generation = generationRef.current;
-    setAnimationPhase("fading");
     fadeTimeoutRef.current = setTimeout(() => {
-      if (generationRef.current === generation) {
-        setAnimationPhase(false);
-      }
-      fadeTimeoutRef.current = null;
-    }, RIPPLE_FADE_MS);
+      if (generationRef.current !== generation) return;
+      setAnimationPhase("fading");
+      fadeTimeoutRef.current = setTimeout(() => {
+        if (generationRef.current === generation) {
+          setAnimationPhase(false);
+        }
+        fadeTimeoutRef.current = null;
+      }, CLICK_ANIMATION_MS);
+    }, CLICK_ANIMATION_MS);
   };
 
   useEffect(() => {

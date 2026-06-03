@@ -1,10 +1,18 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CLICK_ANIMATION_MS } from "../SurveyAnswer.constants";
 import { useClickAnimation } from "./useClickAnimation";
 
 describe("useClickAnimation()", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({
+      toFake: [
+        "setTimeout",
+        "clearTimeout",
+        "requestAnimationFrame",
+        "cancelAnimationFrame",
+      ],
+    });
   });
 
   afterEach(() => {
@@ -39,7 +47,6 @@ describe("useClickAnimation()", () => {
         result.current.triggerAnimation();
       });
 
-      // flush the requestAnimationFrame
       await act(async () => {
         vi.runAllTimers();
       });
@@ -55,13 +62,16 @@ describe("useClickAnimation()", () => {
       act(() => {
         result.current.triggerAnimation();
       });
-
       await act(async () => {
         vi.runAllTimers();
       });
 
       act(() => {
         result.current.handleRippleTransitionEnd();
+      });
+
+      act(() => {
+        vi.advanceTimersByTime(CLICK_ANIMATION_MS);
       });
 
       expect(result.current.animationPhase).toBe("fading");

@@ -9,7 +9,7 @@ export type SurveyAnswerType =
 export interface SurveyAnswerProps {
   title: string;
   type: SurveyAnswerType;
-  onClick: () => void;
+  onClick?: () => void;
   isDisabled?: boolean;
   isSelected?: boolean;
 }
