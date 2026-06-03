@@ -59,10 +59,9 @@ describe("useAnimatedNumber()", () => {
 
       expect(result.current).toBe(true);
 
-      // Unmount before the timer fires — should not throw "setState on unmounted"
+      
       unmount();
 
-      // Advancing time should not cause errors
       expect(() => {
         act(() => {
           vi.advanceTimersByTime(NUMBER_ANIMATION_MS);
@@ -79,7 +78,7 @@ describe("useAnimatedNumber()", () => {
       );
 
       act(() => {
-        rerender({ value: 5 }); // same value
+        rerender({ value: 5 }); 
       });
 
       expect(result.current).toBe(false);

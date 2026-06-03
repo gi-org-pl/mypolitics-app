@@ -1,5 +1,5 @@
 import { Button, Modal } from "@gi/athena";
-import {Trans } from "@lingui/react/macro";
+import { Trans } from "@lingui/react/macro";
 import { t } from "@lingui/core/macro";
 import { useEffect, useState } from "react";
 import cardQuestionIcon from "@/assets/icons/card-question.svg";
@@ -135,7 +135,7 @@ export default function SurveyControls({
         </Button>
 
         <div
-          className="flex items-center justify-center gap-3 rounded-full bg-gi-ash px-4 py-2 mx-3 min-w-0 overflow-hidden"
+          className="flex items-center justify-center gap-3 rounded-full bg-gi-dark-ash px-4 py-2 mx-3 min-w-0 overflow-hidden"
           data-testid="center-pill"
         >
           {renderPill()}
@@ -147,7 +147,7 @@ export default function SurveyControls({
           isIconButton
           disabled={resetDisabled}
           onClick={() => setModalOpen(true)}
-          aria-label={`Reset`}
+          aria-label={t`Reset`}
           data-testid="reset-button"
           className="h-12 w-12 shrink-0"
         >
