@@ -6,7 +6,7 @@ import Dash from "../../../assets/icons/dash.svg";
 import X from "../../../assets/icons/x.svg";
 import XStrong from "../../../assets/icons/x-strong.svg";
 
-export const CLICK_ANIMATION_MS = 200;
+export const CLICK_ANIMATION_MS = 300;
 
 export const ANSWER_TYPE_CONFIG = {
   "strongly-agree": {
