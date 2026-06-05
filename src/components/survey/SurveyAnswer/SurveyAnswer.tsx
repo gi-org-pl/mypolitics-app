@@ -53,7 +53,7 @@ export function SurveyAnswer({
       onClick={handleClick}
       style={{ ...style, borderColor }}
       className={[
-        "relative w-full h-14 flex items-center gap-3 rounded-[24px] px-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
+        "relative w-full h-14 flex items-center gap-3 rounded-3xl px-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
         "font-roboto font-bold text-base",
         bgClass,
         textClass,
