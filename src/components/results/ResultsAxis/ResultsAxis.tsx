@@ -37,7 +37,7 @@ export const ResultsAxis = ({
         aria-label={t`${side.name}`}
         className={cn(
           "absolute top-1/2 z-50 -translate-y-1/2 transition-all",
-          sideKey === "left" ? "left-[-16px]" : "right-[-16px]",
+          sideKey === "left" ? "-left-4" : "-right-4",
           isInteractive ? "cursor-pointer hover:scale-110 active:scale-95" : "",
         )}
       >
@@ -108,7 +108,7 @@ export const ResultsAxis = ({
   };
 
   const renderKnob = () => {
-    const knobPosition = Math.min(Math.max(leftPercent, 6.5), 93.5);
+    const knobPosition = Math.min(Math.max(leftPercent, 5.0), 95.0);
     const activeSide = left.value >= right.value ? left : right;
 
     return (
