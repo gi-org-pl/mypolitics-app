@@ -18,8 +18,8 @@ msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
 #: src/components/shared/Header/Header.constants.ts:8
-#~ msgid "Debaty"
-#~ msgstr ""
+msgid "Debaty"
+msgstr ""
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
@@ -78,26 +78,27 @@ msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
 #: src/components/shared/Header/Header.tsx:121
-#~ msgid "Otwórz menu nawigacji"
-#~ msgstr ""
+msgid "Otwórz menu nawigacji"
+msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Privacy"
 
 #: src/components/shared/Header/Header.constants.ts:18
-#~ msgid "Quizy"
-#~ msgstr ""
+msgid "Quizy"
+msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Terms"
 
 #: src/components/shared/Header/Header.constants.ts:13
-#~ msgid "Sondaże"
-#~ msgstr ""
+msgid "Sondaże"
+msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
 msgstr ""
 
@@ -106,5 +107,5 @@ msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
 #: src/components/shared/Header/Header.tsx:121
-#~ msgid "Zamknij menu nawigacji"
-#~ msgstr ""
+msgid "Zamknij menu nawigacji"
+msgstr ""

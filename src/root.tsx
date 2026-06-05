@@ -11,7 +11,6 @@ import "./index.css";
 
 i18n.load({ en: enMessages, pl: plMessages });
 i18n.activate(DEFAULT_LANGUAGE);
-
 export default function App() {
   return (
     <html lang="en">
