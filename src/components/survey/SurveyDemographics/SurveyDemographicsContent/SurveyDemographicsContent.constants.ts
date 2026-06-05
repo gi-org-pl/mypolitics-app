@@ -1,85 +1,92 @@
+import type { MessageDescriptor } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+
 export type DemographicsFieldOption = {
   value: string;
-  labelKey: string;
+  labelKey: MessageDescriptor;
 };
 
 export type DemographicsField = {
   control: string;
-  labelKey: string;
+  labelKey: MessageDescriptor;
   full: boolean;
   options: DemographicsFieldOption[];
 };
 
-// Age options: "0" = under 18, then numeric 18–117
 const ageOptions: DemographicsFieldOption[] = [
-  { value: "0", labelKey: "Mniej niż 18" },
+  { value: "0", labelKey: msg`Mniej niż 18` },
   ...Array.from({ length: 100 }, (_, i) => ({
     value: String(i + 18),
-    labelKey: String(i + 18),
+    labelKey: msg`${String(i + 18)}`,
   })),
 ];
 
 export const demographicsData: DemographicsField[] = [
   {
     control: "age",
-    labelKey: "Wiek",
+    labelKey: msg`Wiek`,
     full: false,
     options: ageOptions,
   },
   {
     control: "gender",
-    labelKey: "Płeć",
+    labelKey: msg`Płeć`,
     full: false,
     options: [
-      { value: "male", labelKey: "Mężczyzna" },
-      { value: "female", labelKey: "Kobieta" },
-      { value: "other", labelKey: "Inna płeć" },
+      { value: "male", labelKey: msg`Mężczyzna` },
+      { value: "female", labelKey: msg`Kobieta` },
+      { value: "other", labelKey: msg`Inna płeć` },
     ],
   },
   {
     control: "residenceAreaSize",
-    labelKey: "Wielkość miejsca zamieszkania",
+    labelKey: msg`Wielkość miejsca zamieszkania`,
     full: true,
     options: [
-      { value: "village", labelKey: "Wieś" },
-      { value: "city_below_50k", labelKey: "Miasto poniżej 50 tysięcy mieszkańców" },
-      { value: "city_below_200k", labelKey: "Miasto poniżej 200 tysięcy mieszkańców" },
-      { value: "city_below_500k", labelKey: "Miasto poniżej 500 tysięcy mieszkańców" },
-      { value: "city_over_500k", labelKey: "Miasto powyżej 500 tysięcy mieszkańców" },
+      { value: "village", labelKey: msg`Wieś` },
+      { value: "city_small", labelKey: msg`Miasto do 50 tys. mieszkańców` },
+      { value: "city_medium", labelKey: msg`Miasto 50-250 tys. mieszkańców` },
+      {
+        value: "city_large",
+        labelKey: msg`Miasto powyżej 250 tys. mieszkańców`,
+      },
     ],
   },
   {
     control: "education",
-    labelKey: "Wykształcenie",
+    labelKey: msg`Wykształcenie`,
     full: true,
     options: [
-      { value: "primary", labelKey: "Wykształcenie podstawowe" },
-      { value: "basic_vocational", labelKey: "Wykształcenie zasadnicze zawodowe" },
-      { value: "secondary", labelKey: "Wykształcenie średnie" },
-      { value: "higher", labelKey: "Wykształcenie wyższe" },
+      { value: "primary", labelKey: msg`Wykształcenie podstawowe` },
+      {
+        value: "basic_vocational",
+        labelKey: msg`Wykształcenie zasadnicze zawodowe`,
+      },
+      { value: "secondary", labelKey: msg`Wykształcenie średnie` },
+      { value: "higher", labelKey: msg`Wykształcenie wyższe` },
     ],
   },
   {
     control: "region",
-    labelKey: "Województwo",
+    labelKey: msg`Województwo`,
     full: true,
     options: [
-      { value: "dolnoslaskie", labelKey: "Dolnośląskie" },
-      { value: "kujawsko-pomorskie", labelKey: "Kujawsko-Pomorskie" },
-      { value: "lubelskie", labelKey: "Lubelskie" },
-      { value: "lubuskie", labelKey: "Lubuskie" },
-      { value: "lodzkie", labelKey: "Łódzkie" },
-      { value: "malopolskie", labelKey: "Małopolskie" },
-      { value: "mazowieckie", labelKey: "Mazowieckie" },
-      { value: "opolskie", labelKey: "Opolskie" },
-      { value: "podkarpackie", labelKey: "Podkarpackie" },
-      { value: "podlaskie", labelKey: "Podlaskie" },
-      { value: "pomorskie", labelKey: "Pomorskie" },
-      { value: "slaskie", labelKey: "Śląskie" },
-      { value: "swietokrzyskie", labelKey: "Świętokrzyskie" },
-      { value: "warminsko-mazurskie", labelKey: "Warmińsko-Mazurskie" },
-      { value: "wielkopolskie", labelKey: "Wielkopolskie" },
-      { value: "zachodniopomorskie", labelKey: "Zachodniopomorskie" },
+      { value: "dolnoslaskie", labelKey: msg`Dolnośląskie` },
+      { value: "kujawsko-pomorskie", labelKey: msg`Kujawsko-Pomorskie` },
+      { value: "lubelskie", labelKey: msg`Lubelskie` },
+      { value: "lubuskie", labelKey: msg`Lubuskie` },
+      { value: "lodzkie", labelKey: msg`Łódzkie` },
+      { value: "malopolskie", labelKey: msg`Małopolskie` },
+      { value: "mazowieckie", labelKey: msg`Mazowieckie` },
+      { value: "opolskie", labelKey: msg`Opolskie` },
+      { value: "podkarpackie", labelKey: msg`Podkarpackie` },
+      { value: "podlaskie", labelKey: msg`Podlaskie` },
+      { value: "pomorskie", labelKey: msg`Pomorskie` },
+      { value: "slaskie", labelKey: msg`Śląskie` },
+      { value: "swietokrzyskie", labelKey: msg`Świętokrzyskie` },
+      { value: "warminsko-mazurskie", labelKey: msg`Warmińsko-mazurskie` },
+      { value: "wielkopolskie", labelKey: msg`Wielkopolskie` },
+      { value: "zachodniopomorskie", labelKey: msg`Zachodniopomorskie` },
     ],
   },
 ];

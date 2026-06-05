@@ -6,11 +6,16 @@ export type Demographics = {
   region?: string;
 };
 
-// Internal nullable form state; not exported outside module
 export type DemographicsInput = {
-  age: number | null;
+  age: string | null;
   gender: string | null;
   residenceAreaSize: string | null;
   education: string | null;
-  region?: string;
+  region: string;
+};
+
+export type SurveyDemographicsProps = {
+  onSubmit: (data: DemographicsInput) => void;
+  onSkip: () => void;
+  isLoading?: boolean;
 };

@@ -1,10 +1,11 @@
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { DemographicsInput } from "../SurveyDemographics.types";
 import SurveyDemographicsContent from "./SurveyDemographicsContent";
 
-// Domyślny stan makiety (mock), który przekazujemy do kontrolowanego komponentu
 const defaultMockValue: DemographicsInput = {
   age: null,
   gender: null,
@@ -13,57 +14,53 @@ const defaultMockValue: DemographicsInput = {
   region: "",
 };
 
+beforeEach(() => {
+  i18n.load("pl", {});
+  i18n.activate("pl");
+});
+
+const renderWithI18n = (ui: React.ReactElement) => {
+  return render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>);
+};
+
 describe("<SurveyDemographicsContent />", () => {
   describe("given rendered", () => {
-    it("renders a Select for each demographic field", () => {
+    it("renders custom triggers for each demographic field", () => {
       const handleChange = vi.fn();
-      render(
-        <SurveyDemographicsContent 
-          value={defaultMockValue} 
-          handleChange={handleChange} 
-        />
+      const { container } = renderWithI18n(
+        <SurveyDemographicsContent
+          value={defaultMockValue}
+          handleChange={handleChange}
+          onLearnMoreClick={vi.fn()}
+        />,
       );
 
-      // Elementy select z mapy danych (wiek, płeć, wielkość zamieszkania, wykształcenie, województwo)
-      const triggers = screen.getAllByRole("combobox");
-      expect(triggers).toHaveLength(5);
-    });
-
-    it("renders age, gender, residenceAreaSize, education, and region selects", () => {
-      const handleChange = vi.fn();
-      render(
-        <SurveyDemographicsContent 
-          value={defaultMockValue} 
-          handleChange={handleChange} 
-        />
-      );
-
-      expect(screen.getByLabelText("Wiek")).toBeInTheDocument();
-      expect(screen.getByLabelText("Płeć")).toBeInTheDocument();
-      expect(screen.getByLabelText("Wielkość miejsca zamieszkania")).toBeInTheDocument();
-      expect(screen.getByLabelText("Wykształcenie")).toBeInTheDocument();
-      expect(screen.getByLabelText("Województwo")).toBeInTheDocument();
+      expect(container.querySelector("#age")).toBeInTheDocument();
+      expect(container.querySelector("#gender")).toBeInTheDocument();
+      expect(container.querySelector("#residenceAreaSize")).toBeInTheDocument();
+      expect(container.querySelector("#education")).toBeInTheDocument();
+      expect(container.querySelector("#region")).toBeInTheDocument();
     });
   });
 
-  describe("when a select value changes", () => {
-    it("calls handleChange with the correct control key and value", async () => {
+  describe("when an action item is clicked", () => {
+    it("opens dropdown and calls handleChange with correct parameters", async () => {
       const user = userEvent.setup();
       const handleChange = vi.fn();
-      
-      render(
-        <SurveyDemographicsContent 
-          value={defaultMockValue} 
-          handleChange={handleChange} 
-        />
+
+      const { container } = renderWithI18n(
+        <SurveyDemographicsContent
+          value={defaultMockValue}
+          handleChange={handleChange}
+          onLearnMoreClick={vi.fn()}
+        />,
       );
 
-      // Pobieramy element select powiązany z etykietą "Płeć"
-      const genderSelect = screen.getByLabelText("Płeć");
-      
-      // Dla standardowych/athenowych Selectów najbezpieczniejszą metodą interakcji jest selectOptions
-      // Zakładając, że wartość "male" odpowiada kluczowi lub wartości opcji w stałych
-      await user.selectOptions(genderSelect, "male");
+      const genderTrigger = container.querySelector("#gender") as HTMLElement;
+      await user.click(genderTrigger);
+
+      const maleOption = await screen.findByText("Mężczyzna");
+      await user.click(maleOption);
 
       expect(handleChange).toHaveBeenCalledWith("gender", "male");
     });
