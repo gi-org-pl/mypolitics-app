@@ -12,3 +12,100 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
+msgid "© {currentYear}"
+msgstr "© {currentYear}"
+
+#: src/components/shared/Header/Header.constants.ts:8
+msgid "Debaty"
+msgstr "Debaty"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
+msgid "Generacja Innowacja"
+msgstr "Generacja Innowacja"
+
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
+msgid "myPolitics"
+msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr "mypolitics banner background"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
+
+#: src/components/shared/Footer/Footer.constants.ts:8
+msgid "O nas"
+msgstr "O nas"
+
+#: src/components/shared/Footer/Footer.constants.ts:45
+msgid "Odwiedź nasz kanał na YouTube"
+msgstr "Odwiedź nasz kanał na YouTube"
+
+#: src/components/shared/Footer/Footer.constants.ts:15
+msgid "Odwiedź nasz profil na Facebooku"
+msgstr "Odwiedź nasz profil na Facebooku"
+
+#: src/components/shared/Footer/Footer.constants.ts:40
+msgid "Odwiedź nasz profil na GitHub"
+msgstr "Odwiedź nasz profil na GitHub"
+
+#: src/components/shared/Footer/Footer.constants.ts:25
+msgid "Odwiedź nasz profil na Instagramie"
+msgstr "Odwiedź nasz profil na Instagramie"
+
+#: src/components/shared/Footer/Footer.constants.ts:30
+msgid "Odwiedź nasz profil na LinkedIn"
+msgstr "Odwiedź nasz profil na LinkedIn"
+
+#: src/components/shared/Footer/Footer.constants.ts:35
+msgid "Odwiedź nasz profil na Telegramie"
+msgstr "Odwiedź nasz profil na Telegramie"
+
+#: src/components/shared/Footer/Footer.constants.ts:20
+msgid "Odwiedź nasz profil na X"
+msgstr "Odwiedź nasz profil na X"
+
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
+msgstr "Otwórz menu nawigacji"
+
+#: src/components/shared/Footer/Footer.constants.ts:7
+msgid "Prywatność"
+msgstr "Prywatność"
+
+#: src/components/shared/Header/Header.constants.ts:18
+msgid "Quizy"
+msgstr "Quizy"
+
+#: src/components/shared/Footer/Footer.constants.ts:6
+msgid "Regulamin"
+msgstr "Regulamin"
+
+#: src/components/shared/Header/Header.constants.ts:13
+msgid "Sondaże"
+msgstr "Sondaże"
+
+#: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
+msgid "Strona główna"
+msgstr "Strona główna"
+
+#: src/components/shared/Error404/Error404.tsx:20
+msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
