@@ -15,7 +15,7 @@ export default function SurveyNewsletter({
         <p className="font-bold text-[24px] text-gi-primary w-[308px] h-9 flex items-center">
           <Trans id="Newsletter.Title" message="Zobacz więcej niż wyniki." />
         </p>
-        <p className="font-normal  text-gi-primary w-[308px] h-[72px] flex items-center">
+        <p className="font-normal text-gi-primary w-[308px] h-[72px] flex items-center">
           <Trans
             id="Newsletter.Description"
             message="Poznaj poglądy innych, porównaj się, zdobądź wiedzę o zmianach w społeczeństwie i Twoim otoczeniu!"
@@ -27,7 +27,7 @@ export default function SurveyNewsletter({
         className="w-[340px] h-11 mt-4 mb-4 p-4 rounded-2xl text-gi-primary"
         value={email}
         onChange={onEmailChange}
-        placeholder="twoj@mail.com "
+        placeholder="twoj@mail.com"
       />
       <div className="flex flex-row w-[340px] h-fit gap-2">
         <Checkbox
