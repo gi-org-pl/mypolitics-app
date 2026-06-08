@@ -6,7 +6,7 @@ export interface IdentityInfoElement {
   shortDescription: string;
   description: string;
   imageUrl: string;
-  agreementPercent: number; // 0–100
+  agreementPercent: number;
   slogan: string;
 }
 
