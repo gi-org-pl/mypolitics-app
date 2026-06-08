@@ -20,6 +20,9 @@ msgstr "© {currentYear}"
 #: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:95
 msgid "D"
 msgstr "D"
+#: src/components/shared/Header/Header.constants.ts:8
+msgid "Debaty"
+msgstr "Debaty"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
@@ -88,6 +91,9 @@ msgstr "Odwiedź nasz profil na X"
 #: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:7
 msgid "powinien"
 msgstr "powinien"
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
+msgstr "Otwórz menu nawigacji"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -96,6 +102,9 @@ msgstr "Prywatność"
 #: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:89
 msgid "Q"
 msgstr "Q"
+#: src/components/shared/Header/Header.constants.ts:18
+msgid "Quizy"
+msgstr "Quizy"
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
@@ -104,8 +113,12 @@ msgstr "Regulamin"
 #: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
 msgid "Rozwiń wyjaśnienie"
 msgstr "Rozwiń wyjaśnienie"
+#: src/components/shared/Header/Header.constants.ts:13
+msgid "Sondaże"
+msgstr "Sondaże"
 
 #: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
 msgstr "Strona główna"
 
@@ -120,3 +133,6 @@ msgstr "Wybierz odpowiedź"
 #: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
 msgid "Zwiń wyjaśnienie"
 msgstr "Zwiń wyjaśnienie"
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
