@@ -24,6 +24,9 @@ msgstr "© {currentYear}"
 #: src/components/survey/SurveyControls/SurveyControls.tsx:161
 msgid "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
+#: src/components/shared/Header/Header.constants.ts:8
+msgid "Debaty"
+msgstr "Debaty"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
@@ -84,10 +87,17 @@ msgstr "Odwiedź nasz profil na X"
 #: src/components/survey/SurveyControls/SurveyControls.tsx:75
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
+msgstr "Otwórz menu nawigacji"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
+
+#: src/components/shared/Header/Header.constants.ts:18
+msgid "Quizy"
+msgstr "Quizy"
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
@@ -100,11 +110,19 @@ msgstr "Resetuj quiz"
 #: src/components/survey/SurveyControls/SurveyControls.tsx:159
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
+#: src/components/shared/Header/Header.constants.ts:13
+msgid "Sondaże"
+msgstr "Sondaże"
 
 #: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
 msgstr "Strona główna"
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
