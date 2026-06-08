@@ -169,7 +169,6 @@ export default function SurveyControls({
           actions={
             <Button
               type="primary"
-              className="mt-4"
               variant="danger"
               onClick={() => {
                 onReset();
