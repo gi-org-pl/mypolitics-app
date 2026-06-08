@@ -2,6 +2,8 @@ import { Avatar, Button } from "@gi/athena";
 import { Trans } from "@lingui/react/macro";
 import MEGAPHONE_ICON from "@/assets/icons/megaphone.svg";
 import {
+  AGREEMENT_MAX_PERCENT,
+  AGREEMENT_MIN_PERCENT,
   AGREEMENT_RING_CENTER,
   AGREEMENT_RING_RADIUS,
   AGREEMENT_RING_SIZE,
@@ -14,13 +16,16 @@ import {
 } from "./utils/getAgreementLevel";
 
 const agreementLevelClassNames: Record<AgreementLevel, string> = {
-  high: "text-gi-green stroke-gi-green",
-  mid: "text-gi-orange stroke-gi-orange",
-  low: "text-gi-red stroke-gi-red",
+  high: "text-gi-green",
+  mid: "text-gi-orange",
+  low: "text-gi-red",
 };
 
 function clampPercent(percent: number) {
-  return Math.min(100, Math.max(0, percent));
+  return Math.min(
+    AGREEMENT_MAX_PERCENT,
+    Math.max(AGREEMENT_MIN_PERCENT, percent),
+  );
 }
 
 export function ResultsHeader({
@@ -37,31 +42,37 @@ export function ResultsHeader({
   const roundedPercent = Math.round(clampedPercent);
   const agreementLevel = getAgreementLevel(clampedPercent);
   const circumference = 2 * Math.PI * AGREEMENT_RING_RADIUS;
-  const strokeDashoffset = circumference * (1 - clampedPercent / 100);
-  const shouldRenderAction = Boolean(actionLabel && onActionClick);
+  const strokeDashoffset =
+    circumference * (1 - clampedPercent / AGREEMENT_MAX_PERCENT);
+  const shouldRenderActionButton = Boolean(actionLabel && onActionClick);
   const shortActionLabel = actionShortLabel ?? actionLabel;
 
   return (
     <section
       id={id}
-      className="overflow-hidden rounded-lg bg-gi-dark-primary text-white"
+      className="w-full overflow-hidden bg-gi-dark-primary text-white"
     >
-      <div className="flex items-center justify-between gap-4 p-4 md:justify-start md:p-6">
+      <div className="flex min-h-[90px] items-center justify-between gap-2.5 bg-gi-dark-primary p-4 md:justify-start md:gap-5 md:p-6">
         <div className="min-w-0 md:order-2">
-          <h2 className="text-2xl font-bold leading-tight">{name}</h2>
+          <h2 className="text-2xl font-bold leading-[150%]">{name}</h2>
           <p
-            className={`mt-1 text-base font-bold leading-6 ${agreementLevelClassNames[agreementLevel]}`}
+            className={`text-base font-bold leading-[150%] ${agreementLevelClassNames[agreementLevel]}`}
           >
-            {roundedPercent}% <Trans>pewności</Trans>
+            <Trans>{roundedPercent}% pewności</Trans>
           </p>
         </div>
 
         <div className="relative size-16 shrink-0 md:order-1">
-          <Avatar src={imageUrl} alt={name} size="large" className="size-14" />
+          <Avatar
+            src={imageUrl}
+            alt={name}
+            size="large"
+            className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2"
+          />
 
           <svg
             viewBox={`0 0 ${AGREEMENT_RING_SIZE} ${AGREEMENT_RING_SIZE}`}
-            className="absolute inset-0 size-16 -rotate-90"
+            className="pointer-events-none absolute inset-0 z-10 size-16 -rotate-90"
             aria-hidden="true"
           >
             <circle
@@ -78,6 +89,7 @@ export function ResultsHeader({
               cy={AGREEMENT_RING_CENTER}
               r={AGREEMENT_RING_RADIUS}
               fill="none"
+              stroke="currentColor"
               strokeWidth={AGREEMENT_RING_STROKE_WIDTH}
               strokeLinecap="round"
               strokeDasharray={circumference}
@@ -88,14 +100,14 @@ export function ResultsHeader({
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-4 border-t border-white/10 bg-gi-primary p-4 md:p-6">
+      <div className="flex min-h-[43px] items-center justify-between gap-2 border-t border-white/10 bg-gi-dark-primary px-4 py-3 md:min-h-20 md:gap-4 md:px-6 md:py-4">
         <div className="min-w-0">
-          <div className="hidden items-center gap-2 text-sm font-bold text-white/70 md:flex">
+          <div className="hidden items-center gap-2 text-base font-bold leading-[120%] text-white/10 md:flex">
             <img
               src={MEGAPHONE_ICON}
               alt=""
               aria-hidden="true"
-              className="size-4 opacity-60"
+              className="size-4"
             />
             <span>
               <Trans>Hasło</Trans>
@@ -111,18 +123,24 @@ export function ResultsHeader({
           src={MEGAPHONE_ICON}
           alt=""
           aria-hidden="true"
-          className="size-5 shrink-0 opacity-30 md:hidden"
+          className="size-4 shrink-0 opacity-30 md:hidden"
         />
 
-        {shouldRenderAction ? (
+        {shouldRenderActionButton ? (
           <Button
             type="ghost"
             variant="primary"
-            size="small"
+            size="regular"
             onClick={onActionClick}
+            aria-label={actionLabel}
+            className="bg-white/10 text-white hover:bg-white/20"
           >
-            <span className="hidden sm:inline">{actionLabel}</span>
-            <span className="sm:hidden">{shortActionLabel}</span>
+            <span aria-hidden="true" className="hidden sm:inline">
+              {actionLabel}
+            </span>
+            <span aria-hidden="true" className="sm:hidden">
+              {shortActionLabel}
+            </span>
           </Button>
         ) : null}
       </div>

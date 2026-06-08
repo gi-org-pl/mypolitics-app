@@ -1,11 +1,6 @@
-import { i18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { DEFAULT_LANGUAGE } from "@/constants/common";
-import { messages as enMessages } from "@/locales/en/messages";
-import { messages as plMessages } from "@/locales/pl/messages";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { ResultsHeader } from "./ResultsHeader";
 
 const defaultProps = {
@@ -14,13 +9,6 @@ const defaultProps = {
   imageUrl: "result-image.png",
   agreementPercent: 76,
 };
-
-function renderWithI18n(children: ReactNode) {
-  i18n.load({ en: enMessages, pl: plMessages });
-  i18n.activate(DEFAULT_LANGUAGE);
-
-  return render(<I18nProvider i18n={i18n}>{children}</I18nProvider>);
-}
 
 describe("<ResultsHeader />", () => {
   describe("given name, slogan and imageUrl", () => {
@@ -160,10 +148,10 @@ describe("<ResultsHeader />", () => {
   describe("given an id", () => {
     it("applies the id to the root element", () => {
       const { container } = renderWithI18n(
-        <ResultsHeader {...defaultProps} id="result" />,
+        <ResultsHeader {...defaultProps} id="result-header" />,
       );
 
-      expect(container.firstChild).toHaveAttribute("id", "result");
+      expect(container.firstChild).toHaveAttribute("id", "result-header");
     });
   });
 });

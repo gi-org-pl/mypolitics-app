@@ -7,7 +7,7 @@ import { getAgreementLevel } from "./getAgreementLevel";
 
 describe("getAgreementLevel()", () => {
   it('returns "high" above the high threshold', () => {
-    expect(getAgreementLevel(AGREEMENT_HIGH_THRESHOLD + 1)).toBe("high");
+    expect(getAgreementLevel(76)).toBe("high");
   });
 
   it('returns "mid" between the thresholds', () => {
@@ -15,11 +15,12 @@ describe("getAgreementLevel()", () => {
   });
 
   it('returns "low" below the low threshold', () => {
-    expect(getAgreementLevel(AGREEMENT_LOW_THRESHOLD - 1)).toBe("low");
+    expect(getAgreementLevel(12)).toBe("low");
   });
 
   it("handles the boundary values", () => {
     expect(getAgreementLevel(AGREEMENT_HIGH_THRESHOLD)).toBe("high");
     expect(getAgreementLevel(AGREEMENT_LOW_THRESHOLD)).toBe("mid");
+    expect(getAgreementLevel(AGREEMENT_LOW_THRESHOLD - 1)).toBe("low");
   });
 });

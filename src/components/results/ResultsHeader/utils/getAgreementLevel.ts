@@ -5,14 +5,14 @@ import {
 
 export type AgreementLevel = "high" | "mid" | "low";
 
-export function getAgreementLevel(percent: number): AgreementLevel {
-  if (percent >= AGREEMENT_HIGH_THRESHOLD) {
+export function getAgreementLevel(agreementPercent: number): AgreementLevel {
+  if (agreementPercent >= AGREEMENT_HIGH_THRESHOLD) {
     return "high";
   }
 
-  if (percent < AGREEMENT_LOW_THRESHOLD) {
-    return "low";
+  if (agreementPercent >= AGREEMENT_LOW_THRESHOLD) {
+    return "mid";
   }
 
-  return "mid";
+  return "low";
 }
