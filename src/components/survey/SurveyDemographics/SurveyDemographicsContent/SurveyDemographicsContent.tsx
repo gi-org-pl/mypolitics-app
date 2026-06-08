@@ -28,21 +28,26 @@ const SurveyDemographicsContent = ({
     const labelText = i18n._(field.labelKey);
 
     return (
-      <div key={field.control} className={`${wrapperClassName} grid`}>
+      <div
+        key={field.control}
+        className={`${wrapperClassName} grid`}
+      >
         <Select
           id={field.control}
           aria-label={labelText}
           placeholder={
             selectedOption ? i18n._(selectedOption.labelKey) : labelText
           }
-          className="w-full h-12 bg-white border border-[#CBD5E0] rounded-full px-5 text-[#0f3752] font-semibold text-sm"
+          className="w-full h-13 bg-white border border-gi-dark-ash rounded-full px-5 text-gi-primary font-semibold "
         >
-          <ActionList
-            items={field.options.map((option) => ({
-              label: i18n._(option.labelKey),
-              onClick: () => handleChange(field.control, option.value),
-            }))}
-          />
+          <div className="[&_*]:text-base">
+            <ActionList
+              items={field.options.map((option) => ({
+                label: i18n._(option.labelKey),
+                onClick: () => handleChange(field.control, option.value),
+              }))}
+            />
+          </div>
         </Select>
       </div>
     );
@@ -50,27 +55,24 @@ const SurveyDemographicsContent = ({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="bg-[#D5DEE2] rounded-[24px] p-5 shadow-sm flex flex-col gap-3">
+      <div className="bg-gi-ash rounded-[24px] p-5 shadow-sm flex flex-col gap-3">
         <div className="flex justify-between items-center w-full">
-          <h2 className="text-2xl font-bold text-[#2d565e] tracking-tight">
+          <h2 className="text-2xl font-bold text-gi-primary tracking-tight">
             <I18nProvider i18n={i18n}>
               <Trans id="survey.demographics.title">Twoja tożsamość</Trans>
             </I18nProvider>
           </h2>
           <div className="flex items-center shrink-0 isolate pl-2">
-            <div className="w-16 h-16 rounded-full bg-white shadow-sm border-2 border-white overflow-hidden z-10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-background shadow-sm overflow-hidden z-10 flex items-center justify-center">
               <img src="/src/assets/icons/social-patriot.svg" alt="Mężczyzna" />
             </div>
-            <div className="w-16 h-16 rounded-full bg-white shadow-sm border-2 border-white overflow-hidden z-20 -ml-4 flex items-center justify-center">
-              <img
-                src="/src/assets/icons/national-egalitarian.svg"
-                alt="Kobieta"
-              />
+            <div className="w-16 h-16 rounded-full bg-background shadow-sm overflow-hidden z-20 -ml-6 flex items-center justify-center">
+              <img src="/src/assets/icons/national-egalitarian.svg" alt="Kobieta"/>
             </div>
           </div>
         </div>
-        <div className="border-b border-[#BCCAD1] w-full" />
-        <p className="text-base font-medium leading-snug text-[#2d565e]">
+        <div className="border-b border-gi-dark-ash w-full" />
+        <p className="text-base font-medium leading-snug text-gi-secondary">
           <I18nProvider i18n={i18n}>
             <Trans id="survey.demographics.subtitle">
               W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości
@@ -79,8 +81,8 @@ const SurveyDemographicsContent = ({
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 w-full">
-        <div className="grid grid-cols-2 gap-3 w-full">
+      <div className="flex flex-col gap-2 w-full">
+        <div className="grid grid-cols-2 gap-2 w-full">
           {demographicsData
             .filter((f) => f.control === "age" || f.control === "gender")
             .map((field) => renderField(field, "min-w-0 w-full"))}
@@ -91,8 +93,8 @@ const SurveyDemographicsContent = ({
           .map((field) => renderField(field, "w-full"))}
       </div>
 
-      <div className="bg-[#EDF2F7] rounded-[24px] p-4 text-center">
-        <p className="text-base text-[#2d565e] font-medium leading-relaxed">
+      <div className="bg-gi-ash rounded-[24px] p-4 text-left">
+        <p className="text-base text-gi-secondary font-medium leading-relaxed">
           <I18nProvider i18n={i18n}>
             <Trans id="survey.demographics.footer">
               Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!{" "}
@@ -100,7 +102,7 @@ const SurveyDemographicsContent = ({
           </I18nProvider>
           <button
             type="button"
-            className="underline cursor-pointer text-[#2B6CB0] font-semibold hover:text-[#2C5282]"
+            className="underline cursor-pointer text-gi-secondary font-base hover:text-gi-secondary-hover"
             onClick={onLearnMoreClick}
           >
             <I18nProvider i18n={i18n}>
