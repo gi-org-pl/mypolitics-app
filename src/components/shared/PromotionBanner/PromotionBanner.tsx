@@ -28,33 +28,35 @@ export const PromotionBanner = ({
   }
 
   return (
-    <a
-      aria-label={activePromotion.name}
-      href={activePromotion.url}
-      rel="noopener noreferrer"
-      target="_blank"
-      className="w-full"
-    >
-      <div className="relative w-full overflow-hidden rounded-2xl">
-        <img
-          src={activePromotion.imageUrl.mobile}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="block w-full h-auto object-cover md:hidden"
-        />
-        <img
-          src={activePromotion.imageUrl.tablet}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="hidden w-full h-auto object-cover md:block lg:hidden"
-        />
-        <img
-          src={activePromotion.imageUrl.desktop}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="hidden w-full h-auto object-cover lg:block"
-        />
-      </div>
-    </a>
+    <div className="mx-auto max-w-[1200px] px-4">
+      <a
+        aria-label={activePromotion.name}
+        href={activePromotion.url}
+        rel="noopener noreferrer"
+        target="_blank"
+        className="block w-full"
+      >
+        <div className="relative w-full overflow-hidden rounded-2xl">
+          <img
+            src={activePromotion.imageUrl.mobile}
+            alt={activePromotion.name}
+            title={activePromotion.name}
+            className="block w-full h-auto object-cover md:hidden"
+          />
+          <img
+            src={activePromotion.imageUrl.tablet}
+            alt={activePromotion.name}
+            title={activePromotion.name}
+            className="hidden w-full h-auto object-cover md:block lg:hidden"
+          />
+          <img
+            src={activePromotion.imageUrl.desktop}
+            alt={activePromotion.name}
+            title={activePromotion.name}
+            className="hidden w-full h-auto object-cover lg:block"
+          />
+        </div>
+      </a>
+    </div>
   );
 };

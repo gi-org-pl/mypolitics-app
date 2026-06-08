@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
 import { PATHS } from "@/constants/paths";
-import Header from "./Header";
+import { Header } from "./Header";
 import type { HeaderStoryProps } from "./Header.types";
 
 const HeaderStory = ({ initialPath }: HeaderStoryProps) => (
