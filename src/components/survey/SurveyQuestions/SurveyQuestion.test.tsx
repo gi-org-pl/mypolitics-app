@@ -62,8 +62,6 @@ describe("Komponent SurveyQuestion", () => {
       fireEvent.click(toggle);
       expect(screen.getByTestId("explanation-content")).toBeVisible();
 
-      fireEvent.click(toggle);
-      expect(screen.queryByTestId("explanation-content")).not.toBeVisible();
     });
   });
 

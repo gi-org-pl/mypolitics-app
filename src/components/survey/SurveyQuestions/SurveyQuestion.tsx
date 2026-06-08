@@ -52,13 +52,13 @@ function ChevronIcon({ open }: { open: boolean }) {
       height="22"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#ffffff"
+      stroke="currentColor"
       strokeWidth="3.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       style={{
         transform: open ? "rotate(180deg)" : "rotate(0deg)",
-        transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)",
       }}
     >
       <polyline points="6 9 12 15 18 9" />
@@ -73,60 +73,91 @@ interface DescriptionPanelProps {
 
 function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPermanentlyExpanded, setIsPermanentlyExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [previewHeight, setPreviewHeight] = useState(68);
+  const [collapsedHeight, setCollapsedHeight] = useState<number | null>(null);
+  const [expandedHeight, setExpandedHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    if (contentRef.current) {
-      const previewEl = contentRef.current.querySelector(".preview-text");
-      if (previewEl) {
-        setPreviewHeight(previewEl.scrollHeight + 32);
-      }
+    if (!contentRef.current) return;
+
+    const previewEl = contentRef.current.querySelector<HTMLElement>(".preview-text");
+    const fullEl = contentRef.current.querySelector<HTMLElement>(".full-text");
+
+    if (previewEl) setCollapsedHeight(previewEl.scrollHeight + 28);
+    if (fullEl) setExpandedHeight(fullEl.scrollHeight + 28);
+  }, [preview, description]);
+
+  const handleToggle = () => {
+    if (!isPermanentlyExpanded) {
+      setIsOpen(true);
+      setIsPermanentlyExpanded(true);
     }
-  }, [preview]);
+  };
+
+  const currentHeight = isOpen ? (expandedHeight ?? "auto") : (collapsedHeight ?? "auto");
 
   return (
-    <div className="w-[calc(100%-2.5rem)] mx-auto mt-[-32px] z-0 rounded-b-3xl shadow-xl border border-teal-900/40 border-t-0 bg-teal-950 overflow-hidden">
+    <div
+      className="w-[90%] mx-auto mt-[-20px] pt-4 z-0 rounded-b-2xl shadow-md border border-t-0 overflow-hidden bg-[var(--color-gi-primary)]"
+      style={{
+        borderColor: "color-mix(in srgb, var(--color-gi-secondary) 30%, transparent)",
+      }}
+    >
       <div
-        className="transition-all duration-500 ease-in-out px-5 pt-4 pb-5"
-        style={{ maxHeight: isOpen ? "1200px" : `${previewHeight}px` }}
+        className="overflow-hidden"
+        style={{
+          height: typeof currentHeight === "number" ? `${currentHeight}px` : currentHeight,
+          transition: "height 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
       >
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0 relative" ref={contentRef}>
-            <div
-              className="preview-text text-sm text-teal-100/75 transition-opacity duration-300 whitespace-pre-wrap leading-relaxed font-normal"
-              style={{
-                opacity: isOpen ? 0 : 1,
-                position: isOpen ? "absolute" : "relative",
-                pointerEvents: isOpen ? "none" : "auto",
-              }}
-            >
-              {preview}
+        <div className="px-4 pt-3 pb-4" ref={contentRef}>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0 relative">
+              <div
+                className="preview-text text-xs leading-normal font-normal whitespace-pre-wrap"
+                style={{
+                  color: "color-mix(in srgb, var(--color-gi-dark-ash) 75%, transparent)",
+                  opacity: isOpen ? 0 : 1,
+                  position: isOpen ? "absolute" : "relative",
+                  pointerEvents: isOpen ? "none" : "auto",
+                  transition: isOpen ? "opacity 200ms ease" : "opacity 200ms ease 200ms",
+                }}
+              >
+                {preview}
+              </div>
+
+              <div
+                data-testid="explanation-content"
+                className="full-text text-xs leading-normal font-normal whitespace-pre-wrap text-white"
+                style={{
+                  opacity: isOpen ? 1 : 0,
+                  pointerEvents: isOpen ? "auto" : "none",
+                  transition: isOpen ? "opacity 200ms ease 200ms" : "opacity 200ms ease",
+                }}
+              >
+                {description}
+              </div>
             </div>
 
-            <div
-              data-testid="explanation-content"
-              className="whitespace-pre-wrap text-sm text-white font-normal leading-relaxed transition-opacity duration-500"
-              style={{
-                opacity: isOpen ? 1 : 0,
-                pointerEvents: isOpen ? "auto" : "none",
-              }}
-            >
-              {description}
-            </div>
-          </div>
-
-          <div className="pt-1 shrink-0">
-            <Button
-              variant="secondary"
-              className="!w-9 !h-9 !p-0 flex items-center justify-center bg-transparent hover:bg-transparent rounded-xl transition-all duration-200"
-              onClick={() => setIsOpen((prev) => !prev)}
-              aria-label={isOpen ? t`Zwiń wyjaśnienie` : t`Rozwiń wyjaśnienie`}
-              aria-expanded={isOpen}
-              data-testid="explanation-toggle"
-            >
-              <ChevronIcon open={isOpen} />
-            </Button>
+        
+            {!isPermanentlyExpanded && (
+              <div className="shrink-0 text-white">
+                <Button
+                  variant="secondary"
+                  className="!w-7 !h-7 !p-0 flex items-center justify-center bg-transparent hover:bg-transparent rounded-lg"
+                  style={{ color: "inherit" }}
+                  onClick={handleToggle}
+                  aria-label={t`Rozwiń wyjaśnienie`}
+                  aria-expanded={isOpen}
+                  data-testid="explanation-toggle"
+                >
+                  <div style={{ transform: "scale(0.85)" }}>
+                    <ChevronIcon open={isOpen} />
+                  </div>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -161,9 +192,18 @@ export const SurveyQuestion: React.FC<SurveyQuestionProps> = ({
   );
 
   return (
-    <div className="flex flex-col w-full max-w-2xl gap-4" data-testid="survey-question">
-      <div className="rounded-3xl p-6 shadow-xl border border-teal-800/20 z-10 relative bg-teal-900">
-        <p className="text-white text-xl font-bold leading-snug" data-testid="question-text">
+    <div className="flex flex-col w-full max-w-2xl" data-testid="survey-question">
+      <div
+        className="rounded-3xl px-6 py-5 shadow-xl border z-10 relative min-h-[160px] flex items-center"
+        style={{
+          backgroundColor: "var(--color-gi-light-primary)",
+          borderColor: "color-mix(in srgb, var(--color-gi-secondary) 25%, transparent)",
+        }}
+      >
+        <p
+          className="text-white text-xl font-bold leading-snug"
+          data-testid="question-text"
+        >
           {renderWithUnderscores(finalizedQuestion)}
         </p>
       </div>
@@ -172,8 +212,11 @@ export const SurveyQuestion: React.FC<SurveyQuestionProps> = ({
         <DescriptionPanel description={finalizedDescription} preview={preview} />
       )}
 
-      <div className="mt-2 flex flex-col gap-2" data-testid="answer-selector">
-        <span className="text-sm font-medium text-teal-900">{t`Wybierz odpowiedź`}:</span>
+      <div
+        className="flex flex-col gap-2"
+        style={{ marginTop: finalizedDescription && preview ? "16px" : "16px" }}
+        data-testid="answer-selector"
+      >
         <ButtonSelect
           options={options}
           selectedOptionId={selectedOptionId ?? ""}
