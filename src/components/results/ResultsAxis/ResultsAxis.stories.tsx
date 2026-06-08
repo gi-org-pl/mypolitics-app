@@ -23,13 +23,13 @@ type Story = StoryObj<typeof ResultsAxis>;
 export const Default: Story = {
   args: {
     left: {
-      name: "Progresywizm",
+      name: "Left",
       iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=left",
       value: 70,
       color: "gi-blue",
     },
     right: {
-      name: "Konserwatyzm",
+      name: "Right",
       iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=right",
       value: 20,
       color: "gi-red",
@@ -41,13 +41,13 @@ export const Default: Story = {
 export const StrongLean: Story = {
   args: {
     left: {
-      name: "Liberalizm",
+      name: "Left",
       iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=lib",
       value: 70,
       color: "gi-blue",
     },
     right: {
-      name: "Autorytaryzm",
+      name: "Right",
       iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=auth",
       value: 10,
       color: "gi-red",
@@ -94,7 +94,18 @@ export const FullOneSide: Story = {
 
 export const Muted: Story = {
   args: {
-    ...Default.args,
+    left: {
+      name: "Left",
+      iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=empty",
+      value: 70,
+      color: "gi-gray",
+    },
+    right: {
+      name: "Right",
+      iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=full",
+      value: 15,
+      color: "gi-green",
+    },
     isHighlighted: false,
   },
 };

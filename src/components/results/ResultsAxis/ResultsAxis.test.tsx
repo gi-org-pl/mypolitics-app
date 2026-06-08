@@ -52,8 +52,8 @@ describe("<ResultsAxis />", () => {
       const rightSide = container.querySelector(
         '[aria-label="Right"]',
       ) as HTMLElement;
-      expect(leftSide.style.width).toBe("75%");
-      expect(rightSide.style.width).toBe("25%");
+      expect(leftSide.style.width).toBe("72.5%");
+      expect(rightSide.style.width).toBe("27.5%");
     });
   });
 

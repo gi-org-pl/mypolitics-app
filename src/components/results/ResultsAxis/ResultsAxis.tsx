@@ -16,6 +16,8 @@ export const ResultsAxis = ({
     right.value,
   );
 
+  const visualLeftPercent = 5 + leftPercent * 0.9;
+
   const highestValue = Math.max(left.value, right.value);
 
   const isInteractive = Boolean(onSideClick);
@@ -25,8 +27,7 @@ export const ResultsAxis = ({
     const percentage = sideKey === "left" ? leftPercent : rightPercent;
     const isZero = percentage === 0;
 
-    const bgClass =
-      isHighlighted && !isZero ? `bg-${side.color}` : "bg-gi-gray";
+    const color = isHighlighted && !isZero ? side.color : "gi-gray";
 
     const Component = isInteractive ? "button" : "div";
 
@@ -45,9 +46,9 @@ export const ResultsAxis = ({
           src={side.iconUrl}
           alt={side.name}
           size="small"
+          color={color}
           className={cn(
             "size-8 border-none shadow-sm",
-            bgClass,
             sideKey === "right" && "[&_img]:scale-x-[-1]",
           )}
         />
@@ -58,8 +59,8 @@ export const ResultsAxis = ({
   const renderSegment = (sideKey: AxisSideKey) => {
     const side = sideKey === "left" ? left : right;
     const percentage = sideKey === "left" ? leftPercent : rightPercent;
-
-    if (percentage === 0) return null;
+    const visualWidth =
+      sideKey === "left" ? visualLeftPercent : 100 - visualLeftPercent;
 
     const segmentBgClass = isHighlighted ? "" : "bg-gi-ash";
     const labelColorClass = isHighlighted ? "text-white" : "text-gi-dark-gray";
@@ -77,38 +78,40 @@ export const ResultsAxis = ({
         aria-label={t`${side.name}`}
         className={cn(
           "relative flex h-full items-center justify-center transition-all",
-          sideKey === "left" ? "rounded-l-full" : "rounded-r-full",
           isInteractive
             ? "cursor-pointer hover:brightness-95 focus-visible:z-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-primary"
             : "cursor-default",
         )}
-        style={{ width: `${percentage}%` }}
+        style={{ width: `${visualWidth}%` }}
       >
-        <div
-          className={cn(
-            "absolute inset-0 -z-10 h-full w-full",
-            segmentBgClass,
-            sideKey === "left" ? "rounded-l-full" : "rounded-r-full",
-          )}
-          style={segmentBgStyle}
-        />
+        {percentage > 0 && (
+          <>
+            <div
+              className={cn(
+                "absolute inset-0 -z-10 h-full w-full",
+                segmentBgClass,
+              )}
+              style={segmentBgStyle}
+            />
 
-        {(percentage >= 25 || highestValue === side.value) && (
-          <span
-            className={cn(
-              "z-10 text-[0.75rem] font-bold leading-none",
-              labelColorClass,
+            {(percentage >= 25 || highestValue === side.value) && (
+              <span
+                className={cn(
+                  "z-10 text-[0.75rem] font-bold leading-none",
+                  labelColorClass,
+                )}
+              >
+                {Math.round(percentage)}%
+              </span>
             )}
-          >
-            {Math.round(percentage)}%
-          </span>
+          </>
         )}
       </Component>
     );
   };
 
   const renderKnob = () => {
-    const knobPosition = Math.min(Math.max(leftPercent, 5.0), 95.0);
+    const knobPosition = visualLeftPercent;
     const activeSide = left.value >= right.value ? left : right;
 
     return (
@@ -149,8 +152,10 @@ export const ResultsAxis = ({
           !isHighlighted && "shadow-[0_0_0_1px_var(--color-gi-ash)]",
         )}
       >
-        {renderSegment("left")}
-        {renderSegment("right")}
+        <div className="absolute inset-0 flex overflow-hidden rounded-full">
+          {renderSegment("left")}
+          {renderSegment("right")}
+        </div>
         {renderIcon("left")}
         {renderIcon("right")}
         {renderKnob()}
