@@ -112,6 +112,7 @@ msgstr ""
 
 #: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:21
 msgid "Wesprzyj naszą działalność:"
+msgstr ""
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
