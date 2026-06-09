@@ -39,7 +39,7 @@ const SurveyDemographics = ({
     formValues.education !== null;
 
   return (
-    <div className="w-full max-w-[343px] mx-auto flex flex-col gap-6">
+    <div className="w-full max-w-85 mx-auto flex flex-col gap-6">
       <SurveyDemographicsContent
         value={formValues}
         handleChange={handleFieldChange}
@@ -71,11 +71,9 @@ const SurveyDemographics = ({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="p-2 flex flex-col gap-2">
-          <p className="text-base font-bold text-gi-primary text-left">
-            <Trans>
-              Zakres wykorzystania danych
-            </Trans>
+        <div className="flex flex-col gap-2">
+          <p className="text-lg font-bold text-gi-primary text-left">
+            <Trans>Zakres wykorzystania danych</Trans>
           </p>
           <p className="text-sm text-gi-dark-gray">
             <Trans>
@@ -86,9 +84,7 @@ const SurveyDemographics = ({
             </Trans>
           </p>
           <p className="text-sm text-gi-dark-gray font-bold">
-            <Trans>
-              Twoje dane pozostaną całkowicie anonimowe.
-            </Trans>
+            <Trans>Twoje dane pozostaną całkowicie anonimowe.</Trans>
           </p>
         </div>
       </Modal>

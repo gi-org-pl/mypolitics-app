@@ -28,10 +28,7 @@ const SurveyDemographicsContent = ({
     const labelText = i18n._(field.labelKey);
 
     return (
-      <div
-        key={field.control}
-        className={`${wrapperClassName} grid`}
-      >
+      <div key={field.control} className={`${wrapperClassName} grid`}>
         <Select
           id={field.control}
           aria-label={labelText}
@@ -40,7 +37,7 @@ const SurveyDemographicsContent = ({
           }
           className="w-full h-13 bg-white border border-gi-dark-ash rounded-full px-5 text-gi-primary font-semibold "
         >
-          <div className="[&_*]:text-base">
+          <div className="**:text-base">
             <ActionList
               items={field.options.map((option) => ({
                 label: i18n._(option.labelKey),
@@ -55,7 +52,7 @@ const SurveyDemographicsContent = ({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="bg-gi-ash rounded-[24px] p-5 shadow-sm flex flex-col gap-3">
+      <div className="bg-gi-ash rounded-3xl p-5 shadow-sm flex flex-col gap-3">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-2xl font-bold text-gi-primary tracking-tight">
             <I18nProvider i18n={i18n}>
@@ -93,7 +90,7 @@ const SurveyDemographicsContent = ({
           .map((field) => renderField(field, "w-full"))}
       </div>
 
-      <div className="bg-gi-ash rounded-[24px] p-4 text-left">
+      <div className="bg-gi-ash rounded-3xl p-4 text-left">
         <p className="text-base text-gi-secondary font-medium leading-relaxed">
           <I18nProvider i18n={i18n}>
             <Trans id="survey.demographics.footer">
@@ -102,7 +99,7 @@ const SurveyDemographicsContent = ({
           </I18nProvider>
           <button
             type="button"
-            className="underline cursor-pointer text-gi-secondary font-base hover:text-gi-secondary-hover"
+            className="underline cursor-pointer text-gi-secondary text-base hover:text-gi-secondary-hover"
             onClick={onLearnMoreClick}
           >
             <I18nProvider i18n={i18n}>
