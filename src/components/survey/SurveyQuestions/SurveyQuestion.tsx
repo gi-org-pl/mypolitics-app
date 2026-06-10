@@ -2,7 +2,13 @@ import { Button, ButtonSelect } from "@gi/athena";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import React, { type ReactNode, useMemo, useState, useRef, useEffect } from "react";
+import React, {
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   EXPLANATION_PREVIEW_FALLBACK_CHARS,
   EXPLANATION_TRIGGER_PHRASES,
@@ -17,7 +23,10 @@ export function renderWithUnderscores(text: string): ReactNode[] {
   const escaped = phrases.map((p: string) =>
     p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
   );
-  const regex = new RegExp(`(?<![\\wąćęłńóśźż])(${escaped.join("|")})(?![\\wąćęłńóśźż])`, "gi");
+  const regex = new RegExp(
+    `(?<![\\wąćęłńóśźż])(${escaped.join("|")})(?![\\wąćęłńóśźż])`,
+    "gi",
+  );
   const parts: Array<{ text: string; matched: boolean }> = [];
   let lastIndex = 0;
   for (const match of text.matchAll(regex)) {
@@ -59,7 +68,6 @@ export function getDescriptionPreview(description: string): string {
   return `${description.substring(0, EXPLANATION_PREVIEW_FALLBACK_CHARS).trim()}...`;
 }
 
-
 interface DescriptionPanelProps {
   description: string;
   preview: string;
@@ -98,13 +106,17 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
     <div
       className="w-[90%] mx-auto mt-[-20px] pt-4 z-0 rounded-b-2xl shadow-md border border-t-0 overflow-hidden bg-[var(--color-gi-primary)]"
       style={{
-        borderColor: "color-mix(in srgb, var(--color-gi-secondary) 30%, transparent)",
+        borderColor:
+          "color-mix(in srgb, var(--color-gi-secondary) 30%, transparent)",
       }}
     >
       <div
         className="overflow-hidden"
         style={{
-          height: typeof currentHeight === "number" ? `${currentHeight}px` : currentHeight,
+          height:
+            typeof currentHeight === "number"
+              ? `${currentHeight}px`
+              : currentHeight,
           transition: "height 300ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
@@ -123,8 +135,7 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
             <span
               className="flex-1 min-w-0 text-xs leading-normal font-medium truncate"
               style={{
-                color:
-                  "color-mix(in srgb, var(--color-gi-dark-ash) 75%, transparent)",
+                color: "white",
               }}
             >
               {preview}
@@ -141,6 +152,7 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
                   boxShadow: "none",
                   cursor: "pointer",
                   color: "color-mix(in srgb, var(--color-gi-dark-ash) 75%, transparent)",
+                  color: "white",
                   padding: 0,
                 }}
                 onClick={handleToggle}
