@@ -51,8 +51,8 @@ const SurveyDemographicsContent = ({
   };
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <div className="bg-gi-ash rounded-3xl p-5 shadow-sm flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-3">
+      <div className="bg-gi-ash rounded-3xl p-4 shadow-sm flex flex-col gap-3">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-2xl font-bold text-gi-primary tracking-tight">
             <I18nProvider i18n={i18n}>
@@ -69,7 +69,7 @@ const SurveyDemographicsContent = ({
           </div>
         </div>
         <div className="border-b border-gi-dark-ash w-full" />
-        <p className="text-base font-medium leading-snug text-gi-secondary">
+        <p className="text-base font-medium leading-snug text-gi-primary">
           <I18nProvider i18n={i18n}>
             <Trans id="survey.demographics.subtitle">
               W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości
@@ -91,7 +91,7 @@ const SurveyDemographicsContent = ({
       </div>
 
       <div className="bg-gi-ash rounded-3xl p-4 text-left">
-        <p className="text-base text-gi-secondary font-medium leading-relaxed">
+        <p className="text-base text-gi-primary font-medium leading-relaxed">
           <I18nProvider i18n={i18n}>
             <Trans id="survey.demographics.footer">
               Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!{" "}
