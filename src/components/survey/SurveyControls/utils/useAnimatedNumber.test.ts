@@ -59,7 +59,6 @@ describe("useAnimatedNumber()", () => {
 
       expect(result.current).toBe(true);
 
-      
       unmount();
 
       expect(() => {
@@ -78,7 +77,7 @@ describe("useAnimatedNumber()", () => {
       );
 
       act(() => {
-        rerender({ value: 5 }); 
+        rerender({ value: 5 });
       });
 
       expect(result.current).toBe(false);

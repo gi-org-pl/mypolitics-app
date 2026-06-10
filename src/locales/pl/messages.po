@@ -21,7 +21,7 @@ msgstr ""
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:161
+#: src/components/survey/SurveyControls/SurveyControls.tsx:168
 msgid "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
@@ -81,9 +81,13 @@ msgstr "Odwiedź nasz profil na Telegramie"
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:75
+#: src/components/survey/SurveyControls/SurveyControls.tsx:77
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:134
+msgid "Previous question"
+msgstr "Previous question"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -93,11 +97,15 @@ msgstr "Prywatność"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:176
+#: src/components/survey/SurveyControls/SurveyControls.tsx:154
+msgid "Reset"
+msgstr "Reset"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:183
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:159
+#: src/components/survey/SurveyControls/SurveyControls.tsx:166
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 

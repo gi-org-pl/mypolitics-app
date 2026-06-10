@@ -13,12 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:161
+#: src/components/survey/SurveyControls/SurveyControls.tsx:168
 msgid "Czy na pewno chcesz rozpocząć quiz <0>{title}</0> od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to restart the quiz <0>{title}</0>? Your answers will not be saved."
 
@@ -78,9 +77,13 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:75
+#: src/components/survey/SurveyControls/SurveyControls.tsx:77
 msgid "Prawie koniec!"
 msgstr "Almost done!"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:134
+msgid "Previous question"
+msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -90,11 +93,15 @@ msgstr "Privacy"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:176
+#: src/components/survey/SurveyControls/SurveyControls.tsx:154
+msgid "Reset"
+msgstr ""
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:183
 msgid "Resetuj quiz"
 msgstr ""
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:159
+#: src/components/survey/SurveyControls/SurveyControls.tsx:166
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
 
