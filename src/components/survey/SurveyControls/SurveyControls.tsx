@@ -6,7 +6,7 @@ import cardQuestionIcon from "@/assets/icons/card-question.svg";
 import arrowBackIcon from "@/assets/icons/left-arrow.svg";
 import resetIcon from "@/assets/icons/reset.svg";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
-import { NUMBER_ANIMATION_MS } from "./SurveyControls.constants";
+import { NUMBER_ANIMATION_MS,SURVEY_PHASE } from "./SurveyControls.constants";
 import { useAnimatedNumber } from "./utils/useAnimatedNumber";
 
 function useBreakpoint(px: number): boolean {
@@ -51,12 +51,12 @@ export default function SurveyControls({
   const isLargeScreen = useBreakpoint(400);
   const isAnimating = useAnimatedNumber(questionsLeftnCategory);
 
-  const isPrimitive = phase === "CATEGORY_SELECT" || phase === "FINISH";
+  const isPrimitive = phase === SURVEY_PHASE.CATEGORY_SELECT || phase === SURVEY_PHASE.FINISH;
   const backDisabled = isPrimitive || answersCount === 0;
   const resetDisabled = isPrimitive;
 
   function renderPill() {
-    if (phase === "CATEGORY_SELECT") {
+    if (phase === SURVEY_PHASE.CATEGORY_SELECT) {
       return (
         <span
           className="flex items-center h-8 font-bold truncate text-ellipsis overflow-hidden whitespace-nowrap text-gi-primary"
@@ -67,7 +67,7 @@ export default function SurveyControls({
       );
     }
 
-    if (phase === "FINISH") {
+    if (phase === SURVEY_PHASE.FINISH) {
       return (
         <span
           className="font-bold flex items-center h-8 text-gi-primary"
