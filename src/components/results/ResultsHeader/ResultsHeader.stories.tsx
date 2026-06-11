@@ -1,5 +1,6 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import "@/index.css";
+import DEFAULT_RESULT_AVATAR from "@/assets/images/results/default-result-avatar.svg";
 import { ResultsHeader } from "./ResultsHeader";
 
 const compactDecorator: Decorator = (Story) => (
@@ -26,8 +27,6 @@ export default meta;
 
 type Story = StoryObj<typeof ResultsHeader>;
 
-const avatarUrl = "https://api.dicebear.com/9.x/personas/svg?seed=result";
-
 const mobileViewport = {
   viewport: {
     defaultViewport: "mobile1",
@@ -37,7 +36,7 @@ const mobileViewport = {
 const baseArgs = {
   name: "Nazwa Tożsamości",
   slogan: "Hasło Tożsamości",
-  imageUrl: avatarUrl,
+  imageUrl: DEFAULT_RESULT_AVATAR,
 };
 
 export const HighMatch: Story = {
@@ -46,7 +45,7 @@ export const HighMatch: Story = {
   args: {
     name: "Zielony postępowiec",
     slogan: "Razem w stronę zielonego świata!",
-    imageUrl: avatarUrl,
+    imageUrl: DEFAULT_RESULT_AVATAR,
     agreementPercent: 76,
   },
 };
@@ -74,7 +73,7 @@ export const WithButton: Story = {
   args: {
     name: "Uniwersalna nazwa wyniku",
     slogan: "Tutaj hasło z jasnym wynikiem",
-    imageUrl: avatarUrl,
+    imageUrl: DEFAULT_RESULT_AVATAR,
     agreementPercent: 75,
     actionLabel: "Program wyborczy",
     actionShortLabel: "Program",
@@ -106,7 +105,7 @@ export const LongName: Story = {
     name: "Długa, uniwersalna nazwa wyniku, która powinna być zawijana bez przerywania układu",
     slogan:
       "Dłuższe hasło sprawdzające zachowanie dolnego paska, gdy tekst potrzebuje więcej miejsca",
-    imageUrl: avatarUrl,
+    imageUrl: DEFAULT_RESULT_AVATAR,
     agreementPercent: 76,
     actionLabel: "Program wyborczy",
     actionShortLabel: "Program",

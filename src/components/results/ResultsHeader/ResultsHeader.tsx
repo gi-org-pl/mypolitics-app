@@ -21,13 +21,6 @@ const agreementLevelClassNames: Record<AgreementLevel, string> = {
   low: "text-gi-red",
 };
 
-function clampPercent(percent: number) {
-  return Math.min(
-    AGREEMENT_MAX_PERCENT,
-    Math.max(AGREEMENT_MIN_PERCENT, percent),
-  );
-}
-
 export function ResultsHeader({
   id,
   name,
@@ -38,6 +31,13 @@ export function ResultsHeader({
   actionShortLabel,
   onActionClick,
 }: ResultsHeaderProps) {
+  function clampPercent(percent: number) {
+    return Math.min(
+      AGREEMENT_MAX_PERCENT,
+      Math.max(AGREEMENT_MIN_PERCENT, percent),
+    );
+  }
+
   const clampedPercent = clampPercent(agreementPercent);
   const roundedPercent = Math.round(clampedPercent);
   const agreementLevel = getAgreementLevel(clampedPercent);
@@ -47,12 +47,50 @@ export function ResultsHeader({
   const shouldRenderActionButton = Boolean(actionLabel && onActionClick);
   const shortActionLabel = actionShortLabel ?? actionLabel;
 
-  return (
-    <section
-      id={id}
-      className="w-full overflow-hidden bg-gi-dark-primary text-white"
-    >
-      <div className="flex min-h-[90px] items-center justify-between gap-2.5 bg-gi-dark-primary p-4 md:justify-start md:gap-5 md:p-6">
+  function renderAvatar() {
+    return (
+      <div className="relative size-16 shrink-0 md:order-1">
+        <Avatar
+          src={imageUrl}
+          alt={name}
+          size="large"
+          className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2"
+        />
+
+        <svg
+          viewBox={`0 0 ${AGREEMENT_RING_SIZE} ${AGREEMENT_RING_SIZE}`}
+          className="pointer-events-none absolute inset-0 z-10 size-16"
+          aria-hidden="true"
+        >
+          <circle
+            cx={AGREEMENT_RING_CENTER}
+            cy={AGREEMENT_RING_CENTER}
+            r={AGREEMENT_RING_RADIUS}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={AGREEMENT_RING_STROKE_WIDTH}
+            className="text-white/10"
+          />
+          <circle
+            cx={AGREEMENT_RING_CENTER}
+            cy={AGREEMENT_RING_CENTER}
+            r={AGREEMENT_RING_RADIUS}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={AGREEMENT_RING_STROKE_WIDTH}
+            strokeLinecap="square"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            className={agreementLevelClassNames[agreementLevel]}
+          />
+        </svg>
+      </div>
+    );
+  }
+
+  function renderHeader() {
+    return (
+      <div className="flex min-h-[90px] items-center justify-between gap-4 bg-gi-dark-primary px-6 py-4 md:justify-start">
         <div className="min-w-0 md:order-2">
           <h2 className="text-2xl font-bold leading-[150%]">{name}</h2>
           <p
@@ -62,45 +100,14 @@ export function ResultsHeader({
           </p>
         </div>
 
-        <div className="relative size-16 shrink-0 md:order-1">
-          <Avatar
-            src={imageUrl}
-            alt={name}
-            size="large"
-            className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2"
-          />
-
-          <svg
-            viewBox={`0 0 ${AGREEMENT_RING_SIZE} ${AGREEMENT_RING_SIZE}`}
-            className="pointer-events-none absolute inset-0 z-10 size-16 -rotate-90"
-            aria-hidden="true"
-          >
-            <circle
-              cx={AGREEMENT_RING_CENTER}
-              cy={AGREEMENT_RING_CENTER}
-              r={AGREEMENT_RING_RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={AGREEMENT_RING_STROKE_WIDTH}
-              className="text-white/10"
-            />
-            <circle
-              cx={AGREEMENT_RING_CENTER}
-              cy={AGREEMENT_RING_CENTER}
-              r={AGREEMENT_RING_RADIUS}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={AGREEMENT_RING_STROKE_WIDTH}
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              className={agreementLevelClassNames[agreementLevel]}
-            />
-          </svg>
-        </div>
+        {renderAvatar()}
       </div>
+    );
+  }
 
-      <div className="flex min-h-[43px] items-center justify-between gap-2 border-t border-white/10 bg-gi-dark-primary px-4 py-3 md:min-h-20 md:gap-4 md:px-6 md:py-4">
+  function renderFooter() {
+    return (
+      <div className="flex min-h-[43px] items-center justify-between gap-2 border-t border-white/10 bg-gi-dark-primary px-6 py-3 md:min-h-20 md:gap-4 md:py-4">
         <div className="min-w-0">
           <div className="hidden items-center gap-2 text-base font-bold leading-[120%] text-white/10 md:flex">
             <img
@@ -119,13 +126,6 @@ export function ResultsHeader({
           </p>
         </div>
 
-        <img
-          src={MEGAPHONE_ICON}
-          alt=""
-          aria-hidden="true"
-          className="size-4 shrink-0 opacity-30 md:hidden"
-        />
-
         {shouldRenderActionButton ? (
           <Button
             type="ghost"
@@ -142,8 +142,25 @@ export function ResultsHeader({
               {shortActionLabel}
             </span>
           </Button>
-        ) : null}
+        ) : (
+          <img
+            src={MEGAPHONE_ICON}
+            alt=""
+            aria-hidden="true"
+            className="size-4 shrink-0 opacity-30 md:hidden"
+          />
+        )}
       </div>
+    );
+  }
+
+  return (
+    <section
+      id={id}
+      className="w-full overflow-hidden bg-gi-dark-primary text-white"
+    >
+      {renderHeader()}
+      {renderFooter()}
     </section>
   );
 }
