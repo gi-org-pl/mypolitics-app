@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { describe, expect, it } from "vitest";
-import { PATHS } from "@/constants/paths.ts";
-import { renderWithI18n } from "@/utils/vitest/renderWithI18n.tsx";
+import { PATHS } from "@/constants/paths";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { PatroniteBanner } from "./PatroniteBanner";
 
 describe("<PatroniteBanner />", () => {
