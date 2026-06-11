@@ -51,8 +51,8 @@ const SurveyDemographicsContent = ({
   };
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      <div className="bg-gi-ash rounded-3xl p-4 shadow-sm flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-4">
+      <div className="bg-gi-ash rounded-2xl p-4 shadow-sm flex flex-col gap-2.5">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-2xl font-bold text-gi-primary tracking-tight">
             <I18nProvider i18n={i18n}>
