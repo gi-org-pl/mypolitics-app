@@ -1,4 +1,4 @@
-import { Button, ButtonSelect } from "@gi/athena";
+import {  ButtonSelect } from "@gi/athena";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -104,10 +104,10 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
 
   return (
     <div
-      className="w-[90%] mx-auto mt-[-20px] pt-4 z-0 rounded-b-2xl shadow-md border border-t-0 overflow-hidden bg-[var(--color-gi-primary)]"
+      className="w-[90%] mx-auto -mt-7 pt-4 z-0 rounded-b-2xl shadow-md border border-t-0 overflow-hidden bg-(--color-gi-primary)"
       style={{
         borderColor:
-          "color-mix(in srgb, var(--color-gi-secondary) 30%, transparent)",
+          "color-mix(in srgb, --color-gi-secondary 30%, transparent)",
       }}
     >
       <div
@@ -151,7 +151,6 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
                   border: "none",
                   boxShadow: "none",
                   cursor: "pointer",
-                  color: "color-mix(in srgb, var(--color-gi-dark-ash) 75%, transparent)",
                   color: "white",
                   padding: 0,
                 }}

@@ -1,3 +1,4 @@
+
 import { i18n } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import { I18nProvider } from "@lingui/react";
@@ -61,7 +62,6 @@ describe("Komponent SurveyQuestion", () => {
 
       fireEvent.click(toggle);
       expect(screen.getByTestId("explanation-content")).toBeVisible();
-
     });
   });
 
