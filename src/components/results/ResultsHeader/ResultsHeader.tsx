@@ -31,12 +31,8 @@ export function ResultsHeader({
   actionShortLabel,
   onActionClick,
 }: ResultsHeaderProps) {
-  function clampPercent(percent: number) {
-    return Math.min(
-      AGREEMENT_MAX_PERCENT,
-      Math.max(AGREEMENT_MIN_PERCENT, percent),
-    );
-  }
+  const clampPercent = (percent: number) =>
+    Math.min(AGREEMENT_MAX_PERCENT, Math.max(AGREEMENT_MIN_PERCENT, percent));
 
   const clampedPercent = clampPercent(agreementPercent);
   const roundedPercent = Math.round(clampedPercent);
