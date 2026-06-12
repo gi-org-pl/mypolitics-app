@@ -1,17 +1,19 @@
 import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
+import type { DemographicsField, DemographicsFieldOption } from "../SurveyDemographics.types";
 
-export type DemographicsFieldOption = {
-  value: string;
-  labelKey: MessageDescriptor;
-};
+export const surveyDemographicsSubtitle: MessageDescriptor =
+  msg`W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości`;
 
-export type DemographicsField = {
-  control: string;
-  labelKey: MessageDescriptor;
-  full: boolean;
-  options: DemographicsFieldOption[];
-};
+export const surveyDemographicsTitle: MessageDescriptor =
+  msg`Twoja tożsamość`;
+
+export const surveyDemographicsFooter: MessageDescriptor =
+  msg`Powyższe dane w przyszłości pozwolą Ci porównać się z innymi! `;
+
+export const surveyDemographicsLearnMore: MessageDescriptor =
+  msg`To znaczy?`;
+
 
 const ageOptions: DemographicsFieldOption[] = [
   { value: "0", labelKey: msg`Mniej niż 18` },

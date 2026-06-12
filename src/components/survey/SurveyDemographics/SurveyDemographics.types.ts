@@ -1,3 +1,5 @@
+import type { MessageDescriptor } from "@lingui/core";
+
 export type Demographics = {
   age: number;
   gender: string;
@@ -18,4 +20,16 @@ export type SurveyDemographicsProps = {
   onSubmit: (data: DemographicsInput) => void;
   onSkip: () => void;
   isLoading?: boolean;
+};
+
+export type DemographicsFieldOption = {
+  value: string;
+  labelKey: MessageDescriptor;
+};
+
+export type DemographicsField = {
+  control: string;
+  labelKey: MessageDescriptor;
+  full: boolean;
+  options: DemographicsFieldOption[];
 };

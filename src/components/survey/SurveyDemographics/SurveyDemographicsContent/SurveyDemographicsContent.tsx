@@ -1,8 +1,7 @@
 import { ActionList, Select } from "@gi/athena";
-import { I18nProvider, useLingui } from "@lingui/react";
-import { Trans } from "@lingui/react/macro";
+import { useLingui } from "@lingui/react";
 import type { DemographicsInput } from "../SurveyDemographics.types";
-import { demographicsData } from "./SurveyDemographicsContent.constants";
+import { demographicsData, surveyDemographicsSubtitle, surveyDemographicsTitle, surveyDemographicsFooter, surveyDemographicsLearnMore } from "./SurveyDemographicsContent.constants";
 
 export type SurveyDemographicsContentProps = {
   value: DemographicsInput;
@@ -55,9 +54,7 @@ const SurveyDemographicsContent = ({
       <div className="bg-gi-ash rounded-2xl p-4 shadow-sm flex flex-col gap-2.5">
         <div className="flex justify-between items-center w-full">
           <h2 className="text-2xl font-bold text-gi-primary tracking-tight">
-            <I18nProvider i18n={i18n}>
-              <Trans id="survey.demographics.title">Twoja tożsamość</Trans>
-            </I18nProvider>
+            {i18n._(surveyDemographicsTitle)}
           </h2>
           <div className="flex items-center shrink-0 isolate pl-2">
             <div className="w-16 h-16 rounded-full bg-background shadow-sm overflow-hidden z-10 flex items-center justify-center">
@@ -70,11 +67,7 @@ const SurveyDemographicsContent = ({
         </div>
         <div className="border-b border-gi-dark-ash w-full" />
         <p className="text-base font-medium leading-snug text-gi-primary">
-          <I18nProvider i18n={i18n}>
-            <Trans id="survey.demographics.subtitle">
-              W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości
-            </Trans>
-          </I18nProvider>
+          {i18n._(surveyDemographicsSubtitle)}
         </p>
       </div>
 
@@ -90,21 +83,15 @@ const SurveyDemographicsContent = ({
           .map((field) => renderField(field, "w-full"))}
       </div>
 
-      <div className="bg-gi-ash rounded-3xl p-4 text-left">
-        <p className="text-base text-gi-primary font-medium leading-relaxed">
-          <I18nProvider i18n={i18n}>
-            <Trans id="survey.demographics.footer">
-              Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!{" "}
-            </Trans>
-          </I18nProvider>
+      <div className="bg-gi-ash rounded-2xl p-4 text-left">
+        <p className="text-base text-gi-primary font-medium leading-none">
+          {i18n._(surveyDemographicsFooter)}
           <button
             type="button"
             className="underline cursor-pointer text-gi-secondary text-base hover:text-gi-secondary-hover"
             onClick={onLearnMoreClick}
           >
-            <I18nProvider i18n={i18n}>
-              <Trans id="survey.demographics.learn_more">To znaczy?</Trans>
-            </I18nProvider>
+            {i18n._(surveyDemographicsLearnMore)}
           </button>
         </p>
       </div>
