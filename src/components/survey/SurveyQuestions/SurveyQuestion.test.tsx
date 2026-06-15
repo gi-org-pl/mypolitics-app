@@ -1,4 +1,3 @@
-
 import { i18n } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import { I18nProvider } from "@lingui/react";

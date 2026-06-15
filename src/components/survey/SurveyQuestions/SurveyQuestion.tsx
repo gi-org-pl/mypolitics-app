@@ -1,7 +1,9 @@
-import {  ButtonSelect } from "@gi/athena";
+import { ButtonSelect } from "@gi/athena";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import MenuIcon from "../../../assets/vectors/description-button.svg";
+
 import React, {
   type ReactNode,
   useEffect,
@@ -14,7 +16,7 @@ import {
   EXPLANATION_TRIGGER_PHRASES,
   getUnderscoredPhrases,
 } from "./SurveyQuestion.constants";
-import { type SurveyQuestionProps } from "./SurveyQuestion.types";
+import { type SurveyQuestionProps, type DescriptionPanelProps } from "./SurveyQuestion.types";
 
 export function renderWithUnderscores(text: string): ReactNode[] {
   const phrases = getUnderscoredPhrases();
@@ -68,11 +70,6 @@ export function getDescriptionPreview(description: string): string {
   return `${description.substring(0, EXPLANATION_PREVIEW_FALLBACK_CHARS).trim()}...`;
 }
 
-interface DescriptionPanelProps {
-  description: string;
-  preview: string;
-}
-
 function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPermanentlyExpanded, setIsPermanentlyExpanded] = useState(false);
@@ -83,8 +80,7 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
   useEffect(() => {
     if (!contentRef.current) return;
 
-    const previewEl =
-      contentRef.current.querySelector<HTMLElement>(".preview-text");
+    const previewEl = contentRef.current.querySelector<HTMLElement>(".preview-text");
     const fullEl = contentRef.current.querySelector<HTMLElement>(".full-text");
 
     if (previewEl) setCollapsedHeight(previewEl.scrollHeight + 28);
@@ -98,27 +94,16 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
     }
   };
 
-  const currentHeight = isOpen
-    ? (expandedHeight ?? "auto")
-    : (collapsedHeight ?? "auto");
+  const currentHeight = isOpen ? (expandedHeight ?? "auto") : (collapsedHeight ?? "auto");
 
   return (
     <div
       className="w-[90%] mx-auto -mt-7 pt-4 z-0 rounded-b-2xl shadow-md border border-t-0 overflow-hidden bg-(--color-gi-primary)"
-      style={{
-        borderColor:
-          "color-mix(in srgb, --color-gi-secondary 30%, transparent)",
-      }}
+      style={{ borderColor: "color-mix(in srgb, --color-gi-secondary 30%, transparent)" }}
     >
       <div
-        className="overflow-hidden"
-        style={{
-          height:
-            typeof currentHeight === "number"
-              ? `${currentHeight}px`
-              : currentHeight,
-          transition: "height 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
+        className="overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{ height: typeof currentHeight === "number" ? `${currentHeight}px` : currentHeight }}
       >
         <div className="px-4 pt-3 pb-4" ref={contentRef}>
           <div
@@ -127,54 +112,22 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
               opacity: isOpen ? 0 : 1,
               position: isOpen ? "absolute" : "relative",
               pointerEvents: isOpen ? "none" : "auto",
-              transition: isOpen
-                ? "opacity 200ms ease"
-                : "opacity 200ms ease 200ms",
+              transition: isOpen ? "opacity 200ms ease" : "opacity 200ms ease 200ms",
             }}
           >
-            <span
-              className="flex-1 min-w-0 text-xs leading-normal font-medium truncate"
-              style={{
-                color: "white",
-              }}
-            >
+            <span className="flex-1 min-w-0 text-xs leading-normal font-medium text-white truncate">
               {preview}
             </span>
+
             {!isPermanentlyExpanded && (
               <button
-                className="shrink-0 flex items-center justify-center appearance-none"
-                style={{
-                  width: "36px",
-                  height: "28px",
-                  backgroundColor: "transparent",
-                  background: "none",
-                  border: "none",
-                  boxShadow: "none",
-                  cursor: "pointer",
-                  color: "white",
-                  padding: 0,
-                }}
+                className="shrink-0 flex items-center justify-center w-9 h-7 bg-transparent border-none p-0 cursor-pointer text-white appearance-none"
                 onClick={handleToggle}
                 aria-label={t`Rozwiń wyjaśnienie`}
                 aria-expanded={isOpen}
                 data-testid="explanation-toggle"
               >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                    transition: "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
+                <img src={MenuIcon} alt="Menu" />
               </button>
             )}
           </div>
@@ -186,13 +139,12 @@ function DescriptionPanel({ description, preview }: DescriptionPanelProps) {
               opacity: isOpen ? 1 : 0,
               pointerEvents: isOpen ? "auto" : "none",
               padding: isOpen ? "8px" : "0",
-              transition: isOpen
-                ? "opacity 200ms ease 200ms"
-                : "opacity 200ms ease",
+              transition: isOpen ? "opacity 200ms ease 200ms" : "opacity 200ms ease",
             }}
           >
             {description}
           </div>
+
         </div>
       </div>
     </div>
@@ -221,44 +173,31 @@ export const SurveyQuestion: React.FC<SurveyQuestionProps> = ({
   }, [questionDescription]);
 
   const preview = useMemo(
-    () =>
-      finalizedDescription ? getDescriptionPreview(finalizedDescription) : null,
+    () => (finalizedDescription ? getDescriptionPreview(finalizedDescription) : null),
     [finalizedDescription],
   );
 
+  const hasDescription = Boolean(finalizedDescription && preview);
+
   return (
-    <div
-      className="flex flex-col w-full max-w-2xl"
-      data-testid="survey-question"
-    >
+    <div className="flex flex-col w-full max-w-2xl" data-testid="survey-question">
       <div
         className="rounded-3xl px-4 py-8 shadow-xl border z-10 relative flex items-center"
         style={{
           backgroundColor: "var(--color-gi-light-primary)",
-          borderColor:
-            "color-mix(in srgb, var(--color-gi-secondary) 25%, transparent)",
+          borderColor: "color-mix(in srgb, var(--color-gi-secondary) 25%, transparent)",
         }}
       >
-        <p
-          className="text-white text-xl font-bold leading-snug"
-          data-testid="question-text"
-        >
+        <p className="text-white text-xl font-bold leading-snug" data-testid="question-text">
           {renderWithUnderscores(finalizedQuestion)}
         </p>
       </div>
 
-      {finalizedDescription && preview && (
-        <DescriptionPanel
-          description={finalizedDescription}
-          preview={preview}
-        />
+      {hasDescription && (
+        <DescriptionPanel description={finalizedDescription!} preview={preview!} />
       )}
 
-      <div
-        className="flex flex-col gap-2"
-        style={{ marginTop: finalizedDescription && preview ? "16px" : "16px" }}
-        data-testid="answer-selector"
-      >
+      <div className="flex flex-col gap-2 mt-4" data-testid="answer-selector">
         <ButtonSelect
           options={options}
           selectedOptionId={selectedOptionId ?? ""}
@@ -266,6 +205,7 @@ export const SurveyQuestion: React.FC<SurveyQuestionProps> = ({
           isFullWidth={true}
         />
       </div>
+
     </div>
   );
 };

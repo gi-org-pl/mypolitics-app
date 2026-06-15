@@ -13,3 +13,8 @@ export interface SurveyQuestionProps {
   selectedOptionId?: string;
   onSelectedOptionIdChange: (id: string) => void;
 }
+
+export interface DescriptionPanelProps {
+  description: string;
+  preview: string;
+}

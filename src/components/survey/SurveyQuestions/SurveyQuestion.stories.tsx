@@ -39,14 +39,16 @@ type Story = StoryObj<typeof SurveyQuestion>;
 export const Default: Story = {
   name: "No explanation",
   args: {
-    question: "Czy uważasz, że respondent nie powinien unikać udzielania szczerych odpowiedzi na to pytanie, biorąc pod uwagę jego znaczenie dla całego badania?",
+    question:
+     "Czy uważasz, że respondent nie powinien unikać udzielania szczerych odpowiedzi na to pytanie, biorąc pod uwagę jego znaczenie dla całego badania?",
   },
 };
 
 export const WithExplanationCollapsed: Story = {
   name: "With explanation collapsed",
   args: {
-    question: "Czy respondent powinien wypełnić wszystkie pola formularza zgodnie z instrukcją dostępną w dokumentacji technicznej systemu?",
+    question:
+      "Czy respondent powinien wypełnić wszystkie pola formularza zgodnie z instrukcją dostępną w dokumentacji technicznej systemu?",
     questionDescription:
       "To oznacza, że każde pole oznaczone gwiazdką (*) jest wymagane i nie może pozostać puste. " +
       "Pominięcie pól obowiązkowych uniemożliwi zapisanie formularza i przejście do kolejnego kroku w procesie ankietowania.",
@@ -56,7 +58,8 @@ export const WithExplanationCollapsed: Story = {
 export const WithExplanationExpanded: Story = {
   name: "With explanation expanded",
   args: {
-    question: "Czy respondent nie powinien pomijać pytań opcjonalnych, jeśli chce wpłynąć na jakość gromadzonych danych?",
+    question:
+      "Czy respondent nie powinien pomijać pytań opcjonalnych, jeśli chce wpłynąć na jakość gromadzonych danych?",
     questionDescription:
       "To oznacza, że pytania oznaczone jako opcjonalne mogą być pominięte bez konsekwencji dla wyniku. " +
       "Zachęcamy jednak do odpowiedzi na wszystkie pytania, ponieważ pomaga to w dokładniejszej analizie danych statystycznych oraz pozwala na wyciągnięcie bardziej precyzyjnych wniosków końcowych dla naszego zespołu analitycznego.",
