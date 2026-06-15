@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 import playIconUrl from "@/assets/icons/fa-solid_play.svg";
 import playIconDarkUrl from "@/assets/icons/fa-solid_play-dark.svg";
+import { ChevronDown } from "@/components/shared/ChevronDown/ChevronDown";
 
 import type { QuizCardProps } from "./QuizCard.types";
 
@@ -37,30 +38,17 @@ function cn(...parts: Array<string | false | undefined>): string {
   return twMerge(parts.filter(Boolean).join(" "));
 }
 
-function ChevronDown({ className }: { className?: string }): ReactElement {
-  return (
-    <svg
-      width="14"
-      height="16"
-      viewBox="0 0 14 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-      className={cn("pointer-events-none shrink-0 text-gi-primary", className)}
-    >
-      <path
-        d="M6.46966 11.9211L0.396437 5.84786C0.103531 5.55496 0.103531 5.08008 0.396437 4.78721L1.10478 4.07886C1.39719 3.78646 1.87109 3.7859 2.16419 4.07761L7 8.89077L11.8358 4.07761C12.1289 3.7859 12.6028 3.78646 12.8952 4.07886L13.6035 4.78721C13.8964 5.08011 13.8964 5.55499 13.6035 5.84786L7.53034 11.9211C7.23744 12.214 6.76256 12.214 6.46966 11.9211Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function PlayIcon({ isMainAction }: { isMainAction: boolean }): ReactElement {
+function PlayIcon({
+  isMainAction,
+  alt,
+}: {
+  isMainAction: boolean;
+  alt: string;
+}): ReactElement {
   return (
     <img
       src={isMainAction ? playIconUrl : playIconDarkUrl}
-      alt=""
+      alt={alt}
       width={16}
       height={16}
       className="size-4 shrink-0"
@@ -195,29 +183,14 @@ export function QuizCard({
 
           <div className="flex shrink-0 items-center gap-2">
             {showExpandChrome ? (
-              <Button
-                type="ghost"
-                variant="primary"
-                isIconButton
-                className={cn(
-                  iconChromeRingClass,
-                  iconOnlyButtonSizeClass,
-                  "md:hidden",
-                )}
-                aria-expanded={isContentExpanded}
+              <ChevronDown
+                isExpanded={isContentExpanded}
+                className="md:hidden"
                 aria-label={i18n._(
                   isContentExpanded
                     ? quizCardMessages.collapse
                     : quizCardMessages.expand,
                 )}
-                LeftIcon={
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform duration-300 ease-in-out motion-reduce:transition-none",
-                      isContentExpanded && "rotate-180",
-                    )}
-                  />
-                }
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsExpandedValue((v) => !v);
@@ -233,7 +206,12 @@ export function QuizCard({
                   isLoading={isButtonLoading}
                   className={playButtonClassName}
                   aria-label={i18n._(quizCardMessages.startQuiz)}
-                  LeftIcon={<PlayIcon isMainAction={isMainAction} />}
+                  LeftIcon={
+                    <PlayIcon
+                      isMainAction={isMainAction}
+                      alt={i18n._(quizCardMessages.startQuiz)}
+                    />
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
                     onButtonClick();

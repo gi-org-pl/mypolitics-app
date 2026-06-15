@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ReactElement } from "react";
-import myPoliticsLogo from "@/assets/images/myPolitics_logo.png";
+import type { ComponentType, ReactElement } from "react";
+import myPoliticsLogo from "@/assets/images/myPolitics_logo.svg";
 import lata90Background from "@/assets/images/QuizCard_backgrounds/lata-90.png";
 
 import { QuizCard } from "./QuizCard";
@@ -8,7 +8,7 @@ import { QuizCard } from "./QuizCard";
 const noop = (): void => {};
 
 const quizCardColumnDecorator = [
-  (Story): ReactElement => (
+  (Story: ComponentType): ReactElement => (
     <div className="mx-auto w-full max-w-[400px]">
       <Story />
     </div>
