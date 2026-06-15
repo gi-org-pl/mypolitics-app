@@ -2,18 +2,15 @@ import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import type { DemographicsField, DemographicsFieldOption } from "../SurveyDemographics.types";
 
-export const surveyDemographicsSubtitle: MessageDescriptor =
-  msg`W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości`;
-
-export const surveyDemographicsTitle: MessageDescriptor =
-  msg`Twoja tożsamość`;
-
-export const surveyDemographicsFooter: MessageDescriptor =
-  msg`Powyższe dane w przyszłości pozwolą Ci porównać się z innymi! `;
-
-export const surveyDemographicsLearnMore: MessageDescriptor =
-  msg`To znaczy?`;
-
+export const surveyDemographicsSubtitle: MessageDescriptor = msg`W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości`;
+export const surveyDemographicsTitle: MessageDescriptor = msg`Twoja tożsamość`;
+export const surveyDemographicsFooter: MessageDescriptor = msg`Powyższe dane w przyszłości pozwolą Ci porównać się z innymi! `;
+export const surveyDemographicsLearnMore: MessageDescriptor = msg`To znaczy?`;
+export const surveyDemographicsSubmit: MessageDescriptor = msg`Zobacz wyniki`;
+export const surveyDemographicsSkip: MessageDescriptor = msg`Pomiń`;
+export const surveyDemographicsDataUsage: MessageDescriptor = msg`Zakres wykorzystania danych`;
+export const surveyDemographicsDataUsageDescription: MessageDescriptor = msg`Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl.`;
+export const surveyDemographicsDataUsageAnonymity: MessageDescriptor = msg`Twoje dane pozostaną całkowicie anonimowe.`;
 
 const ageOptions: DemographicsFieldOption[] = [
   { value: "0", labelKey: msg`Mniej niż 18` },

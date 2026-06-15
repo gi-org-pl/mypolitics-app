@@ -1,17 +1,19 @@
 import { Button, Modal } from "@gi/athena";
-import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import type {
   DemographicsInput,
   SurveyDemographicsProps,
 } from "./SurveyDemographics.types";
 import SurveyDemographicsContent from "./SurveyDemographicsContent/SurveyDemographicsContent";
+import { surveyDemographicsSubmit, surveyDemographicsSkip, surveyDemographicsDataUsage, surveyDemographicsDataUsageDescription, surveyDemographicsDataUsageAnonymity } from "./SurveyDemographicsContent/SurveyDemographicsContent.constants";
+import { useLingui } from "@lingui/react";
 
 const SurveyDemographics = ({
   onSubmit,
   onSkip,
   isLoading = false,
 }: SurveyDemographicsProps) => {
+  const { i18n } = useLingui();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formValues, setFormValues] = useState<DemographicsInput>({
     age: null,
@@ -53,7 +55,7 @@ const SurveyDemographics = ({
           onClick={handleSubmit}
           className="w-full"
         >
-          <Trans id="survey.demographics.submit">Zobacz wyniki</Trans>
+          {i18n._(surveyDemographicsSubmit)}
         </Button>
 
         <Button
@@ -62,7 +64,7 @@ const SurveyDemographics = ({
           onClick={onSkip}
           className="w-full"
         >
-          <Trans id="survey.demographics.skip">Pomiń</Trans>
+          {i18n._(surveyDemographicsSkip)}
         </Button>
       </div>
 
@@ -73,18 +75,13 @@ const SurveyDemographics = ({
       >
         <div className="flex flex-col gap-2">
           <p className="text-lg font-bold text-gi-primary text-left">
-            <Trans>Zakres wykorzystania danych</Trans>
+            {i18n._(surveyDemographicsDataUsage)}
           </p>
           <p className="text-sm text-gi-dark-gray">
-            <Trans>
-              Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli
-              przeanalizować Twoje wyniki w przyszłości w celu poprawienia
-              działania quizu, a także przygotowania analiz na
-              data.mypolitics.pl.
-            </Trans>
+            {i18n._(surveyDemographicsDataUsageDescription)}
           </p>
           <p className="text-sm text-gi-dark-gray font-bold">
-            <Trans>Twoje dane pozostaną całkowicie anonimowe.</Trans>
+            {i18n._(surveyDemographicsDataUsageAnonymity)}
           </p>
         </div>
       </Modal>

@@ -2,13 +2,8 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import SurveyDemographics from "./SurveyDemographics";
-
-beforeEach(() => {
-  i18n.load("pl", {});
-  i18n.activate("pl");
-});
 
 const renderWithI18n = (ui: React.ReactElement) => {
   return render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>);

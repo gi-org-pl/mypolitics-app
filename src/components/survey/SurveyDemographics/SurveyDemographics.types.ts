@@ -33,3 +33,9 @@ export type DemographicsField = {
   full: boolean;
   options: DemographicsFieldOption[];
 };
+
+export type SurveyDemographicsContentProps = {
+  value: DemographicsInput;
+  handleChange: (control: string, value: string) => void;
+  onLearnMoreClick: () => void;
+};

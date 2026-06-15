@@ -1,13 +1,7 @@
 import { ActionList, Select } from "@gi/athena";
 import { useLingui } from "@lingui/react";
-import type { DemographicsInput } from "../SurveyDemographics.types";
+import type { DemographicsInput, SurveyDemographicsContentProps } from "../SurveyDemographics.types";
 import { demographicsData, surveyDemographicsSubtitle, surveyDemographicsTitle, surveyDemographicsFooter, surveyDemographicsLearnMore } from "./SurveyDemographicsContent.constants";
-
-export type SurveyDemographicsContentProps = {
-  value: DemographicsInput;
-  handleChange: (control: string, value: string) => void;
-  onLearnMoreClick: () => void;
-};
 
 const SurveyDemographicsContent = ({
   value,
@@ -58,10 +52,10 @@ const SurveyDemographicsContent = ({
           </h2>
           <div className="flex items-center shrink-0 isolate pl-2">
             <div className="w-16 h-16 rounded-full bg-background shadow-sm overflow-hidden z-10 flex items-center justify-center">
-              <img src="/src/assets/icons/social-patriot.svg" alt="Mężczyzna" />
+              <img src="/src/assets/vectors/social-patriot.svg" alt="Mężczyzna" />
             </div>
             <div className="w-16 h-16 rounded-full bg-background shadow-sm overflow-hidden z-20 -ml-6 flex items-center justify-center">
-              <img src="/src/assets/icons/national-egalitarian.svg" alt="Kobieta"/>
+              <img src="/src/assets/vectors/national-egalitarian.svg" alt="Kobieta"/>
             </div>
           </div>
         </div>
