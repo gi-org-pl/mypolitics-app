@@ -1,3 +1,5 @@
+export type AgreementLevel = "high" | "mid" | "low";
+
 export interface ResultsHeaderProps {
   id?: string;
   name: string;

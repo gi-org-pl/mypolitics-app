@@ -2,10 +2,9 @@ import {
   AGREEMENT_HIGH_THRESHOLD,
   AGREEMENT_LOW_THRESHOLD,
 } from "../ResultsHeader.constants";
+import type { AgreementLevel } from "../ResultsHeader.types";
 
-export type AgreementLevel = "high" | "mid" | "low";
-
-export function getAgreementLevel(agreementPercent: number): AgreementLevel {
+export const getAgreementLevel = (agreementPercent: number): AgreementLevel => {
   if (agreementPercent >= AGREEMENT_HIGH_THRESHOLD) {
     return "high";
   }
@@ -15,4 +14,4 @@ export function getAgreementLevel(agreementPercent: number): AgreementLevel {
   }
 
   return "low";
-}
+};

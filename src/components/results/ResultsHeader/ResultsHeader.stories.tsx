@@ -1,16 +1,16 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import "@/index.css";
-import DEFAULT_RESULT_AVATAR from "@/assets/images/results/default-result-avatar.svg";
+import DEFAULT_RESULT_AVATAR from "@/assets/vectors/default-result-avatar.svg";
 import { ResultsHeader } from "./ResultsHeader";
 
 const compactDecorator: Decorator = (Story) => (
-  <div className="w-[388px] max-w-full">
+  <div className="w-[388px] max-w-full bg-background p-4">
     <Story />
   </div>
 );
 
 const wideDecorator: Decorator = (Story) => (
-  <div className="w-[784px] max-w-full">
+  <div className="w-[784px] max-w-full bg-background p-4">
     <Story />
   </div>
 );
