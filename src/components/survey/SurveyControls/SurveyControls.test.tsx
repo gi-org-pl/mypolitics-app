@@ -8,7 +8,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
 import SurveyControls from "./SurveyControls";
 
@@ -35,21 +35,38 @@ function renderComponent(overrides: Partial<SurveyControlsProps> = {}) {
   });
 }
 
-function mockMatchMedia(width: number) {
-  Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: vi.fn().mockImplementation((query: string) => ({
-      matches: width > 400,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    })),
-  });
+let mockObservedWidth = 800;
+
+function setMockWidth(width: number) {
+  mockObservedWidth = width;
 }
+
+class MockResizeObserver {
+  private callback: ResizeObserverCallback;
+
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+
+  observe() {
+    this.callback(
+      [
+        {
+          contentRect: { width: mockObservedWidth },
+        } as ResizeObserverEntry,
+      ],
+      this as unknown as ResizeObserver,
+    );
+  }
+
+  unobserve() {}
+
+  disconnect() {}
+}
+
+beforeAll(() => {
+  vi.stubGlobal("ResizeObserver", MockResizeObserver);
+});
 
 async function openResetModal() {
   fireEvent.click(screen.getByTestId("reset-button"));
@@ -71,7 +88,7 @@ function clickModalCloseButton() {
 }
 
 beforeEach(() => {
-  mockMatchMedia(800);
+  setMockWidth(800);
 });
 
 afterEach(() => {
@@ -117,7 +134,7 @@ describe("<SurveyControls />", () => {
 
     describe("on a large screen (>400px)", () => {
       it("renders category name, divider, and question count in the pill", () => {
-        mockMatchMedia(800);
+        setMockWidth(800);
 
         renderComponent({
           phase: "QUESTION_ANSWER",
@@ -136,7 +153,7 @@ describe("<SurveyControls />", () => {
 
     describe("on a small screen (≤400px)", () => {
       it("renders only the question count (no category name or divider)", () => {
-        mockMatchMedia(375);
+        setMockWidth(375);
 
         renderComponent({
           phase: "QUESTION_ANSWER",

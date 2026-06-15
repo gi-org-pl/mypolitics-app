@@ -1,43 +1,37 @@
 import { Button, Modal } from "@gi/athena";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
-import cardQuestionIcon from "@/assets/icons/card-question.svg";
-import arrowBackIcon from "@/assets/icons/left-arrow.svg";
-import resetIcon from "@/assets/icons/reset.svg";
+import { useEffect, useRef, useState } from "react";
+import cardQuestionIcon from "@/assets/vectors/card-question.svg";
+import arrowBackIcon from "@/assets/vectors/left-arrow.svg";
+import resetIcon from "@/assets/vectors/reset.svg";
 import type { SurveyControlsProps } from "./SurveyContorls.types";
 import { NUMBER_ANIMATION_MS, SURVEY_PHASE } from "./SurveyControls.constants";
 import { useAnimatedNumber } from "./utils/useAnimatedNumber";
 
-function useBreakpoint(px: number): boolean {
-  const query = `(min-width: ${px + 1}px)`;
-
-  const [isAbove, setIsAbove] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    return window.matchMedia(query).matches;
-  });
+function useContainerBreakpoint(
+  ref: React.RefObject<HTMLElement | null>,
+  px: number,
+): boolean {
+  const [isAbove, setIsAbove] = useState(true);
 
   useEffect(() => {
-    const mql = window.matchMedia(query);
+    const el = ref.current;
+    if (!el) return;
 
-    const handleChange = (event: MediaQueryListEvent) => {
-      setIsAbove(event.matches);
-    };
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? 0;
+      setIsAbove(width > px);
+    });
 
-    setIsAbove(mql.matches);
+    observer.observe(el);
 
-    mql.addEventListener("change", handleChange);
-
-    return () => {
-      mql.removeEventListener("change", handleChange);
-    };
-  }, [query]);
+    return () => observer.disconnect();
+  }, [ref, px]);
 
   return isAbove;
 }
+
 export default function SurveyControls({
   title,
   phase,
@@ -48,7 +42,8 @@ export default function SurveyControls({
   onReset,
 }: SurveyControlsProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const isLargeScreen = useBreakpoint(400);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isLargeScreen = useContainerBreakpoint(containerRef, 400);
   const isAnimating = useAnimatedNumber(questionsLeftnCategory);
 
   const isPrimitive =
@@ -122,6 +117,7 @@ export default function SurveyControls({
   return (
     <>
       <div
+        ref={containerRef}
         className="flex items-center justify-between gap-1.5 w-full"
         data-testid="survey-controls"
       >
@@ -139,7 +135,7 @@ export default function SurveyControls({
         </Button>
 
         <div
-          className="flex items-center justify-center gap-3 rounded-full bg-gi-dark-ash px-4 py-2 mx-3 min-w-0 overflow-hidden"
+          className="flex items-center justify-center gap-3 rounded-full bg-gi-dark-ash px-4 py-2 min-w-0 overflow-hidden"
           data-testid="center-pill"
         >
           {renderPill()}
@@ -170,7 +166,9 @@ export default function SurveyControls({
               nowa? Twoje odpowiedzi nie zostaną zapisane.
             </Trans>
           }
-          actions={
+          dataTestId="reset-modal"
+        >
+          <div className="flex justify-end mt-4">
             <Button
               type="primary"
               variant="danger"
@@ -182,9 +180,8 @@ export default function SurveyControls({
             >
               <Trans>Resetuj quiz</Trans>
             </Button>
-          }
-          dataTestId="reset-modal"
-        />
+          </div>
+        </Modal>
       )}
     </>
   );
