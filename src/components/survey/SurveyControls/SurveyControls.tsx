@@ -129,13 +129,13 @@ export default function SurveyControls({
           onClick={onPrevious}
           aria-label={t`Previous question`}
           data-testid="back-button"
-          className="h-12 w-12 shrink-0"
+          className="h-12 w-12 shrink-0 border-gi-dark-ash disabled:saturate-0 disabled:opacity-50"
         >
           <img src={arrowBackIcon} alt="back" aria-hidden="true" />
         </Button>
 
         <div
-          className="flex items-center justify-center gap-3 rounded-full bg-gi-dark-ash px-4 py-2 min-w-0 overflow-hidden"
+          className="flex items-center justify-center gap-3 rounded-full bg-gi-dark-ash px-3 py-2 min-w-0 overflow-hidden"
           data-testid="center-pill"
         >
           {renderPill()}
@@ -149,7 +149,7 @@ export default function SurveyControls({
           onClick={() => setModalOpen(true)}
           aria-label={t`Reset`}
           data-testid="reset-button"
-          className="h-12 w-12 shrink-0"
+          className="h-12 w-12 shrink-0 border-gi-dark-ash disabled:saturate-0 disabled:opacity-50"
         >
           <img src={resetIcon} alt="reset" aria-hidden="true" />
         </Button>
@@ -179,6 +179,7 @@ export default function SurveyControls({
               data-testid="reset-confirm-button"
             >
               <Trans>Resetuj quiz</Trans>
+              <img src={resetIcon} alt="" aria-hidden="true" className="w-3.5 h-3.5 brightness-0 invert" />
             </Button>
           </div>
         </Modal>
