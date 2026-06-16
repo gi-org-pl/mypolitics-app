@@ -17,6 +17,10 @@ msgstr ""
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/components/shared/Header/Header.constants.ts:8
+msgid "Debaty"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
@@ -81,11 +85,17 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
 msgid "Newsletter.Description"
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
 msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Privacy"
+
+#: src/components/shared/Header/Header.constants.ts:18
+msgid "Quizy"
+msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
@@ -107,9 +117,21 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
 msgid "Newsletter.Consent"
+
+#: src/components/shared/Header/Header.constants.ts:13
+msgid "Sondaże"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
+msgid "Strona główna"
 msgstr ""
 
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
 msgid "Newsletter.Title"
+msgstr ""
+
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
 msgstr ""
