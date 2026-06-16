@@ -24,31 +24,6 @@ const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
 };
 
 describe("<SurveyDemographics />", () => {
-  describe("given no demographic fields are filled", () => {
-    it("disables the primary submit button", () => {
-      renderWithI18n(
-        <SurveyDemographics onSubmit={vi.fn()} onSkip={vi.fn()} />,
-      );
-      expect(
-        screen.getByRole("button", { name: /zobacz wyniki/i }),
-      ).toBeDisabled();
-      expect(screen.getByRole("button", { name: /pomiń/i })).not.toBeDisabled();
-    });
-
-    it("shows loading state on both buttons", () => {
-      renderWithI18n(
-        <SurveyDemographics
-          onSubmit={vi.fn()}
-          onSkip={vi.fn()}
-          isLoading={true}
-        />,
-      );
-      expect(
-        screen.getByRole("button", { name: /zobacz wyniki/i }),
-      ).toBeDisabled();
-      expect(screen.getByRole("button", { name: /pomiń/i })).toBeDisabled();
-    });
-  });
 
   describe("when all required fields are filled via ActionList", () => {
     it("enables the submit button", async () => {

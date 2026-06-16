@@ -3,9 +3,6 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import SurveyDemographics from "./SurveyDemographics";
 
-i18n.load("pl", {});
-i18n.activate("pl");
-
 const meta: Meta<typeof SurveyDemographics> = {
   title: "Survey/SurveyDemographics",
   component: SurveyDemographics,
@@ -31,9 +28,29 @@ export const Default: Story = {
   name: "Default",
 };
 
+export const AllFilled: Story = {
+  name: "AllFilled",
+  args: {
+    initialValues: {
+      age: "25",
+      gender: "female",
+      residenceAreaSize: "city_medium",
+      education: "higher",
+      region: "mazowieckie",
+    },
+  },
+};
+
 export const Loading: Story = {
   name: "Loading",
   args: {
     isLoading: true,
+  },
+};
+
+export const ModalOpen: Story = {
+  name: "ModalOpen",
+  args: {
+    initialModalOpen: true,
   },
 };

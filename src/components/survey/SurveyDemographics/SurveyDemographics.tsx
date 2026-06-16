@@ -1,26 +1,26 @@
 import { Button, Modal } from "@gi/athena";
-import { useState } from "react";
-import type {
-  DemographicsInput,
-  SurveyDemographicsProps,
-} from "./SurveyDemographics.types";
-import SurveyDemographicsContent from "./SurveyDemographicsContent/SurveyDemographicsContent";
-import { surveyDemographicsSubmit, surveyDemographicsSkip, surveyDemographicsDataUsage, surveyDemographicsDataUsageDescription, surveyDemographicsDataUsageAnonymity } from "./SurveyDemographicsContent/SurveyDemographicsContent.constants";
 import { useLingui } from "@lingui/react";
+import { useState } from "react";
+import type { DemographicsInput, SurveyDemographicsProps} from "./SurveyDemographics.types";
+import SurveyDemographicsContent from "./SurveyDemographicsContent/SurveyDemographicsContent";
+import { surveyDemographicsDataUsage, surveyDemographicsDataUsageAnonymity, surveyDemographicsDataUsageDescription, surveyDemographicsSkip, surveyDemographicsSubmit } from "./SurveyDemographicsContent/SurveyDemographicsContent.constants";
 
 const SurveyDemographics = ({
   onSubmit,
   onSkip,
   isLoading = false,
+  initialModalOpen = false,
+  initialValues,
 }: SurveyDemographicsProps) => {
   const { i18n } = useLingui();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(initialModalOpen);
   const [formValues, setFormValues] = useState<DemographicsInput>({
     age: null,
     gender: null,
     residenceAreaSize: null,
     education: null,
     region: "",
+    ...initialValues,
   });
 
   const handleFieldChange = (control: string, value: string) => {
@@ -34,12 +34,6 @@ const SurveyDemographics = ({
     onSubmit(formValues);
   };
 
-  const isFormValid =
-    formValues.age !== null &&
-    formValues.gender !== null &&
-    formValues.residenceAreaSize !== null &&
-    formValues.education !== null;
-
   return (
     <div className="w-full max-w-85 mx-auto flex flex-col gap-6">
       <SurveyDemographicsContent
@@ -48,24 +42,23 @@ const SurveyDemographics = ({
         onLearnMoreClick={() => setIsModalOpen(true)}
       />
 
-      <div className="flex flex-col gap-3 w-full">
+      <div className="flex flex-row justify-center gap-4 w-full">
         <Button
           variant="primary"
-          disabled={!isFormValid || isLoading}
+          disabled={isLoading}
           onClick={handleSubmit}
-          className="w-full"
         >
           {i18n._(surveyDemographicsSubmit)}
         </Button>
 
-        <Button
-          variant="primary"
+        <button
+          type="button"
           disabled={isLoading}
           onClick={onSkip}
-          className="w-full"
+          className="text-gi-primary font-medium cursor-pointer"
         >
           {i18n._(surveyDemographicsSkip)}
-        </Button>
+        </button>
       </div>
 
       <Modal

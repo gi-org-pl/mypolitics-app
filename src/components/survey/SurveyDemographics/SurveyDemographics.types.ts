@@ -20,6 +20,8 @@ export type SurveyDemographicsProps = {
   onSubmit: (data: DemographicsInput) => void;
   onSkip: () => void;
   isLoading?: boolean;
+  initialModalOpen?: boolean;
+  initialValues?: Partial<DemographicsInput>;
 };
 
 export type DemographicsFieldOption = {
