@@ -74,7 +74,7 @@ msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:50
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
 msgid "Newsletter.PrivacyPolicy"
 msgstr "Polityka prywatności."
 
@@ -100,12 +100,12 @@ msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:56
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:55
 msgid "Newsletter.DataUsage"
 msgstr "Twoje dane osobowe nie będą w żaden sposób powiązane z wynikami."
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:40
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
 msgid "Newsletter.Consent"
 msgstr "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
 

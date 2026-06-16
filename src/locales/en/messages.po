@@ -74,7 +74,7 @@ msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:50
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
 msgid "Newsletter.PrivacyPolicy"
 msgstr ""
 
@@ -100,12 +100,12 @@ msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:56
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:55
 msgid "Newsletter.DataUsage"
 msgstr ""
 
 #. js-lingui-explicit-id
-#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:40
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
 msgid "Newsletter.Consent"
 msgstr ""
 
