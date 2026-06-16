@@ -1,0 +1,10 @@
+export const AGREEMENT_MIN_PERCENT = 0;
+export const AGREEMENT_MAX_PERCENT = 100;
+
+export const AGREEMENT_HIGH_THRESHOLD = 66;
+export const AGREEMENT_LOW_THRESHOLD = 33;
+
+export const AGREEMENT_RING_SIZE = 64;
+export const AGREEMENT_RING_CENTER = 32;
+export const AGREEMENT_RING_RADIUS = 29;
+export const AGREEMENT_RING_STROKE_WIDTH = 4;

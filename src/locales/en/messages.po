@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:61
+msgid "{roundedPercent}% pewności"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
@@ -24,6 +28,10 @@ msgstr ""
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
+
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:113
+msgid "Hasło"
+msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
