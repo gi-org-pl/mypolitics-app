@@ -17,6 +17,8 @@ msgstr ""
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:95
+msgid "D"
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
 msgstr ""
@@ -44,6 +46,14 @@ msgstr ""
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:8
+msgid "nie"
+msgstr ""
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:6
+msgid "nie powinien"
+msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -77,6 +87,8 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:7
+msgid "powinien"
 #: src/components/shared/Header/Header.tsx:121
 msgid "Otwórz menu nawigacji"
 msgstr ""
@@ -85,6 +97,8 @@ msgstr ""
 msgid "Prywatność"
 msgstr "Privacy"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:89
+msgid "Q"
 #: src/components/shared/Header/Header.constants.ts:18
 msgid "Quizy"
 msgstr ""
@@ -93,6 +107,8 @@ msgstr ""
 msgid "Regulamin"
 msgstr "Terms"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
+msgid "Rozwiń wyjaśnienie"
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
 msgstr ""
@@ -106,6 +122,12 @@ msgstr ""
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:163
+msgid "Wybierz odpowiedź"
+msgstr ""
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
+msgid "Zwiń wyjaśnienie"
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
 msgstr ""

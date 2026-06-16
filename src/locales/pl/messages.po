@@ -17,6 +17,9 @@ msgstr ""
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:95
+msgid "D"
+msgstr "D"
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
 msgstr "Debaty"
@@ -44,6 +47,14 @@ msgstr "mypolitics banner background"
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:8
+msgid "nie"
+msgstr "nie"
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:6
+msgid "nie powinien"
+msgstr "nie powinien"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -77,6 +88,9 @@ msgstr "Odwiedź nasz profil na Telegramie"
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.constants.ts:7
+msgid "powinien"
+msgstr "powinien"
 #: src/components/shared/Header/Header.tsx:121
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
@@ -85,6 +99,9 @@ msgstr "Otwórz menu nawigacji"
 msgid "Prywatność"
 msgstr "Prywatność"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.test.tsx:89
+msgid "Q"
+msgstr "Q"
 #: src/components/shared/Header/Header.constants.ts:18
 msgid "Quizy"
 msgstr "Quizy"
@@ -93,6 +110,9 @@ msgstr "Quizy"
 msgid "Regulamin"
 msgstr "Regulamin"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
+msgid "Rozwiń wyjaśnienie"
+msgstr "Rozwiń wyjaśnienie"
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
 msgstr "Sondaże"
@@ -106,6 +126,13 @@ msgstr "Strona główna"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:163
+msgid "Wybierz odpowiedź"
+msgstr "Wybierz odpowiedź"
+
+#: src/components/survey/SurveyQuestions/SurveyQuestion.tsx:102
+msgid "Zwiń wyjaśnienie"
+msgstr "Zwiń wyjaśnienie"
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
