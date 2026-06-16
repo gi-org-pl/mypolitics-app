@@ -24,7 +24,6 @@ const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
 };
 
 describe("<SurveyDemographics />", () => {
-
   describe("when all required fields are filled via ActionList", () => {
     it("enables the submit button", async () => {
       const user = userEvent.setup();

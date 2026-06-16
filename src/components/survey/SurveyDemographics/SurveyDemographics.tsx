@@ -47,6 +47,7 @@ const SurveyDemographics = ({
           variant="primary"
           disabled={isLoading}
           onClick={handleSubmit}
+          className="font-bold"
         >
           {i18n._(surveyDemographicsSubmit)}
         </Button>
@@ -55,29 +56,22 @@ const SurveyDemographics = ({
           type="button"
           disabled={isLoading}
           onClick={onSkip}
-          className="text-gi-primary font-medium cursor-pointer"
+          className="text-gi-primary font-bold cursor-pointer"
         >
           {i18n._(surveyDemographicsSkip)}
         </button>
       </div>
 
       <Modal
-        title=""
+        title={i18n._(surveyDemographicsDataUsage)}
+        description={i18n._(surveyDemographicsDataUsageDescription)}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="flex flex-col gap-2">
-          <p className="text-lg font-bold text-gi-primary text-left">
-            {i18n._(surveyDemographicsDataUsage)}
-          </p>
-          <p className="text-sm text-gi-dark-gray">
-            {i18n._(surveyDemographicsDataUsageDescription)}
-          </p>
-          <p className="text-sm text-gi-dark-gray font-bold">
-            {i18n._(surveyDemographicsDataUsageAnonymity)}
-          </p>
-        </div>
-      </Modal>
+        <p className="text-sm text-gi-gray font-bold">
+          {i18n._(surveyDemographicsDataUsageAnonymity)}
+        </p>
+      </Modal>q
     </div>
   );
 };
