@@ -81,6 +81,16 @@ msgstr "Visit our X profile"
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
+msgid "Newsletter.PrivacyPolicy"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
+msgid "Newsletter.Description"
+msgstr ""
+
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Privacy"
@@ -106,6 +116,21 @@ msgstr ""
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:55
+msgid "Newsletter.DataUsage"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
+msgid "Newsletter.Consent"
+msgstr ""
+
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
+msgid "Newsletter.Title"
 msgstr ""

@@ -81,6 +81,16 @@ msgstr "Odwiedź nasz profil na X"
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
+msgid "Newsletter.PrivacyPolicy"
+msgstr "Polityka prywatności."
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
+msgid "Newsletter.Description"
+msgstr "Poznaj poglądy innych, porównaj się, zdobądź wiedzę o zmianach w społeczeństwie i Twoim otoczeniu!"
+
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
@@ -106,6 +116,21 @@ msgstr "Strona główna"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:55
+msgid "Newsletter.DataUsage"
+msgstr "Twoje dane osobowe nie będą w żaden sposób powiązane z wynikami."
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
+msgid "Newsletter.Consent"
+msgstr "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
+
+#. js-lingui-explicit-id
+#: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
+msgid "Newsletter.Title"
+msgstr "Zobacz więcej niż wyniki."
