@@ -11,7 +11,7 @@ export default function SurveyNewsletter({
 }: SurveyNewsletterProps) {
   return (
     <div className="flex flex-col justify-center ">
-      <div className="flex flex-col w-full h-fit text-gi-primary rounded-2xl p-4 gap-2.5">
+      <div className="flex flex-col w-full h-fit text-gi-primary rounded-2xl p-4 gap-2.5 bg-gi-dark-ash">
         <p className="font-bold text-[24px] text-gi-primary w-full h-9 flex items-center">
           <Trans id="Newsletter.Title" message="Zobacz więcej niż wyniki." />
         </p>
