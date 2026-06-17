@@ -154,7 +154,7 @@ export const ResultsAxis = ({
       >
         <div className="absolute inset-0 bg-gi-ash/30 rounded-full overflow-hidden flex">
           <div className="absolute inset-0 border-y border-gi-primary/10 -z-20" />
-          
+
           {renderSegment("left")}
           {renderSegment("right")}
         </div>
