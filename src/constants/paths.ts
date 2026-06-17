@@ -1,5 +1,6 @@
 export const PATHS = {
   generacjaInnowacja: "https://gi.org.pl",
+  suppi: "http://suppi.pl/mypolitics",
   terms: "/terms",
   privacy: "/privacy",
   about: "/about",

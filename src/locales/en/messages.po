@@ -45,6 +45,10 @@ msgstr ""
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:18
+msgid "Nikt nas nie finansuje… poza Wami!"
+msgstr ""
+
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
 msgstr "About"
@@ -104,6 +108,10 @@ msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr ""
+
+#: src/components/shared/PatroniteBanner/PatroniteBanner.tsx:21
+msgid "Wesprzyj naszą działalność:"
 msgstr ""
 
 #: src/components/shared/Header/Header.tsx:121
