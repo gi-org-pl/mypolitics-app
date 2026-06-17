@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import personalityIcon from "@/assets/images/results/resultIdentities/icon.png";
 import { ResultIdentityPersonality } from "./ResultIdentityPersonality";
 
 const meta: Meta<typeof ResultIdentityPersonality> = {
@@ -33,10 +34,10 @@ type Story = StoryObj<typeof ResultIdentityPersonality>;
 
 const baseIdentity = {
   id: "1",
-  name: "Jan Kowalski",
+  name: "Zielony Postępowiec",
   shortDescription: "Krótki opis tożsamości",
   description: "Długi opis tożsamości",
-  imageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jan",
+  imageUrl: personalityIcon,
   agreementPercent: 66,
   slogan: "Hasło wyborcze",
 };

@@ -1,8 +1,12 @@
-import { Avatar, Button } from "@gi/athena";
+import { Button } from "@gi/athena";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
-import { ChevronDown, ChevronUp, Info } from "lucide-react";
 import type React from "react";
+import { useState } from "react";
+import chevronIcon from "@/assets/icons/chevron.svg";
+import infoIcon from "@/assets/icons/i.svg";
+import { PersonalityDescription } from "./components/PersonalityDescription";
+import { PersonalityIdentityRow } from "./components/PersonalityIdentityRow";
+import { PersonalityModal } from "./components/PersonalityModal";
 import type { ResultIdentityPersonalityProps } from "./ResultIdentityPersonality.types";
 import { getAgreementColor } from "./utils/getAgreementColor";
 
@@ -16,80 +20,74 @@ export const ResultIdentityPersonality: React.FC<
   onToggleModal,
   title,
 }) => {
-  const { name, imageUrl, agreementPercent } = identity;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const clampedPercent = Math.min(100, Math.max(0, agreementPercent));
-  const roundedPercent = Math.round(clampedPercent);
-  const percentColorClass = getAgreementColor(roundedPercent);
+  const clampedPercent = Math.min(100, Math.max(0, identity.agreementPercent));
+  const formattedPercent = clampedPercent.toFixed(1);
+  const percentColorClass = getAgreementColor(clampedPercent);
 
   const handleAction = () => {
     if (mode === "expanded") {
       onToggleExpanded?.();
     } else {
+      setIsModalOpen(true);
       onToggleModal?.();
     }
   };
 
-  const ActionIcon =
-    mode === "expanded" ? (expanded ? ChevronUp : ChevronDown) : Info;
-
   const ariaLabel =
-    mode === "expanded"
-      ? expanded
-        ? t`Zwiń`
-        : t`Rozwiń`
-      : t`Szczegóły`;
+    mode === "expanded" ? (expanded ? t`Zwiń` : t`Rozwiń`) : t`Szczegóły`;
 
   return (
-    <div className="flex flex-col w-full border border-gi-ash rounded-xl bg-white shadow-sm overflow-hidden">
-      <div className="flex items-center gap-3 py-3 px-4">
-        <Avatar
-          src={imageUrl}
-          alt={name}
-          size="medium"
-          className="size-12 shrink-0"
+    <div className="flex flex-col w-full gap-3 p-0 border-none shadow-none bg-transparent">
+      {mode === "modal" && (
+        <PersonalityModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          identity={identity}
+          title={identity.name}
+          formattedPercent={formattedPercent}
+          percentColorClass={percentColorClass}
         />
+      )}
 
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-bold text-gi-primary/50 mb-0.5">
-            {title || <Trans>Tożsamość</Trans>}{" "}
-            <span className={percentColorClass}>
-              <Trans>({roundedPercent}%)</Trans>
-            </span>
-          </div>
-          <div className="font-bold text-gi-primary truncate text-sm sm:text-base">
-            {name}
-          </div>
-        </div>
+      {mode === "expanded" && (
+        <PersonalityDescription
+          text={expanded ? identity.description : identity.shortDescription}
+        />
+      )}
+
+      <div className="flex items-center gap-3">
+        <PersonalityIdentityRow
+          imageUrl={identity.imageUrl}
+          name={identity.name}
+          title={title}
+          formattedPercent={formattedPercent}
+          percentColorClass={percentColorClass}
+        />
 
         <Button
           isIconButton
-          type="ghost"
+          type="outlined"
           variant="primary"
           size="regular"
-          className="w-12 h-12 shrink-0 [&_svg]:size-6 [&_svg_*]:fill-none [&_svg_*]:stroke-current [&_svg_*]:stroke-2"
+          className="shrink-0"
           onClick={handleAction}
           aria-label={ariaLabel}
         >
-          <ActionIcon />
+          {mode === "expanded" ? (
+            <img
+              src={chevronIcon}
+              alt=""
+              className={`w-3.5 transition-transform duration-200 ${
+                expanded ? "rotate-180" : ""
+              }`}
+            />
+          ) : (
+            <img src={infoIcon} alt="" className="h-4 w-auto" />
+          )}
         </Button>
       </div>
-
-      {mode === "expanded" && expanded && (
-        <div className="px-4 pb-4 text-sm text-gi-primary border-t border-gi-ash/50 bg-gi-ash/5">
-          {identity.slogan && (
-            <div className="italic font-medium text-gi-primary/70 mb-2 mt-4">
-              "{identity.slogan}"
-            </div>
-          )}
-          {identity.shortDescription && (
-            <div className="font-bold mb-2">
-              {identity.shortDescription}
-            </div>
-          )}
-          <div className="leading-relaxed">{identity.description}</div>
-        </div>
-      )}
     </div>
   );
 };
