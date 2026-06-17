@@ -20,7 +20,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
 
 export const Default: Story = {
   args: {
-    href: PATHS.patronite,
+    href: PATHS.suppi,
     ctaLabel: "5 zł na kawę",
   },
   render: (args) => (
@@ -32,7 +32,7 @@ export const Default: Story = {
 
 export const Mobile: Story = {
   args: {
-    href: PATHS.patronite,
+    href: PATHS.suppi,
     ctaLabel: "5 zł na kawę",
   },
   parameters: {
@@ -49,7 +49,7 @@ export const Mobile: Story = {
 
 export const LongCtaLabel: Story = {
   args: {
-    href: PATHS.patronite,
+    href: PATHS.suppi,
     ctaLabel: "Wesprzyj nas jednorazowo: 25 zł na rozwój projektu",
   },
   render: (args) => (

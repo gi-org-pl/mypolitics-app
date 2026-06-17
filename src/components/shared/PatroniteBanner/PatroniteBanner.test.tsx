@@ -6,7 +6,7 @@ import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { PatroniteBanner } from "./PatroniteBanner";
 
 describe("<PatroniteBanner />", () => {
-  const href = PATHS.patronite;
+  const href = PATHS.suppi;
   const ctaLabel = "5 zł na kawę";
 
   const renderBanner = (
