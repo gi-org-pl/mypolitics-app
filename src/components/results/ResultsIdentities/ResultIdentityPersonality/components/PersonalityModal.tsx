@@ -34,7 +34,9 @@ export const PersonalityModal: React.FC<PersonalityModalProps> = ({
       title={title || <Trans>Tożsamość</Trans>}
     >
       <div className="flex flex-col gap-3">
-        <PersonalityDescription text={isExpanded ? identity.description : identity.shortDescription} />
+        <PersonalityDescription
+          text={isExpanded ? identity.description : identity.shortDescription}
+        />
 
         <div className="flex items-center gap-3">
           <PersonalityIdentityRow

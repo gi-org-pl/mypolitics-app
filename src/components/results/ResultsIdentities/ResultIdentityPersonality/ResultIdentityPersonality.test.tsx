@@ -164,13 +164,16 @@ describe("<ResultIdentityPersonality />", () => {
       expect(screen.getByLabelText(/Szczegóły/)).toBeInTheDocument();
     });
 
-    it("renders short description in modal mode", () => {
+    it("does not render descriptions inline in modal mode initially", () => {
       renderWithI18n(
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
       expect(
-        screen.getByText(mockIdentity.shortDescription),
-      ).toBeInTheDocument();
+        screen.queryByText(mockIdentity.shortDescription),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByText(mockIdentity.description),
+      ).not.toBeInTheDocument();
     });
 
     it("calls onToggleModal on button click", async () => {
@@ -187,6 +190,48 @@ describe("<ResultIdentityPersonality />", () => {
       await user.click(screen.getByRole("button"));
       expect(onToggleModal).toHaveBeenCalledTimes(1);
     });
+
+    it("renders modal content after clicking info button and can be closed", async () => {
+      const user = userEvent.setup();
+      renderWithI18n(
+        <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
+      );
+
+      await user.click(screen.getByRole("button"));
+
+      // Modal content should now be visible
+      expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
+      expect(screen.getAllByText(mockIdentity.name).length).toBeGreaterThan(0);
+
+      // Close the modal
+      await user.click(screen.getByLabelText(/Close modal/));
+    });
+
+    it("can expand internal content in modal (swaps description)", async () => {
+      const user = userEvent.setup();
+      renderWithI18n(
+        <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
+      );
+
+      await user.click(screen.getByRole("button"));
+
+      // Initially shows short description
+      expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
+      expect(screen.queryByText(mockIdentity.description)).not.toBeInTheDocument();
+
+      // Find the expansion button inside the modal
+      const expandButton = screen.getAllByRole("button", { name: /Rozwiń/ })[0];
+      await user.click(expandButton);
+
+      // Should now show long description and hide short description
+      expect(screen.getByText(mockIdentity.description)).toBeInTheDocument();
+      expect(screen.queryByText(mockIdentity.shortDescription)).not.toBeInTheDocument();
+
+      // Collapse it back
+      await user.click(screen.getByRole("button", { name: /Zwiń/ }));
+      expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
+      expect(screen.queryByText(mockIdentity.description)).not.toBeInTheDocument();
+    });
   });
 
   describe("given an imageUrl", () => {
@@ -195,6 +240,19 @@ describe("<ResultIdentityPersonality />", () => {
         <ResultIdentityPersonality identity={mockIdentity} mode="modal" />,
       );
       expect(screen.getByLabelText(/Test Name/)).toBeInTheDocument();
+    });
+  });
+
+  describe("given no imageUrl", () => {
+    it("renders the fallback personality icon", () => {
+      renderWithI18n(
+        <ResultIdentityPersonality
+          identity={{ ...mockIdentity, imageUrl: "" }}
+          mode="modal"
+        />,
+      );
+      const img = screen.getByRole("img", { name: /Test Name/ }).querySelector("img");
+      expect(img).toHaveAttribute("src", expect.stringContaining("icon.png"));
     });
   });
 });

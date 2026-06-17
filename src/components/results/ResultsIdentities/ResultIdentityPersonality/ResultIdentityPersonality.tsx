@@ -45,7 +45,7 @@ export const ResultIdentityPersonality: React.FC<
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           identity={identity}
-          title={identity.name}
+          title={title}
           formattedPercent={formattedPercent}
           percentColorClass={percentColorClass}
         />
