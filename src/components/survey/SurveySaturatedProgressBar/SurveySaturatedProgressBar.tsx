@@ -26,7 +26,9 @@ export function SurveySaturatedProgressBar({
   }, [saturatedPercentValue]);
 
   return (
-    <div className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}>
+    <div
+      className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}
+    >
       <ProgressBar
         size="regular"
         value={saturatedPercentValue}

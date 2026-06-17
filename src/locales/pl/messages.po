@@ -77,6 +77,10 @@ msgstr "Odwiedź nasz profil na Telegramie"
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
+msgstr "Otwórz menu nawigacji"
+
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
 msgid "Newsletter.PrivacyPolicy"
@@ -86,9 +90,6 @@ msgstr "Polityka prywatności."
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
 msgid "Newsletter.Description"
 msgstr "Poznaj poglądy innych, porównaj się, zdobądź wiedzę o zmianach w społeczeństwie i Twoim otoczeniu!"
-#: src/components/shared/Header/Header.tsx:121
-msgid "Otwórz menu nawigacji"
-msgstr "Otwórz menu nawigacji"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -125,10 +126,11 @@ msgstr "Twoje dane osobowe nie będą w żaden sposób powiązane z wynikami."
 msgid "Newsletter.Consent"
 msgstr "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
 
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
+
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
 msgid "Newsletter.Title"
 msgstr "Zobacz więcej niż wyniki."
-#: src/components/shared/Header/Header.tsx:121
-msgid "Zamknij menu nawigacji"
-msgstr "Zamknij menu nawigacji"

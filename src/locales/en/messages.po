@@ -77,6 +77,10 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
+#: src/components/shared/Header/Header.tsx:121
+msgid "Otwórz menu nawigacji"
+msgstr ""
+
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:49
 msgid "Newsletter.PrivacyPolicy"
@@ -85,8 +89,6 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:19
 msgid "Newsletter.Description"
-#: src/components/shared/Header/Header.tsx:121
-msgid "Otwórz menu nawigacji"
 msgstr ""
 
 #: src/components/shared/Footer/Footer.constants.ts:7
@@ -101,7 +103,12 @@ msgstr ""
 msgid "Regulamin"
 msgstr "Terms"
 
+#: src/components/shared/Header/Header.constants.ts:13
+msgid "Sondaże"
+msgstr ""
+
 #: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
 msgstr ""
 
@@ -117,21 +124,13 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:39
 msgid "Newsletter.Consent"
-
-#: src/components/shared/Header/Header.constants.ts:13
-msgid "Sondaże"
 msgstr ""
 
-#: src/components/shared/Error404/Error404.tsx:35
-#: src/components/shared/Header/Header.tsx:105
-msgid "Strona główna"
+#: src/components/shared/Header/Header.tsx:121
+msgid "Zamknij menu nawigacji"
 msgstr ""
 
 #. js-lingui-explicit-id
 #: src/components/survey/SurveyNewsletter/SurveyNewsletter.tsx:16
 msgid "Newsletter.Title"
-msgstr ""
-
-#: src/components/shared/Header/Header.tsx:121
-msgid "Zamknij menu nawigacji"
 msgstr ""
