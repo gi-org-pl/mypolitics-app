@@ -117,7 +117,7 @@ export const ResultsAxis = ({
     return (
       <div
         className={cn(
-          "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2",
+          "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2 shadow-sm",
         )}
         style={{
           left: `${knobPosition}%`,
@@ -148,11 +148,13 @@ export const ResultsAxis = ({
       <div
         className={cn(
           "relative flex h-6 w-[calc(100%-32px)] self-center items-center",
-          "bg-gi-ash/30 rounded-full overflow-visible",
+          "bg-transparent overflow-visible",
           !isHighlighted && "shadow-[0_0_0_1px_var(--color-gi-ash)]",
         )}
       >
-        <div className="absolute inset-0 flex overflow-hidden rounded-full">
+        <div className="absolute inset-0 bg-gi-ash/30 rounded-full overflow-hidden flex">
+          <div className="absolute inset-0 border-y border-gi-primary/10 -z-20" />
+          
           {renderSegment("left")}
           {renderSegment("right")}
         </div>
