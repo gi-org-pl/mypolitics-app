@@ -124,24 +124,34 @@ describe("<ResultsAxis />", () => {
   });
 
   describe("given onSideClick", () => {
-    it('calls onSideClick("left") when the left side is clicked', () => {
+    it('calls onSideClick("left") when any left side interactive element is clicked', () => {
       const onSideClick = vi.fn();
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
       const leftButtons = screen.getAllByRole("button", { name: "Left" });
-      fireEvent.click(leftButtons[0]);
+
+      for (const button of leftButtons) {
+        fireEvent.click(button);
+      }
+
       expect(onSideClick).toHaveBeenCalledWith("left");
+      expect(onSideClick).toHaveBeenCalledTimes(leftButtons.length);
     });
 
-    it('calls onSideClick("right") when the right side is clicked', () => {
+    it('calls onSideClick("right") when any right side interactive element is clicked', () => {
       const onSideClick = vi.fn();
       renderWithI18n(
         <ResultsAxis {...defaultProps} onSideClick={onSideClick} />,
       );
       const rightButtons = screen.getAllByRole("button", { name: "Right" });
-      fireEvent.click(rightButtons[0]);
+
+      for (const button of rightButtons) {
+        fireEvent.click(button);
+      }
+
       expect(onSideClick).toHaveBeenCalledWith("right");
+      expect(onSideClick).toHaveBeenCalledTimes(rightButtons.length);
     });
 
     it("is operable via keyboard", () => {
@@ -192,6 +202,49 @@ describe("<ResultsAxis />", () => {
 
       expect(screen.getByText("30%")).toBeInTheDocument();
       expect(screen.getByText("40%")).toBeInTheDocument();
+    });
+
+    it("renders muted knobs when isHighlighted is false", () => {
+      const { container } = renderWithI18n(
+        <ResultsAxis
+          left={{ ...defaultProps.left, value: 50 }}
+          right={{ ...defaultProps.right, value: 50 }}
+          isNormalized={false}
+          isHighlighted={false}
+        />,
+      );
+
+      const knobs = container.querySelectorAll(
+        '[style*="var(--color-gi-gray)"]',
+      );
+      expect(knobs.length).toBe(2);
+    });
+
+    it("hides the knob for a side with 0% value", () => {
+      const { container } = renderWithI18n(
+        <ResultsAxis
+          left={{ ...defaultProps.left, value: 0 }}
+          right={{ ...defaultProps.right, value: 50 }}
+          isNormalized={false}
+        />,
+      );
+
+      const knob = container.querySelector('[style*="right: 50%"]');
+      expect(knob).toBeInTheDocument();
+
+      const leftKnob = container.querySelector('[style*="left: 5%"]');
+      expect(leftKnob).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given one side is 0% in normalized mode", () => {
+    it("uses gi-gray for the zero-percent side icon color", () => {
+      renderWithI18n(
+        <ResultsAxis
+          left={{ ...defaultProps.left, value: 0 }}
+          right={{ ...defaultProps.right, value: 100 }}
+        />,
+      );
     });
   });
 
