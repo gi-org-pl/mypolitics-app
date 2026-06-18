@@ -171,6 +171,30 @@ describe("<ResultsAxis />", () => {
     });
   });
 
+  describe("given isNormalized is false", () => {
+    it("does not normalize segment widths and uses raw values for labels", () => {
+      const { container } = renderWithI18n(
+        <ResultsAxis
+          left={{ ...defaultProps.left, value: 30 }}
+          right={{ ...defaultProps.right, value: 40 }}
+          isNormalized={false}
+        />,
+      );
+      const leftSide = container.querySelector(
+        '[aria-label="Left"]',
+      ) as HTMLElement;
+      const rightSide = container.querySelector(
+        '[aria-label="Right"]',
+      ) as HTMLElement;
+
+      expect(leftSide.style.width).toBe("32%");
+      expect(rightSide.style.width).toBe("41%");
+
+      expect(screen.getByText("30%")).toBeInTheDocument();
+      expect(screen.getByText("40%")).toBeInTheDocument();
+    });
+  });
+
   describe("given an id", () => {
     it("applies the id to the root element", () => {
       renderWithI18n(<ResultsAxis {...defaultProps} id="custom-id" />);

@@ -128,6 +128,25 @@ export const FractionalPercent: Story = {
   },
 };
 
+export const NotNormalized: Story = {
+  args: {
+    left: {
+      name: "Left",
+      iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=left",
+      value: 30,
+      color: "gi-blue",
+    },
+    right: {
+      name: "Right",
+      iconUrl: "https://api.dicebear.com/7.x/icons/svg?seed=right",
+      value: 40,
+      color: "gi-red",
+    },
+    isHighlighted: true,
+    isNormalized: false,
+  },
+};
+
 export const Clickable: Story = {
   args: {
     ...Default.args,

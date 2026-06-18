@@ -12,5 +12,6 @@ export interface ResultsAxisProps {
   left: AxisSide;
   right: AxisSide;
   isHighlighted?: boolean;
+  isNormalized?: boolean;
   onSideClick?: (side: AxisSideKey) => void;
 }

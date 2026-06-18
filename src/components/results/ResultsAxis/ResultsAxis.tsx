@@ -9,12 +9,12 @@ export const ResultsAxis = ({
   left,
   right,
   isHighlighted = true,
+  isNormalized = true,
   onSideClick,
 }: ResultsAxisProps) => {
-  const { left: leftPercent, right: rightPercent } = normalizePercentages(
-    left.value,
-    right.value,
-  );
+  const { left: leftPercent, right: rightPercent } = isNormalized
+    ? normalizePercentages(left.value, right.value)
+    : { left: left.value, right: right.value };
 
   const visualLeftPercent = 5 + leftPercent * 0.9;
 
@@ -59,8 +59,12 @@ export const ResultsAxis = ({
   const renderSegment = (sideKey: AxisSideKey) => {
     const side = sideKey === "left" ? left : right;
     const percentage = sideKey === "left" ? leftPercent : rightPercent;
-    const visualWidth =
-      sideKey === "left" ? visualLeftPercent : 100 - visualLeftPercent;
+
+    const visualWidth = isNormalized
+      ? sideKey === "left"
+        ? visualLeftPercent
+        : 100 - visualLeftPercent
+      : 5 + percentage * 0.9;
 
     const segmentBgClass = isHighlighted ? "" : "bg-gi-ash";
     const labelColorClass = isHighlighted ? "text-white" : "text-gi-dark-gray";
@@ -78,6 +82,7 @@ export const ResultsAxis = ({
         aria-label={t`${side.name}`}
         className={cn(
           "relative flex h-full items-center justify-center transition-all",
+          sideKey === "right" && "ml-auto",
           isInteractive
             ? "cursor-pointer hover:brightness-95 focus-visible:z-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-primary"
             : "cursor-default",
@@ -110,23 +115,60 @@ export const ResultsAxis = ({
     );
   };
 
-  const renderKnob = () => {
-    const knobPosition = visualLeftPercent;
-    const activeSide = left.value >= right.value ? left : right;
+  const renderKnobs = () => {
+    if (isNormalized) {
+      const knobPosition = visualLeftPercent;
+      const activeSide = left.value >= right.value ? left : right;
+
+      return (
+        <div
+          className={cn(
+            "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2 shadow-sm",
+          )}
+          style={{
+            left: `${knobPosition}%`,
+            backgroundColor: isHighlighted
+              ? `var(--color-${activeSide.color})`
+              : "var(--color-gi-gray)",
+            filter: "brightness(0.6)",
+          }}
+        />
+      );
+    }
 
     return (
-      <div
-        className={cn(
-          "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2 shadow-sm",
+      <>
+        {leftPercent > 0 && (
+          <div
+            className={cn(
+              "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all -translate-x-1/2 shadow-sm",
+            )}
+            style={{
+              left: `${5 + leftPercent * 0.9}%`,
+              backgroundColor: isHighlighted
+                ? `var(--color-${left.color})`
+                : "var(--color-gi-gray)",
+              filter: "brightness(0.6)",
+            }}
+          />
         )}
-        style={{
-          left: `${knobPosition}%`,
-          backgroundColor: isHighlighted
-            ? `var(--color-${activeSide.color})`
-            : "var(--color-gi-gray)",
-          filter: "brightness(0.6)",
-        }}
-      />
+        {rightPercent > 0 && (
+          <div
+            className={cn(
+              "pointer-events-none absolute top-0 bottom-0 z-20 size-6 rounded-full transition-all shadow-sm",
+            )}
+            style={{
+              right: `${5 + rightPercent * 0.9}%`,
+              backgroundColor: isHighlighted
+                ? `var(--color-${right.color})`
+                : "var(--color-gi-gray)",
+              filter: "brightness(0.6)",
+              transform: "translateY(-50%) translateX(50%)",
+              top: "50%",
+            }}
+          />
+        )}
+      </>
     );
   };
 
@@ -160,7 +202,7 @@ export const ResultsAxis = ({
         </div>
         {renderIcon("left")}
         {renderIcon("right")}
-        {renderKnob()}
+        {renderKnobs()}
       </div>
     </div>
   );
