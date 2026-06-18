@@ -70,8 +70,7 @@ export const ResultIdentityPersonality: React.FC<
           isIconButton
           type="outlined"
           variant="primary"
-          size="regular"
-          className="shrink-0"
+          className="flex items-center justify-center w-12 h-12 shrink-0"
           onClick={handleAction}
           aria-label={ariaLabel}
         >
@@ -79,12 +78,12 @@ export const ResultIdentityPersonality: React.FC<
             <img
               src={chevronIcon}
               alt=""
-              className={`w-3.5 transition-transform duration-200 ${
+              className={`block w-3.5 transition-transform duration-200 ${
                 expanded ? "rotate-180" : ""
               }`}
             />
           ) : (
-            <img src={infoIcon} alt="" className="h-4 w-auto" />
+            <img src={infoIcon} alt="" className="block h-4 w-auto" />
           )}
         </Button>
       </div>

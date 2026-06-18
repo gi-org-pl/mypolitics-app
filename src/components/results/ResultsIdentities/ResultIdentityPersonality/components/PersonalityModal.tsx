@@ -51,8 +51,7 @@ export const PersonalityModal: React.FC<PersonalityModalProps> = ({
             isIconButton
             type="outlined"
             variant="primary"
-            size="regular"
-            className="shrink-0"
+            className={`w-12 h-12 shrink-0`}
             onClick={() => setIsExpanded(!isExpanded)}
             aria-label={isExpanded ? t`Zwiń` : t`Rozwiń`}
           >

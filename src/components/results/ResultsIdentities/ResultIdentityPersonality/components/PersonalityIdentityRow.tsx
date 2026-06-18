@@ -23,7 +23,7 @@ export const PersonalityIdentityRow: React.FC<PersonalityIdentityRowProps> = ({
       src={imageUrl || personalityIcon}
       alt={name}
       size="medium"
-      className="shrink-0 bg-transparent"
+      className="shrink-0 bg-transparent h-12 w-12"
     />
 
     <div className="flex-1 min-w-0">
