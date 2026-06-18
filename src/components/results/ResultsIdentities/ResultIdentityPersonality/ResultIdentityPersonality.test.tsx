@@ -199,11 +199,9 @@ describe("<ResultIdentityPersonality />", () => {
 
       await user.click(screen.getByRole("button"));
 
-      // Modal content should now be visible
       expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
       expect(screen.getAllByText(mockIdentity.name).length).toBeGreaterThan(0);
 
-      // Close the modal
       await user.click(screen.getByLabelText(/Close modal/));
     });
 
@@ -215,19 +213,15 @@ describe("<ResultIdentityPersonality />", () => {
 
       await user.click(screen.getByRole("button"));
 
-      // Initially shows short description
       expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
       expect(screen.queryByText(mockIdentity.description)).not.toBeInTheDocument();
 
-      // Find the expansion button inside the modal
       const expandButton = screen.getAllByRole("button", { name: /Rozwiń/ })[0];
       await user.click(expandButton);
 
-      // Should now show long description and hide short description
       expect(screen.getByText(mockIdentity.description)).toBeInTheDocument();
       expect(screen.queryByText(mockIdentity.shortDescription)).not.toBeInTheDocument();
 
-      // Collapse it back
       await user.click(screen.getByRole("button", { name: /Zwiń/ }));
       expect(screen.getByText(mockIdentity.shortDescription)).toBeInTheDocument();
       expect(screen.queryByText(mockIdentity.description)).not.toBeInTheDocument();
