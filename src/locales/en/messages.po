@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/results/ResultsIdentities/ResultIdentityPersonality/components/PersonalityIdentityRow.tsx:33
+msgid "({formattedPercent}%)"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
@@ -33,9 +37,25 @@ msgstr ""
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr ""
 
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr ""
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr ""
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr ""
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
 
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
 msgid "mypolitics banner background"
@@ -95,11 +115,18 @@ msgstr "Terms"
 
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
+
+#: src/components/results/ResultsIdentities/ResultIdentityPersonality/ResultIdentityPersonality.tsx:44
+msgid "Rozwiń"
 msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:35
 #: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
+msgstr ""
+
+#: src/components/results/ResultsIdentities/ResultIdentityPersonality/ResultIdentityPersonality.tsx:45
+msgid "Szczegóły"
 msgstr ""
 
 #: src/components/shared/Error404/Error404.tsx:20
@@ -108,4 +135,12 @@ msgstr ""
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
+msgstr ""
+
+#: src/components/results/ResultsIdentities/ResultIdentityPersonality/components/PersonalityIdentityRow.tsx:31
+msgid "Tożsamość"
+msgstr ""
+
+#: src/components/results/ResultsIdentities/ResultIdentityPersonality/ResultIdentityPersonality.tsx:43
+msgid "Zwiń"
 msgstr ""
