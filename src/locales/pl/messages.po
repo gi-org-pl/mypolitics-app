@@ -13,6 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: side.name
+#: src/components/results/ResultsAxis/ResultsAxis.tsx:38
+#: src/components/results/ResultsAxis/ResultsAxis.tsx:78
+msgid "{0}"
+msgstr "{0}"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
