@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import NotFound from "./NotFound";
+import NotFound from "./$";
 
 vi.mock("@/components/shared/Error404/Error404", () => ({
   Error404: () => <div data-testid="error-404">Error 404</div>,
