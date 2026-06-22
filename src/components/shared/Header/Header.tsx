@@ -18,7 +18,7 @@ const icons: Record<HeaderNavItem["key"], string> = {
   quizzes: quizzesIcon,
 };
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { i18n } = useLingui();
@@ -143,5 +143,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;
