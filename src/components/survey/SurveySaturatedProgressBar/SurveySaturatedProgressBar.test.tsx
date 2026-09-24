@@ -4,7 +4,7 @@ import { SurveySaturatedProgressBar } from "./SurveySaturatedProgressBar";
 import { BAR_ANIMATION_MS } from "./SurveySaturatedProgressBar.constants";
 import { getSaturatedPercentValue } from "./utils/getSaturatedPercentValue";
 
-vi.mock("@gi/athena", () => ({
+vi.mock("@gi-org-pl/athena", () => ({
   ProgressBar: ({ value }: { value: number }) => (
     <div data-testid="progress-bar" data-value={value} />
   ),

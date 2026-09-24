@@ -3,7 +3,6 @@ import { I18nProvider } from "@lingui/react";
 import type { Preview } from "@storybook/react-vite";
 import type React from "react";
 
-import "@gi/athena/athena.css";
 import "../src/index.css";
 
 import { messages as enMessages } from "../src/locales/en/messages";
