@@ -33,6 +33,7 @@ msgstr "© {currentYear}"
 msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:143
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
@@ -109,6 +110,22 @@ msgstr "Odwiedź nasz profil na X"
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:153
+msgid "Pokaż kategorię"
+msgstr "Pokaż kategorię"
+
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:153
+msgid "Pokaż kategorię: {name}"
+msgstr "Pokaż kategorię: {name}"
+
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:171
+msgid "Pokaż mniej"
+msgstr "Pokaż mniej"
+
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:171
+msgid "Pokaż wszystkie"
+msgstr "Pokaż wszystkie"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
@@ -153,6 +170,10 @@ msgstr "Tryb porównania"
 #: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:197
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
+
+#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:242
+msgid "Wróć do kategorii"
+msgstr "Wróć do kategorii"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
