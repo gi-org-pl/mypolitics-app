@@ -37,6 +37,14 @@ msgstr "Generacja Innowacja"
 msgid "Ilustracja misia — błąd 404"
 msgstr ""
 
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
+msgid "Informacje"
+msgstr "Information"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
+msgid "Informacje: {name}"
+msgstr "Information: {name}"
+
 #: src/components/shared/Error404/Error404.tsx:27
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr ""
@@ -108,6 +116,14 @@ msgstr "Terms"
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
 msgstr ""
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:57
+msgid "Statystyki"
+msgstr "Statistics"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:57
+msgid "Statystyki: {name}"
+msgstr "Statistics: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:35
 #: src/components/shared/Header/Header.tsx:105
