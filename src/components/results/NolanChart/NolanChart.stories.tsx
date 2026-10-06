@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { NolanChart } from "./NolanChart";
 import type {
@@ -95,19 +95,39 @@ const createWorldview = (start?: number, end?: number): NolanAxis =>
 const QUADRANTS: NolanChartProps["quadrants"] = {
   topLeft: {
     color: RED,
-    names: { moderate: "Umiarkowana czerwona", extreme: "Skrajna czerwona" },
+    names: {
+      moderate: "Umiarkowana czerwona",
+      moderateShort: "Um. czerwona",
+      extreme: "Skrajna czerwona",
+      extremeShort: "Skr. czerwona",
+    },
   },
   topRight: {
     color: BLUE,
-    names: { moderate: "Umiarkowana niebieska", extreme: "Skrajna niebieska" },
+    names: {
+      moderate: "Umiarkowana niebieska",
+      moderateShort: "Um. niebieska",
+      extreme: "Skrajna niebieska",
+      extremeShort: "Skr. niebieska",
+    },
   },
   bottomLeft: {
     color: GREEN,
-    names: { moderate: "Umiarkowana zielona", extreme: "Skrajna zielona" },
+    names: {
+      moderate: "Umiarkowana zielona",
+      moderateShort: "Um. zielona",
+      extreme: "Skrajna zielona",
+      extremeShort: "Skr. zielona",
+    },
   },
   bottomRight: {
     color: PURPLE,
-    names: { moderate: "Umiarkowana fioletowa", extreme: "Skrajna fioletowa" },
+    names: {
+      moderate: "Umiarkowana fioletowa",
+      moderateShort: "Um. fioletowa",
+      extreme: "Skrajna fioletowa",
+      extremeShort: "Skr. fioletowa",
+    },
   },
 };
 
@@ -118,7 +138,7 @@ const friend: AxisOrientation = {
 };
 
 const meta = {
-  title: "Results/Modules/NolanChart",
+  title: "Results/NolanChart",
   component: NolanChart,
   args: {
     horizontal: createEconomy(77, 23),
@@ -206,10 +226,38 @@ export const OnAnAxis: Story = {
   play: openCard,
 };
 
-export const Corner: Story = {
+export const OnAnEdge: Story = {
+  args: {
+    horizontal: createEconomy(0, 100),
+    vertical: createWorldview(40, 60),
+  },
+};
+
+export const CornerTopLeft: Story = {
   args: {
     horizontal: createEconomy(100, 0),
     vertical: createWorldview(0, 100),
+  },
+};
+
+export const CornerTopRight: Story = {
+  args: {
+    horizontal: createEconomy(0, 100),
+    vertical: createWorldview(0, 100),
+  },
+};
+
+export const CornerBottomLeft: Story = {
+  args: {
+    horizontal: createEconomy(100, 0),
+    vertical: createWorldview(100, 0),
+  },
+};
+
+export const CornerBottomRight: Story = {
+  args: {
+    horizontal: createEconomy(0, 100),
+    vertical: createWorldview(100, 0),
   },
 };
 
@@ -250,6 +298,18 @@ export const ComparisonWithoutImage: Story = {
       party: { id: "friend", name: "Rafał" },
       horizontal: { start: 30, end: 70 },
       vertical: { start: 40, end: 60 },
+    },
+  },
+};
+
+export const NoShortNames: Story = {
+  args: {
+    quadrants: {
+      ...QUADRANTS,
+      bottomLeft: {
+        color: GREEN,
+        names: { moderate: "Umiarkowana zielona", extreme: "Skrajna zielona" },
+      },
     },
   },
 };

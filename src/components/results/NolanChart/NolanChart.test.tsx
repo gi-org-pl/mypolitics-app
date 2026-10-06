@@ -128,7 +128,6 @@ describe("<NolanChart />", () => {
         screen.getByRole("heading", { level: 2, name: "Centrum" }),
       ).toBeInTheDocument();
       expect(screen.queryByTestId("nolan-chart-title")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("orientation-chip")).not.toBeInTheDocument();
     });
 
     it("fills no quadrant", () => {
@@ -180,11 +179,12 @@ describe("<NolanChart />", () => {
     it("renders the quadrant extreme name on the full colour", () => {
       renderChart(EXTREME);
 
-      const chip = screen.getByTestId("orientation-chip");
+      const title = screen.getByTestId("nolan-chart-title");
 
-      expect(chip).toHaveTextContent("Skrajna fioletowa");
-      expect(chip).toHaveAttribute("data-look", "emphasised");
-      expect(chip.style.getPropertyValue("--chip-color")).toBe(PURPLE);
+      expect(title).toHaveTextContent("Skrajna fioletowa");
+      expect(title).toHaveAttribute("data-look", "extreme");
+      expect(title).toHaveClass("bg-(--nolan-color)", "text-white");
+      expect(title.style.getPropertyValue("--nolan-color")).toBe(PURPLE);
       expect(getFilledQuadrants()).toEqual([
         "nolan-chart-quadrant-bottomRight",
       ]);
@@ -242,17 +242,31 @@ describe("<NolanChart />", () => {
       expect(dot).toHaveClass("left-(--nolan-x)", "top-(--nolan-y)");
     });
 
-    it("places the dot exactly at a corner and clips it by the map", () => {
+    it("places the dot exactly at a corner and does not clip it", () => {
       renderChart(EXTREME);
 
       const dot = screen.getByTestId("nolan-chart-dot");
+      const map = screen.getByTestId("nolan-chart-map");
 
       expect(dot.style.getPropertyValue("--nolan-x")).toBe("100%");
       expect(dot.style.getPropertyValue("--nolan-y")).toBe("100%");
-      expect(screen.getByTestId("nolan-chart-map")).toHaveClass(
-        "overflow-hidden",
-        "aspect-square",
+      expect(dot.parentElement).toBe(map);
+      expect(map).toHaveClass("aspect-square", "rounded-xl");
+      expect(map).not.toHaveClass("overflow-hidden");
+    });
+
+    it("keeps the halo and the quadrants clipped to the rounded map", () => {
+      renderChart(EXTREME);
+
+      const clipClassNames = ["overflow-hidden", "rounded-xl"];
+
+      expect(screen.getByTestId("nolan-chart-halo").parentElement).toHaveClass(
+        ...clipClassNames,
       );
+      expect(
+        screen.getByTestId("nolan-chart-quadrant-topLeft").parentElement
+          ?.parentElement,
+      ).toHaveClass(...clipClassNames);
     });
 
     it("names both axes with their coordinates rounded to two decimals", () => {
@@ -311,9 +325,9 @@ describe("<NolanChart />", () => {
 
       const [horizontalRow, verticalRow] = getRows();
 
-      expect(horizontalRow).toHaveTextContent("Gospodarka —Skrajna lewica");
+      expect(horizontalRow).toHaveTextContent("Gospodarka — Skrajna lewica");
       expect(verticalRow).toHaveTextContent(
-        "Światopogląd —Umiarkowana prawica",
+        "Światopogląd — Umiarkowana prawica",
       );
     });
 
@@ -549,7 +563,7 @@ describe("<NolanChart />", () => {
         },
       });
 
-      expect(screen.getByTestId("orientation-chip")).toHaveTextContent(
+      expect(screen.getByTestId("nolan-chart-title")).toHaveTextContent(
         "Fioletowa",
       );
 
@@ -593,6 +607,69 @@ describe("<NolanChart />", () => {
       expect(
         screen.getByRole("heading", { level: 2, name: "Centrum" }),
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("given short quadrant names", () => {
+    const shortQuadrants: NolanChartProps["quadrants"] = {
+      ...quadrants,
+      bottomLeft: {
+        color: GREEN,
+        names: {
+          ...quadrants.bottomLeft.names,
+          moderateShort: "Um. zielona",
+        },
+      },
+      bottomRight: {
+        color: PURPLE,
+        names: {
+          ...quadrants.bottomRight.names,
+          extremeShort: "Skr. fioletowa",
+        },
+      },
+    };
+
+    it("offers the short name to a narrow title and keeps the full one for assistive technology", () => {
+      renderChart(MODERATE, { quadrants: shortQuadrants });
+
+      const short = screen.getByTestId("nolan-chart-title-short");
+
+      expect(short).toHaveTextContent("Um. zielona");
+      expect(short).toHaveAttribute("aria-hidden", "true");
+      expect(short).toHaveClass("hidden", "@max-[176px]:block");
+      expect(screen.getByText("Umiarkowana zielona")).toHaveClass(
+        "@max-[176px]:sr-only",
+      );
+      expect(
+        screen.getByRole("region", { name: "Umiarkowana zielona" }),
+      ).toBeInTheDocument();
+      expect(getMapDescription()).toContain("Umiarkowana zielona.");
+    });
+
+    it("offers the short extreme name too", () => {
+      renderChart(EXTREME, { quadrants: shortQuadrants });
+
+      expect(screen.getByTestId("nolan-chart-title-short")).toHaveTextContent(
+        "Skr. fioletowa",
+      );
+    });
+
+    it("renders the full name alone when no short one was supplied", () => {
+      renderChart(MODERATE);
+
+      expect(
+        screen.queryByTestId("nolan-chart-title-short"),
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Umiarkowana zielona")).not.toHaveClass(
+        "@max-[176px]:sr-only",
+      );
+    });
+
+    it("leaves the row headings and the axis pills on the full names", () => {
+      renderChart(MODERATE, { quadrants: shortQuadrants });
+      openCard();
+
+      expect(getRows()[0]).toHaveTextContent("Gospodarka — Umiarkowana lewica");
     });
   });
 
