@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { SAFE_COLOR_PATTERN } from "@/components/shared/UniversalAxis/UniversalAxis.constants";
+import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { MATCH_BAND_COLORS } from "./results";
 
@@ -30,8 +32,19 @@ describe("MATCH_BAND_COLORS", () => {
 
   it.each(
     Object.entries(MATCH_BAND_COLORS),
-  )("holds a colour the bar accepts for the %s band", (_band, color) => {
-    expect(color).toMatch(SAFE_COLOR_PATTERN);
+  )("holds a colour the bar accepts and draws for the %s band", (band, color) => {
+    renderWithI18n(
+      <UniversalAxis
+        start={{ orientation: { id: band, name: band, color }, value: 60 }}
+        marker={false}
+      />,
+    );
+
+    expect(
+      screen
+        .getByTestId("universal-axis-fill-start")
+        .style.getPropertyValue("--axis-color"),
+    ).toBe(color);
   });
 
   it.each(
