@@ -21,7 +21,7 @@ msgstr "{name}: {value}%"
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
-#: src/components/results/modules/DoubleAxisChart/DoubleAxisChart.tsx:35
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
 
