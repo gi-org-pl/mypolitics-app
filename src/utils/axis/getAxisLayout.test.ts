@@ -4,8 +4,9 @@ import {
   DEFAULT_MARKER_POSITION,
   DOUBLE_SIDED_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
-} from "../UniversalAxis.constants";
-import type { AxisEntry, AxisOrientation } from "../UniversalAxis.types";
+} from "@/constants/axis";
+import type { AxisEntry, AxisOrientation } from "@/types/axis";
+
 import { getAxisLayout } from "./getAxisLayout";
 
 const orientationA: AxisOrientation = {

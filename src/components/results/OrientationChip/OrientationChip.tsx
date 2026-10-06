@@ -1,22 +1,10 @@
 import type { CSSProperties } from "react";
 
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { toSingleLine } from "@/utils/text/toSingleLine";
 
-import type {
-  OrientationChipLook,
-  OrientationChipProps,
-} from "./OrientationChip.types";
-
-const OUTLINED_CLASS_NAME = "border border-gi-ash";
-
-const LOOK_CLASS_NAMES: Record<OrientationChipLook, string> = {
-  emphasised: "text-white",
-  quiet: `${OUTLINED_CLASS_NAME} text-gi-dark-ash`,
-  neutral: `${OUTLINED_CLASS_NAME} text-gi-primary`,
-};
-
-const toSingleLine = (text?: string): string =>
-  typeof text === "string" ? text.replace(/\s+/g, " ").trim() : "";
+import { LOOK_CLASS_NAMES } from "./OrientationChip.constants";
+import type { OrientationChipProps } from "./OrientationChip.types";
 
 export const OrientationChip = ({
   name,

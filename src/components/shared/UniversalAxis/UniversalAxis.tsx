@@ -3,13 +3,10 @@ import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import type { AxisLayout, AxisSideLayout } from "@/types/axis";
+import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 
-import type {
-  AxisLayout,
-  AxisSideLayout,
-  UniversalAxisProps,
-} from "./UniversalAxis.types";
-import { getAxisLayout } from "./utils/getAxisLayout";
+import type { UniversalAxisProps } from "./UniversalAxis.types";
 
 type AxisSide = "start" | "end";
 
