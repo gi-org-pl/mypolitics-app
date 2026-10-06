@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
 
@@ -33,9 +34,18 @@ const friend: AxisOrientation = {
 const LONG_NAME =
   "Socjaldemokratyczny liberalizm instytucjonalny o bardzo długiej autorskiej nazwie";
 
+const LONG_PREFIX = "Polityka społeczna i gospodarcza";
+
+const narrow = { viewport: { value: "iphone5" } };
+
 const meta = {
-  title: "Results/Modules/RankedRow",
+  title: "Results/RankedRow",
   component: RankedRow,
+  parameters: {
+    viewport: {
+      options: INITIAL_VIEWPORTS,
+    },
+  },
   args: {
     entry: { orientation, value: 80 },
   },
@@ -100,6 +110,40 @@ export const CategoryHeading: Story = {
     prefix: "Category A",
     isHeading: true,
     entry: { orientation, value: 65, badge: { iconUrl, text: "Badge Text" } },
+  },
+};
+
+export const WrappedCategoryHeading: Story = {
+  globals: narrow,
+  args: {
+    prefix: LONG_PREFIX,
+    isHeading: true,
+    entry: {
+      orientation: { ...orientation, name: "Skrajna lewica" },
+      value: 65,
+    },
+  },
+};
+
+export const WrappedCategoryHeadingWithBadge: Story = {
+  globals: narrow,
+  args: {
+    prefix: LONG_PREFIX,
+    isHeading: true,
+    entry: {
+      orientation: { ...orientation, name: "Skrajna lewica" },
+      value: 65,
+      badge: { iconUrl, text: "Badge Text" },
+    },
+  },
+};
+
+export const LongPrefixAndLongName: Story = {
+  globals: narrow,
+  args: {
+    prefix: `${LONG_PREFIX} w ujęciu wieloletnim oraz międzynarodowym`,
+    isHeading: true,
+    entry: { orientation: { ...orientation, name: LONG_NAME }, value: 65 },
   },
 };
 

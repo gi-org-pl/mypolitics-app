@@ -195,15 +195,34 @@ describe("<RankedRow />", () => {
   });
 
   describe("given a prefix", () => {
-    it("renders it quietly before the name", () => {
-      renderRow({}, { prefix: "Gospodarka" });
+    it("renders it quietly before the name, as two parts that can wrap", () => {
+      renderRow({}, { prefix: " Gospodarka\n" });
 
-      expect(screen.getByTestId("ranked-row-name")).toHaveTextContent(
-        "Gospodarka — Liberalizm",
-      );
-      expect(screen.getByText(/Gospodarka —/)).toHaveClass(
+      const name = screen.getByTestId("ranked-row-name");
+
+      expect(name).toHaveTextContent("Gospodarka — Liberalizm");
+      expect(name).toHaveClass("flex-wrap");
+      expect(screen.getByTestId("ranked-row-name-prefix")).toHaveClass(
         "text-gi-primary/50",
       );
+      expect(screen.getByTestId("ranked-row-name-value").textContent).toBe(
+        "— Liberalizm",
+      );
+    });
+
+    it("keeps the badge beside the label, outside of it", () => {
+      renderRow(
+        { badge: { text: "Oficjalne" } },
+        { prefix: "Gospodarka", isHeading: true },
+      );
+
+      const name = screen.getByTestId("ranked-row-name");
+      const badge = screen.getByTestId("ranked-row-badge");
+
+      expect(name).not.toContainElement(badge);
+      expect(name.nextElementSibling).toBe(badge);
+      expect(name.parentElement).toHaveClass("flex", "items-center");
+      expect(name.parentElement).not.toHaveClass("flex-wrap");
     });
 
     it("renders the name alone for an empty prefix", () => {
