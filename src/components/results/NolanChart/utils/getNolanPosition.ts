@@ -1,3 +1,6 @@
+import { MAX_AXIS_VALUE, MIN_AXIS_VALUE } from "@/constants/axis";
+import { clamp } from "@/utils/number/clamp";
+import { isNumber } from "@/utils/number/isNumber";
 import { getAxisLead } from "@/utils/results/getAxisLead";
 
 import {
@@ -13,17 +16,10 @@ import type {
   NolanPosition,
 } from "../NolanChart.types";
 
-const MIN_VALUE = 0;
-const MAX_VALUE = 100;
-
-const isValue = (value: unknown): value is number =>
-  typeof value === "number" && !Number.isNaN(value);
-
-const clampValue = (value: number): number =>
-  Math.min(MAX_VALUE, Math.max(MIN_VALUE, value));
-
 const getCoordinate = (start: number, end: number): number =>
-  (clampValue(end) - clampValue(start)) / MAX_VALUE;
+  (clamp(end, MIN_AXIS_VALUE, MAX_AXIS_VALUE) -
+    clamp(start, MIN_AXIS_VALUE, MAX_AXIS_VALUE)) /
+  MAX_AXIS_VALUE;
 
 const getPole = (start: number, end: number): NolanPoleSide =>
   getAxisLead(start, end) === "start" ? "start" : "end";
@@ -45,10 +41,10 @@ export const getNolanPosition = (
   const verticalEnd = vertical?.end;
 
   if (
-    !isValue(horizontalStart) ||
-    !isValue(horizontalEnd) ||
-    !isValue(verticalStart) ||
-    !isValue(verticalEnd)
+    !isNumber(horizontalStart) ||
+    !isNumber(horizontalEnd) ||
+    !isNumber(verticalStart) ||
+    !isNumber(verticalEnd)
   ) {
     return null;
   }

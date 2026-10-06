@@ -1,3 +1,5 @@
+import { isNumber } from "@/utils/number/isNumber";
+
 import {
   AXIS_EXTREME_COORDINATE,
   AXIS_MODERATE_COORDINATE,
@@ -13,10 +15,7 @@ const getLevel = (distance: number): NolanLevel => {
 };
 
 export const getAxisLevel = (coordinate: number): NolanAxisLevel => {
-  const safeCoordinate =
-    typeof coordinate === "number" && !Number.isNaN(coordinate)
-      ? coordinate
-      : 0;
+  const safeCoordinate = isNumber(coordinate) ? coordinate : 0;
 
   return {
     level: getLevel(Math.abs(safeCoordinate)),

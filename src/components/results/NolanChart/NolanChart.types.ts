@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 import type { ResultEntry } from "@/types/results";
 
 export type NolanLevel = "centre" | "moderate" | "extreme";
@@ -16,6 +16,11 @@ export interface NolanLevelNames {
   extreme?: string;
 }
 
+export interface NolanQuadrantNames extends NolanLevelNames {
+  moderateShort?: string;
+  extremeShort?: string;
+}
+
 export interface NolanPole {
   entry: ResultEntry;
   names?: NolanLevelNames;
@@ -29,8 +34,10 @@ export interface NolanAxis {
 
 export interface NolanQuadrant {
   color?: string;
-  names?: NolanLevelNames;
+  names?: NolanQuadrantNames;
 }
+
+export type NolanQuadrants = Record<NolanQuadrantKey, NolanQuadrant>;
 
 export interface NolanAxisValues {
   start?: number;
@@ -57,10 +64,20 @@ export interface NolanPosition {
   poles: { horizontal: NolanPoleSide; vertical: NolanPoleSide };
 }
 
+export interface NolanName {
+  name: string;
+  shortName: string;
+}
+
+export interface NolanTitle extends NolanName {
+  look: "plain" | "moderate" | "extreme";
+  color?: string;
+}
+
 export interface NolanChartProps {
   horizontal: NolanAxis;
   vertical: NolanAxis;
-  quadrants: Record<NolanQuadrantKey, NolanQuadrant>;
+  quadrants: NolanQuadrants;
   centreName?: string;
   comparison?: NolanComparison;
   onStatsClick?: () => void;
