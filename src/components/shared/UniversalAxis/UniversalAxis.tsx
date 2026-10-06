@@ -2,6 +2,8 @@ import { Avatar } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
+import { HATCH_CLASS_NAME } from "@/constants/hatch";
+
 import type {
   AxisLayout,
   AxisSideLayout,
@@ -11,8 +13,6 @@ import { getAxisLayout } from "./utils/getAxisLayout";
 
 type AxisSide = "start" | "end";
 
-const HATCH_CLASS_NAME =
-  "bg-[repeating-linear-gradient(135deg,color-mix(in_srgb,var(--gi-primary)_30%,white)_0_4px,transparent_4px_8px)]";
 const VALUE_CLASS_NAME = "text-xs leading-none font-bold whitespace-nowrap";
 
 const toPercent = (value: number): string => `${value}%`;
