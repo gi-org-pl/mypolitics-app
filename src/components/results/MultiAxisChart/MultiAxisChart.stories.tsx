@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { MultiAxisChart } from "./MultiAxisChart";
 import type { AxisGroup, AxisPair } from "./MultiAxisChart.types";
@@ -300,7 +300,7 @@ const withLongNames = (group: AxisGroup): AxisGroup => ({
 });
 
 const meta = {
-  title: "Results/Modules/MultiAxisChart",
+  title: "Results/MultiAxisChart",
   component: MultiAxisChart,
   args: {
     title: "Ideologie",
@@ -487,4 +487,9 @@ export const NoTitleNoActions: Story = {
     onStatsClick: undefined,
     onInfoClick: undefined,
   },
+};
+
+export const LongNamesGroupOpen: Story = {
+  args: LongNames.args,
+  play: openFirstGroup,
 };

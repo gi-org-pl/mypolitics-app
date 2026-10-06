@@ -3,7 +3,7 @@ import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { MultiAxisChart } from "./MultiAxisChart";
@@ -105,8 +105,8 @@ describe("<MultiAxisChart />", () => {
           .getAllByRole("heading", { level: 3 })
           .map((heading) => heading.textContent),
       ).toEqual([
-        "Światopogląd —Progresywizm",
-        "Gospodarka —Wolny rynek",
+        "Światopogląd — Progresywizm",
+        "Gospodarka — Wolny rynek",
         "Polityka zagraniczna",
       ]);
       expect(getGroups()).toHaveLength(3);
@@ -130,7 +130,7 @@ describe("<MultiAxisChart />", () => {
 
       const [heading] = screen.getAllByRole("heading", { level: 3 });
 
-      expect(within(heading).getByText("Światopogląd —")).toHaveClass(
+      expect(within(heading).getByText("Światopogląd")).toHaveClass(
         "text-gi-primary/50",
       );
       expect(within(heading).getByText("Progresywizm")).toHaveClass(
@@ -290,7 +290,7 @@ describe("<MultiAxisChart />", () => {
         screen
           .getAllByRole("heading", { level: 3 })
           .map((heading) => heading.textContent),
-      ).toEqual(["Światopogląd —Progresywizm"]);
+      ).toEqual(["Światopogląd — Progresywizm"]);
       expect(screen.queryByText("Wolny rynek")).not.toBeInTheDocument();
       expect(
         screen.getByRole("heading", { level: 2, name: "Ideologie" }),
@@ -325,9 +325,9 @@ describe("<MultiAxisChart />", () => {
         "bg-gi-primary/30",
       );
       expect(marker.parentElement).toHaveClass(
-        "inset-x-9",
-        "top-6",
-        "bottom-8",
+        "inset-x-5",
+        "-top-15",
+        "bottom-4",
         "pointer-events-none",
       );
       expect(marker.parentElement).toHaveAttribute("aria-hidden", "true");
@@ -348,7 +348,7 @@ describe("<MultiAxisChart />", () => {
       ).toBe("50%");
     });
 
-    it("starts the line at the first bar when the group has no heading", () => {
+    it("anchors the line to the bars when the group has no heading", () => {
       renderChart({
         groups: [
           {
@@ -367,7 +367,7 @@ describe("<MultiAxisChart />", () => {
       ).not.toBeInTheDocument();
       expect(
         screen.getByTestId("multi-axis-chart-marker").parentElement,
-      ).toHaveClass("top-0");
+      ).toHaveClass("-top-15", "bottom-4");
     });
 
     it("moves focus to the control that returns to the list", () => {
@@ -663,7 +663,7 @@ describe("<MultiAxisChart />", () => {
       });
 
       expect(screen.getByRole("heading", { level: 3 }).textContent).toBe(
-        "Ustrój —Autorytaryzm",
+        "Ustrój — Autorytaryzm",
       );
       expect(screen.getByTestId("universal-axis-cap-start")).toBeVisible();
       expect(
@@ -772,8 +772,8 @@ describe("<MultiAxisChart />", () => {
           (item) => within(item).getByRole("heading", { level: 3 }).textContent,
         ),
       ).toEqual([
-        "Światopogląd —Progresywizm",
-        "Gospodarka —Wolny rynek",
+        "Światopogląd — Progresywizm",
+        "Gospodarka — Wolny rynek",
         "Polityka zagraniczna",
       ]);
     });
