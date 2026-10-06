@@ -21,6 +21,14 @@ msgstr "{name}: {value}%"
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
+#: src/components/results/modules/Traits/TraitPill/TraitPill.tsx:24
+msgid "{trait} - tylko {name}"
+msgstr "{trait} - tylko {name}"
+
+#: src/components/results/modules/Traits/TraitPill/TraitPill.tsx:25
+msgid "{trait} - wspólna z: {name}"
+msgstr "{trait} - wspólna z: {name}"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
@@ -28,6 +36,10 @@ msgstr "© {currentYear}"
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
+
+#: src/components/results/modules/Traits/Traits.tsx:33
+msgid "Brak zdobytych cech"
+msgstr "Brak zdobytych cech"
 
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
