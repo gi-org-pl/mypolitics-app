@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { AxisRow } from "./AxisRow";
@@ -45,20 +45,45 @@ describe("<AxisRow />", () => {
 
       const heading = screen.getByRole("heading", { level: 3 });
 
-      expect(heading).toHaveTextContent("Światopogląd —Progresywizm");
-      expect(screen.getByText("Światopogląd —")).toHaveClass(
+      expect(heading.textContent).toBe("Światopogląd — Progresywizm");
+      expect(screen.getByText("Światopogląd")).toHaveClass(
         "text-gi-primary/50",
       );
       expect(
-        screen.getByText("Progresywizm", { selector: "h3 span" }),
+        screen.getByText("Progresywizm", { selector: "h3 > span" }),
       ).toHaveClass("text-gi-primary");
+    });
+
+    it("keeps the dash with the lead name, so both wrap to the second line together", () => {
+      renderRow({ name: "Światopogląd", leadName: "Progresywizm" });
+
+      const heading = screen.getByRole("heading", { level: 3 });
+      const [namePart, leadPart] = Array.from(heading.children);
+
+      expect(heading).toHaveClass("flex", "flex-wrap");
+      expect(heading.children).toHaveLength(2);
+      expect(namePart.textContent).toBe("Światopogląd ");
+      expect(leadPart.textContent).toBe("— Progresywizm");
+      expect(screen.getByText("—")).toHaveClass("text-gi-primary/50");
+      expect(leadPart).toContainElement(screen.getByText("—"));
+    });
+
+    it("truncates a part only when that part alone is wider than the row", () => {
+      renderRow({ name: "Światopogląd", leadName: "Progresywizm" });
+
+      const heading = screen.getByRole("heading", { level: 3 });
+
+      for (const part of Array.from(heading.children)) {
+        expect(part).toHaveClass("max-w-full", "min-w-0", "truncate");
+        expect(part).not.toHaveClass("shrink", "flex-1");
+      }
     });
 
     it("collapses line breaks into one line", () => {
       renderRow({ name: " Świato\npogląd ", leadName: "Progre\n\nsywizm" });
 
-      expect(screen.getByRole("heading")).toHaveTextContent(
-        "Świato pogląd —Progre sywizm",
+      expect(screen.getByRole("heading").textContent).toBe(
+        "Świato pogląd — Progre sywizm",
       );
     });
   });
@@ -101,14 +126,13 @@ describe("<AxisRow />", () => {
   });
 
   describe("given a long name", () => {
-    it("truncates it and keeps the full text for assistive technology", () => {
+    it("keeps the full text for assistive technology", () => {
       renderRow({ name: LONG_NAME, leadName: "Progresywizm" });
 
-      expect(screen.getByText(`${LONG_NAME} —`)).toHaveClass(
-        "min-w-0",
-        "truncate",
+      expect(screen.getByText(LONG_NAME)).toHaveClass("max-w-full", "truncate");
+      expect(screen.getByRole("heading")).toHaveTextContent(
+        `${LONG_NAME} — Progresywizm`,
       );
-      expect(screen.getByRole("heading")).toHaveTextContent(LONG_NAME);
     });
   });
 

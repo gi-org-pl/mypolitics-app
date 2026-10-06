@@ -1,14 +1,13 @@
 import { Trans } from "@lingui/react/macro";
 
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
+import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import type { AxisRowProps } from "./AxisRow.types";
 
-const QUIET_CLASS_NAME = "min-w-0 truncate text-gi-primary/50";
-const STRONG_CLASS_NAME = "min-w-0 truncate text-gi-primary";
-
-const toSingleLine = (text?: string): string =>
-  typeof text === "string" ? text.replace(/\s+/g, " ").trim() : "";
+const PART_CLASS_NAME = "max-w-full min-w-0 truncate";
+const QUIET_CLASS_NAME = "text-gi-primary/50";
+const STRONG_CLASS_NAME = "text-gi-primary";
 
 export const AxisRow = ({
   name,
@@ -25,16 +24,24 @@ export const AxisRow = ({
   return (
     <div data-testid="axis-row" className="flex w-full min-w-0 flex-col gap-2">
       {(displayName || displayLeadName) && (
-        <h3 className="-my-0.5 flex min-w-0 gap-[0.25em] text-base leading-5 font-bold">
+        <h3 className="-my-0.5 flex min-w-0 flex-wrap gap-x-[0.25em] text-base leading-5 font-bold">
           {displayName && displayLeadName ? (
             <Trans>
-              <span className={QUIET_CLASS_NAME}>{displayName} —</span>
-              <span className={STRONG_CLASS_NAME}>{displayLeadName}</span>
+              <span className={`${PART_CLASS_NAME} ${QUIET_CLASS_NAME}`}>
+                {displayName}{" "}
+              </span>
+              <span className={`${PART_CLASS_NAME} ${STRONG_CLASS_NAME}`}>
+                <span className={QUIET_CLASS_NAME}>—</span> {displayLeadName}
+              </span>
             </Trans>
           ) : displayName ? (
-            <span className={QUIET_CLASS_NAME}>{displayName}</span>
+            <span className={`${PART_CLASS_NAME} ${QUIET_CLASS_NAME}`}>
+              {displayName}
+            </span>
           ) : (
-            <span className={STRONG_CLASS_NAME}>{displayLeadName}</span>
+            <span className={`${PART_CLASS_NAME} ${STRONG_CLASS_NAME}`}>
+              {displayLeadName}
+            </span>
           )}
         </h3>
       )}

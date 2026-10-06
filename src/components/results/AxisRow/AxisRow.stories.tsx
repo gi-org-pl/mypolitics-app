@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { AxisRow } from "./AxisRow";
 
@@ -36,7 +36,7 @@ const friend: AxisOrientation = {
 };
 
 const meta = {
-  title: "Results/Modules/AxisRow",
+  title: "Results/AxisRow",
   component: AxisRow,
   args: {
     name: "Światopogląd",
@@ -111,4 +111,19 @@ export const LongNames: Story = {
     leadName:
       "Progresywizm z równie długą nazwą autorską, która też się nie mieści",
   },
+};
+
+const NARROW_VIEWPORT = { viewport: { value: "mobile1", isRotated: false } };
+
+export const WrappedHeadingNarrow: Story = {
+  args: {
+    name: "Światopogląd i obyczaje",
+    leadName: "Skrajny progresywizm",
+  },
+  globals: NARROW_VIEWPORT,
+};
+
+export const LongNamesNarrow: Story = {
+  args: LongNames.args,
+  globals: NARROW_VIEWPORT,
 };
