@@ -1,4 +1,5 @@
-import { getRankedValue } from "../../HorizontalBarChart/utils/sortRankedEntries";
+import { getRankedValue } from "@/utils/results/getRankedValue";
+
 import type { ArchetypeEntry, ArchetypeRanking } from "../Archetype.types";
 
 const ABSENT_RANK = -1;
@@ -11,10 +12,7 @@ export const getArchetypeRanking = (
   const [leader = null, ...rest] = archetypes
     .filter((archetype) => typeof archetype === "object" && archetype !== null)
     .map((archetype, index) => {
-      const match = getRankedValue({
-        orientation: archetype.orientation,
-        value: archetype.match,
-      });
+      const match = getRankedValue({ value: archetype.match });
 
       return {
         archetype: { ...archetype, match: match ?? 0 },

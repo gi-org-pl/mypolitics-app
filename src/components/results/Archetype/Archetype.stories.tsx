@@ -106,7 +106,7 @@ const comparison = {
 };
 
 const meta = {
-  title: "Results/Modules/Archetype",
+  title: "Results/Archetype",
   component: Archetype,
   args: {
     title: "Tożsamość",

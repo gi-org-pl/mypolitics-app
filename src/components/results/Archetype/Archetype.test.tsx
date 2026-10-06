@@ -667,6 +667,36 @@ describe("<Archetype />", () => {
       );
     });
 
+    it("stays in the summary when the closed view becomes available again", () => {
+      const { rerender } = renderArchetype();
+
+      press("Ranking");
+      rerender(withI18n({ archetypes: [LEADER] }));
+      rerender(withI18n({ archetypes: ARCHETYPES }));
+
+      expect(getRowNames()).toEqual([]);
+      expect(getDescription().textContent).toBe(SHORT);
+      expect(getControl("Ranking")).toHaveAttribute("aria-expanded", "false");
+
+      press("Ranking");
+
+      expect(getRowNames()).toEqual(["Beta", "Gamma", "Delta", "Echo"]);
+    });
+
+    it("stays in the summary when a closed description becomes available again", () => {
+      const { rerender } = renderArchetype();
+
+      press("Pełny opis");
+      rerender(withI18n({ archetypes: NO_MATCH }));
+      rerender(withI18n({ archetypes: ARCHETYPES }));
+
+      expect(getDescription().textContent).toBe(SHORT);
+      expect(getControl("Pełny opis")).toHaveAttribute(
+        "aria-expanded",
+        "false",
+      );
+    });
+
     it("keeps the full description open for a new leader that has one", () => {
       const { rerender } = renderArchetype();
 
