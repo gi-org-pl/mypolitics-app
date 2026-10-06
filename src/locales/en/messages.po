@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:100
+#: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (opens in a new tab)"
 
@@ -21,7 +21,7 @@ msgstr "{label} (opens in a new tab)"
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:83
+#: src/components/results/ResultsHeader/ResultsHeaderConfidence/ResultsHeaderConfidence.tsx:23
 msgid "{value}% pewności"
 msgstr "{value}% confidence"
 
@@ -29,7 +29,7 @@ msgstr "{value}% confidence"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
-#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:167
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:45
 msgid "Brak dopasowania"
 msgstr "No match"
 
@@ -163,11 +163,11 @@ msgstr ""
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
-#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:198
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
 msgid "Tryb porównania"
 msgstr "Comparison mode"
 
-#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:197
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
 msgstr "Your results"
 
