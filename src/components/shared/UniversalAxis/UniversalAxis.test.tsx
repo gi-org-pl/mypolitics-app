@@ -130,17 +130,6 @@ describe("<UniversalAxis />", () => {
       expect(screen.getByText("31%")).toBeInTheDocument();
     });
 
-    it("shades both fills", () => {
-      renderWithI18n(<UniversalAxis start={entryA(69)} end={entryB(31)} />);
-
-      expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
-        "from-black/20",
-      );
-      expect(screen.getByTestId("universal-axis-fill-end")).toHaveClass(
-        "from-black/20",
-      );
-    });
-
     it("hides the value of a side below its threshold", () => {
       renderWithI18n(<UniversalAxis start={entryA(88)} end={entryB(12)} />);
 
@@ -334,6 +323,30 @@ describe("<UniversalAxis />", () => {
     });
   });
 
+  describe("given an orientation colour", () => {
+    it("darkens the fill against the cap in every mode", () => {
+      renderWithI18n(<UniversalAxis start={entryA(25)} />);
+
+      const fill = screen.getByTestId("universal-axis-fill-start");
+
+      expect(fill).toHaveClass("bg-(--axis-color)", "from-black/20");
+      expect(screen.getByTestId("universal-axis-cap-start")).not.toHaveClass(
+        "from-black/20",
+      );
+    });
+
+    it("darkens both fills on a double-sided bar", () => {
+      renderWithI18n(<UniversalAxis start={entryA(69)} end={entryB(31)} />);
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
+        "from-black/20",
+      );
+      expect(screen.getByTestId("universal-axis-fill-end")).toHaveClass(
+        "from-black/20",
+      );
+    });
+  });
+
   describe("given an orientation without a colour", () => {
     it("falls back to the neutral colour", () => {
       renderWithI18n(
@@ -354,6 +367,7 @@ describe("<UniversalAxis />", () => {
       );
       expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
         "bg-gi-dark-gray",
+        "from-black/20",
       );
       expect(screen.getByTestId("universal-axis-value-start")).toHaveClass(
         "text-gi-dark-gray",
@@ -444,14 +458,10 @@ describe("<UniversalAxis />", () => {
   });
 
   describe("on mount", () => {
-    it("animates the fill and skips the animation under reduced motion", () => {
-      renderWithI18n(<UniversalAxis start={entryA(25)} />);
+    it("renders the final state without an entry animation", () => {
+      const { container } = renderWithI18n(<UniversalAxis start={entryA(5)} />);
 
-      expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
-        "animate-in",
-        "slide-in-from-left",
-        "motion-reduce:animate-none",
-      );
+      expect(container.querySelector("[class*='animate']")).toBeNull();
     });
   });
 });

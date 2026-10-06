@@ -29,20 +29,12 @@ const getBackgroundClassName = (color?: string): string =>
 const getTextClassName = (color?: string): string =>
   color ? "text-(--axis-color)" : "text-gi-dark-gray";
 
-const renderFill = (
-  side: AxisSide,
-  entry: AxisSideLayout,
-  isDoubleSided: boolean,
-) => (
+const renderFill = (side: AxisSide, entry: AxisSideLayout) => (
   <div
     data-testid={`universal-axis-fill-${side}`}
-    className={`absolute inset-y-0 flex items-center animate-in duration-700 ease-out motion-reduce:animate-none ${
-      side === "start"
-        ? "left-0 justify-start slide-in-from-left"
-        : "right-0 justify-end slide-in-from-right"
-    } ${getBackgroundClassName(entry.color)} ${
-      isDoubleSided ? "bg-linear-to-r from-black/20 to-black/20" : ""
-    }`}
+    className={`absolute inset-y-0 flex items-center bg-linear-to-r from-black/20 to-black/20 ${
+      side === "start" ? "left-0 justify-start" : "right-0 justify-end"
+    } ${getBackgroundClassName(entry.color)}`}
     style={{ ...getColorStyle(entry.color), width: toPercent(entry.width) }}
   >
     {entry.valuePlacement === "inside" && (
@@ -56,7 +48,7 @@ const renderFill = (
 const renderOutsideValue = (side: AxisSide, entry: AxisSideLayout) => (
   <span
     data-testid={`universal-axis-value-${side}`}
-    className={`absolute top-1/2 -translate-y-1/2 animate-in fade-in duration-700 motion-reduce:animate-none ${VALUE_CLASS_NAME} ${getTextClassName(entry.color)} ${
+    className={`absolute top-1/2 -translate-y-1/2 ${VALUE_CLASS_NAME} ${getTextClassName(entry.color)} ${
       side === "start"
         ? "left-[max(calc(var(--axis-position)+4px),16px)]"
         : "right-[max(calc(var(--axis-position)+4px),16px)]"
@@ -165,8 +157,8 @@ export const UniversalAxis = ({
           data-testid="universal-axis-track"
           className={`${trackShapeClassName} border-gi-primary/30 bg-white`}
         >
-          {layout.start && renderFill("start", layout.start, isDoubleSided)}
-          {layout.end && renderFill("end", layout.end, isDoubleSided)}
+          {layout.start && renderFill("start", layout.start)}
+          {layout.end && renderFill("end", layout.end)}
           {layout.start?.valuePlacement === "outside" &&
             renderOutsideValue("start", layout.start)}
           {layout.end?.valuePlacement === "outside" &&
