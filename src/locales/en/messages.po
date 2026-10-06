@@ -13,9 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
+msgid "{name}: {value}%"
+msgstr "{name}: {value}%"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
+msgid "Brak wyniku"
+msgstr "No result"
 
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
@@ -80,6 +88,10 @@ msgstr "Visit our X profile"
 #: src/components/shared/Header/Header.tsx:121
 msgid "Otwórz menu nawigacji"
 msgstr ""
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
+msgid "porównanie z {name}: {value}%"
+msgstr "compared with {name}: {value}%"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
