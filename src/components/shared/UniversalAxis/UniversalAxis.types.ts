@@ -7,7 +7,7 @@ export interface AxisOrientation {
 
 export interface AxisEntry {
   orientation: AxisOrientation;
-  value: number;
+  value?: number;
 }
 
 export interface UniversalAxisProps {
@@ -26,6 +26,7 @@ export interface AxisSideLayout {
   name: string;
   imageUrl?: string;
   color?: string;
+  hasValue: boolean;
   value: number;
   displayValue: number;
   width: number;

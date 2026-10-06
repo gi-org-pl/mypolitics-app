@@ -17,6 +17,10 @@ msgstr ""
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
+msgid "{name}: brak wyniku"
+msgstr "{name}: no result"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"

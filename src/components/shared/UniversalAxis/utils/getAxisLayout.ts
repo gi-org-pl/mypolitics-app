@@ -20,10 +20,16 @@ import type {
 const clampAxisValue = (value: number): number =>
   Math.min(MAX_AXIS_VALUE, Math.max(MIN_AXIS_VALUE, value));
 
+type AxisEntryWithValue = AxisEntry & { value: number };
+
 const isPresentEntry = (entry?: AxisEntry): entry is AxisEntry =>
-  entry?.orientation !== undefined &&
-  typeof entry.value === "number" &&
-  !Number.isNaN(entry.value);
+  entry?.orientation !== undefined;
+
+const hasEntryValue = (entry: AxisEntry): entry is AxisEntryWithValue =>
+  typeof entry.value === "number" && !Number.isNaN(entry.value);
+
+const getEntryValue = (entry: AxisEntry): number =>
+  hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
 
 const getSafeColor = (color?: string): string | undefined => {
   const trimmedColor = color?.trim();
@@ -53,12 +59,13 @@ const getSideLayout = (
   width: number,
   hasComparison: boolean,
 ): AxisSideLayout => {
-  const value = clampAxisValue(entry.value);
+  const value = getEntryValue(entry);
 
   return {
     name: entry.orientation.name,
     imageUrl: entry.orientation.imageUrl || undefined,
     color: getSafeColor(entry.orientation.color),
+    hasValue: hasEntryValue(entry),
     value,
     displayValue: Math.round(value),
     width,
@@ -85,10 +92,11 @@ const getTakerPosition = (
   start: AxisSideLayout | null,
   end: AxisSideLayout | null,
 ): number | null => {
-  if (start) return start.width;
-  if (end) return MAX_AXIS_VALUE - end.width;
+  const taker = start ?? end;
 
-  return null;
+  if (!taker?.hasValue) return null;
+
+  return start ? start.width : MAX_AXIS_VALUE - taker.width;
 };
 
 const getComparisonBand = (
@@ -108,7 +116,7 @@ const getComparisonBand = (
 };
 
 const getComparisonLayout = (
-  comparison: AxisEntry,
+  comparison: AxisEntryWithValue,
   start: AxisSideLayout | null,
   end: AxisSideLayout | null,
 ): AxisComparisonLayout => {
@@ -150,13 +158,14 @@ export const getAxisLayout = ({
 }: UniversalAxisProps): AxisLayout => {
   const presentStart = isPresentEntry(start) ? start : null;
   const presentEnd = isPresentEntry(end) ? end : null;
-  const presentComparison = isPresentEntry(comparison) ? comparison : null;
+  const presentComparison =
+    isPresentEntry(comparison) && hasEntryValue(comparison) ? comparison : null;
   const mode = getMode(presentStart !== null, presentEnd !== null);
   const hasComparison = presentComparison !== null;
 
   const [startWidth, endWidth] = getSideWidths(
-    presentStart && clampAxisValue(presentStart.value),
-    presentEnd && clampAxisValue(presentEnd.value),
+    presentStart && getEntryValue(presentStart),
+    presentEnd && getEntryValue(presentEnd),
   );
 
   const startLayout = presentStart
