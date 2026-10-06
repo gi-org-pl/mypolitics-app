@@ -1,10 +1,11 @@
+import { getSafeColor } from "@/utils/color/getSafeColor";
+
 import {
   DEFAULT_MARKER_POSITION,
   DOUBLE_SIDED_FIT_THRESHOLD,
   MAX_AXIS_VALUE,
   MIN_AXIS_VALUE,
   ONE_SIDED_FIT_THRESHOLD,
-  SAFE_COLOR_PATTERN,
 } from "../UniversalAxis.constants";
 import type {
   AxisBand,
@@ -30,14 +31,6 @@ const hasEntryValue = (entry: AxisEntry): entry is AxisEntryWithValue =>
 
 const getEntryValue = (entry: AxisEntry): number =>
   hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
-
-const getSafeColor = (color?: string): string | undefined => {
-  const trimmedColor = color?.trim();
-
-  return trimmedColor && SAFE_COLOR_PATTERN.test(trimmedColor)
-    ? trimmedColor
-    : undefined;
-};
 
 const getValuePlacement = (
   mode: AxisMode,
