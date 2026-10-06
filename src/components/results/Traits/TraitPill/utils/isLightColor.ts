@@ -1,3 +1,5 @@
+import { clamp } from "@/utils/number/clamp";
+
 const LIGHT_LUMINANCE_THRESHOLD = 0.5;
 
 const ANGLE_TO_DEGREES: Record<string, number> = {
@@ -6,8 +8,6 @@ const ANGLE_TO_DEGREES: Record<string, number> = {
   rad: 180 / Math.PI,
   turn: 360,
 };
-
-const clamp = (value: number): number => Math.min(Math.max(value, 0), 1);
 
 const toNumber = (token = "", percentScale = 1): number => {
   const value = Number.parseFloat(token);
@@ -27,9 +27,9 @@ const toLinear = (channel: number): number =>
   channel <= 0.040_45 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 
 const getRgbLuminance = (red: number, green: number, blue: number): number =>
-  0.2126 * toLinear(clamp(red)) +
-  0.7152 * toLinear(clamp(green)) +
-  0.0722 * toLinear(clamp(blue));
+  0.2126 * toLinear(clamp(red, 0, 1)) +
+  0.7152 * toLinear(clamp(green, 0, 1)) +
+  0.0722 * toLinear(clamp(blue, 0, 1));
 
 const getHslLuminance = (
   hue: number,
@@ -104,23 +104,23 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
     case "hsla": {
       return getHslLuminance(
         hue,
-        clamp(toNumber(second, 100) / 100),
-        clamp(toNumber(third, 100) / 100),
+        clamp(toNumber(second, 100) / 100, 0, 1),
+        clamp(toNumber(third, 100) / 100, 0, 1),
       );
     }
     case "hwb": {
       return getHwbLuminance(
         hue,
-        clamp(toNumber(second, 100) / 100),
-        clamp(toNumber(third, 100) / 100),
+        clamp(toNumber(second, 100) / 100, 0, 1),
+        clamp(toNumber(third, 100) / 100, 0, 1),
       );
     }
     case "lab":
     case "lch": {
-      return getLabLuminance(clamp(toNumber(first, 100) / 100) * 100);
+      return getLabLuminance(clamp(toNumber(first, 100) / 100, 0, 1) * 100);
     }
     default: {
-      return clamp(toNumber(first)) ** 3;
+      return clamp(toNumber(first), 0, 1) ** 3;
     }
   }
 };
@@ -128,16 +128,16 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
 export const isLightColor = (color?: string): boolean => {
   const value = typeof color === "string" ? color.trim().toLowerCase() : "";
   const hex = value.match(/^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/)?.[1];
-  const notation = value.match(/^([a-z]+)\((.*)\)$/);
+  const [, name, body] = value.match(/^([a-z]+)\((.*)\)$/) ?? [];
 
-  if (!hex && !notation) return false;
+  if (!hex && !name) return false;
 
-  const tokens = (notation?.[2] ?? "").split(/[\s,/]+/).filter(Boolean);
+  const tokens = (body ?? "").split(/[\s,/]+/).filter(Boolean);
   const { luminance, alpha } = hex
     ? getHexLuminance(hex)
     : {
-        luminance: getFunctionLuminance(notation?.[1] ?? "", tokens),
-        alpha: tokens.length > 3 ? clamp(toNumber(tokens[3])) : 1,
+        luminance: getFunctionLuminance(name, tokens),
+        alpha: tokens.length > 3 ? clamp(toNumber(tokens[3]), 0, 1) : 1,
       };
 
   return luminance * alpha + (1 - alpha) > LIGHT_LUMINANCE_THRESHOLD;

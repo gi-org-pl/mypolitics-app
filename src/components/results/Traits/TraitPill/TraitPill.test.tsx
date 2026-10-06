@@ -1,8 +1,7 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { TraitItem } from "../Traits.types";

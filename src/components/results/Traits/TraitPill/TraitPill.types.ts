@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import type { TraitItem } from "../Traits.types";
 

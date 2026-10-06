@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import type { TraitsComparison } from "../Traits.types";
 import { getTraitItems } from "./getTraitItems";

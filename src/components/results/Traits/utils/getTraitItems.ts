@@ -1,5 +1,5 @@
+import { toSingleLine } from "@/utils/text/toSingleLine";
 import type { TraitHolder, TraitItem, TraitsProps } from "../Traits.types";
-import { toSingleLine } from "./toSingleLine";
 
 type TraitItemsInput = Pick<TraitsProps, "traits" | "earnedIds" | "comparison">;
 

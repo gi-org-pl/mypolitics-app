@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { Traits } from "./Traits";
 
@@ -108,7 +108,7 @@ const manyTraits: AxisOrientation[] = Array.from({ length: 4 }, (_, round) =>
 ).flat();
 
 const meta = {
-  title: "Results/Modules/Traits",
+  title: "Results/Traits",
   component: Traits,
   args: {
     title: "Cechy",

@@ -1,33 +1,27 @@
 import { Avatar } from "@gi-org-pl/athena";
-import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
-import { toSingleLine } from "../utils/toSingleLine";
 import type { TraitPillProps } from "./TraitPill.types";
+import { getPillHolder } from "./utils/getPillHolder";
 import { isLightColor } from "./utils/isLightColor";
+import { useTraitDescription } from "./utils/useTraitDescription";
 
 export const TraitPill = ({ item, party }: TraitPillProps) => {
-  const { t } = useLingui();
-
-  const { name: trait, holder } = item;
-  const name = toSingleLine(party?.name);
-  const isTheirs = party !== undefined && holder !== "taker";
-  const isHatched = isTheirs && holder === "other";
+  const holder = getPillHolder(item.holder, party);
+  const isTheirs = holder !== "taker";
+  const isHatched = holder === "other";
+  const description = useTraitDescription(item.name, holder, party?.name);
 
   const safeColor = getSafeColor(item.color);
   const isLight = isLightColor(safeColor);
 
-  const description = isHatched
-    ? t`${trait} - tylko ${name}`
-    : t`${trait} - wspólna z: ${name}`;
-
   return (
     <li
       data-testid="trait-pill"
-      data-holder={holder}
+      data-holder={item.holder}
       className="flex max-w-full min-w-0 items-center"
     >
       <div
@@ -51,14 +45,14 @@ export const TraitPill = ({ item, party }: TraitPillProps) => {
           aria-hidden={isTheirs || undefined}
           className="min-w-0 truncate text-base leading-5 font-bold"
         >
-          {trait}
+          {item.name}
         </span>
         {isTheirs && <span className="sr-only">{description}</span>}
       </div>
       {isTheirs && (
         <Avatar
           size="small"
-          src={party.imageUrl}
+          src={party?.imageUrl}
           dataTestId="trait-pill-avatar"
           className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash"
         />
