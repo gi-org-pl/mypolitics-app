@@ -13,13 +13,25 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:100
+msgid "{label} (otwiera się w nowej karcie)"
+msgstr "{label} (opens in a new tab)"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
+#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:83
+msgid "{value}% pewności"
+msgstr "{value}% confidence"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
+
+#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:167
+msgid "Brak dopasowania"
+msgstr "No match"
 
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
@@ -133,6 +145,14 @@ msgstr ""
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
+
+#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:198
+msgid "Tryb porównania"
+msgstr "Comparison mode"
+
+#: src/components/results/modules/ResultsHeader/ResultsHeader.tsx:197
+msgid "Twoje wyniki"
+msgstr "Your results"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
