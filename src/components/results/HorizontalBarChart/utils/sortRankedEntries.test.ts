@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
-import { getRankedValue, sortRankedEntries } from "./sortRankedEntries";
+import { sortRankedEntries } from "./sortRankedEntries";
 
 const entry = (id: string, value?: number): RankedEntry => ({
   orientation: { id, name: id },
@@ -91,19 +91,5 @@ describe("sortRankedEntries()", () => {
         ]),
       ),
     ).toEqual(["a"]);
-  });
-});
-
-describe("getRankedValue()", () => {
-  it("clamps a value to 0-100", () => {
-    expect(getRankedValue(entry("a", 150))).toBe(100);
-    expect(getRankedValue(entry("a", -1))).toBe(0);
-    expect(getRankedValue(entry("a", 42.5))).toBe(42.5);
-  });
-
-  it("returns null for an absent value or entry", () => {
-    expect(getRankedValue(entry("a"))).toBeNull();
-    expect(getRankedValue(entry("a", Number.NaN))).toBeNull();
-    expect(getRankedValue()).toBeNull();
   });
 });

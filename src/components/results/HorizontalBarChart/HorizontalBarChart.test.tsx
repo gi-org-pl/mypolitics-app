@@ -4,12 +4,11 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
+import type { RankedEntry } from "../RankedRow/RankedRow.types";
 import { HorizontalBarChart } from "./HorizontalBarChart";
 import type {
   HorizontalBarChartProps,
   RankedCategory,
-  RankedEntry,
 } from "./HorizontalBarChart.types";
 
 const entry = (
@@ -363,6 +362,63 @@ describe("<HorizontalBarChart />", () => {
 
         expect(getNames()).toEqual(["Gospodarka — Beta"]);
       });
+    });
+  });
+
+  describe("given an open category and categories that change", () => {
+    const LAW: RankedCategory = {
+      name: "Prawo",
+      entries: [entry("Gamma", 30)],
+    };
+
+    const rerenderWith = (
+      rerender: (ui: React.ReactElement) => void,
+      categories: RankedCategory[],
+    ) =>
+      rerender(
+        <I18nProvider i18n={i18n}>
+          <HorizontalBarChart title="Kandydaci" categories={categories} />
+        </I18nProvider>,
+      );
+
+    it("keeps the same category open when an earlier one is removed", () => {
+      const { rerender } = renderChart({ categories: [...CATEGORIES, LAW] });
+
+      press("Pokaż kategorię: Światopogląd");
+      rerenderWith(rerender, [CATEGORIES[1], LAW]);
+
+      expect(getNames()).toEqual(["Światopogląd — Delta", "Alfa"]);
+    });
+
+    it("keeps the same category open when one is inserted before it", () => {
+      const { rerender } = renderChart({ categories: CATEGORIES });
+
+      press("Pokaż kategorię: Światopogląd");
+      rerenderWith(rerender, [LAW, ...CATEGORIES]);
+
+      expect(getNames()).toEqual(["Światopogląd — Delta", "Alfa"]);
+    });
+
+    it("keeps the same category open when the list is reordered", () => {
+      const { rerender } = renderChart({ categories: [...CATEGORIES, LAW] });
+
+      press("Pokaż kategorię: Gospodarka");
+      rerenderWith(rerender, [LAW, CATEGORIES[1], CATEGORIES[0]]);
+
+      expect(getNames()[0]).toBe("Gospodarka — Beta");
+      expect(getNames()).toHaveLength(5);
+    });
+
+    it("returns to the list when the open category is removed", () => {
+      const { rerender } = renderChart({ categories: [...CATEGORIES, LAW] });
+
+      press("Pokaż kategorię: Gospodarka");
+      rerenderWith(rerender, [CATEGORIES[1], LAW]);
+
+      expect(getNames()).toEqual(["Światopogląd — Delta", "Prawo — Gamma"]);
+      expect(
+        screen.queryByRole("button", { name: "Wróć do kategorii" }),
+      ).not.toBeInTheDocument();
     });
   });
 

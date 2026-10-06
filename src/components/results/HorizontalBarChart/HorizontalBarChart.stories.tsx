@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
-
+import type { RankedBadge, RankedEntry } from "../RankedRow/RankedRow.types";
 import { HorizontalBarChart } from "./HorizontalBarChart";
-import type {
-  RankedBadge,
-  RankedCategory,
-  RankedEntry,
-} from "./HorizontalBarChart.types";
+import type { RankedCategory } from "./HorizontalBarChart.types";
 
 const toDataUrl = (svg: string): string =>
   `data:image/svg+xml,${encodeURIComponent(svg)}`;
@@ -199,8 +196,13 @@ const LONG_NAME =
   "Socjaldemokratyczny liberalizm instytucjonalny o bardzo długiej autorskiej nazwie";
 
 const meta = {
-  title: "Results/Modules/HorizontalBarChart",
+  title: "Results/HorizontalBarChart",
   component: HorizontalBarChart,
+  parameters: {
+    viewport: {
+      options: INITIAL_VIEWPORTS,
+    },
+  },
   args: {
     title: "Title",
     onStatsClick: fn(),
@@ -319,6 +321,32 @@ export const LongNames: Story = {
         badge: { ...placeholderBadge, text: "Badge Text" },
       },
       { orientation: { ...b, name: LONG_NAME }, value: 60 },
+    ],
+  },
+};
+
+export const LongCategoryNames: Story = {
+  globals: { viewport: { value: "iphone5" } },
+  args: {
+    categories: [
+      {
+        name: "Polityka społeczna i gospodarcza",
+        entries: [
+          { orientation: { ...a, name: "Skrajna lewica" }, value: 65 },
+          { orientation: b, value: 40 },
+        ],
+      },
+      {
+        name: "Polityka zagraniczna w ujęciu wieloletnim oraz międzynarodowym",
+        entries: [
+          {
+            orientation: { ...c, name: LONG_NAME },
+            value: 55,
+            badge: { ...placeholderBadge, text: "Badge Text" },
+          },
+        ],
+      },
+      categories[1],
     ],
   },
 };

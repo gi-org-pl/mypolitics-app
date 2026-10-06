@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { RankedComparison } from "../HorizontalBarChart.types";
+import type { RankedComparison } from "@/types/results";
 import { getComparisonEntry } from "./getComparisonEntry";
 
 const party = { id: "friend", name: "Ania" };

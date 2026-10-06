@@ -33,7 +33,7 @@ msgstr "© {currentYear}"
 msgid "Brak dopasowania"
 msgstr "No match"
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:143
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:26
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
 msgstr "No result"
@@ -110,19 +110,19 @@ msgstr "Visit our X profile"
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:153
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
 msgid "Pokaż kategorię"
 msgstr "Show category"
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:153
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
 msgid "Pokaż kategorię: {name}"
 msgstr "Show category: {name}"
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:171
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
 msgid "Pokaż mniej"
 msgstr "Show less"
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:171
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
@@ -171,7 +171,7 @@ msgstr "Comparison mode"
 msgid "Twoje wyniki"
 msgstr "Your results"
 
-#: src/components/results/modules/HorizontalBarChart/HorizontalBarChart.tsx:242
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
 

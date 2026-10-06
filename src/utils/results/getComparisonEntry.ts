@@ -1,6 +1,6 @@
 import type { AxisEntry } from "@/components/shared/UniversalAxis/UniversalAxis.types";
-
-import type { RankedComparison } from "../HorizontalBarChart.types";
+import type { RankedComparison } from "@/types/results";
+import { isNumber } from "@/utils/number/isNumber";
 
 export const getComparisonEntry = (
   comparison?: RankedComparison,
@@ -12,7 +12,5 @@ export const getComparisonEntry = (
 
   const value = comparison.values[orientationId];
 
-  return typeof value === "number" && !Number.isNaN(value)
-    ? { orientation: comparison.party, value }
-    : undefined;
+  return isNumber(value) ? { orientation: comparison.party, value } : undefined;
 };
