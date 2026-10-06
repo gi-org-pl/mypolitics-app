@@ -9,18 +9,16 @@ const componentTitle = (
   </div>
 );
 
-const body = <div className="h-56" />;
+const body = (
+  <p className="text-sm text-gi-primary">
+    Treść modułu. Karta zajmuje całą szerokość rodzica, a jej wysokość wynika z
+    nagłówka i treści.
+  </p>
+);
 
 const meta = {
   title: "Shared/ModuleWrapper",
   component: ModuleWrapper,
-  decorators: [
-    (Story) => (
-      <div className="w-[340px] bg-black/5 p-2.5">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     children: body,
   },
@@ -99,15 +97,7 @@ export const LongTitle: Story = {
   },
 };
 
-export const NoHeader: Story = {
-  args: {
-    children: (
-      <div className="flex h-56 items-center justify-center text-xs font-bold text-gi-primary/50">
-        Body
-      </div>
-    ),
-  },
-};
+export const NoHeader: Story = {};
 
 export const ActionsWithoutTitle: Story = {
   args: {

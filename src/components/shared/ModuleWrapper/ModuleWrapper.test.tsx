@@ -272,11 +272,9 @@ describe("<ModuleWrapper />", () => {
 
     it("renders the header with the actions when there are actions", () => {
       renderWithI18n(
-        <ModuleWrapper
-          title="  "
-          onStatsClick={vi.fn()}
-          onInfoClick={vi.fn()}
-        />,
+        <ModuleWrapper title="  " onStatsClick={vi.fn()} onInfoClick={vi.fn()}>
+          <p>Wynik</p>
+        </ModuleWrapper>,
       );
 
       expect(screen.getAllByRole("button")).toHaveLength(2);
@@ -330,16 +328,22 @@ describe("<ModuleWrapper />", () => {
   });
 
   describe("given no body", () => {
-    it("still renders the header and the divider", () => {
+    it.each([
+      ["a missing body", undefined],
+      ["a null body", null],
+      ["a boolean body", false],
+      ["an empty body", ""],
+    ])("renders the header without the divider for %s", (_case, body) => {
       const { container } = renderWithI18n(
-        <ModuleWrapper title="Oś gospodarcza" />,
+        <ModuleWrapper title="Oś gospodarcza" onStatsClick={vi.fn()}>
+          {body}
+        </ModuleWrapper>,
       );
 
       expect(screen.getByRole("heading")).toBeInTheDocument();
-      expect(screen.getByRole("separator")).toBeInTheDocument();
-      expect(container.querySelector("section")?.lastElementChild).toBe(
-        screen.getByRole("separator"),
-      );
+      expect(screen.getByRole("button")).toBeInTheDocument();
+      expect(screen.queryByRole("separator")).toBeNull();
+      expect(container.querySelector("section")?.children).toHaveLength(1);
     });
   });
 

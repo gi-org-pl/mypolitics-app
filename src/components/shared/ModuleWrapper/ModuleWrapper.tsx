@@ -52,6 +52,7 @@ export const ModuleWrapper = ({
   const hasComponentTitle = typeof title !== "string" && !isEmptyNode(title);
   const hasActions = Boolean(onStatsClick || onInfoClick);
   const hasHeader = hasTextTitle || hasComponentTitle || hasActions;
+  const hasBody = !isEmptyNode(children);
 
   const name = hasTextTitle ? textTitle : toSingleLine(ariaLabel);
   const statsName = name ? t`Statystyki: ${name}` : t`Statystyki`;
@@ -60,7 +61,7 @@ export const ModuleWrapper = ({
   return (
     <section
       aria-label={name || undefined}
-      className="flex min-w-0 flex-col gap-4 rounded-2xl bg-white p-4 ring-1 ring-gi-ash ring-inset"
+      className="flex w-full min-w-0 flex-col gap-4 rounded-2xl bg-white p-4 ring-1 ring-gi-ash ring-inset"
     >
       {hasHeader && (
         <>
@@ -97,10 +98,10 @@ export const ModuleWrapper = ({
               </div>
             )}
           </div>
-          <hr className="-mx-4 -mb-px border-gi-ash" />
+          {hasBody && <hr className="-mx-4 -mb-px border-gi-ash" />}
         </>
       )}
-      {!isEmptyNode(children) && <div className="min-w-0">{children}</div>}
+      {hasBody && <div className="min-w-0">{children}</div>}
     </section>
   );
 };
