@@ -1,3 +1,5 @@
+import type { MatchBand } from "@/utils/results/getMatchBand";
+
 export type ResultsTab = "results" | "comparison";
 
 export interface ResultsHeaderOrientation {
@@ -17,4 +19,18 @@ export interface ResultsHeaderProps {
   link?: ResultsHeaderLink;
   activeTab: ResultsTab;
   onTabChange: (tab: ResultsTab) => void;
+}
+
+export type ResultsHeaderBand = Exclude<MatchBand, "none">;
+
+export interface ResultsHeaderResult {
+  name: string;
+  imageUrl?: string;
+  confidence: number;
+  band: ResultsHeaderBand;
+}
+
+export interface ResultsHeaderSafeLink {
+  href: string;
+  label: string;
 }

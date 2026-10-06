@@ -17,7 +17,7 @@ const orientation: ResultsHeaderOrientation = {
 const narrow = { viewport: { value: "iphone6" } };
 
 const meta = {
-  title: "Results/Modules/ResultsHeader",
+  title: "Results/ResultsHeader",
   component: ResultsHeader,
   parameters: {
     viewport: {
