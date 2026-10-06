@@ -2,12 +2,10 @@ import { Avatar } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
-import type {
-  AxisLayout,
-  AxisSideLayout,
-  UniversalAxisProps,
-} from "./UniversalAxis.types";
-import { getAxisLayout } from "./utils/getAxisLayout";
+import type { AxisLayout, AxisSideLayout } from "@/types/axis";
+import { getAxisLayout } from "@/utils/axis/getAxisLayout";
+
+import type { UniversalAxisProps } from "./UniversalAxis.types";
 
 type AxisSide = "start" | "end";
 

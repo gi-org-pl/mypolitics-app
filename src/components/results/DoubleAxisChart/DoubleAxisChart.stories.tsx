@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { DoubleAxisChart } from "./DoubleAxisChart";
 
@@ -64,7 +64,7 @@ const friend: AxisOrientation = {
 };
 
 const meta = {
-  title: "Results/Modules/DoubleAxisChart",
+  title: "Results/DoubleAxisChart",
   component: DoubleAxisChart,
   args: {
     start: { orientation: euroscepticism, value: 69 },

@@ -1,10 +1,10 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import type { AxisEntry, AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { UniversalAxis } from "./UniversalAxis";
-import type { AxisEntry, AxisOrientation } from "./UniversalAxis.types";
 
 const orientationA: AxisOrientation = {
   id: "a",

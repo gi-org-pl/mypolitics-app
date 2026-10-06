@@ -1,4 +1,4 @@
-import type { AxisEntry } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisEntry } from "@/types/axis";
 import type { ResultEntry } from "@/types/results";
 
 export interface DoubleAxisChartProps {
