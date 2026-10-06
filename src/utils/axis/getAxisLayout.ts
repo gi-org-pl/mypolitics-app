@@ -1,25 +1,26 @@
-import { getSafeColor } from "@/utils/color/getSafeColor";
-
 import {
   DEFAULT_MARKER_POSITION,
   DOUBLE_SIDED_FIT_THRESHOLD,
   MAX_AXIS_VALUE,
   MIN_AXIS_VALUE,
   ONE_SIDED_FIT_THRESHOLD,
-} from "../UniversalAxis.constants";
+} from "@/constants/axis";
 import type {
   AxisBand,
   AxisComparisonLayout,
   AxisEntry,
   AxisLayout,
+  AxisLayoutInput,
   AxisMode,
   AxisSideLayout,
   AxisValuePlacement,
-  UniversalAxisProps,
-} from "../UniversalAxis.types";
+} from "@/types/axis";
+import { getSafeColor } from "@/utils/color/getSafeColor";
+import { clamp } from "@/utils/number/clamp";
+import { isNumber } from "@/utils/number/isNumber";
 
 const clampAxisValue = (value: number): number =>
-  Math.min(MAX_AXIS_VALUE, Math.max(MIN_AXIS_VALUE, value));
+  clamp(value, MIN_AXIS_VALUE, MAX_AXIS_VALUE);
 
 type AxisEntryWithValue = AxisEntry & { value: number };
 
@@ -27,7 +28,7 @@ const isPresentEntry = (entry?: AxisEntry): entry is AxisEntry =>
   entry?.orientation !== undefined;
 
 const hasEntryValue = (entry: AxisEntry): entry is AxisEntryWithValue =>
-  typeof entry.value === "number" && !Number.isNaN(entry.value);
+  isNumber(entry.value);
 
 const getEntryValue = (entry: AxisEntry): number =>
   hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
@@ -127,11 +128,9 @@ const getComparisonLayout = (
   };
 };
 
-const getMarker = (marker: UniversalAxisProps["marker"]): number | null => {
+const getMarker = (marker: AxisLayoutInput["marker"]): number | null => {
   if (marker === false) return null;
-  if (typeof marker !== "number" || Number.isNaN(marker)) {
-    return DEFAULT_MARKER_POSITION;
-  }
+  if (!isNumber(marker)) return DEFAULT_MARKER_POSITION;
 
   return clampAxisValue(marker);
 };
@@ -148,7 +147,7 @@ export const getAxisLayout = ({
   end,
   comparison,
   marker,
-}: UniversalAxisProps): AxisLayout => {
+}: AxisLayoutInput): AxisLayout => {
   const presentStart = isPresentEntry(start) ? start : null;
   const presentEnd = isPresentEntry(end) ? end : null;
   const presentComparison =

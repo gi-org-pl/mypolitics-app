@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 
 import { SingleAxisChart } from "./SingleAxisChart";
 
@@ -43,7 +43,7 @@ const friend: AxisOrientation = {
 };
 
 const meta = {
-  title: "Results/Modules/SingleAxisChart",
+  title: "Results/SingleAxisChart",
   component: SingleAxisChart,
   args: {
     orientation: radicalism,

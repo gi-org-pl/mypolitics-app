@@ -1,10 +1,13 @@
 import { ModuleWrapper } from "@/components/shared/ModuleWrapper/ModuleWrapper";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
-import { DEFAULT_MARKER_POSITION } from "@/components/shared/UniversalAxis/UniversalAxis.constants";
-import { getAxisLayout } from "@/components/shared/UniversalAxis/utils/getAxisLayout";
+import type { AxisEntry } from "@/types/axis";
+import { isNumber } from "@/utils/number/isNumber";
+import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import { OrientationChip } from "../OrientationChip/OrientationChip";
 import type { SingleAxisChartProps } from "./SingleAxisChart.types";
+import { hasOrientationTitle } from "./utils/hasOrientationTitle";
+import { isAxisEmphasised } from "./utils/isAxisEmphasised";
 
 export const SingleAxisChart = ({
   orientation,
@@ -14,24 +17,18 @@ export const SingleAxisChart = ({
   onStatsClick,
   onInfoClick,
 }: SingleAxisChartProps) => {
-  const layout = getAxisLayout({ start: { orientation, value }, marker });
-  const hasValue = layout.start?.hasValue === true;
-  const emphasisLine = layout.marker ?? DEFAULT_MARKER_POSITION;
-  const isEmphasised =
-    layout.start?.hasValue === true && layout.start.value >= emphasisLine;
-
-  const name = typeof orientation.name === "string" ? orientation.name : "";
-  const hasTitle = name.trim() !== "" || Boolean(orientation.imageUrl);
+  const entry: AxisEntry = { orientation, value };
+  const name = toSingleLine(orientation.name);
 
   return (
     <ModuleWrapper
       title={
-        hasTitle ? (
+        hasOrientationTitle(orientation) ? (
           <OrientationChip
             name={name}
             imageUrl={orientation.imageUrl}
             color={orientation.color}
-            look={isEmphasised ? "emphasised" : "quiet"}
+            look={isAxisEmphasised(entry, marker) ? "emphasised" : "quiet"}
           />
         ) : undefined
       }
@@ -40,7 +37,7 @@ export const SingleAxisChart = ({
       onInfoClick={onInfoClick}
     >
       <UniversalAxis
-        start={hasValue ? { orientation, value } : undefined}
+        start={isNumber(value) ? entry : undefined}
         comparison={comparison}
         marker={marker}
       />
