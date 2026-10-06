@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:144
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
@@ -21,7 +21,7 @@ msgstr "{name}: {value}%"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:159
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
@@ -89,7 +89,7 @@ msgstr "Odwiedź nasz profil na X"
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
