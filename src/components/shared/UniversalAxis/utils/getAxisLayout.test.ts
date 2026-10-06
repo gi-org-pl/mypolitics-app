@@ -211,6 +211,30 @@ describe("getAxisLayout()", () => {
       expect(layout.start?.color).toBeUndefined();
     });
 
+    it.each([
+      "gren",
+      "red",
+      "rgb(foo)",
+      "#12345",
+    ])("drops the unsupported colour value %s", (color) => {
+      const layout = getAxisLayout({
+        start: { orientation: { ...orientationA, color }, value: 40 },
+      });
+
+      expect(layout.start?.color).toBeUndefined();
+    });
+
+    it("accepts hue units in functional colour notations", () => {
+      const layout = getAxisLayout({
+        start: {
+          orientation: { ...orientationA, color: "hsl(120deg 50% 40%)" },
+          value: 40,
+        },
+      });
+
+      expect(layout.start?.color).toBe("hsl(120deg 50% 40%)");
+    });
+
     it("leaves the colour undefined when it is missing", () => {
       const layout = getAxisLayout({
         start: {

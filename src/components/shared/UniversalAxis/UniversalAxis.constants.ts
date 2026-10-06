@@ -7,4 +7,4 @@ export const ONE_SIDED_FIT_THRESHOLD = 16;
 export const DOUBLE_SIDED_FIT_THRESHOLD = 20;
 
 export const SAFE_COLOR_PATTERN =
-  /^(#[\da-f]{3,4}|#[\da-f]{6}|#[\da-f]{8}|[a-z]+|(rgba?|hsla?|hwb|lab|lch|oklab|oklch)\([\d\s.,%/a-z+-]*\))$/i;
+  /^(#[\da-f]{3,4}|#[\da-f]{6}|#[\da-f]{8}|(rgba?|hsla?|hwb|lab|lch|oklab|oklch)\((?:[\d\s.,%/+-]|deg|g?rad|turn|none)*\))$/i;
