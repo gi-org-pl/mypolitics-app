@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { SingleAxisChart } from "./SingleAxisChart";

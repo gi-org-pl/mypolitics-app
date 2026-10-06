@@ -7,7 +7,7 @@ const iconUrl = `data:image/svg+xml,${encodeURIComponent(
 )}`;
 
 const meta = {
-  title: "Results/Modules/OrientationChip",
+  title: "Results/OrientationChip",
   component: OrientationChip,
   args: {
     name: "Orientation Name",

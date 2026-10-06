@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SurveySaturatedProgressBar } from "./SurveySaturatedProgressBar";
 
 const meta: Meta<typeof SurveySaturatedProgressBar> = {
