@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import type { AxisOrientation } from "@/types/axis";
+
 import { UniversalAxis } from "./UniversalAxis";
-import type { AxisOrientation } from "./UniversalAxis.types";
 
 const createAvatarUrl = (color: string): string =>
   `data:image/svg+xml,${encodeURIComponent(
