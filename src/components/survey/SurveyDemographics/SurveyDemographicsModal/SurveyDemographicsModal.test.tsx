@@ -38,6 +38,21 @@ describe("<SurveyDemographicsModal />", () => {
       ).toBeInTheDocument();
     });
 
+    it("is described by both paragraphs", () => {
+      renderModal();
+
+      const dialog = screen.getByRole("dialog");
+
+      expect(dialog).toHaveAccessibleDescription(
+        expect.stringContaining(
+          "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować",
+        ),
+      );
+      expect(dialog).toHaveAccessibleDescription(
+        expect.stringContaining("Twoje dane pozostaną całkowicie anonimowe."),
+      );
+    });
+
     it("moves focus into the dialog", () => {
       renderModal();
 

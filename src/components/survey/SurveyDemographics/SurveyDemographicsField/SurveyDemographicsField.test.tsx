@@ -134,6 +134,16 @@ describe("<SurveyDemographicsField />", () => {
       expect(field).toHaveAttribute("aria-disabled", "false");
       expect(field).toHaveAttribute("tabindex", "0");
     });
+
+    it("draws a visible outline when focused with the keyboard", () => {
+      const { field } = renderField();
+
+      expect(field).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-gi-primary",
+      );
+    });
   });
 
   describe("given the half width", () => {

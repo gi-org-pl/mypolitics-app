@@ -81,7 +81,7 @@ msgstr "No traits earned"
 msgid "Debaty"
 msgstr ""
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:22
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Your answers in this section let us analyse results in the future, to improve the quiz and to prepare analyses on data.mypolitics.pl."
 
@@ -246,7 +246,7 @@ msgstr "Comparison mode"
 msgid "Twoja tożsamość"
 msgstr "Your identity"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:29
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Your data stays completely anonymous."
 
@@ -286,7 +286,7 @@ msgstr "Back to categories"
 msgid "Wykształcenie"
 msgstr "Education"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:16
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
 

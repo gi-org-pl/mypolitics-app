@@ -33,6 +33,16 @@ describe("<SurveyDemographicsInfo />", () => {
       expect(control).toHaveAttribute("aria-haspopup", "dialog");
     });
 
+    it("draws a visible outline when focused with the keyboard", () => {
+      renderInfo();
+
+      expect(screen.getByRole("button", { name: "To znaczy?" })).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-gi-primary",
+      );
+    });
+
     it("does not call its handler", () => {
       const { onExplain } = renderInfo();
 

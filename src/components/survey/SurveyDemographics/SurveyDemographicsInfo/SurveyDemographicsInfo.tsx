@@ -10,7 +10,7 @@ export const SurveyDemographicsInfo = ({
     <button
       type="button"
       aria-haspopup="dialog"
-      className="cursor-pointer underline"
+      className="cursor-pointer underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-primary"
       onClick={onExplain}
     >
       <Trans>To znaczy?</Trans>
