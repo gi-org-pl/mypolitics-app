@@ -3,6 +3,7 @@ import { expect, type Page, test } from "@playwright/test";
 const HOME_PATH = "/";
 const QUIZZES_PATH = "/quizzes";
 const UNKNOWN_PATH = "/nie-ma-takiej-strony";
+const POLLS_ADDRESS = "https://polls.mypolitics.pl";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
 const NAVIGATION_LINKS = ["Debaty", "Sondaże", "Quizy"];
 const FOOTER_LINKS = ["Regulamin", "Prywatność", "O nas"];
@@ -58,6 +59,15 @@ test.describe("Feature: Application shell", () => {
 
     await test.step("Then they see the header navigation", async () => {
       await expectHeaderNavigation(page);
+    });
+
+    await test.step("And the polls link leads outside the app, in a new tab", async () => {
+      const polls = page
+        .getByRole("banner")
+        .getByRole("link", { name: "Sondaże" });
+
+      await expect(polls).toHaveAttribute("href", POLLS_ADDRESS);
+      await expect(polls).toHaveAttribute("target", "_blank");
     });
 
     await test.step("And they see the footer", async () => {

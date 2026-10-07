@@ -197,7 +197,7 @@ msgstr "porównanie z {name}: {value}%"
 msgid "Prywatność"
 msgstr "Prywatność"
 
-#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:29
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
 msgstr "Quizy"
 
