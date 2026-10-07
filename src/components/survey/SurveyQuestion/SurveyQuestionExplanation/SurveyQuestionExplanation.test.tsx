@@ -3,6 +3,7 @@ import { cleanup, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 
+import chevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { SurveyQuestionExplanation } from "./SurveyQuestionExplanation";
@@ -15,6 +16,7 @@ const EXPLANATION =
 const PREVIEW = "Obraza uczuć religijnych to...";
 const PLAIN_EXPLANATION = "Działanie lub wypowiedź, które znieważają wiarę.";
 const FALLBACK = "Sprawdź wyjaśnienie";
+const CHEVRON_TEST_ID = "survey-question-explanation-chevron";
 
 const renderExplanation = (explanation: string = EXPLANATION) => {
   renderWithI18n(<SurveyQuestionExplanation explanation={explanation} />);
@@ -95,6 +97,87 @@ describe("<SurveyQuestionExplanation />", () => {
       expect(
         screen.getByRole("paragraph", { hidden: true }).parentElement,
       ).toHaveAttribute("id", controlledId);
+    });
+  });
+
+  describe("given the opening animation", () => {
+    it("starts with the explanation faded out towards its bottom", () => {
+      renderExplanation();
+
+      expect(screen.getByRole("paragraph", { hidden: true })).toHaveClass(
+        "mask-bottom",
+      );
+    });
+
+    it("uncovers the whole explanation once the bar is open", async () => {
+      const user = renderExplanation();
+
+      await user.click(screen.getByRole("button", { name: PREVIEW }));
+
+      expect(screen.getByRole("paragraph")).toHaveClass("mask-top");
+      expect(screen.getByRole("paragraph")).not.toHaveClass("mask-bottom");
+    });
+
+    it("turns every transition off for reduced motion", () => {
+      renderExplanation();
+
+      const button = screen.getByRole("button", { name: PREVIEW });
+      const explanation = screen.getByRole("paragraph", { hidden: true });
+      const animated = [
+        button.parentElement,
+        button.firstElementChild,
+        explanation.parentElement,
+        explanation,
+      ];
+
+      expect(
+        animated.map((element) =>
+          element?.classList.contains("motion-reduce:transition-none"),
+        ),
+      ).toEqual([true, true, true, true]);
+    });
+  });
+
+  describe("given a forced-colours mode", () => {
+    it("keeps an outline on the focused bar for the system to paint", () => {
+      renderExplanation();
+
+      expect(screen.getByRole("button", { name: PREVIEW })).toHaveClass(
+        "focus-visible:after:outline-2",
+        "focus-visible:after:-outline-offset-2",
+        "focus-visible:after:outline-transparent",
+      );
+    });
+
+    it("draws the chevron in the system text colour", () => {
+      renderExplanation();
+
+      expect(screen.getByTestId(CHEVRON_TEST_ID)).toHaveClass(
+        "forced-colors:bg-[ButtonText]",
+      );
+    });
+  });
+
+  describe("given the chevron", () => {
+    it("is decorative", () => {
+      renderExplanation();
+
+      expect(screen.getByTestId(CHEVRON_TEST_ID)).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      expect(screen.getByRole("button", { name: PREVIEW })).toContainElement(
+        screen.getByTestId(CHEVRON_TEST_ID),
+      );
+    });
+
+    it("is masked with the chevron icon, with the prefixed property as well", () => {
+      renderExplanation();
+
+      const { style } = screen.getByTestId(CHEVRON_TEST_ID);
+
+      expect(style.mask).toContain(chevronDownIcon);
+      expect(style).toHaveProperty("WebkitMask", style.mask);
     });
   });
 

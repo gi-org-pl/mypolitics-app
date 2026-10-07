@@ -33,7 +33,7 @@ export const SurveyQuestionExplanation = ({
           type="button"
           aria-expanded={isOpen}
           aria-controls={panelId}
-          className="col-start-1 row-start-1 min-w-0 cursor-pointer self-start px-3 py-2 text-left outline-none after:absolute after:inset-0 after:rounded-b-2xl after:content-[''] focus-visible:after:ring-[3px] focus-visible:after:ring-white/75 focus-visible:after:ring-inset"
+          className="col-start-1 row-start-1 min-w-0 cursor-pointer self-start px-3 py-2 text-left outline-none after:absolute after:inset-0 after:rounded-b-2xl after:content-[''] focus-visible:after:ring-[3px] focus-visible:after:ring-white/75 focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-transparent focus-visible:after:ring-inset"
           onClick={() => setIsOpen((wasOpen) => !wasOpen)}
         >
           <span
@@ -46,9 +46,11 @@ export const SurveyQuestionExplanation = ({
             </span>
             <span
               aria-hidden="true"
-              className="h-[7px] w-3 shrink-0 bg-white/75"
+              data-testid="survey-question-explanation-chevron"
+              className="h-[7px] w-3 shrink-0 bg-white/75 forced-colors:bg-[ButtonText]"
               style={{
                 mask: `url("${chevronDownIcon}") center / contain no-repeat`,
+                WebkitMask: `url("${chevronDownIcon}") center / contain no-repeat`,
               }}
             />
           </span>
@@ -60,7 +62,11 @@ export const SurveyQuestionExplanation = ({
             isOpen ? "visible opacity-100" : "invisible opacity-0"
           }`}
         >
-          <p className="p-2 text-left text-sm leading-[17px] font-semibold wrap-break-word text-white">
+          <p
+            className={`mask-[linear-gradient(to_bottom,#000_50%,transparent)] mask-size-[100%_200%] mask-no-repeat p-2 text-left text-sm leading-[17px] font-semibold wrap-break-word text-white transition-[mask-position,-webkit-mask-position] duration-300 ease-in motion-reduce:transition-none ${
+              isOpen ? "mask-top" : "mask-bottom"
+            }`}
+          >
             {explanation}
           </p>
         </div>
