@@ -2,6 +2,7 @@ import { expect, type Page, test } from "@playwright/test";
 
 const HOME_PATH = "/";
 const QUIZZES_PATH = "/quizzes";
+const TERMS_PATH = "/terms";
 const UNKNOWN_PATH = "/nie-ma-takiej-strony";
 const POLLS_ADDRESS = "https://polls.mypolitics.pl";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
@@ -120,6 +121,20 @@ test.describe("Feature: Application shell", () => {
       await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
 
       await expect(page.getByRole("contentinfo")).toBeInViewport();
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    });
+
+    await test.step("When they follow a link of the footer", async () => {
+      await page
+        .getByRole("contentinfo")
+        .getByRole("link", { name: "Regulamin" })
+        .click();
+      await expect(page).toHaveURL(TERMS_PATH);
+    });
+
+    await test.step("Then the new page starts at the top", async () => {
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+      await expect(page.getByRole("banner")).toBeInViewport();
     });
   });
 
