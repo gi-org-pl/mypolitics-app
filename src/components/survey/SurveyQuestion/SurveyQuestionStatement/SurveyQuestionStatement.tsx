@@ -22,7 +22,7 @@ export const SurveyQuestionStatement = ({
           key={key}
           className={
             item.isMatched
-              ? "font-extrabold underline decoration-2 underline-offset-2"
+              ? "font-black underline decoration-2 underline-offset-2"
               : undefined
           }
         >
