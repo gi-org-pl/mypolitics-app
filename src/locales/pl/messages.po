@@ -328,7 +328,7 @@ msgstr "Pełny opis"
 msgid "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 msgstr "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:32
 msgid "Podgląd wyników quizu myPolitics"
 msgstr "Podgląd wyników quizu myPolitics"
 
