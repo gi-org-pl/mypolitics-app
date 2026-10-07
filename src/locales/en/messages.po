@@ -13,11 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:134
+#: src/components/results/NolanChart/utils/useMapDescription.ts:52
+msgid "{name}: {quadrant}"
+msgstr "{name}: {quadrant}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:134
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -25,6 +29,14 @@ msgstr "{name}: no result"
 #: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:40
+msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
+msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:41
+msgid "{xAxis}: {x}, {yAxis}: {y}"
+msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
@@ -34,7 +46,8 @@ msgstr "© {currentYear}"
 msgid "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:149
+#: src/components/results/NolanChart/utils/useNolanTitle.ts:20
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -118,7 +131,11 @@ msgstr "Show group"
 msgid "Pokaż grupę: {name}"
 msgstr "Show group: {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:141
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Pokaż osie"
+msgstr "Show axes"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 
@@ -154,6 +171,10 @@ msgstr ""
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
+
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Ukryj osie"
+msgstr "Hide axes"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
