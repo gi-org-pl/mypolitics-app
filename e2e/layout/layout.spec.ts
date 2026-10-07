@@ -11,6 +11,19 @@ const TALL_WINDOW = { width: 1280, height: 1600 };
 const LOW_WINDOW = { width: 1280, height: 320 };
 const NARROW_WINDOW = { width: 360, height: 740 };
 
+// Opens an address and waits until the page stands still: the app has rendered
+// its content and every font it uses has arrived. A web font that lands in the
+// middle of a click reflows the page between press and release, and the click
+// then misses its target.
+const openPage = async (page: Page, path: string) => {
+  await page.goto(path);
+  await expect(page.getByRole("contentinfo")).toBeVisible();
+  await expect(page.getByRole("main")).not.toBeEmpty();
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
+};
+
 const expectHeaderNavigation = async (page: Page) => {
   const navigation = page.getByRole("banner").getByRole("navigation");
 
@@ -40,7 +53,7 @@ const getBox = async (page: Page, role: "main" | "contentinfo") => {
 test.describe("Feature: Application shell", () => {
   test("Scenario: The shell is on the home page", async ({ page }) => {
     await test.step("Given a user opens the home page", async () => {
-      await page.goto(HOME_PATH);
+      await openPage(page, HOME_PATH);
     });
 
     await test.step("Then they see the header navigation", async () => {
@@ -57,7 +70,7 @@ test.describe("Feature: Application shell", () => {
   }) => {
     await test.step("Given a user opens a page whose content is shorter than the window", async () => {
       await page.setViewportSize(TALL_WINDOW);
-      await page.goto(UNKNOWN_PATH);
+      await openPage(page, UNKNOWN_PATH);
       await expect(
         page.getByRole("heading", { name: NOT_FOUND_HEADING }),
       ).toBeVisible();
@@ -77,7 +90,7 @@ test.describe("Feature: Application shell", () => {
   }) => {
     await test.step("Given a user opens a page whose content is longer than the window", async () => {
       await page.setViewportSize(LOW_WINDOW);
-      await page.goto(UNKNOWN_PATH);
+      await openPage(page, UNKNOWN_PATH);
       await expect(
         page.getByRole("heading", { name: NOT_FOUND_HEADING }),
       ).toBeVisible();
@@ -104,7 +117,7 @@ test.describe("Feature: Application shell", () => {
     page,
   }) => {
     await test.step("Given a user opens an address that does not exist", async () => {
-      await page.goto(UNKNOWN_PATH);
+      await openPage(page, UNKNOWN_PATH);
     });
 
     await test.step("Then they see the not-found page", async () => {
@@ -142,7 +155,7 @@ test.describe("Feature: Application shell", () => {
 
     await test.step("Given a user opens the home page in a narrow window", async () => {
       await page.setViewportSize(NARROW_WINDOW);
-      await page.goto(HOME_PATH);
+      await openPage(page, HOME_PATH);
       await expect(
         page.getByRole("button", { name: OPEN_MENU_NAME }),
       ).toBeVisible();
