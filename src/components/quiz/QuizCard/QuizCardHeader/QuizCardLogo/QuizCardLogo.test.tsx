@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
 import { QuizCardLogo } from "./QuizCardLogo";
-import { LOGO_HEIGHT_CLASS_NAMES } from "./QuizCardLogo.constants";
 
 const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
+const OTHER_LOGO_URL = "/assets/quiz-logo-wyborczy-2023.svg";
 const TITLE = "myPolitics";
 
 describe("<QuizCardLogo />", () => {
@@ -17,20 +18,26 @@ describe("<QuizCardLogo />", () => {
       );
     });
 
-    it("carries the title as the alternative text shown when the file fails to load", () => {
-      render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={24} />);
-
-      expect(screen.getByRole("img", { name: TITLE })).toHaveAttribute(
-        "alt",
-        TITLE,
-      );
-    });
-
     it("does not hide the named image from assistive technology", () => {
       render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={24} />);
 
       expect(screen.getByRole("img", { name: TITLE })).not.toHaveAttribute(
         "aria-hidden",
+      );
+    });
+
+    it("does not repeat the title as text next to the image", () => {
+      render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={24} />);
+
+      expect(screen.queryByText(TITLE)).not.toBeInTheDocument();
+    });
+
+    it("renders the same named image at the other height", () => {
+      render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={32} />);
+
+      expect(screen.getByRole("img", { name: TITLE })).toHaveAttribute(
+        "src",
+        LOGO_URL,
       );
     });
   });
@@ -44,25 +51,39 @@ describe("<QuizCardLogo />", () => {
     });
   });
 
-  describe("given a height of 24", () => {
-    it("renders the logo 24 px high", () => {
+  describe("when the logo fails to load", () => {
+    it("renders the title as text in its place", () => {
       render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={24} />);
 
-      const logo = screen.getByRole("img", { name: TITLE });
+      fireEvent.error(screen.getByRole("img", { name: TITLE }));
 
-      expect(logo).toHaveClass(LOGO_HEIGHT_CLASS_NAMES[24]);
-      expect(logo).not.toHaveClass(LOGO_HEIGHT_CLASS_NAMES[32]);
+      expect(screen.getByText(TITLE)).toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("renders nothing when there is no title to fall back on", () => {
+      const { container } = render(<QuizCardLogo url={LOGO_URL} height={24} />);
+
+      fireEvent.error(screen.getByRole("presentation"));
+
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
-  describe("given a height of 32", () => {
-    it("renders the logo 32 px high", () => {
-      render(<QuizCardLogo url={LOGO_URL} title={TITLE} height={32} />);
+  describe("when the address changes after a failure", () => {
+    it("tries the new logo", () => {
+      const { rerender } = render(
+        <QuizCardLogo url={LOGO_URL} title={TITLE} height={24} />,
+      );
 
-      const logo = screen.getByRole("img", { name: TITLE });
+      fireEvent.error(screen.getByRole("img", { name: TITLE }));
+      rerender(<QuizCardLogo url={OTHER_LOGO_URL} title={TITLE} height={24} />);
 
-      expect(logo).toHaveClass(LOGO_HEIGHT_CLASS_NAMES[32]);
-      expect(logo).not.toHaveClass(LOGO_HEIGHT_CLASS_NAMES[24]);
+      expect(screen.getByRole("img", { name: TITLE })).toHaveAttribute(
+        "src",
+        OTHER_LOGO_URL,
+      );
+      expect(screen.queryByText(TITLE)).not.toBeInTheDocument();
     });
   });
 });
