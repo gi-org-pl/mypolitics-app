@@ -3,6 +3,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "react-router";
 import bear404 from "@/assets/icons/bear-404.svg";
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 
 export const Error404 = () => {
@@ -29,7 +30,11 @@ export const Error404 = () => {
           </Trans>
         </p>
 
-        <Button asChild variant="primary" className="text-base font-bold">
+        <Button
+          asChild
+          variant="primary"
+          className={`text-base font-bold ${FOCUS_CLASS_NAME}`}
+        >
           <Link to={PATHS.home}>
             <Trans>Strona główna</Trans>
           </Link>

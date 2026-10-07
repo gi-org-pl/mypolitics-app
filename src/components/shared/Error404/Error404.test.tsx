@@ -67,5 +67,19 @@ describe("<Error404 />", () => {
 
       expect(screen.queryByRole("main")).not.toBeInTheDocument();
     });
+
+    it("shows keyboard focus on the link as an outline instead of Athena's ring", () => {
+      renderError();
+
+      const link = screen.getByRole("link", { name: "Strona główna" });
+
+      expect(link).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-solid",
+        "focus-visible:outline-gi-primary",
+      );
+      expect(link).not.toHaveClass("focus-visible:ring-[3px]");
+    });
   });
 });

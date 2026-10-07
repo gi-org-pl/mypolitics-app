@@ -32,6 +32,19 @@ describe("<FooterLeft />", () => {
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
+
+    it("shows keyboard focus on the link as an outline", () => {
+      renderWithI18n(<FooterLeft />);
+
+      expect(
+        screen.getByRole("link", { name: "Generacja Innowacja" }),
+      ).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-solid",
+        "focus-visible:outline-gi-primary",
+      );
+    });
   });
 
   describe("given the year 2031", () => {

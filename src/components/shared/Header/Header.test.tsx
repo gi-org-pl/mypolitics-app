@@ -10,6 +10,12 @@ import { Header } from "./Header";
 const NAVIGATION_NAME = "Nawigacja główna";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
 const CLOSE_MENU_NAME = "Zamknij menu nawigacji";
+const FOCUS_CLASSES = [
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-solid",
+  "focus-visible:outline-gi-primary",
+];
 
 const renderHeader = (path: string = PATHS.home) =>
   renderWithI18n(
@@ -62,6 +68,43 @@ describe("<Header />", () => {
         screen.getByRole("button", { name: OPEN_MENU_NAME, expanded: false }),
       ).toBeInTheDocument();
       expect(getNavigations()).toHaveLength(1);
+    });
+
+    it("draws the menu button's icon as a mask", () => {
+      renderHeader();
+
+      const icon = screen
+        .getByRole("button", { name: OPEN_MENU_NAME })
+        .querySelector("span");
+
+      expect(icon?.style.maskImage).toMatch(/^url\(".+"\)$/);
+    });
+
+    it("keeps the menu button's icon visible in forced colours, in the colour of button text", () => {
+      renderHeader();
+
+      expect(
+        screen
+          .getByRole("button", { name: OPEN_MENU_NAME })
+          .querySelector("span"),
+      ).toHaveClass("bg-current", "forced-colors:bg-[color:ButtonText]");
+    });
+
+    it("shows keyboard focus on the logo link as an outline", () => {
+      renderHeader();
+
+      expect(screen.getByRole("link", { name: "Strona główna" })).toHaveClass(
+        ...FOCUS_CLASSES,
+      );
+    });
+
+    it("shows keyboard focus on the menu button as an outline instead of Athena's ring", () => {
+      renderHeader();
+
+      const button = screen.getByRole("button", { name: OPEN_MENU_NAME });
+
+      expect(button).toHaveClass(...FOCUS_CLASSES);
+      expect(button).not.toHaveClass("focus-visible:ring-[3px]");
     });
   });
 

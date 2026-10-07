@@ -50,5 +50,18 @@ describe("<FooterLegal />", () => {
         PATHS.about,
       );
     });
+
+    it("shows keyboard focus on every link as an outline", () => {
+      renderLegal();
+
+      for (const link of screen.getAllByRole("link")) {
+        expect(link).toHaveClass(
+          "focus-visible:outline-2",
+          "focus-visible:outline-offset-2",
+          "focus-visible:outline-solid",
+          "focus-visible:outline-gi-primary",
+        );
+      }
+    });
   });
 });

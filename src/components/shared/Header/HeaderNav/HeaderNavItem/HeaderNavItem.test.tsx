@@ -15,6 +15,13 @@ const ENTRY: HeaderNavEntry = {
   iconClassName: "h-3.5 w-4.75",
 };
 
+const FOCUS_CLASSES = [
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-solid",
+  "focus-visible:outline-gi-primary",
+];
+
 const EXTERNAL_ENTRY: HeaderNavEntry = {
   ...ENTRY,
   key: "polls",
@@ -68,14 +75,39 @@ describe("<HeaderNavItem />", () => {
       expect(screen.getByRole("link")).toHaveAccessibleName("Quizy");
     });
 
-    it("paints the icon of the entry", () => {
+    it("draws the icon of the entry as a mask", () => {
       renderItem();
 
       const icon = screen.getByRole("link").querySelector("span");
 
-      expect(icon?.style.getPropertyValue("--header-icon")).toBe(
-        'url("quizzes-icon.svg")',
+      expect(icon?.style.maskImage).toBe('url("quizzes-icon.svg")');
+    });
+
+    it("gives the icon the size of the entry", () => {
+      renderItem();
+
+      expect(screen.getByRole("link").querySelector("span")).toHaveClass(
+        "h-3.5",
+        "w-4.75",
       );
+    });
+
+    it("keeps the icon visible in forced colours, in the colour of link text", () => {
+      renderItem();
+
+      expect(screen.getByRole("link").querySelector("span")).toHaveClass(
+        "bg-current",
+        "forced-colors:bg-[color:LinkText]",
+      );
+    });
+
+    it("shows keyboard focus as an outline instead of Athena's ring", () => {
+      renderItem();
+
+      const link = screen.getByRole("link", { name: "Quizy" });
+
+      expect(link).toHaveClass(...FOCUS_CLASSES);
+      expect(link).not.toHaveClass("focus-visible:ring-[3px]");
     });
   });
 

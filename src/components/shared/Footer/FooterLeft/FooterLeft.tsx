@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import giLogo from "@/assets/icons/gilogo.svg";
 import myPoliticsLogo from "@/assets/icons/mypoliticslogo.svg";
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 
 export const FooterLeft = () => {
@@ -18,7 +19,7 @@ export const FooterLeft = () => {
         href={PATHS.generacjaInnowacja}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-4 items-center"
+        className={`flex h-4 items-center ${FOCUS_CLASS_NAME}`}
       >
         <img src={giLogo} alt={t`Generacja Innowacja`} className="h-4 w-auto" />
       </a>
