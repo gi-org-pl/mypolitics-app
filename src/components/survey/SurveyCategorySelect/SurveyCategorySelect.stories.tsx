@@ -1,9 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { SurveyCategorySelect } from "./SurveyCategorySelect";
-import type { SurveyCategory } from "./SurveyCategorySelect.types";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs } from "storybook/preview-api";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
-const MOCK_CATEGORIES: SurveyCategory[] = [
+import { SurveyCategorySelect } from "./SurveyCategorySelect";
+import type {
+  SurveyCategory,
+  SurveyCategorySelectProps,
+} from "./SurveyCategorySelect.types";
+
+const CATEGORIES: SurveyCategory[] = [
   { id: "worldview", name: "Światopogląd" },
   { id: "system", name: "Ustrój" },
   { id: "economy", name: "Gospodarka" },
@@ -11,43 +16,44 @@ const MOCK_CATEGORIES: SurveyCategory[] = [
   { id: "ecology", name: "Ekologia" },
 ];
 
-const meta: Meta<typeof SurveyCategorySelect> = {
+const LONG_NAME =
+  "Polityka społeczna, mieszkaniowa i senioralna oraz ochrona zdrowia psychicznego";
+
+const narrow = { viewport: { value: "iphone5" } };
+
+const meta = {
   title: "Survey/SurveyCategorySelect",
   component: SurveyCategorySelect,
   parameters: {
-    layout: "centered",
+    viewport: {
+      options: INITIAL_VIEWPORTS,
+    },
   },
-  render: (args) => {
-    const [selectedIds, setSelectedIds] = useState<string[]>(
-      args.selectedIds ?? [],
-    );
+  args: {
+    categories: CATEGORIES,
+    selectedIds: [],
+    onChange: () => {},
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs<SurveyCategorySelectProps>();
+
     return (
-      <div className="w-80">
-        <SurveyCategorySelect
-          {...args}
-          selectedIds={selectedIds}
-          onChange={setSelectedIds}
-        />
-      </div>
+      <SurveyCategorySelect
+        {...args}
+        onChange={(selectedIds) => updateArgs({ selectedIds })}
+      />
     );
   },
-};
+} satisfies Meta<typeof SurveyCategorySelect>;
 
 export default meta;
 
-type Story = StoryObj<typeof SurveyCategorySelect>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    categories: MOCK_CATEGORIES,
-    selectedIds: [],
-    maxSelection: 3,
-  },
-};
+export const Default: Story = {};
 
 export const PartiallySelected: Story = {
   args: {
-    categories: MOCK_CATEGORIES,
     selectedIds: ["worldview", "economy"],
     maxSelection: 3,
   },
@@ -55,39 +61,50 @@ export const PartiallySelected: Story = {
 
 export const AtMaxSelection: Story = {
   args: {
-    categories: MOCK_CATEGORIES,
-    selectedIds: ["worldview", "system", "economy"],
+    selectedIds: ["system", "economy", "ecology"],
     maxSelection: 3,
   },
 };
 
 export const CustomMaxSelection: Story = {
   args: {
-    categories: MOCK_CATEGORIES,
     selectedIds: ["worldview"],
     maxSelection: 2,
   },
 };
 
+export const SingleSelection: Story = {
+  args: {
+    maxSelection: 1,
+  },
+};
+
+export const ManySelection: Story = {
+  args: {
+    maxSelection: 5,
+  },
+};
+
 export const CustomPrompt: Story = {
   args: {
-    categories: MOCK_CATEGORIES,
-    selectedIds: [],
-    maxSelection: 3,
-    prompt: <span>Wybierz tematy które Cię interesują.</span>,
+    prompt: "Wybierz tematy, które Cię interesują.",
   },
 };
 
 export const LongCategoryName: Story = {
   args: {
     categories: [
-      ...MOCK_CATEGORIES.slice(0, 4),
-      {
-        id: "long",
-        name: "Bardzo długa nazwa kategorii która powinna zawijać się do następnej linii",
-      },
+      ...CATEGORIES.slice(0, 2),
+      { id: "long", name: LONG_NAME },
+      { id: "long-selected", name: LONG_NAME },
     ],
-    selectedIds: [],
-    maxSelection: 3,
+    selectedIds: ["long-selected"],
+  },
+  globals: narrow,
+};
+
+export const NoCategories: Story = {
+  args: {
+    categories: [],
   },
 };
