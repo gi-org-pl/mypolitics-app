@@ -4,8 +4,6 @@ import {
   BODY_COLLAPSED_CLASS_NAME,
   BODY_OPEN_CLASS_NAME,
   BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME,
-} from "../QuizCard.constants";
-import {
   DESCRIPTION_CLASS_NAME,
   HIGHLIGHTED_DESCRIPTION_CLASS_NAME,
 } from "./QuizCardBody.constants";

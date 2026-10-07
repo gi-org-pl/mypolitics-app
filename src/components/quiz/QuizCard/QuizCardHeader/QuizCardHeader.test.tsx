@@ -1,13 +1,38 @@
 import { fireEvent, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-import {
-  LOGO_HEIGHT_CLASS_NAMES,
-  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-} from "../QuizCard.constants";
+
 import { QuizCardHeader } from "./QuizCardHeader";
 import type { QuizCardHeaderProps } from "./QuizCardHeader.types";
+import { QuizCardLogo } from "./QuizCardLogo/QuizCardLogo";
+import { QuizCardPlayButton } from "./QuizCardPlayButton/QuizCardPlayButton";
+import { QuizCardToggle } from "./QuizCardToggle/QuizCardToggle";
+
+// The subcomponents render as they are; the spies around them show what the
+// header passes to them where the result is a look that only CSS draws.
+vi.mock("./QuizCardLogo/QuizCardLogo", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardLogo/QuizCardLogo")>();
+
+  return { QuizCardLogo: vi.fn(original.QuizCardLogo) };
+});
+
+vi.mock("./QuizCardPlayButton/QuizCardPlayButton", async (importOriginal) => {
+  const original =
+    await importOriginal<
+      typeof import("./QuizCardPlayButton/QuizCardPlayButton")
+    >();
+
+  return { QuizCardPlayButton: vi.fn(original.QuizCardPlayButton) };
+});
+
+vi.mock("./QuizCardToggle/QuizCardToggle", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardToggle/QuizCardToggle")>();
+
+  return { QuizCardToggle: vi.fn(original.QuizCardToggle) };
+});
 
 const TITLE = "Polskie Lata 90.";
 const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
@@ -35,6 +60,10 @@ const renderHeader = (props: Partial<QuizCardHeaderProps> = {}) =>
   );
 
 describe("<QuizCardHeader />", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe("given a logoUrl", () => {
     it("renders the logo image named after the title, inside the heading", () => {
       renderHeader({ logoUrl: LOGO_URL });
@@ -53,9 +82,17 @@ describe("<QuizCardHeader />", () => {
     it("passes the logo height on", () => {
       renderHeader({ logoUrl: LOGO_URL, logoHeight: 32 });
 
-      expect(screen.getByRole("img", { name: TITLE })).toHaveClass(
-        LOGO_HEIGHT_CLASS_NAMES[32],
-      );
+      expect(vi.mocked(QuizCardLogo).mock.lastCall?.[0]).toMatchObject({
+        height: 32,
+      });
+    });
+
+    it("asks for the play button of a logo card, in the primary colour", () => {
+      renderHeader({ logoUrl: LOGO_URL });
+
+      expect(vi.mocked(QuizCardPlayButton).mock.lastCall?.[0]).toMatchObject({
+        isLight: false,
+      });
     });
   });
 
@@ -65,6 +102,14 @@ describe("<QuizCardHeader />", () => {
 
       expect(screen.getByRole("heading")).toHaveTextContent(TITLE);
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("asks for the play button of a title card, in the colour of the title", () => {
+      renderHeader();
+
+      expect(vi.mocked(QuizCardPlayButton).mock.lastCall?.[0]).toMatchObject({
+        isLight: true,
+      });
     });
   });
 
@@ -78,6 +123,14 @@ describe("<QuizCardHeader />", () => {
           .getAllByRole("button")
           .map((button) => button.getAttribute("aria-label")),
       ).toEqual([EXPAND_NAME, PLAY_NAME]);
+    });
+
+    it("asks for the play button in the primary colour", () => {
+      renderHeader({ title: undefined });
+
+      expect(vi.mocked(QuizCardPlayButton).mock.lastCall?.[0]).toMatchObject({
+        isLight: false,
+      });
     });
   });
 
@@ -112,17 +165,17 @@ describe("<QuizCardHeader />", () => {
     it("keeps the toggle at every width when the card is not open on a wide screen", () => {
       renderHeader({ isOpenOnWideScreen: false });
 
-      expect(screen.getByRole("button", { name: EXPAND_NAME })).not.toHaveClass(
-        TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-      );
+      expect(vi.mocked(QuizCardToggle).mock.lastCall?.[0]).toMatchObject({
+        isHiddenOnWideScreen: false,
+      });
     });
 
     it("hides the toggle on a wide screen when the card is open there", () => {
       renderHeader({ isOpenOnWideScreen: true });
 
-      expect(screen.getByRole("button", { name: EXPAND_NAME })).toHaveClass(
-        TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-      );
+      expect(vi.mocked(QuizCardToggle).mock.lastCall?.[0]).toMatchObject({
+        isHiddenOnWideScreen: true,
+      });
     });
   });
 

@@ -1,19 +1,45 @@
 import { fireEvent, screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { QuizCard } from "./QuizCard";
-import {
-  BODY_COLLAPSED_CLASS_NAME,
-  BODY_OPEN_CLASS_NAME,
-  BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME,
-  IMAGE_SHORT_CLASS_NAME,
-  IMAGE_TALL_CLASS_NAME,
-  LOGO_HEIGHT_CLASS_NAMES,
-  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-} from "./QuizCard.constants";
 import type { QuizCardProps } from "./QuizCard.types";
+import { QuizCardBadge } from "./QuizCardBadge/QuizCardBadge";
+import { QuizCardBody } from "./QuizCardBody/QuizCardBody";
+import { QuizCardHeader } from "./QuizCardHeader/QuizCardHeader";
+import { QuizCardImage } from "./QuizCardImage/QuizCardImage";
+
+// The subcomponents render as they are; the spies around them show what the
+// card passes to them where the result is a look that only CSS draws (the
+// height of the image, the collapsed body, what a wide screen changes).
+vi.mock("./QuizCardBadge/QuizCardBadge", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardBadge/QuizCardBadge")>();
+
+  return { QuizCardBadge: vi.fn(original.QuizCardBadge) };
+});
+
+vi.mock("./QuizCardBody/QuizCardBody", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardBody/QuizCardBody")>();
+
+  return { QuizCardBody: vi.fn(original.QuizCardBody) };
+});
+
+vi.mock("./QuizCardHeader/QuizCardHeader", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardHeader/QuizCardHeader")>();
+
+  return { QuizCardHeader: vi.fn(original.QuizCardHeader) };
+});
+
+vi.mock("./QuizCardImage/QuizCardImage", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("./QuizCardImage/QuizCardImage")>();
+
+  return { QuizCardImage: vi.fn(original.QuizCardImage) };
+});
 
 const TITLE = "Polskie Lata 90.";
 const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
@@ -37,25 +63,24 @@ const renderCard = (props: Partial<QuizCardProps> = {}) =>
 
 const getCard = () => screen.getByRole("article");
 
-// The body is the element the toggle controls; on a card without a toggle it
-// is found through its description.
-const getBody = () => {
-  const bodyId = screen
-    .getByRole("button", { expanded: false })
-    .getAttribute("aria-controls");
-  const body = bodyId ? document.getElementById(bodyId) : null;
-
-  if (!body) {
-    throw new Error("The toggle does not point at a rendered body");
-  }
-
-  return body;
-};
+const getButtonLabels = () =>
+  screen
+    .getAllByRole("button")
+    .map((button) => button.getAttribute("aria-label"));
 
 const getChipTexts = () =>
   screen.getAllByRole("listitem").map((chip) => chip.textContent);
 
+const getImageProps = () => vi.mocked(QuizCardImage).mock.lastCall?.[0];
+const getBadgeProps = () => vi.mocked(QuizCardBadge).mock.lastCall?.[0];
+const getHeaderProps = () => vi.mocked(QuizCardHeader).mock.lastCall?.[0];
+const getBodyProps = () => vi.mocked(QuizCardBody).mock.lastCall?.[0];
+
 describe("<QuizCard />", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe("given a logoUrl", () => {
     it("renders the logo image named after the title", () => {
       renderCard({ title: TITLE, logoUrl: LOGO_URL });
@@ -66,20 +91,16 @@ describe("<QuizCard />", () => {
       );
     });
 
-    it("renders the logo 24 px high unless told otherwise, as in every frame of the design", () => {
+    it("asks for a logo 24 px high unless told otherwise, as in every frame of the design", () => {
       renderCard({ title: TITLE, logoUrl: LOGO_URL });
 
-      expect(screen.getByRole("img", { name: TITLE })).toHaveClass(
-        LOGO_HEIGHT_CLASS_NAMES[24],
-      );
+      expect(getHeaderProps()).toMatchObject({ logoHeight: 24 });
     });
 
-    it("renders the logo 32 px high when asked to", () => {
+    it("asks for a logo 32 px high when told to", () => {
       renderCard({ title: TITLE, logoUrl: LOGO_URL, logoHeight: 32 });
 
-      expect(screen.getByRole("img", { name: TITLE })).toHaveClass(
-        LOGO_HEIGHT_CLASS_NAMES[32],
-      );
+      expect(getHeaderProps()).toMatchObject({ logoHeight: 32 });
     });
 
     it("does not repeat the title as text", () => {
@@ -104,11 +125,7 @@ describe("<QuizCard />", () => {
       renderCard();
 
       expect(screen.queryByRole("heading")).not.toBeInTheDocument();
-      expect(
-        screen
-          .getAllByRole("button")
-          .map((button) => button.getAttribute("aria-label")),
-      ).toEqual([EXPAND_NAME, PLAY_NAME]);
+      expect(getButtonLabels()).toEqual([EXPAND_NAME, PLAY_NAME]);
     });
   });
 
@@ -131,7 +148,7 @@ describe("<QuizCard />", () => {
       expect(image).not.toHaveAttribute("aria-hidden");
     });
 
-    it("renders the image at the top of the card, above the content", () => {
+    it("renders the image at the top of the card, above the badge and the content", () => {
       renderCard({ title: TITLE, backgroundUrl: BACKGROUND_URL, cta: CTA });
 
       const image = within(getCard()).getByRole("presentation");
@@ -146,43 +163,52 @@ describe("<QuizCard />", () => {
       ).toBeTruthy();
     });
 
-    it("renders the short image while the card is collapsed", () => {
+    it("asks for the short image while the card is collapsed", () => {
       renderCard({ backgroundUrl: BACKGROUND_URL });
 
-      expect(within(getCard()).getByRole("presentation")).toHaveClass(
-        IMAGE_SHORT_CLASS_NAME,
-      );
+      expect(getImageProps()).toMatchObject({ isTall: false });
     });
 
-    it("renders the tall image once the card is open", () => {
+    it("asks for the tall image once the card is open", () => {
       renderCard({ backgroundUrl: BACKGROUND_URL });
 
       fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
 
-      expect(within(getCard()).getByRole("presentation")).toHaveClass(
-        IMAGE_TALL_CLASS_NAME,
-      );
+      expect(getImageProps()).toMatchObject({ isTall: true });
     });
 
-    it("renders the tall image on a card that is always open", () => {
+    it("asks for the short image again once the card is collapsed", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL });
+
+      fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
+      fireEvent.click(screen.getByRole("button", { name: COLLAPSE_NAME }));
+
+      expect(getImageProps()).toMatchObject({ isTall: false });
+    });
+
+    it("asks for the tall image on a card that is always open", () => {
       renderCard({ backgroundUrl: BACKGROUND_URL, isAlwaysExpanded: true });
 
-      expect(within(getCard()).getByRole("presentation")).toHaveClass(
-        IMAGE_TALL_CLASS_NAME,
-      );
+      expect(getImageProps()).toMatchObject({ isTall: true });
+    });
+
+    it("asks for the tall image on a highlighted card, as it is open too", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL, isHighlighted: true });
+
+      expect(getImageProps()).toMatchObject({ isTall: true });
     });
 
     it("keeps the toggle and the collapsed body on a wide screen too", () => {
       renderCard({ backgroundUrl: BACKGROUND_URL });
 
-      const body = getBody();
-
-      expect(screen.getByRole("button", { name: EXPAND_NAME })).not.toHaveClass(
-        TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-      );
-      for (const className of BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" ")) {
-        expect(body).not.toHaveClass(className);
-      }
+      expect(getHeaderProps()).toMatchObject({
+        isCollapsible: true,
+        isOpenOnWideScreen: false,
+      });
+      expect(getBodyProps()).toMatchObject({
+        isOpen: false,
+        isOpenOnWideScreen: false,
+      });
     });
   });
 
@@ -213,14 +239,25 @@ describe("<QuizCard />", () => {
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
     });
+
+    it("asks for the badge of the card's top edge when there is no image", () => {
+      renderCard({ title: TITLE, cta: CTA });
+
+      expect(getBadgeProps()).toMatchObject({ isBelowImage: false });
+    });
+
+    it("asks for the badge of the image's bottom edge when there is one", () => {
+      renderCard({ title: TITLE, cta: CTA, backgroundUrl: BACKGROUND_URL });
+
+      expect(getBadgeProps()).toMatchObject({ isBelowImage: true });
+    });
   });
 
   describe("given an empty cta", () => {
     it("renders no badge", () => {
       renderCard({ title: TITLE, cta: "  " });
 
-      expect(screen.getAllByRole("paragraph")).toHaveLength(1);
-      expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+      expect(QuizCardBadge).not.toHaveBeenCalled();
     });
   });
 
@@ -283,14 +320,11 @@ describe("<QuizCard />", () => {
   });
 
   describe("given neither a description nor tags", () => {
-    it("renders no toggle, as there is nothing to expand", () => {
+    it("renders no body and no toggle, as there is nothing to expand", () => {
       renderCard({ title: TITLE, description: "", tags: [] });
 
-      expect(
-        screen
-          .getAllByRole("button")
-          .map((button) => button.getAttribute("aria-label")),
-      ).toEqual([PLAY_NAME]);
+      expect(QuizCardBody).not.toHaveBeenCalled();
+      expect(getButtonLabels()).toEqual([PLAY_NAME]);
     });
   });
 
@@ -307,27 +341,28 @@ describe("<QuizCard />", () => {
       it("points the chevron at the body, which holds the description and the tags", () => {
         renderCard({ title: TITLE });
 
-        const body = within(getBody());
+        const bodyId = screen
+          .getByRole("button", { name: EXPAND_NAME })
+          .getAttribute("aria-controls");
 
-        expect(body.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
-        expect(body.getByRole("list")).toBeInTheDocument();
+        expect(getBodyProps()).toMatchObject({
+          id: bodyId,
+          description: DESCRIPTION,
+          tags: TAGS,
+        });
       });
 
       it("hides the body from assistive technology and from the keyboard", () => {
         renderCard({ title: TITLE });
 
-        expect(getBody()).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
+        expect(getBodyProps()).toMatchObject({ isOpen: false });
       });
 
-      it("is open without a chevron on a wide screen, in CSS alone", () => {
+      it("is open without a chevron on a wide screen, which CSS alone decides", () => {
         renderCard({ title: TITLE });
 
-        expect(getBody()).toHaveClass(
-          ...BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" "),
-        );
-        expect(screen.getByRole("button", { name: EXPAND_NAME })).toHaveClass(
-          TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-        );
+        expect(getBodyProps()).toMatchObject({ isOpenOnWideScreen: true });
+        expect(getHeaderProps()).toMatchObject({ isOpenOnWideScreen: true });
       });
 
       describe("when the chevron is activated", () => {
@@ -343,14 +378,10 @@ describe("<QuizCard />", () => {
 
         it("exposes the body", () => {
           renderCard({ title: TITLE });
-          const body = getBody();
 
           fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
 
-          expect(body).toHaveClass(...BODY_OPEN_CLASS_NAME.split(" "));
-          for (const className of BODY_COLLAPSED_CLASS_NAME.split(" ")) {
-            expect(body).not.toHaveClass(className);
-          }
+          expect(getBodyProps()).toMatchObject({ isOpen: true });
         });
 
         it("does not call onCardClick", () => {
@@ -366,7 +397,6 @@ describe("<QuizCard />", () => {
       describe("when the chevron is activated twice", () => {
         it("collapses again", () => {
           renderCard({ title: TITLE });
-          const body = getBody();
 
           fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
           fireEvent.click(screen.getByRole("button", { name: COLLAPSE_NAME }));
@@ -374,7 +404,7 @@ describe("<QuizCard />", () => {
           expect(
             screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
           ).toBeInTheDocument();
-          expect(body).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
+          expect(getBodyProps()).toMatchObject({ isOpen: false });
         });
       });
     });
@@ -383,16 +413,13 @@ describe("<QuizCard />", () => {
       it("renders no chevron", () => {
         renderCard({ title: TITLE, isAlwaysExpanded: true });
 
-        expect(
-          screen
-            .getAllByRole("button")
-            .map((button) => button.getAttribute("aria-label")),
-        ).toEqual([PLAY_NAME]);
+        expect(getButtonLabels()).toEqual([PLAY_NAME]);
       });
 
       it("exposes the body", () => {
         renderCard({ title: TITLE, isAlwaysExpanded: true });
 
+        expect(getBodyProps()).toMatchObject({ isOpen: true });
         expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
         expect(getChipTexts()).toEqual(TAGS);
       });
@@ -402,18 +429,31 @@ describe("<QuizCard />", () => {
       it("renders no chevron", () => {
         renderCard({ title: TITLE, isHighlighted: true });
 
-        expect(
-          screen
-            .getAllByRole("button")
-            .map((button) => button.getAttribute("aria-label")),
-        ).toEqual([PLAY_NAME]);
+        expect(getButtonLabels()).toEqual([PLAY_NAME]);
       });
 
       it("exposes the body", () => {
         renderCard({ title: TITLE, isHighlighted: true });
 
+        expect(getBodyProps()).toMatchObject({ isOpen: true });
         expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
         expect(getChipTexts()).toEqual(TAGS);
+      });
+
+      it("tells the badge and the body that the card is highlighted", () => {
+        renderCard({ title: TITLE, cta: CTA, isHighlighted: true });
+
+        expect(getBadgeProps()).toMatchObject({ isHighlighted: true });
+        expect(getBodyProps()).toMatchObject({ isHighlighted: true });
+      });
+    });
+
+    describe("given no isHighlighted", () => {
+      it("tells the badge and the body that the card is a plain one", () => {
+        renderCard({ title: TITLE, cta: CTA });
+
+        expect(getBadgeProps()).toMatchObject({ isHighlighted: false });
+        expect(getBodyProps()).toMatchObject({ isHighlighted: false });
       });
     });
   });
@@ -550,11 +590,7 @@ describe("<QuizCard />", () => {
       it("renders no card-level button", () => {
         renderCard({ logoUrl: LOGO_URL, onCardClick: vi.fn() });
 
-        expect(
-          screen
-            .getAllByRole("button")
-            .map((button) => button.getAttribute("aria-label")),
-        ).toEqual([EXPAND_NAME, PLAY_NAME]);
+        expect(getButtonLabels()).toEqual([EXPAND_NAME, PLAY_NAME]);
       });
 
       it("does not call it when the card is clicked", () => {
@@ -575,11 +611,7 @@ describe("<QuizCard />", () => {
         fireEvent.click(getCard());
 
         expect(handleCardClick).not.toHaveBeenCalled();
-        expect(
-          screen
-            .getAllByRole("button")
-            .map((button) => button.getAttribute("aria-label")),
-        ).toEqual([EXPAND_NAME, PLAY_NAME]);
+        expect(getButtonLabels()).toEqual([EXPAND_NAME, PLAY_NAME]);
       });
     });
 

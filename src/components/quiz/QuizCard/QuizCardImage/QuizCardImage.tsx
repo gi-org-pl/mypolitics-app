@@ -1,7 +1,7 @@
 import {
   IMAGE_SHORT_CLASS_NAME,
   IMAGE_TALL_CLASS_NAME,
-} from "../QuizCard.constants";
+} from "./QuizCardImage.constants";
 import type { QuizCardImageProps } from "./QuizCardImage.types";
 
 export const QuizCardImage = ({ url, isTall }: QuizCardImageProps) => (

@@ -7,8 +7,10 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { withoutPropagation } from "@/utils/event/withoutPropagation";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
-import { TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME } from "../../QuizCard.constants";
-import { TOGGLE_ICON_OPEN_CLASS_NAME } from "./QuizCardToggle.constants";
+import {
+  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+  TOGGLE_ICON_OPEN_CLASS_NAME,
+} from "./QuizCardToggle.constants";
 import type { QuizCardToggleProps } from "./QuizCardToggle.types";
 
 export const QuizCardToggle = ({

@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { QuizCardImage } from "./QuizCardImage";
 import {
   IMAGE_SHORT_CLASS_NAME,
   IMAGE_TALL_CLASS_NAME,
-} from "../QuizCard.constants";
-import { QuizCardImage } from "./QuizCardImage";
+} from "./QuizCardImage.constants";
 
 const IMAGE_URL = "/assets/lata-90.png";
 

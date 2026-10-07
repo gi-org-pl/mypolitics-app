@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { LOGO_HEIGHT_CLASS_NAMES } from "../../QuizCard.constants";
 import { QuizCardLogo } from "./QuizCardLogo";
+import { LOGO_HEIGHT_CLASS_NAMES } from "./QuizCardLogo.constants";
 
 const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
 const TITLE = "myPolitics";

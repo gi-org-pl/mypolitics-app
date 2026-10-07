@@ -1,4 +1,4 @@
-import { LOGO_HEIGHT_CLASS_NAMES } from "../../QuizCard.constants";
+import { LOGO_HEIGHT_CLASS_NAMES } from "./QuizCardLogo.constants";
 import type { QuizCardLogoProps } from "./QuizCardLogo.types";
 
 export const QuizCardLogo = ({ url, title, height }: QuizCardLogoProps) => (

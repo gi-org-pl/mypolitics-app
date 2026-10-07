@@ -1,12 +1,12 @@
 import { render, screen, within } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
+import { QuizCardBody } from "./QuizCardBody";
 import {
   BODY_COLLAPSED_CLASS_NAME,
   BODY_OPEN_CLASS_NAME,
   BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME,
-} from "../QuizCard.constants";
-import { QuizCardBody } from "./QuizCardBody";
+} from "./QuizCardBody.constants";
 import type { QuizCardBodyProps } from "./QuizCardBody.types";
 
 const BODY_ID = "quiz-card-body";

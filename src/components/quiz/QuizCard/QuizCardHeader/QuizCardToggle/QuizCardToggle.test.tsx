@@ -4,9 +4,12 @@ import { describe, expect, it, vi } from "vitest";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-import { TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME } from "../../QuizCard.constants";
+
 import { QuizCardToggle } from "./QuizCardToggle";
-import { TOGGLE_ICON_OPEN_CLASS_NAME } from "./QuizCardToggle.constants";
+import {
+  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+  TOGGLE_ICON_OPEN_CLASS_NAME,
+} from "./QuizCardToggle.constants";
 import type { QuizCardToggleProps } from "./QuizCardToggle.types";
 
 const BODY_ID = "quiz-card-body";
