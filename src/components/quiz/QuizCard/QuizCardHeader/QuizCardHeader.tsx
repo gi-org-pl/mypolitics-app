@@ -21,7 +21,7 @@ export const QuizCardHeader = ({
   onButtonClick,
   onCardClick,
 }: QuizCardHeaderProps) => (
-  <div className="flex min-h-12 items-center justify-between gap-6">
+  <div className="flex min-h-12 items-center justify-between gap-4">
     {title ? (
       <QuizCardTitle onClick={onCardClick}>
         {logoUrl ? (

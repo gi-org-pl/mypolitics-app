@@ -157,6 +157,14 @@ export const LogoFailsToLoad: Story = {
   },
 };
 
+export const TitleFillingTheRow: Story = {
+  args: {
+    title: "Preferencje muzyczne",
+    backgroundUrl: lata90Background,
+    cta: "Zamiast o politykę, pokłóćmy się o muzykę!",
+  },
+};
+
 export const LongTitle: Story = {
   args: {
     title:
