@@ -17,6 +17,12 @@ const orientation: Orientation = {
   imageUrl,
 };
 
+const withExtras: Orientation = {
+  ...orientation,
+  slogan: "Slogan",
+  websiteUrl: "https://example.org",
+};
+
 const narrow = { viewport: { value: "iphone6" } };
 
 const meta = {
@@ -46,8 +52,8 @@ export const Standard: Story = {
 export const WithExtras: Story = {
   globals: narrow,
   args: {
-    slogan: "Slogan",
-    link: { url: "https://example.org", label: "Link Name" },
+    orientation: withExtras,
+    linkLabel: "Link Name",
   },
 };
 
@@ -61,8 +67,8 @@ export const NoMatch: Story = {
 
 export const Desktop: Story = {
   args: {
-    slogan: "Slogan",
-    link: { url: "https://example.org", label: "Link Name" },
+    orientation: withExtras,
+    linkLabel: "Link Name",
   },
 };
 
@@ -81,33 +87,37 @@ export const Match: Story = {
 export const JustBelowPartial: Story = {
   args: {
     confidence: 49,
-    slogan: "Slogan",
-    link: { url: "https://example.org", label: "Link Name" },
+    orientation: withExtras,
+    linkLabel: "Link Name",
   },
 };
 
 export const SloganOnly: Story = {
   args: {
-    slogan: "Slogan",
+    orientation: { ...orientation, slogan: "Slogan" },
   },
 };
 
 export const LinkOnly: Story = {
   args: {
-    link: { url: "https://example.org", label: "Link Name" },
+    orientation: { ...orientation, websiteUrl: "https://example.org" },
+    linkLabel: "Link Name",
   },
 };
 
 export const InvalidLink: Story = {
   args: {
-    slogan: "Slogan",
-    link: { url: "javascript:alert(1)", label: "Link Name" },
+    orientation: { ...withExtras, websiteUrl: "javascript:alert(1)" },
+    linkLabel: "Link Name",
   },
 };
 
 export const LinkWithoutLabel: Story = {
   args: {
-    link: { url: "https://example.org/program" },
+    orientation: {
+      ...orientation,
+      websiteUrl: "https://example.org/program",
+    },
   },
 };
 
@@ -124,12 +134,12 @@ export const LongName: Story = {
 export const LongSlogan: Story = {
   globals: narrow,
   args: {
-    slogan:
-      "Wolność, równość\ni solidarność dla każdego, kto chce budować wspólną przyszłość",
-    link: {
-      url: "https://example.org",
-      label: "Przeczytaj cały program tej orientacji na stronie autora",
+    orientation: {
+      ...withExtras,
+      slogan:
+        "Wolność, równość\ni solidarność dla każdego, kto chce budować wspólną przyszłość",
     },
+    linkLabel: "Przeczytaj cały program tej orientacji na stronie autora",
   },
 };
 

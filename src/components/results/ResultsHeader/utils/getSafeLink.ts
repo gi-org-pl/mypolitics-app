@@ -1,22 +1,13 @@
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { toWebAddress } from "@/utils/url/toWebAddress";
 
-import type {
-  ResultsHeaderLink,
-  ResultsHeaderSafeLink,
-} from "../ResultsHeader.types";
+import type { ResultsHeaderSafeLink } from "../ResultsHeader.types";
 
 export const getSafeLink = (
-  link?: ResultsHeaderLink,
+  websiteUrl?: string,
+  label?: string,
 ): ResultsHeaderSafeLink | null => {
-  if (typeof link?.url !== "string") return null;
+  const href = toWebAddress(websiteUrl);
 
-  try {
-    const { protocol, href } = new URL(link.url.trim());
-
-    if (protocol !== "http:" && protocol !== "https:") return null;
-
-    return { href, label: toSingleLine(link.label) || link.url.trim() };
-  } catch {
-    return null;
-  }
+  return href ? { href, label: toSingleLine(label) || href } : null;
 };

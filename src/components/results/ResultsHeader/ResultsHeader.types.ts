@@ -3,16 +3,10 @@ import type { MatchBand } from "@/utils/results/getMatchBand";
 
 export type ResultsTab = "results" | "comparison";
 
-export interface ResultsHeaderLink {
-  url: string;
-  label?: string;
-}
-
 export interface ResultsHeaderProps {
   orientation?: Orientation;
   confidence?: number;
-  slogan?: string;
-  link?: ResultsHeaderLink;
+  linkLabel?: string;
   activeTab: ResultsTab;
   onTabChange: (tab: ResultsTab) => void;
 }

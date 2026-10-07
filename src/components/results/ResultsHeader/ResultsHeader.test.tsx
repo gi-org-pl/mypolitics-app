@@ -16,6 +16,9 @@ const liberalism = createOrientation("liberalism", "Liberalizm", {
   imageUrl: IMAGE_URL,
 });
 
+const withSlogan = (slogan: string) => ({ ...liberalism, slogan });
+const withWebsite = (websiteUrl?: string) => ({ ...liberalism, websiteUrl });
+
 const renderHeader = (props: Partial<ResultsHeaderProps> = {}) => {
   const onTabChange = vi.fn();
   const view = renderWithI18n(
@@ -148,11 +151,15 @@ describe("<ResultsHeader />", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("renders neither the slogan nor the link", () => {
+    it("draws neither the slogan nor the link, whatever the orientation carries", () => {
       renderHeader({
         confidence: 49,
-        slogan: "Wolność i równość",
-        link: { url: "https://example.org", label: "Program" },
+        orientation: {
+          ...liberalism,
+          slogan: "Wolność i równość",
+          websiteUrl: "https://example.org",
+        },
+        linkLabel: "Program",
       });
 
       expect(screen.queryByText("Wolność i równość")).not.toBeInTheDocument();
@@ -198,9 +205,18 @@ describe("<ResultsHeader />", () => {
     });
   });
 
-  describe("given a slogan", () => {
+  describe("given the orientation has a slogan", () => {
+    it("draws the slogan chip", () => {
+      renderHeader({ orientation: withSlogan("Wolność i równość") });
+
+      expect(screen.getByTestId("results-header-extras")).toContainElement(
+        screen.getByTestId("results-header-slogan"),
+      );
+      expect(screen.getByText("Wolność i równość")).toBeInTheDocument();
+    });
+
     it("renders it as a non-interactive chip", () => {
-      renderHeader({ slogan: "Wolność i równość" });
+      renderHeader({ orientation: withSlogan("Wolność i równość") });
 
       const slogan = screen.getByTestId("results-header-slogan");
 
@@ -211,7 +227,9 @@ describe("<ResultsHeader />", () => {
     });
 
     it("collapses line breaks into one line", () => {
-      renderHeader({ slogan: "  Wolność\n\ni równość\r\n dla każdego " });
+      renderHeader({
+        orientation: withSlogan("  Wolność\n\ni równość\r\n dla każdego "),
+      });
 
       expect(screen.getByTestId("results-header-slogan").textContent).toBe(
         "Wolność i równość dla każdego",
@@ -219,7 +237,7 @@ describe("<ResultsHeader />", () => {
     });
 
     it("truncates a long slogan to one line and keeps it complete", () => {
-      renderHeader({ slogan: LONG_TEXT });
+      renderHeader({ orientation: withSlogan(LONG_TEXT) });
 
       const text = screen.getByText(LONG_TEXT);
 
@@ -228,7 +246,7 @@ describe("<ResultsHeader />", () => {
     });
 
     it("renders nothing when the slogan is blank", () => {
-      renderHeader({ slogan: " \n " });
+      renderHeader({ orientation: withSlogan(" \n ") });
 
       expect(
         screen.queryByTestId("results-header-slogan"),
@@ -239,10 +257,23 @@ describe("<ResultsHeader />", () => {
     });
   });
 
-  describe("given a link", () => {
+  describe("given the orientation has a website", () => {
+    it("draws the link with linkLabel as its label", () => {
+      renderHeader({
+        orientation: withWebsite("https://example.org/a"),
+        linkLabel: "Program",
+      });
+
+      const link = screen.getByRole("link");
+
+      expect(link).toHaveTextContent("Program");
+      expect(link).toHaveAttribute("href", "https://example.org/a");
+    });
+
     it("renders a link that opens in a new tab and says so", () => {
       renderHeader({
-        link: { url: "https://example.org/a", label: "Program" },
+        orientation: withWebsite("https://example.org/a"),
+        linkLabel: "Program",
       });
 
       const link = screen.getByRole("link", {
@@ -255,9 +286,10 @@ describe("<ResultsHeader />", () => {
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
-    it("shows the address when the label is empty", () => {
+    it("shows the address when linkLabel is empty", () => {
       const { unmount } = renderHeader({
-        link: { url: "https://example.org/a", label: "  " },
+        orientation: withWebsite("https://example.org/a"),
+        linkLabel: "  ",
       });
 
       expect(screen.getByRole("link")).toHaveTextContent(
@@ -265,7 +297,7 @@ describe("<ResultsHeader />", () => {
       );
       unmount();
 
-      renderHeader({ link: { url: "http://example.org/b" } });
+      renderHeader({ orientation: withWebsite("http://example.org/b") });
 
       expect(
         screen.getByRole("link", {
@@ -274,8 +306,8 @@ describe("<ResultsHeader />", () => {
       ).toHaveTextContent("http://example.org/b");
     });
 
-    it("renders nothing when the address is not http or https", () => {
-      for (const url of [
+    it("does not draw the link when the website is not a web address", () => {
+      for (const websiteUrl of [
         "javascript:alert(1)",
         "mailto:autor@example.org",
         "data:text/html,x",
@@ -283,7 +315,10 @@ describe("<ResultsHeader />", () => {
         "example.org",
         "",
       ]) {
-        const { unmount } = renderHeader({ link: { url, label: "Program" } });
+        const { unmount } = renderHeader({
+          orientation: withWebsite(websiteUrl),
+          linkLabel: "Program",
+        });
 
         expect(screen.queryByRole("link")).not.toBeInTheDocument();
         expect(screen.queryByText("Program")).not.toBeInTheDocument();
@@ -295,15 +330,16 @@ describe("<ResultsHeader />", () => {
     });
 
     it("renders nothing when the address is not a string", () => {
-      renderHeader({
-        link: { url: undefined as unknown as string, label: "Program" },
-      });
+      renderHeader({ orientation: withWebsite(), linkLabel: "Program" });
 
       expect(screen.queryByRole("link")).not.toBeInTheDocument();
     });
 
     it("truncates a long label to one line and keeps it complete", () => {
-      renderHeader({ link: { url: "https://example.org", label: LONG_TEXT } });
+      renderHeader({
+        orientation: withWebsite("https://example.org"),
+        linkLabel: LONG_TEXT,
+      });
 
       const text = screen.getByText(LONG_TEXT);
 
@@ -319,8 +355,12 @@ describe("<ResultsHeader />", () => {
   describe("given a slogan and a link", () => {
     it("renders the slogan before the link in one row", () => {
       renderHeader({
-        slogan: "Wolność i równość",
-        link: { url: "https://example.org", label: "Program" },
+        orientation: {
+          ...liberalism,
+          slogan: "Wolność i równość",
+          websiteUrl: "https://example.org",
+        },
+        linkLabel: "Program",
       });
 
       const extras = screen.getByTestId("results-header-extras");

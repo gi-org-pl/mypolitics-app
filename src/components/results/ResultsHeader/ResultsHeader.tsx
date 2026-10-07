@@ -15,16 +15,17 @@ import { getSafeLink } from "./utils/getSafeLink";
 export const ResultsHeader = ({
   orientation,
   confidence,
-  slogan,
-  link,
+  linkLabel,
   activeTab,
   onTabChange,
 }: ResultsHeaderProps) => {
   const { t } = useLingui();
 
   const result = getHeaderResult(orientation, confidence);
-  const sloganText = result ? toSingleLine(slogan) : "";
-  const safeLink = result ? getSafeLink(link) : null;
+  const sloganText = result ? toSingleLine(orientation?.slogan) : "";
+  const safeLink = result
+    ? getSafeLink(orientation?.websiteUrl, linkLabel)
+    : null;
   const hasExtras = sloganText !== "" || safeLink !== null;
 
   return (
