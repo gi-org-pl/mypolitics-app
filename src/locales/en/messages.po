@@ -29,10 +29,12 @@ msgstr "{value}% confidence"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
 #: src/components/results/ResultsHeader/ResultsHeader.tsx:45
 msgid "Brak dopasowania"
 msgstr "No match"
 
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:26
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
 msgid "Brak wyniku"
 msgstr "No result"
@@ -109,6 +111,26 @@ msgstr "Visit our X profile"
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
+msgid "Pełny opis"
+msgstr "Full description"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię"
+msgstr "Show category"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię: {name}"
+msgstr "Show category: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż mniej"
+msgstr "Show less"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż wszystkie"
+msgstr "Show all"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
@@ -120,6 +142,10 @@ msgstr "Privacy"
 #: src/components/shared/Header/Header.constants.ts:18
 msgid "Quizy"
 msgstr ""
+
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:47
+msgid "Ranking"
+msgstr "Ranking"
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
@@ -153,6 +179,10 @@ msgstr "Comparison mode"
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
 msgstr "Your results"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
+msgid "Wróć do kategorii"
+msgstr "Back to categories"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
