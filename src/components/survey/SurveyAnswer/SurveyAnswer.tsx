@@ -3,7 +3,6 @@ import { twMerge } from "tailwind-merge";
 import {
   ANSWER_TYPE_CONFIG,
   CLICK_ANIMATION_MS,
-  DISABLED_CONTENT_CLASS_NAME,
 } from "./SurveyAnswer.constants";
 import type { SurveyAnswerProps } from "./SurveyAnswer.types";
 import { useClickAnimation } from "./utils/useClickAnimation";
@@ -55,7 +54,7 @@ export function SurveyAnswer({
       onClick={handleClick}
       style={style}
       className={twMerge(
-        "relative flex min-h-14 w-full items-center gap-3 overflow-hidden rounded-3xl border p-4 text-left transition-colors hover:bg-gi-ash",
+        "relative flex min-h-14 w-full items-center gap-3 overflow-hidden rounded-3xl border p-[15px] text-left transition-colors hover:bg-gi-ash",
         "font-roboto text-base font-bold",
         bgClass,
         textClass,
@@ -88,7 +87,7 @@ export function SurveyAnswer({
         ref={iconRef}
         className={twMerge(
           "relative z-10 flex h-6 w-6 shrink-0 items-center justify-center",
-          isDisabled && DISABLED_CONTENT_CLASS_NAME,
+          isDisabled && "opacity-50 saturate-0",
         )}
       >
         <img src={iconName} alt="" className="h-6 w-6" />
@@ -96,7 +95,7 @@ export function SurveyAnswer({
       <span
         className={twMerge(
           "relative z-10 min-w-0 grow wrap-break-word leading-[19px]",
-          isDisabled && DISABLED_CONTENT_CLASS_NAME,
+          isDisabled && "opacity-50",
         )}
       >
         {title}

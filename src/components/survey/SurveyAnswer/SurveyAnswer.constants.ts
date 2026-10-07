@@ -8,8 +8,6 @@ import XStrong from "../../../assets/icons/x-strong.svg";
 
 export const CLICK_ANIMATION_MS = 300;
 
-export const DISABLED_CONTENT_CLASS_NAME = "opacity-50 saturate-0";
-
 export const ANSWER_TYPE_CONFIG = {
   "strongly-agree": {
     bgClass: "bg-background",

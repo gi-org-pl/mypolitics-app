@@ -212,7 +212,8 @@ describe("<SurveyAnswer />", () => {
       render(<SurveyAnswer title="Test" type="agree" isDisabled={true} />);
       const button = screen.getByRole("button", { name: "Test" });
       expect(getIcon().parentElement).toHaveClass("opacity-50", "saturate-0");
-      expect(screen.getByText("Test")).toHaveClass("opacity-50", "saturate-0");
+      expect(screen.getByText("Test")).toHaveClass("opacity-50");
+      expect(screen.getByText("Test")).not.toHaveClass("saturate-0");
       expect(button).not.toHaveClass("opacity-50");
       expect(button).toHaveClass("border-gi-dark-ash", "bg-background");
     });
