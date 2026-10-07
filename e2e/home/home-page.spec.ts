@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page, test } from "@playwright/test";
 
-import { openPage } from "../utils/openPage";
+import { openPage } from "../layout/openPage";
 
 const HOME_PATH = "/";
 const PROMOTION_NAME = "Dołącz na Discord Fundacji Generacja Innowacja";

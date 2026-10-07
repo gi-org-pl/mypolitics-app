@@ -1,6 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-import { openPage } from "../utils/openPage";
+import { openPage } from "./openPage";
 
 const HOME_PATH = "/";
 const QUIZZES_PATH = "/quizzes";
