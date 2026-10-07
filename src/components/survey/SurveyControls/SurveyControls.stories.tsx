@@ -14,9 +14,6 @@ const meta = {
       options: INITIAL_VIEWPORTS,
     },
   },
-  globals: {
-    viewport: { value: "iphone6" },
-  },
   args: {
     quizName: "Quiz Name",
     onPrevious: fn(),

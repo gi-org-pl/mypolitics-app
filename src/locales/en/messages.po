@@ -77,11 +77,11 @@ msgstr "No result"
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:27
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:32
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz {quizName} over? Your answers will not be saved."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:26
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:31
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
 
@@ -217,11 +217,11 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:47
 msgid "Resetuj quiz"
 msgstr "Reset quiz"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:23
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:28
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
 

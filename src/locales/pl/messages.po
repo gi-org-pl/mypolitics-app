@@ -77,11 +77,11 @@ msgstr "Brak wyniku"
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:27
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:32
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:26
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:31
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
@@ -217,11 +217,11 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:47
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:23
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:28
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 

@@ -4,7 +4,11 @@ import { useLingui } from "@lingui/react/macro";
 import resetIcon from "@/assets/icons/reset.svg";
 import { toTrimmedText } from "@/utils/text/toTrimmedText";
 
-import { ICON_CLASS_NAME } from "../SurveyControls.constants";
+import {
+  ICON_CLASS_NAME,
+  RESET_ACTION_CLASS_NAME,
+  RESET_MODAL_CLASS_NAME,
+} from "../SurveyControls.constants";
 import type { SurveyControlsResetModalProps } from "../SurveyControls.types";
 
 export const SurveyControlsResetModal = ({
@@ -20,6 +24,7 @@ export const SurveyControlsResetModal = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      className={RESET_MODAL_CLASS_NAME}
       title={t`Rozpocząć od nowa?`}
       description={
         quizName === undefined
@@ -31,6 +36,7 @@ export const SurveyControlsResetModal = ({
           type="primary"
           variant="danger"
           onClick={onConfirm}
+          className={RESET_ACTION_CLASS_NAME}
           RightIcon={
             <span
               className={`${ICON_CLASS_NAME} size-4`}

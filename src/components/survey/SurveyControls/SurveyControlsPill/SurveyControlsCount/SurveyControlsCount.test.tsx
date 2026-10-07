@@ -62,12 +62,12 @@ describe("<SurveyControlsCount />", () => {
       expect(screen.getByText("30")).toHaveClass(
         "-translate-y-2",
         "opacity-0",
-        "blur-xs",
+        "blur-[2px]",
       );
       expect(screen.getByText("29")).toHaveClass(
         "starting:translate-y-2",
         "starting:opacity-0",
-        "starting:blur-xs",
+        "starting:blur-[2px]",
       );
     });
 
