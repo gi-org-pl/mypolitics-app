@@ -19,7 +19,7 @@ const SELECTED_TAB_CLASS_NAME =
 // The outline of FOCUS_CLASS_NAME (src/constants/focus.ts), written for the
 // tabs inside the list: Athena draws their focus as a ring, which forced
 // colours remove.
-export const TAB_FOCUS_CLASS_NAME =
+const TAB_FOCUS_CLASS_NAME =
   "[&>[role=tab]:focus-visible]:ring-0 [&>[role=tab]:focus-visible]:outline-2 [&>[role=tab]:focus-visible]:outline-offset-2 [&>[role=tab]:focus-visible]:outline-solid [&>[role=tab]:focus-visible]:outline-gi-primary";
 
 export const TABS_CLASS_NAME = `${TAB_LIST_CLASS_NAME} ${TAB_CLASS_NAME} ${SELECTED_TAB_CLASS_NAME} ${TAB_FOCUS_CLASS_NAME}`;

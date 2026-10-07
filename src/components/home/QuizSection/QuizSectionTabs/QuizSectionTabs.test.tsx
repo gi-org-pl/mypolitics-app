@@ -1,13 +1,15 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { QuizTab } from "../QuizSection.types";
 import { QuizSectionTabs } from "./QuizSectionTabs";
-import { TAB_FOCUS_CLASS_NAME } from "./QuizSectionTabs.constants";
 
 const TAB_LIST_NAME = "Rodzaje quizów";
+// The shared outline is written for the tabs inside the list.
+const TAB_FOCUS_PREFIX = "[&>[role=tab]:focus-visible]:";
 const TAB_NAMES = ["Wszystkie", "Wyborcze", "Społecznościowe"];
 
 const renderTabs = (activeTab: QuizTab = "all") => {
@@ -35,11 +37,13 @@ describe("<QuizSectionTabs />", () => {
       );
     });
 
-    it("draws keyboard focus on the tabs as an outline", () => {
+    it("draws keyboard focus on the tabs as the shared outline", () => {
       renderTabs();
 
       expect(screen.getByRole("tablist")).toHaveClass(
-        ...TAB_FOCUS_CLASS_NAME.split(" "),
+        ...FOCUS_CLASS_NAME.split(" ").map((className) =>
+          className.replace("focus-visible:", TAB_FOCUS_PREFIX),
+        ),
       );
     });
   });
