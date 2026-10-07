@@ -216,6 +216,32 @@ describe("<SurveyAnswer />", () => {
     });
   });
 
+  describe("given a title longer than the row", () => {
+    const LONG_TITLE =
+      "Bardzo długa odpowiedź, która nie mieści się w jednej linii wąskiego ekranu";
+
+    it("renders the whole title", () => {
+      render(<SurveyAnswer title={LONG_TITLE} type="custom-selectable" />);
+      expect(
+        screen.getByRole("button", { name: LONG_TITLE }),
+      ).toBeInTheDocument();
+    });
+
+    it("keeps 56px as the minimum height instead of a fixed height", () => {
+      render(<SurveyAnswer title={LONG_TITLE} type="custom-selectable" />);
+      const button = screen.getByRole("button", { name: LONG_TITLE });
+      expect(button).toHaveClass("min-h-14");
+      expect(button).not.toHaveClass("h-14");
+    });
+
+    it("lets the title wrap, also inside a single long word", () => {
+      render(<SurveyAnswer title={LONG_TITLE} type="custom-selectable" />);
+      const label = screen.getByText(LONG_TITLE);
+      expect(label).toHaveClass("min-w-0", "wrap-break-word");
+      expect(label).not.toHaveClass("truncate");
+    });
+  });
+
   describe("accessibility", () => {
     it("names the button after its title alone", () => {
       render(<SurveyAnswer title="Zgadzam się" type="agree" />);

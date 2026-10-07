@@ -54,7 +54,7 @@ export function SurveyAnswer({
       onClick={handleClick}
       style={{ ...style, borderColor }}
       className={[
-        "relative w-full h-14 flex items-center gap-3 rounded-3xl px-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
+        "relative w-full min-h-14 flex items-center gap-3 rounded-3xl p-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
         "font-roboto font-bold text-base",
         bgClass,
         textClass,
@@ -90,7 +90,9 @@ export function SurveyAnswer({
       >
         <img src={iconName} alt="" className="w-6 h-6" />
       </span>
-      <span className="grow relative z-10">{title}</span>
+      <span className="relative z-10 min-w-0 grow wrap-break-word leading-[19px]">
+        {title}
+      </span>
     </button>
   );
 }
