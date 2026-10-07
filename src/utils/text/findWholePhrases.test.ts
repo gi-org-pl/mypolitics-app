@@ -99,6 +99,72 @@ describe("findWholePhrases()", () => {
     });
   });
 
+  describe("given the same phrase several times in a row", () => {
+    it("finds each one when a single space separates them", () => {
+      expect(findWholePhrases("nie nie nie", ["nie"])).toEqual([
+        { start: 0, end: 3 },
+        { start: 4, end: 7 },
+        { start: 8, end: 11 },
+      ]);
+    });
+
+    it("finds each one when a single punctuation mark separates them", () => {
+      expect(findWholePhrases("nie,nie;nie-nie", ["nie"])).toEqual([
+        { start: 0, end: 3 },
+        { start: 4, end: 7 },
+        { start: 8, end: 11 },
+        { start: 12, end: 15 },
+      ]);
+    });
+
+    it("finds a one-letter phrase at the start and after it", () => {
+      expect(findWholePhrases("a a, a", ["a"])).toEqual([
+        { start: 0, end: 1 },
+        { start: 2, end: 3 },
+        { start: 5, end: 6 },
+      ]);
+    });
+  });
+
+  describe("given a phrase right after one that ends with punctuation", () => {
+    it("finds both", () => {
+      expect(findWholePhrases("(nie)(nie)", ["(nie)"])).toEqual([
+        { start: 0, end: 5 },
+        { start: 5, end: 10 },
+      ]);
+    });
+
+    it("finds both when the phrase is a single punctuation mark", () => {
+      expect(findWholePhrases("((", ["("])).toEqual([
+        { start: 0, end: 1 },
+        { start: 1, end: 2 },
+      ]);
+    });
+  });
+
+  describe("given a phrase that ends with punctuation right before a letter", () => {
+    it("does not find it, and still finds the word inside it", () => {
+      expect(findTexts("(nie)nie", ["(nie)", "nie"])).toEqual(["nie", "nie"]);
+    });
+  });
+
+  describe("given the phrase next to an emoji", () => {
+    it("finds it", () => {
+      expect(findWholePhrases("👍nie👍nie", ["nie"])).toEqual([
+        { start: 2, end: 5 },
+        { start: 7, end: 10 },
+      ]);
+    });
+
+    it("finds a phrase that is an emoji twice in a row", () => {
+      expect(findWholePhrases("👍👍 nie", ["👍", "nie"])).toEqual([
+        { start: 0, end: 2 },
+        { start: 2, end: 4 },
+        { start: 5, end: 8 },
+      ]);
+    });
+  });
+
   describe("given phrases padded with whitespace", () => {
     it("finds them trimmed", () => {
       expect(findTexts("To nie tak.", ["  nie "])).toEqual(["nie"]);
