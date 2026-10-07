@@ -26,7 +26,7 @@ describe("toggleSelection()", () => {
     });
   });
 
-  describe("when id is not in the list and length === max", () => {
+  describe("when id is not in the list and length >= max", () => {
     it("returns the original list unchanged", () => {
       const original = ["a", "b", "c"];
       const result = toggleSelection(original, "d", 3);
@@ -37,6 +37,19 @@ describe("toggleSelection()", () => {
       const original = ["a", "b", "c"];
       const result = toggleSelection(original, "d", 3);
       expect(result).toBe(original);
+    });
+
+    it("returns the original list unchanged when it is longer than max", () => {
+      const original = ["a", "b", "c", "d"];
+      const result = toggleSelection(original, "e", 3);
+      expect(result).toBe(original);
+    });
+  });
+
+  describe("when id is in a list that is longer than max", () => {
+    it("still returns the list with the id removed", () => {
+      const result = toggleSelection(["a", "b", "c", "d"], "c", 3);
+      expect(result).toEqual(["a", "b", "d"]);
     });
   });
 });
