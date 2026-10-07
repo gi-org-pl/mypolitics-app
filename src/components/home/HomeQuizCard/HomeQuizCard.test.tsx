@@ -132,6 +132,15 @@ describe("<HomeQuizCard />", () => {
         screen.getByRole("button", { name: PLAY_NAME }),
       ).not.toHaveTextContent("Rozpocznij");
     });
+
+    it("keeps the image of the quiz at every width", () => {
+      renderWithI18n(<HomeQuizCard quiz={IMAGE_QUIZ} onStart={vi.fn()} />);
+
+      expect(getCardProps()).toMatchObject({
+        backgroundUrl: BACKGROUND_URL,
+        isImageHiddenOnWide: false,
+      });
+    });
   });
 
   describe("when the card is featured", () => {
@@ -147,6 +156,17 @@ describe("<HomeQuizCard />", () => {
       expect(screen.getByRole("button", { name: PLAY_NAME })).toHaveTextContent(
         "Rozpocznij",
       );
+    });
+
+    it("shows the image of the quiz on a narrow screen only", () => {
+      renderWithI18n(
+        <HomeQuizCard quiz={IMAGE_QUIZ} isFeatured onStart={vi.fn()} />,
+      );
+
+      expect(getCardProps()).toMatchObject({
+        backgroundUrl: BACKGROUND_URL,
+        isImageHiddenOnWide: true,
+      });
     });
   });
 

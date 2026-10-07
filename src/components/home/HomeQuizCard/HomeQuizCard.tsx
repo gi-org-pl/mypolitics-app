@@ -5,7 +5,10 @@ import { QuizCard } from "@/components/quiz/QuizCard/QuizCard";
 import type { HomeQuizCardProps } from "./HomeQuizCard.types";
 
 // A quiz of the home page as a card: the texts of the quiz are translated
-// here, and the lead of its description is set in bold.
+// here, and the lead of its description is set in bold. The featured card is
+// the highlighted one with the start label; its picture belongs to the card
+// on a narrow screen only, because a wide one shows it in the banner beside
+// the card.
 export const HomeQuizCard = ({
   quiz,
   isFeatured = false,
@@ -31,6 +34,7 @@ export const HomeQuizCard = ({
       tags={quiz.tags.map((tag) => i18n._(tag))}
       isHighlighted={isFeatured}
       isShowStartText={isFeatured}
+      isImageHiddenOnWide={isFeatured}
       onButtonClick={onStart}
     />
   );
