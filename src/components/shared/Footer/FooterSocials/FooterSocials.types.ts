@@ -9,11 +9,6 @@ export type SocialPlatform =
   | "github"
   | "youtube";
 
-export interface LinkItem {
-  label: MessageDescriptor;
-  href: string;
-}
-
 export interface SocialLink {
   platform: SocialPlatform;
   href: string;
