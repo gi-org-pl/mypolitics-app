@@ -121,35 +121,35 @@ msgstr "Nawigacja główna"
 msgid "Nawigacja w stopce"
 msgstr "Nawigacja w stopce"
 
-#: src/components/shared/Footer/Footer.constants.ts:15
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
 msgstr "O nas"
 
-#: src/components/shared/Footer/Footer.constants.ts:59
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:52
 msgid "Odwiedź nasz kanał na YouTube"
 msgstr "Odwiedź nasz kanał na YouTube"
 
-#: src/components/shared/Footer/Footer.constants.ts:23
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:16
 msgid "Odwiedź nasz profil na Facebooku"
 msgstr "Odwiedź nasz profil na Facebooku"
 
-#: src/components/shared/Footer/Footer.constants.ts:53
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:46
 msgid "Odwiedź nasz profil na GitHub"
 msgstr "Odwiedź nasz profil na GitHub"
 
-#: src/components/shared/Footer/Footer.constants.ts:35
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:28
 msgid "Odwiedź nasz profil na Instagramie"
 msgstr "Odwiedź nasz profil na Instagramie"
 
-#: src/components/shared/Footer/Footer.constants.ts:41
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:34
 msgid "Odwiedź nasz profil na LinkedIn"
 msgstr "Odwiedź nasz profil na LinkedIn"
 
-#: src/components/shared/Footer/Footer.constants.ts:47
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:40
 msgid "Odwiedź nasz profil na Telegramie"
 msgstr "Odwiedź nasz profil na Telegramie"
 
-#: src/components/shared/Footer/Footer.constants.ts:29
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:22
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
@@ -193,11 +193,11 @@ msgstr "Pokaż wszystkie"
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
-#: src/components/shared/Footer/Footer.constants.ts:14
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
 
-#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:29
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
 msgstr "Quizy"
 
@@ -205,7 +205,7 @@ msgstr "Quizy"
 msgid "Ranking"
 msgstr "Ranking"
 
-#: src/components/shared/Footer/Footer.constants.ts:13
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
 

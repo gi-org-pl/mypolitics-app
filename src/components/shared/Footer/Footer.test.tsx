@@ -6,7 +6,6 @@ import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { Footer } from "./Footer";
-import { SOCIAL_LINKS } from "./Footer.constants";
 
 const renderFooter = () =>
   renderWithI18n(
@@ -44,7 +43,7 @@ describe("<Footer />", () => {
 
       expect(
         footer.getAllByRole("link", { name: /^Odwiedź nasz/ }),
-      ).toHaveLength(SOCIAL_LINKS.length);
+      ).toHaveLength(7);
     });
 
     it("renders the legal links inside the footer navigation", () => {

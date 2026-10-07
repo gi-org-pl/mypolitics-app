@@ -1,7 +1,7 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import type { ReactNode } from "react";
-import { Links, Outlet, Scripts } from "react-router";
+import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import { messages as enMessages } from "../src/locales/en/messages";
 import { messages as plMessages } from "../src/locales/pl/messages";
@@ -30,10 +30,19 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
+}
+
+/**
+ * What the built `index.html` shows until the scripts have loaded: nothing,
+ * instead of React Router's default developer message.
+ */
+export function HydrateFallback() {
+  return null;
 }
 
 export default function App() {

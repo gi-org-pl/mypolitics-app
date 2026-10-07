@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { LINK_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
-import { SOCIAL_LINKS } from "../Footer.constants";
+import { SOCIAL_LINKS } from "./FooterSocials.constants";
 
 export const FooterSocials = () => {
   const { i18n } = useLingui();

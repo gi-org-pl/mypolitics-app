@@ -6,14 +6,7 @@ import linkedinLogo from "@/assets/icons/linkedinlogo.svg";
 import telegramLogo from "@/assets/icons/telegramlogo.svg";
 import xLogo from "@/assets/icons/xlogo.svg";
 import youtubeLogo from "@/assets/icons/youtubelogo.svg";
-import { PATHS } from "@/constants/paths";
-import type { LinkItem, SocialLink } from "./Footer.types";
-
-export const LEGAL_LINKS: LinkItem[] = [
-  { label: msg`Regulamin`, href: PATHS.terms },
-  { label: msg`Prywatność`, href: PATHS.privacy },
-  { label: msg`O nas`, href: PATHS.about },
-];
+import type { SocialLink } from "./FooterSocials.types";
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {

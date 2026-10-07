@@ -1,6 +1,8 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { LINK_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { FooterSocials } from "./FooterSocials";
@@ -19,13 +21,6 @@ const SOCIAL_PROFILES = [
   ["Odwiedź nasz profil na Telegramie", "https://t.me/mypoliticsofficial"],
   ["Odwiedź nasz profil na GitHub", "https://github.com/mypolitics"],
   ["Odwiedź nasz kanał na YouTube", "https://www.youtube.com/myPolitics"],
-];
-
-const FOCUS_CLASSES = [
-  "focus-visible:outline-2",
-  "focus-visible:outline-offset-2",
-  "focus-visible:outline-solid",
-  "focus-visible:outline-gi-primary",
 ];
 
 const getIcons = () =>
@@ -75,28 +70,19 @@ describe("<FooterSocials />", () => {
       expect(masks.every((mask) => mask?.startsWith('url("'))).toBe(true);
     });
 
-    it("draws every icon at its own size, in the colour of the link", () => {
+    it("draws every icon in the shared way that survives forced colours", () => {
       renderWithI18n(<FooterSocials />);
 
       for (const icon of getIcons()) {
-        expect(icon).toHaveClass("mask-auto", "bg-current");
+        expect(icon).toHaveClass(...LINK_ICON_MASK_CLASS_NAME.split(" "));
       }
     });
 
-    it("keeps every icon visible in forced colours, in the colour of link text", () => {
-      renderWithI18n(<FooterSocials />);
-
-      for (const icon of getIcons()) {
-        expect(icon).toHaveClass("forced-colors:bg-[color:LinkText]");
-      }
-    });
-
-    it("shows keyboard focus as an outline instead of Athena's ring", () => {
+    it("shows keyboard focus on every link as the shared outline", () => {
       renderWithI18n(<FooterSocials />);
 
       for (const link of screen.getAllByRole("link")) {
-        expect(link).toHaveClass(...FOCUS_CLASSES);
-        expect(link).not.toHaveClass("focus-visible:ring-[3px]");
+        expect(link).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
       }
     });
   });

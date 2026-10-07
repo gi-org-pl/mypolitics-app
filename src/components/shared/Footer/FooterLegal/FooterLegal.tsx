@@ -2,7 +2,7 @@ import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "react-router";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
-import { LEGAL_LINKS } from "../Footer.constants";
+import { LEGAL_LINKS } from "./FooterLegal.constants";
 
 export const FooterLegal = () => {
   const { i18n } = useLingui();

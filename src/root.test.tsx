@@ -1,52 +1,65 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub } from "react-router";
-import { describe, expect, it } from "vitest";
-import App, { Layout } from "./root";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { PATHS } from "./constants/paths";
+import App, { HydrateFallback, Layout } from "./root";
 
 const ROUTE_CONTENT = "Treść strony";
+const NEXT_ROUTE_CONTENT = "Treść następnej strony";
 
 const RouteContent = () => <p>{ROUTE_CONTENT}</p>;
 
-const Document = () => (
+const NextRouteContent = () => <p>{NEXT_ROUTE_CONTENT}</p>;
+
+// The way React Router nests the exports of the root route.
+const Root = () => (
   <Layout>
-    <p>{ROUTE_CONTENT}</p>
+    <App />
   </Layout>
 );
 
-const renderApp = () => {
+// Every test renders into the document itself, as the app does. React attaches
+// its event listeners to `document` only when no other root was created in it
+// before, so no test of this file may render into a plain container.
+const renderRoot = () => {
   const Stub = createRoutesStub([
     {
       path: "/",
-      Component: App,
-      children: [{ index: true, Component: RouteContent }],
+      Component: Root,
+      children: [
+        { index: true, Component: RouteContent },
+        { path: PATHS.terms, Component: NextRouteContent },
+      ],
     },
   ]);
-
-  render(<Stub initialEntries={["/"]} />);
-};
-
-const renderDocument = () => {
-  const Stub = createRoutesStub([{ path: "/", Component: Document }]);
 
   render(<Stub initialEntries={["/"]} />, { container: document });
 };
 
+beforeEach(() => {
+  vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe("root App", () => {
   describe("given any route", () => {
     it("renders the header", () => {
-      renderApp();
+      renderRoot();
 
       expect(screen.getByRole("banner")).toBeInTheDocument();
     });
 
     it("renders the footer", () => {
-      renderApp();
+      renderRoot();
 
       expect(screen.getByRole("contentinfo")).toBeInTheDocument();
     });
 
     it("renders the route content inside main", () => {
-      renderApp();
+      renderRoot();
 
       expect(
         within(screen.getByRole("main")).getByText(ROUTE_CONTENT),
@@ -54,7 +67,7 @@ describe("root App", () => {
     });
 
     it("renders header, main and footer in that order", () => {
-      renderApp();
+      renderRoot();
 
       const header = screen.getByRole("banner");
       const main = screen.getByRole("main");
@@ -69,11 +82,26 @@ describe("root App", () => {
     });
 
     it("renders nothing of its own inside main besides the route content", () => {
-      renderApp();
+      renderRoot();
 
       expect(screen.getByRole("main")).toHaveTextContent(
         new RegExp(`^${ROUTE_CONTENT}$`),
       );
+    });
+  });
+
+  describe("when the user follows a link to another page", () => {
+    it("replaces the route content and keeps the shell", async () => {
+      renderRoot();
+
+      fireEvent.click(screen.getByRole("link", { name: "Regulamin" }));
+
+      expect(
+        await within(screen.getByRole("main")).findByText(NEXT_ROUTE_CONTENT),
+      ).toBeVisible();
+      expect(screen.queryByText(ROUTE_CONTENT)).not.toBeInTheDocument();
+      expect(screen.getByRole("banner")).toBeInTheDocument();
+      expect(screen.getByRole("contentinfo")).toBeInTheDocument();
     });
   });
 });
@@ -81,19 +109,19 @@ describe("root App", () => {
 describe("root Layout", () => {
   describe("given any content", () => {
     it("renders the content in the body of the document", () => {
-      renderDocument();
+      renderRoot();
 
       expect(within(document.body).getByText(ROUTE_CONTENT)).toBeVisible();
     });
 
     it("declares the language of the app", () => {
-      renderDocument();
+      renderRoot();
 
       expect(document.documentElement).toHaveAttribute("lang", "pl");
     });
 
     it("sets the viewport to the width of the device", () => {
-      renderDocument();
+      renderRoot();
 
       expect(
         document.head.querySelector('meta[name="viewport"]'),
@@ -101,9 +129,29 @@ describe("root Layout", () => {
     });
 
     it("titles the document", () => {
-      renderDocument();
+      renderRoot();
 
       expect(document.title).toBe("mypolitics");
+    });
+  });
+
+  describe("when the user follows a link to another page", () => {
+    it("starts the new page at the top", async () => {
+      renderRoot();
+      vi.mocked(window.scrollTo).mockClear();
+
+      fireEvent.click(screen.getByRole("link", { name: "Regulamin" }));
+
+      expect(await screen.findByText(NEXT_ROUTE_CONTENT)).toBeVisible();
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+    });
+  });
+});
+
+describe("root HydrateFallback", () => {
+  describe("while the scripts of the app are loading", () => {
+    it("renders nothing", () => {
+      expect(HydrateFallback()).toBeNull();
     });
   });
 });

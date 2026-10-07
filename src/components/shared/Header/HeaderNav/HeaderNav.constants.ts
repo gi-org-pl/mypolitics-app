@@ -23,6 +23,7 @@ export const HEADER_NAV_ENTRIES: HeaderNavEntry[] = [
     path: PATHS.polls,
     icon: pollsIcon,
     iconClassName: "h-3 w-4",
+    external: true,
   },
   {
     key: "quizzes",

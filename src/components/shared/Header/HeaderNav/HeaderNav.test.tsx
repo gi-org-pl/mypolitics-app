@@ -55,6 +55,27 @@ describe("<HeaderNav />", () => {
     });
   });
 
+  describe("given the polls link, which leads outside the app", () => {
+    it("opens it in a new tab without access to the opener", () => {
+      renderNav();
+
+      const link = screen.getByRole("link", { name: "Sondaże" });
+
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("opens the links of the app in the same tab", () => {
+      renderNav();
+
+      for (const name of ["Debaty", "Quizy"]) {
+        expect(screen.getByRole("link", { name })).not.toHaveAttribute(
+          "target",
+        );
+      }
+    });
+  });
+
   describe("given the bar variant", () => {
     it("lists debates first and quizzes last", () => {
       renderNav({ variant: "bar" });
