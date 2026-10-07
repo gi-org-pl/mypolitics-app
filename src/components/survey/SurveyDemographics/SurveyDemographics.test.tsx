@@ -144,6 +144,20 @@ describe("<SurveyDemographics />", () => {
       expect(getField("Wiek")).toHaveTextContent("25–34");
       expect(getField("Płeć")).toHaveTextContent("Płeć");
     });
+
+    it("passes it back untouched when another field is chosen", () => {
+      const { onChange } = renderDemographics({
+        values: { gender: "village" },
+      });
+
+      choose("Wiek", "18–24");
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual({
+        age: "18_24",
+        gender: "village",
+      });
+    });
   });
 
   describe("given a field with an empty option list", () => {

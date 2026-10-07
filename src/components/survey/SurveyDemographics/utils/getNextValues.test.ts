@@ -50,6 +50,14 @@ describe("getNextValues()", () => {
     });
   });
 
+  describe("given a value that matches no option of its field", () => {
+    it("keeps it untouched", () => {
+      expect(
+        getNextValues({ gender: "village" }, "age", "18_24"),
+      ).toStrictEqual({ age: "18_24", gender: "village" });
+    });
+  });
+
   describe("given a value that is not text", () => {
     it("leaves it out", () => {
       const values = {
