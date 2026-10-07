@@ -77,6 +77,14 @@ msgstr "No result"
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:27
+msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Are you sure you want to start the quiz {quizName} over? Your answers will not be saved."
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:26
+msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
+
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
 msgstr ""
@@ -181,9 +189,17 @@ msgstr "Show axes"
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
+#: src/components/survey/SurveyControls/SurveyControls.tsx:32
+msgid "Poprzednie pytanie"
+msgstr "Previous question"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
+
+#: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:26
+msgid "Pozostałe pytania w kategorii: {count}"
+msgstr "Questions left in the category: {count}"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -200,6 +216,14 @@ msgstr "Ranking"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Terms"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+msgid "Resetuj quiz"
+msgstr "Reset quiz"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:23
+msgid "Rozpocząć od nowa?"
+msgstr "Start over?"
 
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
@@ -245,6 +269,10 @@ msgstr "Back to groups, close group: {name}"
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:53
+msgid "Zacznij od nowa"
+msgstr "Start over"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
