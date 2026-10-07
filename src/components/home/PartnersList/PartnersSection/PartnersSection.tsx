@@ -10,17 +10,14 @@ export const PartnersSection = ({ section }: PartnersSectionProps) => {
   const { title, partners } = section;
 
   return (
-    <div className="flex flex-col gap-2 py-4 md:flex-row md:items-center md:gap-6 md:py-6">
+    <div className="flex flex-col gap-2 py-6 md:flex-row md:items-center md:gap-6">
       {title && (
-        <p className="shrink-0 text-base leading-[1.4] font-bold tracking-[-0.01em] text-gi-primary">
+        <p className="text-base leading-[1.4] font-bold tracking-[-0.01em] wrap-break-word text-gi-primary md:max-w-1/3 md:shrink-0">
           {t`${title}:`}
         </p>
       )}
 
-      <ul
-        aria-label={title}
-        className="flex flex-wrap items-center gap-x-6 gap-y-4"
-      >
+      <ul aria-label={title} className="flex flex-wrap items-center gap-5">
         {withKeys(partners, (partner) => partner.title).map(({ item, key }) => (
           <li key={key} className="flex items-center">
             <PartnerLogo partner={item} />
