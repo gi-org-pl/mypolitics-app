@@ -22,13 +22,23 @@ describe("toOrientationColor()", () => {
       "#ffffff",
       "#FfFfFf",
       " #FFFFFF ",
+      "#FFFF",
+      "#ffff",
+      "#FFFFFFFF",
+      "#ffffffff",
     ])("returns undefined for %j", (color) => {
       expect(toOrientationColor(color)).toBeUndefined();
     });
   });
 
   describe("given a colour that only looks like white", () => {
-    it.each(["#FFFFFE", "#FFF0", "#FFFFFF80"])("keeps %s", (color) => {
+    it.each([
+      "#FFFFFE",
+      "#FFF0",
+      "#FFFE",
+      "#FFFFFF80",
+      "#FFFFFFFE",
+    ])("keeps %s", (color) => {
       expect(toOrientationColor(color)).toBe(color);
     });
   });
