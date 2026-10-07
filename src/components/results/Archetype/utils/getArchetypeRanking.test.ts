@@ -88,11 +88,17 @@ describe("getArchetypeRanking()", () => {
 
   it("keeps the descriptions of every archetype", () => {
     const { leader } = getArchetypeRanking([
-      { ...archetype("a", 80), shortDescription: "s", fullDescription: "f" },
+      {
+        orientation: createOrientation("a", "a", {
+          description: "s",
+          fullDescription: "f",
+        }),
+        match: 80,
+      },
     ]);
 
-    expect(leader).toMatchObject({
-      shortDescription: "s",
+    expect(leader?.orientation).toMatchObject({
+      description: "s",
       fullDescription: "f",
     });
   });

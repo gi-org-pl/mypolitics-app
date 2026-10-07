@@ -4,8 +4,6 @@ import type { RankedComparison } from "@/types/results";
 export interface ArchetypeEntry {
   orientation: Orientation;
   match?: number;
-  shortDescription?: string;
-  fullDescription?: string;
 }
 
 export interface ArchetypeProps {

@@ -4,6 +4,7 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { MATCH_BAND_COLORS } from "@/constants/results";
+import type { Orientation } from "@/types/orientation";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -17,7 +18,7 @@ const FULL = "Pierwszy akapit.\n\nDrugi akapit.";
 const archetype = (
   name: string,
   match?: number,
-  rest: Partial<ArchetypeEntry> = {},
+  orientation: Partial<Orientation> = {},
 ): ArchetypeEntry => ({
   orientation: {
     id: name.toLowerCase(),
@@ -25,13 +26,13 @@ const archetype = (
     name,
     color: OWN_COLOR,
     imageUrl: `${name.toLowerCase()}.png`,
+    ...orientation,
   },
   match,
-  ...rest,
 });
 
 const LEADER = archetype("Alfa", 85, {
-  shortDescription: SHORT,
+  description: SHORT,
   fullDescription: FULL,
 });
 
@@ -45,7 +46,7 @@ const ARCHETYPES: ArchetypeEntry[] = [
 
 const NO_MATCH: ArchetypeEntry[] = [
   archetype("Delta", 20),
-  archetype("Alfa", 45, { shortDescription: SHORT, fullDescription: FULL }),
+  archetype("Alfa", 45, { description: SHORT, fullDescription: FULL }),
   archetype("Beta", 30),
 ];
 
@@ -337,9 +338,7 @@ describe("<Archetype />", () => {
       renderArchetype({
         archetypes: [
           LEADER,
-          archetype("Beta", 70, {
-            orientation: { id: "beta", type: "ideology", name: "Beta" },
-          }),
+          archetype("Beta", 70, { imageUrl: undefined }),
           archetype("Gamma", 55),
         ],
       });
@@ -363,12 +362,7 @@ describe("<Archetype />", () => {
 
     it("renders no preview when no archetype has an image", () => {
       renderArchetype({
-        archetypes: [
-          LEADER,
-          archetype("Beta", 70, {
-            orientation: { id: "beta", type: "ideology", name: "Beta" },
-          }),
-        ],
+        archetypes: [LEADER, archetype("Beta", 70, { imageUrl: undefined })],
       });
 
       expect(
@@ -379,11 +373,7 @@ describe("<Archetype />", () => {
 
     it("draws the cap of an archetype without an image with colour only", () => {
       renderArchetype({
-        archetypes: [
-          archetype("Alfa", 85, {
-            orientation: { id: "alfa", type: "ideology", name: "Alfa" },
-          }),
-        ],
+        archetypes: [archetype("Alfa", 85, { imageUrl: undefined })],
       });
 
       const cap = screen.getByTestId("universal-axis-cap-start");
@@ -395,11 +385,36 @@ describe("<Archetype />", () => {
     });
   });
 
+  describe("given the orientation has a description and a full description", () => {
+    const described: ArchetypeEntry = {
+      orientation: createOrientation("alfa", "Alfa", {
+        description: SHORT,
+        fullDescription: FULL,
+      }),
+      match: 85,
+    };
+
+    it("shows the description in the summary", () => {
+      renderArchetype({ archetypes: [described] });
+
+      expect(getDescription().textContent).toBe(SHORT);
+    });
+
+    it("opens the full description from the description control", () => {
+      renderArchetype({ archetypes: [described] });
+
+      press("Pełny opis");
+
+      expect(getDescription().textContent).toBe(FULL);
+      expect(getControl("Pełny opis")).toHaveAttribute("aria-expanded", "true");
+    });
+  });
+
   describe("given a leader without a full description", () => {
     it("renders no description control", () => {
       renderArchetype({
         archetypes: [
-          archetype("Alfa", 85, { shortDescription: SHORT }),
+          archetype("Alfa", 85, { description: SHORT }),
           archetype("Beta", 70, { fullDescription: FULL }),
         ],
       });
@@ -415,7 +430,7 @@ describe("<Archetype />", () => {
       renderArchetype({
         archetypes: [
           archetype("Alfa", 85, {
-            shortDescription: `  ${SHORT}\n`,
+            description: `  ${SHORT}\n`,
             fullDescription: SHORT,
           }),
         ],
@@ -447,7 +462,7 @@ describe("<Archetype />", () => {
       renderArchetype({
         archetypes: [
           archetype("Alfa", 85, {
-            shortDescription: " \n\t ",
+            description: " \n\t ",
             fullDescription: "   ",
           }),
         ],
@@ -472,7 +487,7 @@ describe("<Archetype />", () => {
   describe("given neither control applies", () => {
     it("renders no foot", () => {
       renderArchetype({
-        archetypes: [archetype("Alfa", 85, { shortDescription: SHORT })],
+        archetypes: [archetype("Alfa", 85, { description: SHORT })],
         onStatsClick: undefined,
         onInfoClick: undefined,
       });
@@ -498,7 +513,7 @@ describe("<Archetype />", () => {
 
     it("renders it as plain text", () => {
       renderArchetype({
-        archetypes: [archetype("Alfa", 85, { shortDescription: MARKUP })],
+        archetypes: [archetype("Alfa", 85, { description: MARKUP })],
       });
 
       const description = getDescription();
@@ -512,7 +527,7 @@ describe("<Archetype />", () => {
       renderArchetype({
         archetypes: [
           archetype("Alfa", 85, {
-            shortDescription: "Raz.\r\n \r\n\r\nDwa.\nTrzy.",
+            description: "Raz.\r\n \r\n\r\nDwa.\nTrzy.",
           }),
         ],
       });

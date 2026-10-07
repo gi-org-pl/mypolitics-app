@@ -62,10 +62,12 @@ const national = createArchetype(
 const patriot = createArchetype("patriot", "Suwerenny patriota", "#0a1128");
 
 const leader: ArchetypeEntry = {
-  orientation: green,
+  orientation: {
+    ...green,
+    description: SHORT_DESCRIPTION,
+    fullDescription: FULL_DESCRIPTION,
+  },
   match: 80,
-  shortDescription: SHORT_DESCRIPTION,
-  fullDescription: FULL_DESCRIPTION,
 };
 
 const others: ArchetypeEntry[] = [
@@ -86,10 +88,10 @@ const placeholders: ArchetypeEntry[] = [
       type: "identity",
       name: "Orientation Name",
       imageUrl: placeholderImageUrl,
+      description: "Short description",
+      fullDescription: "Full description",
     },
     match: 80,
-    shortDescription: "Short description",
-    fullDescription: "Full description",
   },
   ...["b", "c", "d", "e"].map((id, index) => ({
     orientation: createOrientation(id, "Orientation Name", {
@@ -161,7 +163,13 @@ export const NoDescription: Story = {
 
 export const OnlyFullDescription: Story = {
   args: {
-    archetypes: [{ ...leader, shortDescription: undefined }, ...others],
+    archetypes: [
+      {
+        ...leader,
+        orientation: { ...leader.orientation, description: undefined },
+      },
+      ...others,
+    ],
   },
 };
 
@@ -197,8 +205,11 @@ export const MarkupInDescription: Story = {
     archetypes: [
       {
         ...leader,
-        shortDescription:
-          '<b>Pogrubienie</b>, [odnośnik](https://example.com) i <script>alert("x")</script> są pokazane tak, jak je napisano.\n\nDrugi akapit **bez** interpretacji.',
+        orientation: {
+          ...leader.orientation,
+          description:
+            '<b>Pogrubienie</b>, [odnośnik](https://example.com) i <script>alert("x")</script> są pokazane tak, jak je napisano.\n\nDrugi akapit **bez** interpretacji.',
+        },
       },
       ...others,
     ],

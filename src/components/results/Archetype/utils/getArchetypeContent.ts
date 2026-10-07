@@ -9,10 +9,10 @@ export const getArchetypeContent = (
 ): ArchetypeContent => {
   const isMatched = leader !== null && getMatchBand(leader.match) !== "none";
   const shortDescription = isMatched
-    ? toDescription(leader.shortDescription)
+    ? toDescription(leader.orientation?.description)
     : "";
   const fullDescription = isMatched
-    ? toDescription(leader.fullDescription)
+    ? toDescription(leader.orientation?.fullDescription)
     : "";
 
   return {

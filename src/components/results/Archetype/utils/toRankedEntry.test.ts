@@ -14,8 +14,6 @@ const archetype = (match?: number): ArchetypeEntry => ({
     color: "#123456",
   },
   match,
-  shortDescription: "s",
-  fullDescription: "f",
 });
 
 describe("toRankedEntry()", () => {

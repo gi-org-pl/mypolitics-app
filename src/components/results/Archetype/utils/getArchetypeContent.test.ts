@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import type { Orientation } from "@/types/orientation";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 
 import type { ArchetypeEntry } from "../Archetype.types";
@@ -8,11 +9,10 @@ import { getArchetypeContent } from "./getArchetypeContent";
 const archetype = (
   id: string,
   match: number,
-  rest: Partial<ArchetypeEntry> = {},
+  orientation: Partial<Orientation> = {},
 ): ArchetypeEntry => ({
-  orientation: createOrientation(id, id),
+  orientation: createOrientation(id, id, orientation),
   match,
-  ...rest,
 });
 
 const REST = [archetype("b", 70), archetype("c", 20)];
@@ -21,7 +21,7 @@ describe("getArchetypeContent()", () => {
   describe("given a leader that is a match or a partial match", () => {
     it("returns both descriptions and the rest as the ranking", () => {
       const leader = archetype("a", 50, {
-        shortDescription: " Krótki. ",
+        description: " Krótki. ",
         fullDescription: "Pełny.\n\n\nDrugi.",
       });
 
@@ -37,7 +37,7 @@ describe("getArchetypeContent()", () => {
 
     it("has no description to open without a full description", () => {
       const content = getArchetypeContent(
-        archetype("a", 90, { shortDescription: "Krótki." }),
+        archetype("a", 90, { description: "Krótki." }),
         REST,
       );
 
@@ -48,7 +48,7 @@ describe("getArchetypeContent()", () => {
     it("has no description to open when the full one equals the short one", () => {
       const content = getArchetypeContent(
         archetype("a", 90, {
-          shortDescription: "  Opis.\n",
+          description: "  Opis.\n",
           fullDescription: "Opis.",
         }),
         REST,
@@ -69,7 +69,7 @@ describe("getArchetypeContent()", () => {
 
     it("treats a description that is only whitespace as missing", () => {
       const content = getArchetypeContent(
-        archetype("a", 90, { shortDescription: " \n ", fullDescription: "  " }),
+        archetype("a", 90, { description: " \n ", fullDescription: "  " }),
         REST,
       );
 
@@ -88,7 +88,7 @@ describe("getArchetypeContent()", () => {
 
   describe("given a leader that is no match", () => {
     const leader = archetype("a", 49, {
-      shortDescription: "Krótki.",
+      description: "Krótki.",
       fullDescription: "Pełny.",
     });
 
@@ -113,6 +113,19 @@ describe("getArchetypeContent()", () => {
 
       expect(content.ranking).toEqual([leader]);
       expect(content.hasRanking).toBe(false);
+    });
+  });
+
+  describe("given a leader without an orientation", () => {
+    it("returns no descriptions", () => {
+      const leader = { match: 90 } as unknown as ArchetypeEntry;
+
+      expect(getArchetypeContent(leader, REST)).toMatchObject({
+        isMatched: true,
+        shortDescription: "",
+        fullDescription: "",
+        hasDescription: false,
+      });
     });
   });
 
