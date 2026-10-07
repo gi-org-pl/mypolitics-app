@@ -1,14 +1,13 @@
-import React from "react";
 import { FooterLeft } from "./FooterLeft/FooterLeft";
 import { FooterLegal } from "./FooterLegal/FooterLegal";
 import { FooterSocials } from "./FooterSocials/FooterSocials";
 
-export const Footer: React.FC = () => {
+export const Footer = () => {
   return (
-    <footer className="w-full bg-background border-t border-gi-dark-ash py-6 px-4 md:py-8 md:px-12">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center md:items-start gap-6 md:gap-8">
+    <footer className="w-full border-t border-[#d4e1e4] bg-background py-8">
+      <div className="mx-auto box-content flex max-w-300 flex-col items-center gap-6 px-4 md:flex-row md:items-start md:justify-between md:px-8">
         <FooterLeft />
-        <div className="flex flex-col items-center md:items-end gap-6 md:gap-4">
+        <div className="flex flex-col items-center gap-6 md:items-end">
           <FooterSocials />
           <FooterLegal />
         </div>

@@ -17,5 +17,6 @@ export interface LinkItem {
 export interface SocialLink {
   platform: SocialPlatform;
   href: string;
+  icon: string;
   ariaLabel: MessageDescriptor;
 }

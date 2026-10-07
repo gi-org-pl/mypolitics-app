@@ -54,7 +54,7 @@ msgstr "{value}% confidence"
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:12
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
@@ -81,11 +81,11 @@ msgstr "No traits earned"
 msgid "Debaty"
 msgstr "Debates"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:23
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
-#: src/components/shared/Error404/Error404.tsx:14
+#: src/components/shared/Error404/Error404.tsx:13
 msgid "Ilustracja misia — błąd 404"
 msgstr "Teddy bear illustration — 404 error"
 
@@ -97,11 +97,11 @@ msgstr "Information"
 msgid "Informacje: {name}"
 msgstr "Information: {name}"
 
-#: src/components/shared/Error404/Error404.tsx:27
+#: src/components/shared/Error404/Error404.tsx:26
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr "With this error we open the eyes of the doubters! We say: this is our error, made by us, and it is not our last word!"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:15
 msgid "myPolitics"
 msgstr "myPolitics"
 
@@ -117,35 +117,39 @@ msgstr "mypolitics banner content"
 msgid "Nawigacja główna"
 msgstr "Main navigation"
 
-#: src/components/shared/Footer/Footer.constants.ts:8
+#: src/components/shared/Footer/FooterLegal/FooterLegal.tsx:11
+msgid "Nawigacja w stopce"
+msgstr "Footer navigation"
+
+#: src/components/shared/Footer/Footer.constants.ts:15
 msgid "O nas"
 msgstr "About"
 
-#: src/components/shared/Footer/Footer.constants.ts:45
+#: src/components/shared/Footer/Footer.constants.ts:59
 msgid "Odwiedź nasz kanał na YouTube"
 msgstr "Visit our YouTube channel"
 
-#: src/components/shared/Footer/Footer.constants.ts:15
+#: src/components/shared/Footer/Footer.constants.ts:23
 msgid "Odwiedź nasz profil na Facebooku"
 msgstr "Visit our Facebook profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:40
+#: src/components/shared/Footer/Footer.constants.ts:53
 msgid "Odwiedź nasz profil na GitHub"
 msgstr "Visit our GitHub profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:25
+#: src/components/shared/Footer/Footer.constants.ts:35
 msgid "Odwiedź nasz profil na Instagramie"
 msgstr "Visit our Instagram profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:30
+#: src/components/shared/Footer/Footer.constants.ts:41
 msgid "Odwiedź nasz profil na LinkedIn"
 msgstr "Visit our LinkedIn profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:35
+#: src/components/shared/Footer/Footer.constants.ts:47
 msgid "Odwiedź nasz profil na Telegramie"
 msgstr "Visit our Telegram profile"
 
-#: src/components/shared/Footer/Footer.constants.ts:20
+#: src/components/shared/Footer/Footer.constants.ts:29
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
@@ -189,7 +193,7 @@ msgstr "Show all"
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 
-#: src/components/shared/Footer/Footer.constants.ts:7
+#: src/components/shared/Footer/Footer.constants.ts:14
 msgid "Prywatność"
 msgstr "Privacy"
 
@@ -201,7 +205,7 @@ msgstr "Quizzes"
 msgid "Ranking"
 msgstr "Ranking"
 
-#: src/components/shared/Footer/Footer.constants.ts:6
+#: src/components/shared/Footer/Footer.constants.ts:13
 msgid "Regulamin"
 msgstr "Terms"
 
@@ -217,12 +221,12 @@ msgstr "Statistics"
 msgid "Statystyki: {name}"
 msgstr "Statistics: {name}"
 
-#: src/components/shared/Error404/Error404.tsx:35
+#: src/components/shared/Error404/Error404.tsx:34
 #: src/components/shared/Header/Header.tsx:16
 msgid "Strona główna"
 msgstr "Home page"
 
-#: src/components/shared/Error404/Error404.tsx:20
+#: src/components/shared/Error404/Error404.tsx:19
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "This is a 404 error <0>made to the best of our abilities</0>!"
 

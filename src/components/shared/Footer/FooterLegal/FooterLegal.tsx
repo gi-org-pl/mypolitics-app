@@ -1,17 +1,20 @@
-import { i18n } from "@lingui/core";
-import React from "react";
+import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Link } from "react-router";
 import { LEGAL_LINKS } from "../Footer.constants";
 
-export const FooterLegal: React.FC = () => {
+export const FooterLegal = () => {
+  const { i18n } = useLingui();
+
   return (
-    <nav className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 text-sm leading-[19px] order-1 md:order-2">
+    <nav
+      aria-label={t`Nawigacja w stopce`}
+      className="order-1 flex flex-wrap justify-center gap-6 text-base leading-4.75 text-gi-primary md:order-2 md:justify-end"
+    >
       {LEGAL_LINKS.map((link) => (
-        <div key={link.href} className="flex items-center">
-          <Link to={link.href} className="text-chart-3 text-gi-primary">
-            {i18n._(link.label)}
-          </Link>
-        </div>
+        <Link key={link.href} to={link.href}>
+          {i18n._(link.label)}
+        </Link>
       ))}
     </nav>
   );

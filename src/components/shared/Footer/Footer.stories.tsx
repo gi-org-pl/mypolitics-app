@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
 import { Footer } from "./Footer";
 
@@ -20,18 +20,10 @@ const meta: Meta<typeof Footer> = {
 export default meta;
 type Story = StoryObj<typeof Footer>;
 
-export const Desktop: Story = {
-  parameters: {
-    viewport: {
-      defaultViewport: "responsive",
-    },
-  },
-};
+export const Desktop: Story = {};
 
 export const Mobile: Story = {
-  parameters: {
-    viewport: {
-      defaultViewport: "mobile1",
-    },
+  globals: {
+    viewport: { value: "mobile1" },
   },
 };
