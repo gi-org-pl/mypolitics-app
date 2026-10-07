@@ -7,10 +7,7 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { withoutPropagation } from "@/utils/event/withoutPropagation";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
-import {
-  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-  TOGGLE_ICON_OPEN_CLASS_NAME,
-} from "./QuizCardToggle.constants";
+import { TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME } from "./QuizCardToggle.constants";
 import type { QuizCardToggleProps } from "./QuizCardToggle.types";
 
 export const QuizCardToggle = ({
@@ -36,7 +33,7 @@ export const QuizCardToggle = ({
     >
       <span
         className={`${BUTTON_ICON_MASK_CLASS_NAME} h-2 w-3.5 mask-contain transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
-          isOpen ? TOGGLE_ICON_OPEN_CLASS_NAME : ""
+          isOpen ? "rotate-180" : ""
         }`}
         style={getIconMaskStyle(chevronDownIcon)}
       />

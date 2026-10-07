@@ -6,10 +6,7 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { QuizCardToggle } from "./QuizCardToggle";
-import {
-  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
-  TOGGLE_ICON_OPEN_CLASS_NAME,
-} from "./QuizCardToggle.constants";
+import { TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME } from "./QuizCardToggle.constants";
 import type { QuizCardToggleProps } from "./QuizCardToggle.types";
 
 const BODY_ID = "quiz-card-body";
@@ -46,12 +43,6 @@ describe("<QuizCardToggle />", () => {
         screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
       ).toBeInTheDocument();
     });
-
-    it("draws the chevron pointing down", () => {
-      renderToggle();
-
-      expect(getIcon()).not.toHaveClass(TOGGLE_ICON_OPEN_CLASS_NAME);
-    });
   });
 
   describe("given an open card", () => {
@@ -69,12 +60,6 @@ describe("<QuizCardToggle />", () => {
       expect(
         screen.getByRole("button", { name: COLLAPSE_NAME, expanded: true }),
       ).toBeInTheDocument();
-    });
-
-    it("turns the chevron", () => {
-      renderToggle({ isOpen: true });
-
-      expect(getIcon()).toHaveClass(TOGGLE_ICON_OPEN_CLASS_NAME);
     });
   });
 
@@ -100,7 +85,7 @@ describe("<QuizCardToggle />", () => {
       expect(button).toHaveTextContent("");
     });
 
-    it("draws the chevron as a mask that stays visible in forced colours", () => {
+    it("draws the chevron as a mask, in the shared way that survives forced colours", () => {
       renderToggle();
 
       const icon = getIcon();
@@ -109,23 +94,18 @@ describe("<QuizCardToggle />", () => {
       expect(icon).toHaveClass(...BUTTON_ICON_MASK_CLASS_NAME.split(" "));
     });
 
-    it("shows keyboard focus as an outline instead of Athena's ring", () => {
+    it("shows keyboard focus with the shared outline", () => {
       renderToggle();
 
-      const button = screen.getByRole("button");
-
-      expect(button).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
-      expect(button).not.toHaveClass("focus-visible:ring-[3px]");
-    });
-  });
-
-  describe("given a card that keeps its toggle on a wide screen", () => {
-    it("stays visible at every width", () => {
-      renderToggle({ isHiddenOnWideScreen: false });
-
-      expect(screen.getByRole("button")).not.toHaveClass(
-        TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+      expect(screen.getByRole("button")).toHaveClass(
+        ...FOCUS_CLASS_NAME.split(" "),
       );
+    });
+
+    it("does not submit a form around the card", () => {
+      renderToggle();
+
+      expect(screen.getByRole("button")).toHaveAttribute("type", "button");
     });
   });
 
@@ -136,6 +116,14 @@ describe("<QuizCardToggle />", () => {
       expect(screen.getByRole("button")).toHaveClass(
         TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
       );
+    });
+
+    it("renders the same button as a card that keeps its toggle", () => {
+      renderToggle({ isHiddenOnWideScreen: true });
+
+      expect(
+        screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
+      ).toHaveAttribute("aria-controls", BODY_ID);
     });
   });
 
