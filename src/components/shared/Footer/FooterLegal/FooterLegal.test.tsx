@@ -2,6 +2,7 @@ import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -51,16 +52,11 @@ describe("<FooterLegal />", () => {
       );
     });
 
-    it("shows keyboard focus on every link as an outline", () => {
+    it("shows keyboard focus on every link as the shared outline", () => {
       renderLegal();
 
       for (const link of screen.getAllByRole("link")) {
-        expect(link).toHaveClass(
-          "focus-visible:outline-2",
-          "focus-visible:outline-offset-2",
-          "focus-visible:outline-solid",
-          "focus-visible:outline-gi-primary",
-        );
+        expect(link).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
       }
     });
   });

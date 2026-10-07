@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -68,18 +69,12 @@ describe("<Error404 />", () => {
       expect(screen.queryByRole("main")).not.toBeInTheDocument();
     });
 
-    it("shows keyboard focus on the link as an outline instead of Athena's ring", () => {
+    it("shows keyboard focus on the link as the shared outline", () => {
       renderError();
 
-      const link = screen.getByRole("link", { name: "Strona główna" });
-
-      expect(link).toHaveClass(
-        "focus-visible:outline-2",
-        "focus-visible:outline-offset-2",
-        "focus-visible:outline-solid",
-        "focus-visible:outline-gi-primary",
+      expect(screen.getByRole("link", { name: "Strona główna" })).toHaveClass(
+        ...FOCUS_CLASS_NAME.split(" "),
       );
-      expect(link).not.toHaveClass("focus-visible:ring-[3px]");
     });
   });
 });

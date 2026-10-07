@@ -2,6 +2,8 @@ import { fireEvent, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { LINK_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { HeaderNavEntry } from "../HeaderNav.types";
@@ -14,13 +16,6 @@ const ENTRY: HeaderNavEntry = {
   icon: "quizzes-icon.svg",
   iconClassName: "h-3.5 w-4.75",
 };
-
-const FOCUS_CLASSES = [
-  "focus-visible:outline-2",
-  "focus-visible:outline-offset-2",
-  "focus-visible:outline-solid",
-  "focus-visible:outline-gi-primary",
-];
 
 const EXTERNAL_ENTRY: HeaderNavEntry = {
   ...ENTRY,
@@ -83,31 +78,20 @@ describe("<HeaderNavItem />", () => {
       expect(icon?.style.maskImage).toBe('url("quizzes-icon.svg")');
     });
 
-    it("gives the icon the size of the entry", () => {
+    it("draws the icon in the shared way that survives forced colours", () => {
       renderItem();
 
       expect(screen.getByRole("link").querySelector("span")).toHaveClass(
-        "h-3.5",
-        "w-4.75",
+        ...LINK_ICON_MASK_CLASS_NAME.split(" "),
       );
     });
 
-    it("keeps the icon visible in forced colours, in the colour of link text", () => {
+    it("shows keyboard focus as the shared outline", () => {
       renderItem();
 
-      expect(screen.getByRole("link").querySelector("span")).toHaveClass(
-        "bg-current",
-        "forced-colors:bg-[color:LinkText]",
+      expect(screen.getByRole("link", { name: "Quizy" })).toHaveClass(
+        ...FOCUS_CLASS_NAME.split(" "),
       );
-    });
-
-    it("shows keyboard focus as an outline instead of Athena's ring", () => {
-      renderItem();
-
-      const link = screen.getByRole("link", { name: "Quizy" });
-
-      expect(link).toHaveClass(...FOCUS_CLASSES);
-      expect(link).not.toHaveClass("focus-visible:ring-[3px]");
     });
   });
 

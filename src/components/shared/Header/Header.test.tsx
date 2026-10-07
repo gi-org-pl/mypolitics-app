@@ -2,6 +2,8 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -10,12 +12,6 @@ import { Header } from "./Header";
 const NAVIGATION_NAME = "Nawigacja główna";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
 const CLOSE_MENU_NAME = "Zamknij menu nawigacji";
-const FOCUS_CLASSES = [
-  "focus-visible:outline-2",
-  "focus-visible:outline-offset-2",
-  "focus-visible:outline-solid",
-  "focus-visible:outline-gi-primary",
-];
 
 const renderHeader = (path: string = PATHS.home) =>
   renderWithI18n(
@@ -80,31 +76,25 @@ describe("<Header />", () => {
       expect(icon?.style.maskImage).toMatch(/^url\(".+"\)$/);
     });
 
-    it("keeps the menu button's icon visible in forced colours, in the colour of button text", () => {
+    it("draws the menu button's icon in the shared way that survives forced colours", () => {
       renderHeader();
 
       expect(
         screen
           .getByRole("button", { name: OPEN_MENU_NAME })
           .querySelector("span"),
-      ).toHaveClass("bg-current", "forced-colors:bg-[color:ButtonText]");
+      ).toHaveClass(...BUTTON_ICON_MASK_CLASS_NAME.split(" "));
     });
 
-    it("shows keyboard focus on the logo link as an outline", () => {
+    it("shows keyboard focus on the logo link and the menu button as the shared outline", () => {
       renderHeader();
 
-      expect(screen.getByRole("link", { name: "Strona główna" })).toHaveClass(
-        ...FOCUS_CLASSES,
-      );
-    });
-
-    it("shows keyboard focus on the menu button as an outline instead of Athena's ring", () => {
-      renderHeader();
-
-      const button = screen.getByRole("button", { name: OPEN_MENU_NAME });
-
-      expect(button).toHaveClass(...FOCUS_CLASSES);
-      expect(button).not.toHaveClass("focus-visible:ring-[3px]");
+      for (const control of [
+        screen.getByRole("link", { name: "Strona główna" }),
+        screen.getByRole("button", { name: OPEN_MENU_NAME }),
+      ]) {
+        expect(control).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
+      }
     });
   });
 

@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -33,17 +34,12 @@ describe("<FooterLeft />", () => {
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
-    it("shows keyboard focus on the link as an outline", () => {
+    it("shows keyboard focus on the link as the shared outline", () => {
       renderWithI18n(<FooterLeft />);
 
       expect(
         screen.getByRole("link", { name: "Generacja Innowacja" }),
-      ).toHaveClass(
-        "focus-visible:outline-2",
-        "focus-visible:outline-offset-2",
-        "focus-visible:outline-solid",
-        "focus-visible:outline-gi-primary",
-      );
+      ).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
     });
   });
 
