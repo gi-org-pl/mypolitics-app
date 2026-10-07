@@ -62,9 +62,123 @@ msgstr "{xAxis}: {x}, {yAxis}: {y}"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/constants/home.ts:230
+msgid "+1.5M osób"
+msgstr "+1.5M people"
+
+#: src/constants/home.ts:274
+msgid "+10K osób"
+msgstr "+10K people"
+
+#: src/constants/home.ts:310
+msgid "+12K osób"
+msgstr "+12K people"
+
+#: src/constants/home.ts:283
+msgid "+15K osób"
+msgstr "+15K people"
+
+#: src/constants/home.ts:301
+msgid "+20K osób"
+msgstr "+20K people"
+
+#: src/constants/home.ts:265
+msgid "+25K osób"
+msgstr "+25K people"
+
+#: src/constants/home.ts:292
+msgid "+30K osób"
+msgstr "+30K people"
+
+#: src/constants/home.ts:69
+msgid "+4 000 000 osób"
+msgstr "+4,000,000 people"
+
+#: src/constants/home.ts:240
+#: src/constants/home.ts:248
+#: src/constants/home.ts:256
+msgid "+40K osób"
+msgstr "+40K people"
+
 #: src/components/results/AxisRow/AxisRow.tsx:29
 msgid "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
+
+#: src/constants/home.ts:300
+msgid "<0>Ateny, Sparta czy Kartagina?</0> Zobacz, w którym starożytnym państwie Twoje poglądy miałyby najwięcej zwolenników."
+msgstr "<0>Athens, Sparta or Carthage?</0> See in which ancient state your views would have had the most supporters."
+
+#: src/constants/home.ts:229
+msgid "<0>Najbardziej zaawansowany test poglądów politycznych.</0> Poznaj swoją tożsamość, najbliższą ideologię, partię i porównaj ze znajomymi!"
+msgstr "<0>The most advanced test of political views.</0> Discover your identity, your closest ideology and party, and compare with your friends!"
+
+#: src/constants/home.ts:282
+msgid "<0>Powiedz, czego słuchasz.</0> Dowiedz się, jakim typem słuchacza jesteś i z kim dzielisz gust."
+msgstr "<0>Tell us what you listen to.</0> Find out what kind of listener you are and who shares your taste."
+
+#: src/constants/home.ts:239
+#: src/constants/home.ts:247
+#: src/constants/home.ts:255
+msgid "<0>Poznaj najbliższych sobie warszawskich polityków!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach."
+msgstr "<0>Meet the Warsaw politicians closest to you!</0> You will also learn which of them is closest to you on particular topics."
+
+#: src/constants/home.ts:273
+msgid "<0>Quiz dla wytrwałych.</0> Ponad 600 pytań, które prześwietlą Twoje poglądy w każdym szczególe."
+msgstr "<0>A quiz for the persistent.</0> Over 600 questions that examine your views in every detail."
+
+#: src/constants/home.ts:309
+msgid "<0>Quiz edukacyjny o tożsamości.</0> Poznaj czynniki, które według badań kształtują orientację."
+msgstr "<0>An educational quiz about identity.</0> Learn about the factors that, according to research, shape orientation."
+
+#: src/constants/home.ts:291
+msgid "<0>Stoik, hedonista czy pragmatyk?</0> Odkryj nurt filozoficzny, który najlepiej opisuje Twoje podejście do życia."
+msgstr "<0>Stoic, hedonist or pragmatist?</0> Discover the school of philosophy that best describes your approach to life."
+
+#: src/constants/home.ts:264
+msgid "<0>Wróć do czasów transformacji!</0> Sprawdź, do której partii lat 90. byłoby Ci najbliżej."
+msgstr "<0>Go back to the years of transformation!</0> Check which party of the 1990s would have been closest to you."
+
+#: src/constants/home.ts:292
+msgid "10 min"
+msgstr "10 min"
+
+#: src/constants/home.ts:230
+msgid "15 min"
+msgstr "15 min"
+
+#: src/constants/home.ts:310
+msgid "5 min"
+msgstr "5 min"
+
+#: src/constants/home.ts:283
+msgid "6 min"
+msgstr "6 min"
+
+#: src/constants/home.ts:269
+msgid "600+ pytań"
+msgstr "600+ questions"
+
+#: src/constants/home.ts:301
+msgid "7 min"
+msgstr "7 min"
+
+#: src/constants/home.ts:265
+msgid "8 min"
+msgstr "8 min"
+
+#: src/constants/home.ts:240
+#: src/constants/home.ts:248
+#: src/constants/home.ts:256
+msgid "9 min"
+msgstr "9 min"
+
+#: src/constants/home.ts:274
+msgid "90 min"
+msgstr "90 min"
+
+#: src/constants/home.ts:77
+msgid "Algorytm jest jawny"
+msgstr "The algorithm is open"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
 #: src/components/results/ResultsHeader/ResultsHeader.tsx:46
@@ -85,6 +199,18 @@ msgstr "No traits earned"
 msgid "Debaty"
 msgstr "Debates"
 
+#: src/constants/home.ts:53
+msgid "Dołącz na Discord Fundacji Generacja Innowacja"
+msgstr "Join the Discord of the Generacja Innowacja Foundation"
+
+#: src/constants/home.ts:244
+msgid "Eurowyborczy 2024"
+msgstr "European Elections 2024"
+
+#: src/constants/home.ts:287
+msgid "Filozoficzny"
+msgstr "Philosophical"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:24
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
@@ -101,13 +227,42 @@ msgstr "Information"
 msgid "Informacje: {name}"
 msgstr "Information: {name}"
 
+#: src/constants/home.ts:290
+msgid "Jaka filozofia Cię reprezentuje?"
+msgstr "Which philosophy represents you?"
+
+#: src/constants/home.ts:299
+msgid "Jakie miałbyś poglądy tysiące lat temu?"
+msgstr "What would your views have been thousands of years ago?"
+
+#: src/constants/home.ts:78
+msgid "Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkowników. <0>Sprawdź jak działa algorytm.</0>"
+msgstr "We are fully transparent and do not hide how we match users. <0>See how the algorithm works.</0>"
+
+#: src/constants/home.ts:263
+msgid "Kiedyś to było... no właśnie, jak?"
+msgstr "Those were the days... but what were they like?"
+
+#: src/constants/home.ts:296
+msgid "Kraje starożytne"
+msgstr "Ancient states"
+
+#: src/constants/home.ts:70
+msgid "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
+msgstr "We have helped millions of Poles broaden their political awareness through worldview quizzes."
+
 #: src/components/shared/Error404/Error404.tsx:27
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr "With this error we open the eyes of the doubters! We say: this is our error, made by us, and it is not our last word!"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:16
+#: src/constants/home.ts:225
 msgid "myPolitics"
 msgstr "myPolitics"
+
+#: src/constants/home.ts:272
+msgid "Najdłuższy quiz na myPolitics!"
+msgstr "The longest quiz on myPolitics!"
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
 msgid "Nawigacja główna"
@@ -116,6 +271,14 @@ msgstr "Main navigation"
 #: src/components/shared/Footer/FooterLegal/FooterLegal.tsx:12
 msgid "Nawigacja w stopce"
 msgstr "Footer navigation"
+
+#: src/components/home/QuizSection/QuizSectionList/QuizSectionList.tsx:24
+msgid "Nie ma jeszcze quizów tego rodzaju."
+msgstr "There are no quizzes of this kind yet."
+
+#: src/constants/home.ts:73
+msgid "Nikt nas nie finansuje"
+msgstr "Nobody funds us"
 
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
@@ -149,6 +312,10 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
+#: src/constants/home.ts:305
+msgid "Orientacja seksualna"
+msgstr "Sexual orientation"
+
 #: src/components/shared/Header/Header.tsx:37
 msgid "Otwórz menu nawigacji"
 msgstr "Open navigation menu"
@@ -156,6 +323,10 @@ msgstr "Open navigation menu"
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
 msgstr "Full description"
+
+#: src/constants/home.ts:74
+msgid "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
+msgstr "The platform is built by volunteers with the support of experts. We have not accepted a single zloty of public or foreign funds."
 
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
 msgid "Podgląd wyników quizu myPolitics"
@@ -189,9 +360,21 @@ msgstr "Show axes"
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
+#: src/constants/home.ts:260
+msgid "Polskie Lata 90."
+msgstr "Poland in the 1990s"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
+
+#: src/constants/home.ts:308
+msgid "Poznaj co wpływa na Twoją orientację"
+msgstr "Learn what shapes your orientation"
+
+#: src/constants/home.ts:278
+msgid "Preferencje muzyczne"
+msgstr "Music preferences"
 
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
@@ -209,6 +392,10 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
+msgid "Rodzaje quizów"
+msgstr "Kinds of quizzes"
+
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:46
 msgid "Rozpocznij"
 msgstr "Start"
@@ -225,6 +412,10 @@ msgstr "Expand"
 msgid "Sondaże"
 msgstr "Polls"
 
+#: src/components/home/QuizSection/QuizSection.constants.ts:10
+msgid "Społecznościowe"
+msgstr "Community"
+
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
 msgstr "Statistics"
@@ -237,6 +428,10 @@ msgstr "Statistics: {name}"
 #: src/components/shared/Header/Header.tsx:21
 msgid "Strona główna"
 msgstr "Home page"
+
+#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:41
+msgid "Stwórz własny"
+msgstr "Create your own"
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
@@ -254,6 +449,10 @@ msgstr "Your results"
 msgid "Ukryj osie"
 msgstr "Hide axes"
 
+#: src/constants/home.ts:252
+msgid "Warszawski Radar Wyborczy"
+msgstr "Warsaw Election Radar"
+
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
 msgstr "Back to groups"
@@ -266,9 +465,29 @@ msgstr "Back to groups, close group: {name}"
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
 
+#: src/components/home/QuizSection/QuizSection.constants.ts:8
+msgid "Wszystkie"
+msgstr "All"
+
+#: src/components/home/QuizSection/QuizSection.constants.ts:9
+msgid "Wyborcze"
+msgstr "Electoral"
+
+#: src/constants/home.ts:236
+msgid "Wyborczy 2023"
+msgstr "Elections 2023"
+
+#: src/constants/home.ts:281
+msgid "Zamiast o politykę, pokłóćmy się o muzykę!"
+msgstr "Instead of politics, let's argue about music!"
+
 #: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
+
+#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:26
+msgid "Zobacz więcej"
+msgstr "See more"
 
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:32
 msgid "Zwiń"

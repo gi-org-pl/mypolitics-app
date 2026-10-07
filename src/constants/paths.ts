@@ -7,4 +7,5 @@ export const PATHS = {
   quizzes: "/quizzes",
   debates: "/debates",
   polls: "https://polls.mypolitics.pl", // external
+  whitepaperPDF: "https://mypolitics.pl/static/whitepaper.pdf", // external
 } as const;
