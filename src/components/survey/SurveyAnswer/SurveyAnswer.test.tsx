@@ -1,7 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SurveyAnswer } from "./SurveyAnswer";
+import { CLICK_ANIMATION_MS } from "./SurveyAnswer.constants";
+import type { SurveyAnswerType } from "./SurveyAnswer.types";
 
 vi.mock("../../../assets/icons/checkmark.svg", () => ({
   default: "checkmark.svg",
@@ -21,15 +23,36 @@ vi.mock("../../../assets/icons/x-strong.svg", () => ({
   default: "x-strong.svg",
 }));
 
+const ANSWER_TYPES: SurveyAnswerType[] = [
+  "strongly-agree",
+  "agree",
+  "disagree",
+  "strongly-disagree",
+  "custom",
+  "custom-selectable",
+];
+
+const FRAME_MS = 16;
+
+const getButton = (name = "Test") => screen.getByRole("button", { name });
+
 const getIcon = () => screen.getByRole("presentation");
+
+const getRipple = () => screen.getByTestId("survey-answer-ripple");
+
+const advance = (ms: number) => {
+  act(() => {
+    vi.advanceTimersByTime(ms);
+  });
+};
 
 describe("<SurveyAnswer />", () => {
   describe("given type is strongly-agree", () => {
     it("renders with the bg-background class", () => {
-      const { container } = render(
+      render(
         <SurveyAnswer title="Test" type="strongly-agree" onClick={vi.fn()} />,
       );
-      expect(container.querySelector("button")).toHaveClass("bg-background");
+      expect(getButton()).toHaveClass("bg-background");
     });
 
     it("renders the strong checkmark icon", () => {
@@ -53,10 +76,8 @@ describe("<SurveyAnswer />", () => {
 
   describe("given type is agree", () => {
     it("renders with the bg-background class", () => {
-      const { container } = render(
-        <SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />,
-      );
-      expect(container.querySelector("button")).toHaveClass("bg-background");
+      render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
+      expect(getButton()).toHaveClass("bg-background");
     });
 
     it("renders the simple checkmark icon", () => {
@@ -74,14 +95,14 @@ describe("<SurveyAnswer />", () => {
 
   describe("given type is strongly-disagree", () => {
     it("renders with the bg-background class", () => {
-      const { container } = render(
+      render(
         <SurveyAnswer
           title="Test"
           type="strongly-disagree"
           onClick={vi.fn()}
         />,
       );
-      expect(container.querySelector("button")).toHaveClass("bg-background");
+      expect(getButton()).toHaveClass("bg-background");
     });
 
     it("renders the strong X icon", () => {
@@ -131,7 +152,7 @@ describe("<SurveyAnswer />", () => {
     });
 
     it("applies the bg-background class", () => {
-      const { container } = render(
+      render(
         <SurveyAnswer
           title="Test"
           type="custom-selectable"
@@ -139,29 +160,12 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(container.querySelector("button")).toHaveClass("bg-background");
+      expect(getButton()).toHaveClass("bg-background");
     });
   });
 
-  describe("when the button is clicked and isDisabled is false", () => {
-    it("calls onClick after animation delay for ripple types", async () => {
-      const user = userEvent.setup();
-      const onClick = vi.fn();
-      render(
-        <SurveyAnswer
-          title="Test"
-          type="agree"
-          onClick={onClick}
-          isDisabled={false}
-        />,
-      );
-      await user.click(screen.getByRole("button"));
-      await waitFor(() => expect(onClick).toHaveBeenCalledTimes(1), {
-        timeout: 1000,
-      });
-    });
-
-    it("calls onClick immediately for custom-selectable type", async () => {
+  describe("when a custom-selectable answer is clicked", () => {
+    it("calls onClick immediately", async () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
       render(
@@ -172,8 +176,15 @@ describe("<SurveyAnswer />", () => {
           isDisabled={false}
         />,
       );
-      await user.click(screen.getByRole("button"));
+      await user.click(getButton());
       expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("has no ripple", () => {
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      expect(
+        screen.queryByTestId("survey-answer-ripple"),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -187,51 +198,92 @@ describe("<SurveyAnswer />", () => {
     it("does not throw when a custom-selectable answer is clicked", async () => {
       const user = userEvent.setup();
       render(<SurveyAnswer title="Test" type="custom-selectable" />);
-      await user.click(screen.getByRole("button", { name: "Test" }));
-      expect(screen.getByRole("button", { name: "Test" })).toBeEnabled();
+      await user.click(getButton());
+      expect(getButton()).toBeEnabled();
     });
   });
 
-  describe("when the button is clicked again while the click animation runs", () => {
-    it("ignores the second click", async () => {
-      const onClick = vi.fn();
-      render(<SurveyAnswer title="Test" type="agree" onClick={onClick} />);
-      const button = screen.getByRole("button", { name: "Test" });
-
-      fireEvent.click(button);
-      await waitFor(() => expect(button).toHaveClass("pointer-events-none"));
-      fireEvent.click(button);
-
-      await waitFor(() => expect(onClick).toHaveBeenCalledTimes(1), {
-        timeout: 1000,
+  describe("click animation of an answer with a ripple", () => {
+    beforeEach(() => {
+      vi.useFakeTimers({
+        toFake: [
+          "setTimeout",
+          "clearTimeout",
+          "requestAnimationFrame",
+          "cancelAnimationFrame",
+        ],
       });
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      expect(onClick).toHaveBeenCalledTimes(1);
     });
-  });
 
-  describe("when the ripple has finished expanding", () => {
-    it("shrinks it back and lets the answer be clicked again", async () => {
-      render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
-      const button = screen.getByRole("button", { name: "Test" });
-      const ripple = button.firstElementChild as HTMLElement;
+    afterEach(() => {
+      vi.useRealTimers();
+    });
 
-      fireEvent.click(button);
-      await waitFor(() =>
-        expect(ripple.style.transition).toContain("ease-out"),
-      );
-      fireEvent.transitionEnd(ripple);
+    describe("when the button is clicked", () => {
+      it("calls onClick once the animation delay has passed", () => {
+        const onClick = vi.fn();
+        render(<SurveyAnswer title="Test" type="agree" onClick={onClick} />);
 
-      await waitFor(
-        () => expect(ripple.style.transition).toContain("ease-in"),
-        {
-          timeout: 1000,
-        },
-      );
-      await waitFor(
-        () => expect(button).not.toHaveClass("pointer-events-none"),
-        { timeout: 1000 },
-      );
+        fireEvent.click(getButton());
+        advance(CLICK_ANIMATION_MS - 1);
+        expect(onClick).not.toHaveBeenCalled();
+
+        advance(1);
+        expect(onClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("does not throw after the delay when onClick is not provided", () => {
+        render(<SurveyAnswer title="Test" type="agree" />);
+
+        fireEvent.click(getButton());
+        advance(CLICK_ANIMATION_MS);
+
+        expect(getButton()).toBeInTheDocument();
+      });
+
+      it("expands the ripple and blocks further clicks", () => {
+        render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
+
+        fireEvent.click(getButton());
+        advance(FRAME_MS);
+
+        expect(getRipple().style.transition).toContain("ease-out");
+        expect(getButton()).toHaveClass(
+          "pointer-events-none",
+          "cursor-not-allowed",
+        );
+      });
+    });
+
+    describe("when the button is clicked again while the animation runs", () => {
+      it("ignores the second click", () => {
+        const onClick = vi.fn();
+        render(<SurveyAnswer title="Test" type="agree" onClick={onClick} />);
+
+        fireEvent.click(getButton());
+        advance(FRAME_MS);
+        fireEvent.click(getButton());
+        advance(CLICK_ANIMATION_MS * 3);
+
+        expect(onClick).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("when the ripple has finished expanding", () => {
+      it("shrinks it back and lets the answer be clicked again", () => {
+        render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
+
+        fireEvent.click(getButton());
+        advance(FRAME_MS);
+        fireEvent.transitionEnd(getRipple());
+
+        advance(CLICK_ANIMATION_MS);
+        expect(getRipple().style.transition).toContain("ease-in");
+
+        advance(CLICK_ANIMATION_MS);
+        expect(getRipple().style.transition).toBe("none");
+        expect(getButton()).not.toHaveClass("pointer-events-none");
+      });
     });
   });
 
@@ -242,52 +294,63 @@ describe("<SurveyAnswer />", () => {
       render(
         <SurveyAnswer
           title="Test"
-          type="agree"
+          type="custom-selectable"
           onClick={onClick}
           isDisabled={true}
         />,
       );
-      await user.click(screen.getByRole("button"));
+      await user.click(getButton());
       expect(onClick).not.toHaveBeenCalled();
     });
 
     it("is disabled for assistive technology and not clickable", () => {
       render(<SurveyAnswer title="Test" type="agree" isDisabled={true} />);
-      const button = screen.getByRole("button", { name: "Test" });
-      expect(button).toBeDisabled();
-      expect(button).toHaveClass("cursor-not-allowed", "pointer-events-none");
+      expect(getButton()).toBeDisabled();
+      expect(getButton()).toHaveClass(
+        "cursor-not-allowed",
+        "pointer-events-none",
+      );
     });
 
     it("fades the icon and the title, not the border and background", () => {
       render(<SurveyAnswer title="Test" type="agree" isDisabled={true} />);
-      const button = screen.getByRole("button", { name: "Test" });
-      expect(getIcon().parentElement).toHaveClass("opacity-50", "saturate-0");
+      expect(getIcon()).toHaveClass("opacity-50", "saturate-0");
       expect(screen.getByText("Test")).toHaveClass("opacity-50");
       expect(screen.getByText("Test")).not.toHaveClass("saturate-0");
-      expect(button).not.toHaveClass("opacity-50");
-      expect(button).toHaveClass("border-gi-dark-ash", "bg-background");
+      expect(getButton()).not.toHaveClass("opacity-50");
+      expect(getButton()).toHaveClass("border-gi-dark-ash", "bg-background");
     });
   });
 
   describe("given an enabled answer", () => {
     it("does not fade the icon or the title", () => {
       render(<SurveyAnswer title="Test" type="agree" />);
-      expect(getIcon().parentElement).not.toHaveClass("opacity-50");
+      expect(getIcon()).not.toHaveClass("opacity-50");
       expect(screen.getByText("Test")).not.toHaveClass("opacity-50");
     });
 
     it("draws the light border when it is not selected", () => {
       render(<SurveyAnswer title="Test" type="custom-selectable" />);
-      expect(screen.getByRole("button", { name: "Test" })).toHaveClass(
-        "border-gi-dark-ash",
-      );
+      expect(getButton()).toHaveClass("border-gi-dark-ash");
     });
 
     it("draws the dark border when it is selected", () => {
       render(<SurveyAnswer title="Test" type="custom-selectable" isSelected />);
-      const button = screen.getByRole("button", { name: "Test" });
-      expect(button).toHaveClass("border-gi-dark-gray");
-      expect(button).not.toHaveClass("border-gi-dark-ash");
+      expect(getButton()).toHaveClass("border-gi-dark-gray");
+      expect(getButton()).not.toHaveClass("border-gi-dark-ash");
+    });
+  });
+
+  describe("given any answer", () => {
+    it("keeps the frame's 16px inset as 15px of padding next to the 1px border", () => {
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      expect(getButton()).toHaveClass("border", "p-[15px]");
+      expect(getButton()).not.toHaveClass("p-4", "px-4");
+    });
+
+    it("sets the title in the design's 19px line", () => {
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      expect(screen.getByText("Test")).toHaveClass("leading-[19px]");
     });
   });
 
@@ -297,16 +360,13 @@ describe("<SurveyAnswer />", () => {
 
     it("renders the whole title", () => {
       render(<SurveyAnswer title={LONG_TITLE} type="custom-selectable" />);
-      expect(
-        screen.getByRole("button", { name: LONG_TITLE }),
-      ).toBeInTheDocument();
+      expect(getButton(LONG_TITLE)).toBeInTheDocument();
     });
 
     it("keeps 56px as the minimum height instead of a fixed height", () => {
       render(<SurveyAnswer title={LONG_TITLE} type="custom-selectable" />);
-      const button = screen.getByRole("button", { name: LONG_TITLE });
-      expect(button).toHaveClass("min-h-14");
-      expect(button).not.toHaveClass("h-14");
+      expect(getButton(LONG_TITLE)).toHaveClass("min-h-14");
+      expect(getButton(LONG_TITLE)).not.toHaveClass("h-14");
     });
 
     it("lets the title wrap, also inside a single long word", () => {
@@ -320,15 +380,18 @@ describe("<SurveyAnswer />", () => {
   describe("accessibility", () => {
     it("names the button after its title alone", () => {
       render(<SurveyAnswer title="Zgadzam się" type="agree" />);
-      expect(
-        screen.getByRole("button", { name: "Zgadzam się" }),
-      ).toBeInTheDocument();
+      expect(getButton("Zgadzam się")).toBeInTheDocument();
     });
 
     it("hides the decorative icon from assistive technology", () => {
       render(<SurveyAnswer title="Zgadzam się" type="agree" />);
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
       expect(getIcon()).toHaveAttribute("alt", "");
+    });
+
+    it("hides the ripple from assistive technology", () => {
+      render(<SurveyAnswer title="Zgadzam się" type="agree" />);
+      expect(getRipple()).toHaveAttribute("aria-hidden", "true");
     });
 
     it("exposes an unselected custom-selectable answer as not pressed", () => {
@@ -355,9 +418,25 @@ describe("<SurveyAnswer />", () => {
 
     it("gives the other answer types no pressed state", () => {
       render(<SurveyAnswer title="Zgadzam się" type="agree" isSelected />);
-      expect(
-        screen.getByRole("button", { name: "Zgadzam się" }),
-      ).not.toHaveAttribute("aria-pressed");
+      expect(getButton("Zgadzam się")).not.toHaveAttribute("aria-pressed");
+    });
+
+    it.each(
+      ANSWER_TYPES,
+    )("shows a 2px gi-primary focus outline outside the border for %s", (type) => {
+      render(<SurveyAnswer title="Test" type={type} />);
+      expect(getButton()).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-gi-primary",
+      );
+    });
+
+    it("can be focused from the keyboard", async () => {
+      const user = userEvent.setup();
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      await user.tab();
+      expect(getButton()).toHaveFocus();
     });
   });
 });
