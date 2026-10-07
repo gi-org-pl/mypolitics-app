@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { OrientationResponse } from "@/services/api/schemas/orientation";
+import { orientationResponseSchema } from "@/services/api/schemas/orientation";
 
 import { toQuizOrientation } from "./toQuizOrientation";
 
@@ -8,16 +8,19 @@ const official = { isOfficialQuiz: true };
 const community = { isOfficialQuiz: false };
 
 const read = (
-  response: Partial<OrientationResponse>,
+  response: Record<string, unknown>,
   options = official,
 ): ReturnType<typeof toQuizOrientation> =>
-  toQuizOrientation({ id: "a", ...response }, options);
+  toQuizOrientation(
+    orientationResponseSchema.parse({ id: "a", ...response }),
+    options,
+  );
 
 describe("toQuizOrientation()", () => {
   describe("given plain fields", () => {
     it("maps id, generalName, logoUrl, color, description and explanation", () => {
       expect(
-        toQuizOrientation(
+        read(
           {
             id: "cd7c4031",
             type: "PARTY",
