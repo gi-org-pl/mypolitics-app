@@ -106,6 +106,14 @@ export const HighlightedWithoutBadge: Story = {
   },
 };
 
+export const HighlightedImageOnNarrowOnly: Story = {
+  args: {
+    ...HighlightedWithoutBadge.args,
+    backgroundUrl: myPoliticsBackground,
+    isImageHiddenOnWide: true,
+  },
+};
+
 export const BadgeAndTitle: Story = {
   args: {
     title: "Generacja Innowacja",
@@ -139,6 +147,13 @@ export const DisabledButton: Story = {
     title: "Wyborczy 2023",
     logoUrl: wyborczyLogo,
     isButtonDisabled: true,
+  },
+};
+
+export const LogoFailsToLoad: Story = {
+  args: {
+    title: "Wyborczy 2023",
+    logoUrl: "data:image/png;base64,",
   },
 };
 

@@ -15,6 +15,7 @@ export const QuizCard = ({
   tags,
   isHighlighted = false,
   isAlwaysExpanded = false,
+  isImageHiddenOnWide = false,
   isShowStartText = false,
   isButtonLoading = false,
   isButtonDisabled = false,
@@ -30,6 +31,7 @@ export const QuizCard = ({
     tags,
     isHighlighted,
     isAlwaysExpanded,
+    isImageHiddenOnWide,
     onCardClick,
   });
 
@@ -43,13 +45,17 @@ export const QuizCard = ({
       onClick={view.onCardClick}
     >
       {view.imageUrl && (
-        <QuizCardImage url={view.imageUrl} isTall={view.isOpen} />
+        <QuizCardImage
+          url={view.imageUrl}
+          isTall={view.isOpen}
+          isHiddenOnWideScreen={isImageHiddenOnWide}
+        />
       )}
 
       {view.badge && (
         <QuizCardBadge
           text={view.badge}
-          isBelowImage={view.imageUrl !== undefined}
+          placement={view.badgePlacement}
           isHighlighted={isHighlighted}
         />
       )}

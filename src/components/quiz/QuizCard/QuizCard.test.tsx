@@ -137,6 +137,37 @@ describe("<QuizCard />", () => {
     });
   });
 
+  describe("given a logoUrl but no title", () => {
+    it("renders the logo as a decorative image outside any heading", () => {
+      renderCard({ logoUrl: LOGO_URL });
+
+      expect(within(getCard()).getByRole("presentation")).toHaveAttribute(
+        "src",
+        LOGO_URL,
+      );
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    });
+
+    it("renders no empty heading for a title of whitespace only either", () => {
+      renderCard({ logoUrl: LOGO_URL, title: " \n " });
+
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a logoUrl that fails to load", () => {
+    it("renders the title as text in place of the logo", () => {
+      renderCard({ title: TITLE, logoUrl: LOGO_URL });
+
+      fireEvent.error(screen.getByRole("img", { name: TITLE }));
+
+      expect(screen.getByRole("heading", { name: TITLE })).toHaveTextContent(
+        TITLE,
+      );
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+  });
+
   describe("given a backgroundUrl", () => {
     it("renders the image as decorative", () => {
       renderCard({ title: TITLE, backgroundUrl: BACKGROUND_URL });
@@ -210,6 +241,66 @@ describe("<QuizCard />", () => {
         isOpenOnWideScreen: false,
       });
     });
+
+    it("shows the image at every width unless told otherwise", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL });
+
+      expect(getImageProps()).toMatchObject({ isHiddenOnWideScreen: false });
+    });
+  });
+
+  describe("given a backgroundUrl and isImageHiddenOnWide", () => {
+    it("renders the same decorative image, for CSS to hide on a wide screen", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL, isImageHiddenOnWide: true });
+
+      expect(within(getCard()).getByRole("presentation")).toHaveAttribute(
+        "src",
+        BACKGROUND_URL,
+      );
+      expect(getImageProps()).toMatchObject({ isHiddenOnWideScreen: true });
+    });
+
+    it("behaves on a wide screen like a card without an image: open, without a chevron", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL, isImageHiddenOnWide: true });
+
+      expect(getHeaderProps()).toMatchObject({ isOpenOnWideScreen: true });
+      expect(getBodyProps()).toMatchObject({ isOpenOnWideScreen: true });
+    });
+
+    it("still starts collapsed with its chevron on a narrow screen", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL, isImageHiddenOnWide: true });
+
+      expect(
+        screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
+      ).toBeInTheDocument();
+      expect(getBodyProps()).toMatchObject({ isOpen: false });
+      expect(getImageProps()).toMatchObject({ isTall: false });
+    });
+
+    it("stays open everywhere when the card is highlighted as well", () => {
+      renderCard({
+        backgroundUrl: BACKGROUND_URL,
+        isImageHiddenOnWide: true,
+        isHighlighted: true,
+      });
+
+      expect(getButtonLabels()).toEqual([PLAY_NAME]);
+      expect(getBodyProps()).toMatchObject({ isOpen: true });
+      expect(getImageProps()).toMatchObject({
+        isTall: true,
+        isHiddenOnWideScreen: true,
+      });
+    });
+  });
+
+  describe("given isImageHiddenOnWide but no backgroundUrl", () => {
+    it("renders no image and changes nothing else", () => {
+      renderCard({ title: TITLE, isImageHiddenOnWide: true });
+
+      expect(QuizCardImage).not.toHaveBeenCalled();
+      expect(getHeaderProps()).toMatchObject({ isOpenOnWideScreen: true });
+      expect(getBodyProps()).toMatchObject({ isOpenOnWideScreen: true });
+    });
   });
 
   describe("given no backgroundUrl", () => {
@@ -243,13 +334,26 @@ describe("<QuizCard />", () => {
     it("asks for the badge of the card's top edge when there is no image", () => {
       renderCard({ title: TITLE, cta: CTA });
 
-      expect(getBadgeProps()).toMatchObject({ isBelowImage: false });
+      expect(getBadgeProps()).toMatchObject({ placement: "top" });
     });
 
     it("asks for the badge of the image's bottom edge when there is one", () => {
       renderCard({ title: TITLE, cta: CTA, backgroundUrl: BACKGROUND_URL });
 
-      expect(getBadgeProps()).toMatchObject({ isBelowImage: true });
+      expect(getBadgeProps()).toMatchObject({ placement: "belowImage" });
+    });
+
+    it("asks for the badge that moves to the top on a wide screen when the image is hidden there", () => {
+      renderCard({
+        title: TITLE,
+        cta: CTA,
+        backgroundUrl: BACKGROUND_URL,
+        isImageHiddenOnWide: true,
+      });
+
+      expect(getBadgeProps()).toMatchObject({
+        placement: "belowImageOnNarrowScreen",
+      });
     });
   });
 

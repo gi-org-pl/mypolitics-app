@@ -116,11 +116,57 @@ describe("useQuizCardView()", () => {
       expect(result.current.imageUrl).toBe("/assets/lata-90.png");
     });
 
+    it("places the badge below the image", () => {
+      const { result } = renderView({ backgroundUrl: "/assets/lata-90.png" });
+
+      expect(result.current.badgePlacement).toBe("belowImage");
+    });
+
     it("still starts collapsed and can be toggled", () => {
       const { result } = renderView({ backgroundUrl: "/assets/lata-90.png" });
 
       expect(result.current.isOpen).toBe(false);
       expect(result.current.isCollapsible).toBe(true);
+    });
+  });
+
+  describe("given a backgroundUrl and isImageHiddenOnWide", () => {
+    it("is open on a wide screen, like a card without an image", () => {
+      const { result } = renderView({
+        backgroundUrl: "/assets/lata-90.png",
+        isImageHiddenOnWide: true,
+      });
+
+      expect(result.current.isOpenOnWideScreen).toBe(true);
+      expect(result.current.imageUrl).toBe("/assets/lata-90.png");
+    });
+
+    it("still starts collapsed and can be toggled", () => {
+      const { result } = renderView({
+        backgroundUrl: "/assets/lata-90.png",
+        isImageHiddenOnWide: true,
+      });
+
+      expect(result.current.isOpen).toBe(false);
+      expect(result.current.isCollapsible).toBe(true);
+    });
+
+    it("places the badge below the image on a narrow screen only", () => {
+      const { result } = renderView({
+        backgroundUrl: "/assets/lata-90.png",
+        isImageHiddenOnWide: true,
+      });
+
+      expect(result.current.badgePlacement).toBe("belowImageOnNarrowScreen");
+    });
+  });
+
+  describe("given isImageHiddenOnWide but no backgroundUrl", () => {
+    it("changes nothing: the badge stays at the top and the card is open on a wide screen", () => {
+      const { result } = renderView({ isImageHiddenOnWide: true });
+
+      expect(result.current.badgePlacement).toBe("top");
+      expect(result.current.isOpenOnWideScreen).toBe(true);
     });
   });
 
