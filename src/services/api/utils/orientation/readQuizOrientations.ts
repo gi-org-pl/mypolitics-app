@@ -25,7 +25,10 @@ export const readQuizOrientations = (
   return Array.from(responsesById.values(), (orientation) => ({
     ...toQuizOrientation(orientation, options),
     linkedOrientationIds: [...new Set(orientation.linkedOrientations)].filter(
-      (id) => id !== orientation.id && responsesById.has(id),
+      (id): id is string =>
+        typeof id === "string" &&
+        id !== orientation.id &&
+        responsesById.has(id),
     ),
   }));
 };

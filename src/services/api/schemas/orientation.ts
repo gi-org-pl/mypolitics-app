@@ -10,7 +10,7 @@ export const orientationResponseSchema = z.object({
   color: text,
   description: text,
   explanation: text,
-  linkedOrientations: z.array(z.string()).nullish().catch(undefined),
+  linkedOrientations: z.array(z.unknown()).nullish().catch(undefined),
   surveyId: text,
 });
 

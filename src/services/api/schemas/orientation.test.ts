@@ -71,13 +71,13 @@ describe("orientationResponseSchema", () => {
       });
     });
 
-    it("reads a list of links with an item that is not text as absent", () => {
+    it("keeps a list of links whatever its items are", () => {
       expect(
         orientationResponseSchema.parse({
           id: "cd7c4031",
           linkedOrientations: ["c00d6c51", 7],
         }).linkedOrientations,
-      ).toBeUndefined();
+      ).toEqual(["c00d6c51", 7]);
     });
   });
 

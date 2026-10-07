@@ -169,6 +169,15 @@ describe("readQuizOrientations()", () => {
       ).toEqual([[]]);
     });
 
+    it("drops a link that is not text and keeps the others", () => {
+      expect(
+        getLinks([
+          { id: "a", linkedOrientations: [7, "b", null, { id: "b" }] },
+          { id: "b" },
+        ])[0],
+      ).toEqual(["b"]);
+    });
+
     it("keeps a repeated link once", () => {
       expect(
         getLinks([
