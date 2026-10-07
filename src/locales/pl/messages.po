@@ -12,3 +12,248 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Plural-Forms: \n"
+
+#: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
+msgid "{label} (otwiera się w nowej karcie)"
+msgstr "{label} (otwiera się w nowej karcie)"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:52
+msgid "{name}: {quadrant}"
+msgstr "{name}: {quadrant}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+msgid "{name}: {value}%"
+msgstr "{name}: {value}%"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+msgid "{name}: brak wyniku"
+msgstr "{name}: brak wyniku"
+
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
+#: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
+msgid "{startName} / {endName}"
+msgstr "{startName} / {endName}"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:40
+msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
+msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
+
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+msgid "{trait} - tylko {name}"
+msgstr "{trait} - tylko {name}"
+
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+msgid "{trait} - wspólna z: {name}"
+msgstr "{trait} - wspólna z: {name}"
+
+#: src/components/results/ResultsHeader/ResultsHeaderConfidence/ResultsHeaderConfidence.tsx:23
+msgid "{value}% pewności"
+msgstr "{value}% pewności"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:41
+msgid "{xAxis}: {x}, {yAxis}: {y}"
+msgstr "{xAxis}: {x}, {yAxis}: {y}"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:13
+msgid "© {currentYear}"
+msgstr "© {currentYear}"
+
+#: src/components/results/AxisRow/AxisRow.tsx:29
+msgid "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
+msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
+
+#: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:46
+msgid "Brak dopasowania"
+msgstr "Brak dopasowania"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
+#: src/components/results/NolanChart/utils/useNolanTitle.ts:20
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+msgid "Brak wyniku"
+msgstr "Brak wyniku"
+
+#: src/components/results/Traits/Traits.tsx:37
+msgid "Brak zdobytych cech"
+msgstr "Brak zdobytych cech"
+
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
+msgid "Debaty"
+msgstr "Debaty"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:24
+msgid "Generacja Innowacja"
+msgstr "Generacja Innowacja"
+
+#: src/components/shared/Error404/Error404.tsx:14
+msgid "Ilustracja misia — błąd 404"
+msgstr "Ilustracja misia — błąd 404"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
+msgid "Informacje"
+msgstr "Informacje"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
+msgid "Informacje: {name}"
+msgstr "Informacje: {name}"
+
+#: src/components/shared/Error404/Error404.tsx:27
+msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
+
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:16
+msgid "myPolitics"
+msgstr "myPolitics"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "mypolitics banner background"
+msgstr "mypolitics banner background"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
+msgid "mypolitics banner content"
+msgstr "mypolitics banner content"
+
+#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
+msgid "Nawigacja główna"
+msgstr "Nawigacja główna"
+
+#: src/components/shared/Footer/FooterLegal/FooterLegal.tsx:12
+msgid "Nawigacja w stopce"
+msgstr "Nawigacja w stopce"
+
+#: src/components/shared/Footer/Footer.constants.ts:15
+msgid "O nas"
+msgstr "O nas"
+
+#: src/components/shared/Footer/Footer.constants.ts:59
+msgid "Odwiedź nasz kanał na YouTube"
+msgstr "Odwiedź nasz kanał na YouTube"
+
+#: src/components/shared/Footer/Footer.constants.ts:23
+msgid "Odwiedź nasz profil na Facebooku"
+msgstr "Odwiedź nasz profil na Facebooku"
+
+#: src/components/shared/Footer/Footer.constants.ts:53
+msgid "Odwiedź nasz profil na GitHub"
+msgstr "Odwiedź nasz profil na GitHub"
+
+#: src/components/shared/Footer/Footer.constants.ts:35
+msgid "Odwiedź nasz profil na Instagramie"
+msgstr "Odwiedź nasz profil na Instagramie"
+
+#: src/components/shared/Footer/Footer.constants.ts:41
+msgid "Odwiedź nasz profil na LinkedIn"
+msgstr "Odwiedź nasz profil na LinkedIn"
+
+#: src/components/shared/Footer/Footer.constants.ts:47
+msgid "Odwiedź nasz profil na Telegramie"
+msgstr "Odwiedź nasz profil na Telegramie"
+
+#: src/components/shared/Footer/Footer.constants.ts:29
+msgid "Odwiedź nasz profil na X"
+msgstr "Odwiedź nasz profil na X"
+
+#: src/components/shared/Header/Header.tsx:37
+msgid "Otwórz menu nawigacji"
+msgstr "Otwórz menu nawigacji"
+
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
+msgid "Pełny opis"
+msgstr "Pełny opis"
+
+#: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
+msgid "Pokaż grupę"
+msgstr "Pokaż grupę"
+
+#: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
+msgid "Pokaż grupę: {name}"
+msgstr "Pokaż grupę: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię"
+msgstr "Pokaż kategorię"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię: {name}"
+msgstr "Pokaż kategorię: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż mniej"
+msgstr "Pokaż mniej"
+
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Pokaż osie"
+msgstr "Pokaż osie"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż wszystkie"
+msgstr "Pokaż wszystkie"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
+msgid "porównanie z {name}: {value}%"
+msgstr "porównanie z {name}: {value}%"
+
+#: src/components/shared/Footer/Footer.constants.ts:14
+msgid "Prywatność"
+msgstr "Prywatność"
+
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:29
+msgid "Quizy"
+msgstr "Quizy"
+
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:47
+msgid "Ranking"
+msgstr "Ranking"
+
+#: src/components/shared/Footer/Footer.constants.ts:13
+msgid "Regulamin"
+msgstr "Regulamin"
+
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
+msgid "Sondaże"
+msgstr "Sondaże"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
+msgid "Statystyki"
+msgstr "Statystyki"
+
+#: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
+msgid "Statystyki: {name}"
+msgstr "Statystyki: {name}"
+
+#: src/components/shared/Error404/Error404.tsx:39
+#: src/components/shared/Header/Header.tsx:21
+msgid "Strona główna"
+msgstr "Strona główna"
+
+#: src/components/shared/Error404/Error404.tsx:20
+msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
+
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
+msgid "Tryb porównania"
+msgstr "Tryb porównania"
+
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
+msgid "Twoje wyniki"
+msgstr "Twoje wyniki"
+
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Ukryj osie"
+msgstr "Ukryj osie"
+
+#: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
+msgid "Wróć do grup"
+msgstr "Wróć do grup"
+
+#: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
+msgid "Wróć do grup, zamknij grupę: {name}"
+msgstr "Wróć do grup, zamknij grupę: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
+msgid "Wróć do kategorii"
+msgstr "Wróć do kategorii"
+
+#: src/components/shared/Header/Header.tsx:37
+msgid "Zamknij menu nawigacji"
+msgstr "Zamknij menu nawigacji"
