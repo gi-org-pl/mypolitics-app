@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
+msgid "{label} (otwiera się w nowej karcie)"
+msgstr "{label} (opens in a new tab)"
+
 #: src/components/results/NolanChart/utils/useMapDescription.ts:52
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
@@ -42,6 +46,10 @@ msgstr "{trait} - only {name}"
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - shared with {name}"
 
+#: src/components/results/ResultsHeader/ResultsHeaderConfidence/ResultsHeaderConfidence.tsx:23
+msgid "{value}% pewności"
+msgstr "{value}% confidence"
+
 #: src/components/results/NolanChart/utils/useMapDescription.ts:41
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
@@ -54,6 +62,12 @@ msgstr "© {currentYear}"
 msgid "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 
+#: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:45
+msgid "Brak dopasowania"
+msgstr "No match"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:26
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:20
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
@@ -135,6 +149,10 @@ msgstr "Visit our X profile"
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
+msgid "Pełny opis"
+msgstr "Full description"
+
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
 msgstr "Show group"
@@ -143,9 +161,25 @@ msgstr "Show group"
 msgid "Pokaż grupę: {name}"
 msgstr "Show group: {name}"
 
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię"
+msgstr "Show category"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+msgid "Pokaż kategorię: {name}"
+msgstr "Show category: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż mniej"
+msgstr "Show less"
+
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Pokaż osie"
 msgstr "Show axes"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
+msgid "Pokaż wszystkie"
+msgstr "Show all"
 
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
@@ -158,6 +192,10 @@ msgstr "Privacy"
 #: src/components/shared/Header/Header.constants.ts:18
 msgid "Quizy"
 msgstr ""
+
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:47
+msgid "Ranking"
+msgstr "Ranking"
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
@@ -184,6 +222,14 @@ msgstr ""
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr ""
 
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
+msgid "Tryb porównania"
+msgstr "Comparison mode"
+
+#: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
+msgid "Twoje wyniki"
+msgstr "Your results"
+
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
 msgstr "Hide axes"
@@ -195,6 +241,10 @@ msgstr "Back to groups"
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup, zamknij grupę: {name}"
 msgstr "Back to groups, close group: {name}"
+
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
+msgid "Wróć do kategorii"
+msgstr "Back to categories"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
