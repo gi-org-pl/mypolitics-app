@@ -44,6 +44,15 @@ describe("<SurveyQuestionStatement />", () => {
       expect(occurrences[1]).toHaveClass("underline");
     });
 
+    it("draws it heavier than the rest of the statement", () => {
+      renderStatement("Obraza uczuć religijnych nie powinna być karalna.");
+
+      expect(screen.getByText("nie")).toHaveClass("font-black");
+      expect(screen.getByText("powinna być karalna.")).not.toHaveClass(
+        "font-black",
+      );
+    });
+
     it("leaves the rest of the statement without an underline", () => {
       renderStatement("Obraza uczuć religijnych nie powinna być karalna.");
 
