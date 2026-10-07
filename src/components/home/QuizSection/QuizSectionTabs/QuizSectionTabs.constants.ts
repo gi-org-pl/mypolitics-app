@@ -1,3 +1,14 @@
+import { msg } from "@lingui/core/macro";
+
+import type { QuizTabOption } from "./QuizSectionTabs.types";
+
+// The tabs in the order they are drawn; the first one lists every quiz.
+export const QUIZ_TABS: QuizTabOption[] = [
+  { value: "all", label: msg`Wszystkie` },
+  { value: "electoral", label: msg`Wyborcze` },
+  { value: "social", label: msg`Społecznościowe` },
+];
+
 // Athena's Tabs is an underlined bar; the design draws the tabs as pills. The
 // tab list keeps Athena's roles and keys and only changes its look.
 

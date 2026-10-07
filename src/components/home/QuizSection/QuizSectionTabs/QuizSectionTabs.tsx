@@ -1,8 +1,7 @@
 import { Tabs } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 
-import { QUIZ_TABS } from "../QuizSection.constants";
-import { TABS_CLASS_NAME } from "./QuizSectionTabs.constants";
+import { QUIZ_TABS, TABS_CLASS_NAME } from "./QuizSectionTabs.constants";
 import type { QuizSectionTabsProps } from "./QuizSectionTabs.types";
 import { toQuizTab } from "./utils/toQuizTab";
 

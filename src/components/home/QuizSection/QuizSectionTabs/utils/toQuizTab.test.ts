@@ -12,7 +12,7 @@ describe("toQuizTab", () => {
   });
 
   describe("when the value is not a tab", () => {
-    it("returns the default tab", () => {
+    it("returns the first tab", () => {
       expect(toQuizTab("debates")).toBe("all");
       expect(toQuizTab("")).toBe("all");
     });

@@ -398,7 +398,7 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
 msgid "Rodzaje quizów"
 msgstr "Rodzaje quizów"
 
@@ -418,7 +418,7 @@ msgstr "Rozwiń"
 msgid "Sondaże"
 msgstr "Sondaże"
 
-#: src/components/home/QuizSection/QuizSection.constants.ts:10
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:9
 msgid "Społecznościowe"
 msgstr "Społecznościowe"
 
@@ -471,11 +471,11 @@ msgstr "Wróć do grup, zamknij grupę: {name}"
 msgid "Wróć do kategorii"
 msgstr "Wróć do kategorii"
 
-#: src/components/home/QuizSection/QuizSection.constants.ts:8
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:7
 msgid "Wszystkie"
 msgstr "Wszystkie"
 
-#: src/components/home/QuizSection/QuizSection.constants.ts:9
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:8
 msgid "Wyborcze"
 msgstr "Wyborcze"
 

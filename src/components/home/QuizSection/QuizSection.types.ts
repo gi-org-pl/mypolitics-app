@@ -1,13 +1,6 @@
-import type { MessageDescriptor } from "@lingui/core";
-
 import type { HomeQuiz, QuizCategory } from "@/types/home";
 
 export type QuizTab = "all" | QuizCategory;
-
-export interface QuizTabOption {
-  value: QuizTab;
-  label: MessageDescriptor;
-}
 
 export interface TabPanelIdentity {
   id: string;
