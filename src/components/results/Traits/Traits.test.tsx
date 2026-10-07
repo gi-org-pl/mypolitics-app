@@ -1,6 +1,6 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -140,7 +140,7 @@ describe("<Traits />", () => {
     it("renders a shared trait solid, with the other party avatar", () => {
       renderComparison();
 
-      expect(getBody("Pro-choice")).not.toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody("Pro-choice")).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
       expect(queryAvatar("Pro-choice")?.querySelector("img")).toHaveAttribute(
         "src",
         friend.imageUrl,
@@ -150,14 +150,14 @@ describe("<Traits />", () => {
     it("renders a trait only the other party earned hatched, with their avatar", () => {
       renderComparison();
 
-      expect(getBody("Pro-Euro")).toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody("Pro-Euro")).toHaveClass(HATCH_LIGHT_CLASS_NAME);
       expect(queryAvatar("Pro-Euro")).toBeInTheDocument();
     });
 
     it("renders a trait only the taker earned solid, with no avatar", () => {
       renderComparison();
 
-      expect(getBody("Anarchizm")).not.toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody("Anarchizm")).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
       expect(queryAvatar("Anarchizm")).not.toBeInTheDocument();
     });
 
@@ -243,7 +243,7 @@ describe("<Traits />", () => {
       expect(screen.queryByText(EMPTY_LINE)).not.toBeInTheDocument();
       expect(screen.getAllByTestId("trait-pill")).toHaveLength(2);
       for (const body of screen.getAllByTestId("trait-pill-body")) {
-        expect(body).toHaveClass(HATCH_CLASS_NAME);
+        expect(body).toHaveClass(HATCH_LIGHT_CLASS_NAME);
       }
       expect(screen.getAllByTestId("trait-pill-avatar")).toHaveLength(2);
     });

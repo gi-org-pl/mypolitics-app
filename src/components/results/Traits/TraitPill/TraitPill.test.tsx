@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import type { AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -40,7 +40,7 @@ describe("<TraitPill />", () => {
 
       expect(getBody().style.getPropertyValue("--trait-color")).toBe("#192430");
       expect(getBody()).toHaveClass("bg-(--trait-color)", "text-white");
-      expect(getBody()).not.toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody()).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
     });
 
     it("renders the icon as decoration, before the name", () => {
@@ -79,7 +79,7 @@ describe("<TraitPill />", () => {
         <TraitPill item={{ ...anarchism, holder: "both" }} party={friend} />,
       );
 
-      expect(getBody()).not.toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody()).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
       expect(
         screen.getByTestId("trait-pill-avatar").querySelector("img"),
       ).toHaveAttribute("src", friend.imageUrl);
@@ -106,7 +106,10 @@ describe("<TraitPill />", () => {
         <TraitPill item={{ ...anarchism, holder: "other" }} party={friend} />,
       );
 
-      expect(getBody()).toHaveClass(HATCH_CLASS_NAME, "bg-(--trait-color)");
+      expect(getBody()).toHaveClass(
+        HATCH_LIGHT_CLASS_NAME,
+        "bg-(--trait-color)",
+      );
       expect(screen.getByTestId("trait-pill-avatar")).toBeInTheDocument();
     });
 
@@ -139,7 +142,7 @@ describe("<TraitPill />", () => {
     it("renders a trait marked as theirs like the taker own", () => {
       renderWithI18n(<TraitPill item={{ ...anarchism, holder: "other" }} />);
 
-      expect(getBody()).not.toHaveClass(HATCH_CLASS_NAME);
+      expect(getBody()).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
       expect(screen.queryByTestId("trait-pill-avatar")).not.toBeInTheDocument();
       expect(screen.getByRole("listitem")).toHaveTextContent(/^Anarchizm$/);
     });
