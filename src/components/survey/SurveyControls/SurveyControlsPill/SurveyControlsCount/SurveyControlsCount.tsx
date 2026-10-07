@@ -1,16 +1,16 @@
 import { useLingui } from "@lingui/react/macro";
 
 import cardQuestionIcon from "@/assets/icons/card-question.svg";
+import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
+import { NUMBER_ANIMATION_MS } from "../../SurveyControls.constants";
+import type { SurveyControlsCountProps } from "../../SurveyControls.types";
 import {
-  NUMBER_ANIMATION_MS,
   NUMBER_CLASS_NAME,
   NUMBER_ENTER_CLASS_NAME,
   NUMBER_LEAVE_CLASS_NAME,
   PILL_ICON_CLASS_NAME,
-} from "../../SurveyControls.constants";
-import type { SurveyControlsCountProps } from "../../SurveyControls.types";
-import { getIconMaskStyle } from "../../utils/getIconMaskStyle";
+} from "./SurveyControlsCount.constants";
 import { useNumberRoll } from "./utils/useNumberRoll";
 
 export const SurveyControlsCount = ({ count }: SurveyControlsCountProps) => {

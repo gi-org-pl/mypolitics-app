@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 
 import arrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import resetIcon from "@/assets/icons/reset.svg";
+import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
 import {
   BUTTON_CLASS_NAME,
@@ -11,7 +12,6 @@ import {
 import type { SurveyControlsProps } from "./SurveyControls.types";
 import { SurveyControlsPill } from "./SurveyControlsPill/SurveyControlsPill";
 import { SurveyControlsResetModal } from "./SurveyControlsResetModal/SurveyControlsResetModal";
-import { getIconMaskStyle } from "./utils/getIconMaskStyle";
 import { useResetDialog } from "./utils/useResetDialog";
 
 export const SurveyControls = ({

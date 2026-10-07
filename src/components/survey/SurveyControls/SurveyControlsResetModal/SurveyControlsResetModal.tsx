@@ -3,17 +3,17 @@ import { useLingui } from "@lingui/react/macro";
 import { useId } from "react";
 
 import resetIcon from "@/assets/icons/reset.svg";
+import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 import { toTrimmedText } from "@/utils/text/toTrimmedText";
 
+import { BUTTON_ICON_CLASS_NAME } from "../SurveyControls.constants";
+import type { SurveyControlsResetModalProps } from "../SurveyControls.types";
 import {
-  BUTTON_ICON_CLASS_NAME,
   RESET_ACTION_CLASS_NAME,
   RESET_DESCRIPTION_CLASS_NAME,
   RESET_MODAL_CLASS_NAME,
   RESET_TITLE_CLASS_NAME,
-} from "../SurveyControls.constants";
-import type { SurveyControlsResetModalProps } from "../SurveyControls.types";
-import { getIconMaskStyle } from "../utils/getIconMaskStyle";
+} from "./SurveyControlsResetModal.constants";
 
 export const SurveyControlsResetModal = ({
   quizName: rawQuizName,
