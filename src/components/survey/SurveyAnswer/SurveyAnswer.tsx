@@ -50,6 +50,7 @@ export function SurveyAnswer({
       ref={buttonRef}
       type="button"
       disabled={isDisabled}
+      aria-pressed={type === "custom-selectable" ? isSelected : undefined}
       onClick={handleClick}
       style={{ ...style, borderColor }}
       className={[
@@ -87,7 +88,7 @@ export function SurveyAnswer({
         ref={iconRef}
         className="shrink-0 flex items-center justify-center w-6 h-6 relative z-10"
       >
-        <img src={iconName} alt="Ikona odpowiedzi" className="w-6 h-6" />
+        <img src={iconName} alt="" className="w-6 h-6" />
       </span>
       <span className="grow relative z-10">{title}</span>
     </button>

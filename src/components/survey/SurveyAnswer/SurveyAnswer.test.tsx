@@ -21,6 +21,8 @@ vi.mock("../../../assets/icons/x-strong.svg", () => ({
   default: "x-strong.svg",
 }));
 
+const getIcon = () => screen.getByRole("presentation");
+
 describe("<SurveyAnswer />", () => {
   describe("given type is strongly-agree", () => {
     it("renders with the bg-background class", () => {
@@ -34,10 +36,7 @@ describe("<SurveyAnswer />", () => {
       render(
         <SurveyAnswer title="Test" type="strongly-agree" onClick={vi.fn()} />,
       );
-      expect(screen.getByRole("img")).toHaveAttribute(
-        "src",
-        "checkmark-strong.svg",
-      );
+      expect(getIcon()).toHaveAttribute("src", "checkmark-strong.svg");
     });
 
     it("renders the title text", () => {
@@ -62,14 +61,14 @@ describe("<SurveyAnswer />", () => {
 
     it("renders the simple checkmark icon", () => {
       render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
-      expect(screen.getByRole("img")).toHaveAttribute("src", "checkmark.svg");
+      expect(getIcon()).toHaveAttribute("src", "checkmark.svg");
     });
   });
 
   describe("given type is disagree", () => {
     it("renders the X icon", () => {
       render(<SurveyAnswer title="Test" type="disagree" onClick={vi.fn()} />);
-      expect(screen.getByRole("img")).toHaveAttribute("src", "x.svg");
+      expect(getIcon()).toHaveAttribute("src", "x.svg");
     });
   });
 
@@ -93,14 +92,14 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByRole("img")).toHaveAttribute("src", "x-strong.svg");
+      expect(getIcon()).toHaveAttribute("src", "x-strong.svg");
     });
   });
 
   describe("given type is custom", () => {
     it("renders the dash icon", () => {
       render(<SurveyAnswer title="Test" type="custom" onClick={vi.fn()} />);
-      expect(screen.getByRole("img")).toHaveAttribute("src", "dash.svg");
+      expect(getIcon()).toHaveAttribute("src", "dash.svg");
     });
   });
 
@@ -114,10 +113,7 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByRole("img")).toHaveAttribute(
-        "src",
-        "circle-empty.svg",
-      );
+      expect(getIcon()).toHaveAttribute("src", "circle-empty.svg");
     });
   });
 
@@ -131,10 +127,7 @@ describe("<SurveyAnswer />", () => {
           onClick={vi.fn()}
         />,
       );
-      expect(screen.getByRole("img")).toHaveAttribute(
-        "src",
-        "circle-checked.svg",
-      );
+      expect(getIcon()).toHaveAttribute("src", "circle-checked.svg");
     });
 
     it("applies the bg-background class", () => {
@@ -220,6 +213,50 @@ describe("<SurveyAnswer />", () => {
       const button = container.querySelector("button");
       expect(button).toHaveClass("opacity-50");
       expect(button).toHaveClass("cursor-not-allowed");
+    });
+  });
+
+  describe("accessibility", () => {
+    it("names the button after its title alone", () => {
+      render(<SurveyAnswer title="Zgadzam się" type="agree" />);
+      expect(
+        screen.getByRole("button", { name: "Zgadzam się" }),
+      ).toBeInTheDocument();
+    });
+
+    it("hides the decorative icon from assistive technology", () => {
+      render(<SurveyAnswer title="Zgadzam się" type="agree" />);
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+      expect(getIcon()).toHaveAttribute("alt", "");
+    });
+
+    it("exposes an unselected custom-selectable answer as not pressed", () => {
+      render(
+        <SurveyAnswer
+          title="Ekologia"
+          type="custom-selectable"
+          isSelected={false}
+        />,
+      );
+      expect(
+        screen.getByRole("button", { name: "Ekologia", pressed: false }),
+      ).toBeInTheDocument();
+    });
+
+    it("exposes a selected custom-selectable answer as pressed", () => {
+      render(
+        <SurveyAnswer title="Ekologia" type="custom-selectable" isSelected />,
+      );
+      expect(
+        screen.getByRole("button", { name: "Ekologia", pressed: true }),
+      ).toBeInTheDocument();
+    });
+
+    it("gives the other answer types no pressed state", () => {
+      render(<SurveyAnswer title="Zgadzam się" type="agree" isSelected />);
+      expect(
+        screen.getByRole("button", { name: "Zgadzam się" }),
+      ).not.toHaveAttribute("aria-pressed");
     });
   });
 });
