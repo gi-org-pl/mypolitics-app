@@ -79,6 +79,14 @@ describe("<PromotionBanner />", () => {
         activePromotion.imageUrl.desktop,
       ]);
     });
+
+    it("loads the pictures lazily, so only the displayed one is downloaded", () => {
+      render(<PromotionBanner promotions={[activePromotion]} />);
+
+      for (const image of screen.getAllByRole("img")) {
+        expect(image).toHaveAttribute("loading", "lazy");
+      }
+    });
   });
 
   describe("when several promotions run today", () => {

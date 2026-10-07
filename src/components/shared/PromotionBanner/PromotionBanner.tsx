@@ -18,6 +18,7 @@ export const PromotionBanner = ({
 
   // One picture per width: the two that do not fit the screen are not
   // displayed, so the link has a single image in the accessibility tree.
+  // They load lazily, which keeps the browser from downloading those two.
   return (
     <a
       aria-label={activePromotion.name}
@@ -30,18 +31,21 @@ export const PromotionBanner = ({
         src={activePromotion.imageUrl.mobile}
         alt={activePromotion.name}
         title={activePromotion.name}
+        loading="lazy"
         className="block h-auto w-full object-cover md:hidden"
       />
       <img
         src={activePromotion.imageUrl.tablet}
         alt={activePromotion.name}
         title={activePromotion.name}
+        loading="lazy"
         className="hidden h-auto w-full object-cover md:block lg:hidden"
       />
       <img
         src={activePromotion.imageUrl.desktop}
         alt={activePromotion.name}
         title={activePromotion.name}
+        loading="lazy"
         className="hidden h-auto w-full object-cover lg:block"
       />
     </a>

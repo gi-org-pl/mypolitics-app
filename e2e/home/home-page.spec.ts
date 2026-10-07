@@ -38,14 +38,17 @@ const QUIZ_DESCRIPTION = "Poznaj najbliższych sobie warszawskich polityków!";
 const WIDE_WINDOW = { width: 1280, height: 900 };
 const NARROW_WINDOW = { width: 360, height: 740 };
 
-// Opens the home page and waits for its pictures as well: one that arrives
-// late moves everything below it, and a click made at that moment misses.
+// Opens the home page and waits for the pictures it displays as well: one
+// that arrives late moves everything below it, and a click made at that moment
+// misses. A picture that is not displayed at this width is never downloaded.
 const openHomePage = async (page: Page) => {
   await openPage(page, HOME_PATH);
   await expect
     .poll(() =>
       page.evaluate(() =>
-        Array.from(document.images).every((image) => image.complete),
+        Array.from(document.images).every(
+          (image) => image.complete || image.getClientRects().length === 0,
+        ),
       ),
     )
     .toBe(true);

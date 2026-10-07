@@ -9,7 +9,9 @@ import {
 } from "./FeaturedQuizBanner.constants";
 
 // The banner is a picture frame: it is as wide as its parent and as tall as
-// the parent makes it, and never lower than the picture needs.
+// the parent makes it, and never lower than the picture needs. Its pictures
+// load lazily, so a page that does not display the banner on a narrow screen
+// does not download them there.
 export const FeaturedQuizBanner = () => {
   const { t } = useLingui();
 
@@ -20,6 +22,7 @@ export const FeaturedQuizBanner = () => {
       <img
         src={quizBannerBackground}
         alt=""
+        loading="lazy"
         className="absolute inset-0 size-full object-cover"
       />
 
@@ -27,6 +30,7 @@ export const FeaturedQuizBanner = () => {
         <img
           src={quizBannerContent}
           alt={t`Podgląd wyników quizu myPolitics`}
+          loading="lazy"
           className={`w-auto max-w-none shrink-0 drop-shadow-[0_0_32px_rgba(0,0,0,0.5)] ${FLOAT_CLASS_NAME}`}
         />
       </div>

@@ -29,5 +29,18 @@ describe("<FeaturedQuizBanner />", () => {
       );
       expect(screen.getAllByRole("img")).toHaveLength(1);
     });
+
+    it("loads both pictures lazily, so they are not downloaded while the banner is not displayed", () => {
+      renderWithI18n(<FeaturedQuizBanner />);
+
+      expect(screen.getByRole("img", { name: PREVIEW_NAME })).toHaveAttribute(
+        "loading",
+        "lazy",
+      );
+      expect(screen.getByRole("presentation")).toHaveAttribute(
+        "loading",
+        "lazy",
+      );
+    });
   });
 });
