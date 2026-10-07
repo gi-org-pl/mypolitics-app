@@ -4,9 +4,8 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
-import { EMPHASISED_PHRASES } from "../SurveyQuestion.constants";
 import { SurveyQuestionStatement } from "./SurveyQuestionStatement";
+import { EMPHASISED_PHRASES } from "./SurveyQuestionStatement.constants";
 
 const TEST_LOCALE = "en";
 

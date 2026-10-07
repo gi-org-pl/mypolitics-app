@@ -1,6 +1,6 @@
 import { findWholePhrases } from "@/utils/text/findWholePhrases";
 
-import { EXPLANATION_PREVIEW_ELLIPSIS } from "../../SurveyQuestion.constants";
+import { EXPLANATION_PREVIEW_ELLIPSIS } from "../SurveyQuestionExplanation.constants";
 
 export const getExplanationPreview = (
   explanation: string,

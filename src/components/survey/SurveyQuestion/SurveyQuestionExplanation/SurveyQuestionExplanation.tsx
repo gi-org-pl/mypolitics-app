@@ -6,7 +6,7 @@ import chevronDownIcon from "@/assets/icons/chevron-down.svg";
 import {
   EXPLANATION_FALLBACK,
   EXPLANATION_TRIGGER_PHRASES,
-} from "../SurveyQuestion.constants";
+} from "./SurveyQuestionExplanation.constants";
 import type { SurveyQuestionExplanationProps } from "./SurveyQuestionExplanation.types";
 import { getExplanationPreview } from "./utils/getExplanationPreview";
 

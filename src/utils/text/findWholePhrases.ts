@@ -1,9 +1,6 @@
-import { escapeRegExp } from "./escapeRegExp";
+import type { TextRange } from "@/types/text";
 
-export interface TextRange {
-  start: number;
-  end: number;
-}
+import { escapeRegExp } from "./escapeRegExp";
 
 const WORD_CHARACTER = String.raw`[\p{L}\p{M}\p{N}_]`;
 

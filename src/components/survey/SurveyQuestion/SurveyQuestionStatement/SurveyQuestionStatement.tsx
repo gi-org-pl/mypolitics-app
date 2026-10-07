@@ -2,7 +2,7 @@ import { useLingui } from "@lingui/react";
 
 import { withKeys } from "@/utils/array/withKeys";
 
-import { EMPHASISED_PHRASES } from "../SurveyQuestion.constants";
+import { EMPHASISED_PHRASES } from "./SurveyQuestionStatement.constants";
 import type { SurveyQuestionStatementProps } from "./SurveyQuestionStatement.types";
 import { splitByPhrases } from "./utils/splitByPhrases";
 

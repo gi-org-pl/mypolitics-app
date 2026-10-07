@@ -5,9 +5,8 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
-import { EXPLANATION_TRIGGER_PHRASES } from "../SurveyQuestion.constants";
 import { SurveyQuestionExplanation } from "./SurveyQuestionExplanation";
+import { EXPLANATION_TRIGGER_PHRASES } from "./SurveyQuestionExplanation.constants";
 
 const TEST_LOCALE = "en";
 
