@@ -1,14 +1,13 @@
 import { findWholePhrases } from "@/utils/text/findWholePhrases";
 
-import { EXPLANATION_PREVIEW_ELLIPSIS } from "../SurveyQuestionExplanation.constants";
-
 export const getExplanationPreview = (
   explanation: string,
   triggerPhrases: string[],
+  ellipsis: string,
 ): string | undefined => {
   const firstTrigger = findWholePhrases(explanation, triggerPhrases).at(0);
 
   return firstTrigger
-    ? `${explanation.slice(0, firstTrigger.end)}${EXPLANATION_PREVIEW_ELLIPSIS}`
+    ? `${explanation.slice(0, firstTrigger.end)}${ellipsis}`
     : undefined;
 };

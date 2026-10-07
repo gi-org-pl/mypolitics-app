@@ -13,6 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. Ends the one-line preview of an explanation, right after the trigger phrase, e.g. 'Obraza uczuć religijnych to...'.
+#: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:15
+msgctxt "survey question: explanation preview ellipsis"
+msgid "..."
+msgstr "..."
+
 #: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (otwiera się w nowej karcie)"

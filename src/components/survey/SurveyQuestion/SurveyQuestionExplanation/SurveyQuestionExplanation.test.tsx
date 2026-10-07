@@ -7,7 +7,10 @@ import chevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { SurveyQuestionExplanation } from "./SurveyQuestionExplanation";
-import { EXPLANATION_TRIGGER_PHRASES } from "./SurveyQuestionExplanation.constants";
+import {
+  EXPLANATION_PREVIEW_ELLIPSIS,
+  EXPLANATION_TRIGGER_PHRASES,
+} from "./SurveyQuestionExplanation.constants";
 
 const TEST_LOCALE = "en";
 
@@ -262,6 +265,21 @@ describe("<SurveyQuestionExplanation />", () => {
       renderExplanation();
 
       expect(screen.getByRole("button", { name: FALLBACK })).toBeVisible();
+    });
+  });
+
+  describe("given a locale that translates the ellipsis", () => {
+    it("ends the preview with the ellipsis of that locale", () => {
+      i18n.load(TEST_LOCALE, {
+        [EXPLANATION_TRIGGER_PHRASES[0].id]: "is",
+        [EXPLANATION_PREVIEW_ELLIPSIS.id]: "…",
+      });
+      i18n.activate(TEST_LOCALE);
+      renderExplanation("A concordat is a treaty with the Holy See.");
+
+      expect(
+        screen.getByRole("button", { name: "A concordat is…" }),
+      ).toBeVisible();
     });
   });
 });

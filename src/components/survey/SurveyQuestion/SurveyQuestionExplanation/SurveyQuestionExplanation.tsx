@@ -5,6 +5,7 @@ import chevronDownIcon from "@/assets/icons/chevron-down.svg";
 
 import {
   EXPLANATION_FALLBACK,
+  EXPLANATION_PREVIEW_ELLIPSIS,
   EXPLANATION_TRIGGER_PHRASES,
 } from "./SurveyQuestionExplanation.constants";
 import type { SurveyQuestionExplanationProps } from "./SurveyQuestionExplanation.types";
@@ -20,6 +21,7 @@ export const SurveyQuestionExplanation = ({
     getExplanationPreview(
       explanation,
       EXPLANATION_TRIGGER_PHRASES.map((phrase) => i18n._(phrase)),
+      i18n._(EXPLANATION_PREVIEW_ELLIPSIS),
     ) ?? i18n._(EXPLANATION_FALLBACK);
 
   return (

@@ -12,4 +12,9 @@ export const EXPLANATION_TRIGGER_PHRASES: MessageDescriptor[] = [
 
 export const EXPLANATION_FALLBACK: MessageDescriptor = msg`Sprawdź wyjaśnienie`;
 
-export const EXPLANATION_PREVIEW_ELLIPSIS = "...";
+export const EXPLANATION_PREVIEW_ELLIPSIS: MessageDescriptor = msg({
+  message: "...",
+  context: "survey question: explanation preview ellipsis",
+  comment:
+    "Ends the one-line preview of an explanation, right after the trigger phrase, e.g. 'Obraza uczuć religijnych to...'.",
+});
