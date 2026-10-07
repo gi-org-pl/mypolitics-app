@@ -135,7 +135,7 @@ test.describe("Feature: Application shell", () => {
     });
   });
 
-  test("Scenario: The menu of a narrow window leads to a section", async ({
+  test("Scenario: The menu of a narrow window opens, navigates and closes", async ({
     page,
   }) => {
     const menu = page.getByRole("banner").getByRole("navigation");
@@ -163,7 +163,9 @@ test.describe("Feature: Application shell", () => {
       await menu.getByRole("link", { name: "Quizy" }).click();
     });
 
-    await test.step("Then they are at the quizzes address", async () => {
+    // The quizzes page itself comes with its own task: until it exists, this
+    // scenario checks what the menu does, not what the destination shows.
+    await test.step("Then the app is at the quizzes address", async () => {
       await expect(page).toHaveURL(QUIZZES_PATH);
     });
 
@@ -172,6 +174,18 @@ test.describe("Feature: Application shell", () => {
       await expect(
         page.getByRole("button", { name: OPEN_MENU_NAME }),
       ).toHaveAttribute("aria-expanded", "false");
+    });
+
+    await test.step("When they open the navigation menu again", async () => {
+      await page.getByRole("button", { name: OPEN_MENU_NAME }).click();
+    });
+
+    await test.step("Then the quizzes link is marked as the current page", async () => {
+      await expect(menu.getByRole("link", { name: "Quizy" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+      await expect(menu.locator('[aria-current="page"]')).toHaveCount(1);
     });
   });
 });
