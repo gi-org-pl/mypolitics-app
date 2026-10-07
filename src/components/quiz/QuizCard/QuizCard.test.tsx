@@ -1,640 +1,595 @@
-import { i18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import type { ReactElement } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, screen, within } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
-import { messages as plMessages } from "@/locales/pl/messages";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { QuizCard } from "./QuizCard";
+import {
+  BODY_COLLAPSED_CLASS_NAME,
+  BODY_OPEN_CLASS_NAME,
+  BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME,
+  IMAGE_SHORT_CLASS_NAME,
+  IMAGE_TALL_CLASS_NAME,
+  LOGO_HEIGHT_CLASS_NAMES,
+  TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+} from "./QuizCard.constants";
+import type { QuizCardProps } from "./QuizCard.types";
 
-function mockMatchMedia(matches: boolean): void {
-  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-    matches,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
-}
+const TITLE = "Polskie Lata 90.";
+const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
+const BACKGROUND_URL = "/assets/quiz-card-lata-90.png";
+const CTA = "Kiedyś to było... no właśnie, jak?";
+const DESCRIPTION = "Poznaj najbliższych sobie warszawskich polityków!";
+const TAGS = ["+40K osób", "9 min"];
+const PLAY_NAME = "Rozpocznij quiz";
+const EXPAND_NAME = "Rozwiń";
+const COLLAPSE_NAME = "Zwiń";
 
-function renderWithI18n(ui: ReactElement): ReturnType<typeof render> {
-  i18n.load({ pl: plMessages });
-  i18n.activate("pl");
-  return render(<I18nProvider i18n={i18n}>{ui}</I18nProvider>);
-}
+const renderCard = (props: Partial<QuizCardProps> = {}) =>
+  renderWithI18n(
+    <QuizCard
+      description={DESCRIPTION}
+      tags={TAGS}
+      onButtonClick={vi.fn()}
+      {...props}
+    />,
+  );
 
-const noop = (): void => {};
+const getCard = () => screen.getByRole("article");
+
+// The body is the element the toggle controls; on a card without a toggle it
+// is found through its description.
+const getBody = () => {
+  const bodyId = screen
+    .getByRole("button", { expanded: false })
+    .getAttribute("aria-controls");
+  const body = bodyId ? document.getElementById(bodyId) : null;
+
+  if (!body) {
+    throw new Error("The toggle does not point at a rendered body");
+  }
+
+  return body;
+};
+
+const getChipTexts = () =>
+  screen.getAllByRole("listitem").map((chip) => chip.textContent);
 
 describe("<QuizCard />", () => {
-  beforeEach(() => {
-    mockMatchMedia(false);
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe("given a logoUrl", () => {
-    it("renders the logo image", () => {
-      renderWithI18n(
-        <QuizCard
-          logoUrl="https://example.com/logo.png"
-          title="Quiz title"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders the logo image named after the title", () => {
+      renderCard({ title: TITLE, logoUrl: LOGO_URL });
 
-      const img = screen.getByRole("img", { name: "Quiz title" });
-      expect(img).toHaveAttribute("src", "https://example.com/logo.png");
-      expect(img).toHaveAttribute("height", "32");
+      expect(screen.getByRole("img", { name: TITLE })).toHaveAttribute(
+        "src",
+        LOGO_URL,
+      );
+    });
+
+    it("renders the logo 24 px high unless told otherwise, as in every frame of the design", () => {
+      renderCard({ title: TITLE, logoUrl: LOGO_URL });
+
+      expect(screen.getByRole("img", { name: TITLE })).toHaveClass(
+        LOGO_HEIGHT_CLASS_NAMES[24],
+      );
+    });
+
+    it("renders the logo 32 px high when asked to", () => {
+      renderCard({ title: TITLE, logoUrl: LOGO_URL, logoHeight: 32 });
+
+      expect(screen.getByRole("img", { name: TITLE })).toHaveClass(
+        LOGO_HEIGHT_CLASS_NAMES[32],
+      );
+    });
+
+    it("does not repeat the title as text", () => {
+      renderCard({ title: TITLE, logoUrl: LOGO_URL });
+
+      expect(screen.queryByText(TITLE)).not.toBeInTheDocument();
     });
   });
 
   describe("given no logoUrl but a title", () => {
-    it("renders the title as text logo", () => {
-      renderWithI18n(
-        <QuizCard
-          title="Generacja Innowacja"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders the title as text", () => {
+      renderCard({ title: TITLE });
 
+      expect(screen.getByRole("heading", { name: TITLE })).toHaveTextContent(
+        TITLE,
+      );
+    });
+  });
+
+  describe("given neither a logoUrl nor a title", () => {
+    it("renders the buttons alone", () => {
+      renderCard();
+
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
       expect(
-        screen.getByRole("heading", { level: 2, name: "Generacja Innowacja" }),
-      ).toBeInTheDocument();
+        screen
+          .getAllByRole("button")
+          .map((button) => button.getAttribute("aria-label")),
+      ).toEqual([EXPAND_NAME, PLAY_NAME]);
+    });
+  });
+
+  describe("given a title of whitespace only", () => {
+    it("treats it as absent", () => {
+      renderCard({ title: "   " });
+
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
     });
   });
 
   describe("given a backgroundUrl", () => {
-    it("renders the background image", () => {
-      renderWithI18n(
-        <QuizCard
-          backgroundUrl="https://example.com/bg.jpg"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders the image as decorative", () => {
+      renderCard({ title: TITLE, backgroundUrl: BACKGROUND_URL });
 
-      const bg = document.querySelector(
-        'img[src="https://example.com/bg.jpg"]',
-      ) as HTMLImageElement | null;
-      expect(bg).not.toBeNull();
-      expect(bg).toHaveClass("object-cover");
+      const image = within(getCard()).getByRole("presentation");
+
+      expect(image).toHaveAttribute("src", BACKGROUND_URL);
+      expect(image).toHaveAttribute("alt", "");
+      expect(image).not.toHaveAttribute("aria-hidden");
     });
 
-    describe("on mobile", () => {
-      it("starts collapsed with chevron and expands on click", () => {
-        renderWithI18n(
-          <QuizCard
-            backgroundUrl="https://example.com/bg.jpg"
-            description="Ukryty opis z tłem"
-            tags={["Chip"]}
-            onButtonClick={noop}
-          />,
-        );
+    it("renders the image at the top of the card, above the content", () => {
+      renderCard({ title: TITLE, backgroundUrl: BACKGROUND_URL, cta: CTA });
 
-        expect(
-          screen.getByRole("button", { name: "Rozwiń" }),
-        ).toBeInTheDocument();
+      const image = within(getCard()).getByRole("presentation");
 
-        const grid = screen
-          .getByRole("button", { name: "Rozwiń" })
-          .closest("div")
-          ?.parentElement?.parentElement?.querySelector("[aria-hidden]");
-        expect(grid).toHaveAttribute("aria-hidden", "true");
+      expect(
+        image.compareDocumentPosition(screen.getByText(CTA)) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+      expect(
+        image.compareDocumentPosition(screen.getByRole("heading")) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
 
-        fireEvent.click(screen.getByRole("button", { name: "Rozwiń" }));
+    it("renders the short image while the card is collapsed", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL });
 
-        expect(screen.getByText("Ukryty opis z tłem")).toBeVisible();
-        expect(screen.getByText("Chip")).toBeVisible();
-      });
+      expect(within(getCard()).getByRole("presentation")).toHaveClass(
+        IMAGE_SHORT_CLASS_NAME,
+      );
+    });
 
-      it("uses the default card surface below the hero image", () => {
-        renderWithI18n(
-          <QuizCard
-            backgroundUrl="https://example.com/bg.jpg"
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    it("renders the tall image once the card is open", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL });
 
-        const description = screen.getByText("Opis");
-        const contentBlock = description.closest(".p-4");
-        expect(contentBlock?.className).toContain("bg-gi-ash");
-      });
+      fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
+
+      expect(within(getCard()).getByRole("presentation")).toHaveClass(
+        IMAGE_TALL_CLASS_NAME,
+      );
+    });
+
+    it("renders the tall image on a card that is always open", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL, isAlwaysExpanded: true });
+
+      expect(within(getCard()).getByRole("presentation")).toHaveClass(
+        IMAGE_TALL_CLASS_NAME,
+      );
+    });
+
+    it("keeps the toggle and the collapsed body on a wide screen too", () => {
+      renderCard({ backgroundUrl: BACKGROUND_URL });
+
+      const body = getBody();
+
+      expect(screen.getByRole("button", { name: EXPAND_NAME })).not.toHaveClass(
+        TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+      );
+      for (const className of BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" ")) {
+        expect(body).not.toHaveClass(className);
+      }
+    });
+  });
+
+  describe("given no backgroundUrl", () => {
+    it("renders no image", () => {
+      renderCard({ title: TITLE });
+
+      expect(
+        within(getCard()).queryByRole("presentation"),
+      ).not.toBeInTheDocument();
     });
   });
 
   describe("given a cta", () => {
-    it("renders the CTA badge", () => {
-      renderWithI18n(
-        <QuizCard
-          cta="Nowy quiz"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders the badge", () => {
+      renderCard({ title: TITLE, cta: CTA });
 
-      expect(screen.getByText("Nowy quiz")).toBeInTheDocument();
+      expect(screen.getByText(CTA)).toBeInTheDocument();
+    });
+
+    it("renders the badge above the header row", () => {
+      renderCard({ title: TITLE, cta: CTA });
+
+      expect(
+        screen
+          .getByText(CTA)
+          .compareDocumentPosition(screen.getByRole("heading")) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
     });
   });
 
-  describe("given description as ReactNode", () => {
-    it("renders formatted body in a div", () => {
-      renderWithI18n(
-        <QuizCard
-          description={
-            <>
-              <b>Bold bit</b> <span>rest</span>
-            </>
-          }
-          tags={[]}
-          onButtonClick={noop}
-        />,
+  describe("given an empty cta", () => {
+    it("renders no badge", () => {
+      renderCard({ title: TITLE, cta: "  " });
+
+      expect(screen.getAllByRole("paragraph")).toHaveLength(1);
+      expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+    });
+  });
+
+  describe("given a description as text", () => {
+    it("renders it as a paragraph", () => {
+      renderCard();
+
+      expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+    });
+  });
+
+  describe("given a description as a node", () => {
+    it("renders it as given, so a bold lead stays bold", () => {
+      renderCard({
+        description: (
+          <>
+            <strong>Najbardziej zaawansowany test.</strong> Poznaj ideologię!
+          </>
+        ),
+      });
+
+      expect(screen.getByRole("strong")).toHaveTextContent(
+        "Najbardziej zaawansowany test.",
       );
+      expect(screen.getByText(/Poznaj ideologię!/)).toHaveTextContent(
+        "Najbardziej zaawansowany test. Poznaj ideologię!",
+      );
+    });
+  });
 
-      fireEvent.click(screen.getByRole("button", { name: "Rozwiń" }));
+  describe("given an empty description", () => {
+    it("renders no paragraph, and the tags still show", () => {
+      renderCard({ description: "  " });
 
-      expect(screen.getByText("Bold bit")).toBeVisible();
-      expect(screen.getByText("rest")).toBeVisible();
+      expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
+      expect(getChipTexts()).toEqual(TAGS);
     });
   });
 
   describe("given tags", () => {
-    it("renders all tag chips", () => {
-      renderWithI18n(
-        <QuizCard
-          description="Opis"
-          tags={["+1.5M osób", "15 min"]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders every chip", () => {
+      renderCard({ tags: ["+1.5M osób", "15 min", "600 pytań"] });
 
-      expect(screen.getByText("+1.5M osób")).toBeInTheDocument();
-      expect(screen.getByText("15 min")).toBeInTheDocument();
+      expect(getChipTexts()).toEqual(["+1.5M osób", "15 min", "600 pytań"]);
     });
 
-    it("renders nothing in the tag row when tags is empty", () => {
-      renderWithI18n(
-        <QuizCard
-          isAlwaysExpanded
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+    it("renders two equal tags", () => {
+      renderCard({ tags: ["15 min", "15 min"] });
 
-      expect(screen.queryByText("+1.5M osób")).not.toBeInTheDocument();
+      expect(getChipTexts()).toEqual(["15 min", "15 min"]);
     });
   });
 
-  describe("given a cta with backgroundUrl", () => {
-    it("renders the CTA strip after the hero with corner badge styling", () => {
-      renderWithI18n(
-        <QuizCard
-          backgroundUrl="https://example.com/bg.jpg"
-          cta="Corner CTA"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+  describe("given no tags", () => {
+    it("renders no chip row", () => {
+      renderCard({ tags: [] });
 
-      const ctaBadge = screen.getByText("Corner CTA");
-      expect(ctaBadge.className).toContain("rounded-br-2xl");
-      expect(ctaBadge.className).toContain("min-h-[30px]");
-
-      const article = screen.getByRole("article");
-      const hero = document.querySelector(
-        'img[src="https://example.com/bg.jpg"]',
-      );
-      expect(hero).not.toBeNull();
-      expect(article.children[0]).toContainElement(hero as HTMLElement);
-      expect(article.children[1]).toHaveTextContent("Corner CTA");
+      expect(screen.queryByRole("list")).not.toBeInTheDocument();
     });
   });
 
-  describe("given a cta without backgroundUrl", () => {
-    it("renders the CTA strip before content with taller min-height", () => {
-      renderWithI18n(
-        <QuizCard
-          cta="Badge CTA"
-          description="Opis"
-          tags={[]}
-          onButtonClick={noop}
-        />,
-      );
+  describe("given neither a description nor tags", () => {
+    it("renders no toggle, as there is nothing to expand", () => {
+      renderCard({ title: TITLE, description: "", tags: [] });
 
-      const ctaBadge = screen.getByText("Badge CTA");
-      expect(ctaBadge.className).toContain("min-h-[38px]");
-
-      const article = screen.getByRole("article");
-      expect(article.children[0]).toHaveTextContent("Badge CTA");
+      expect(
+        screen
+          .getAllByRole("button")
+          .map((button) => button.getAttribute("aria-label")),
+      ).toEqual([PLAY_NAME]);
     });
   });
 
-  describe("expand / collapse (mobile)", () => {
-    describe("when the card is not highlighted and not alwaysExpanded", () => {
-      it("starts collapsed on mobile", () => {
-        renderWithI18n(
-          <QuizCard
-            description="Ukryty opis"
-            tags={["Chip"]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const expander = screen.getByRole("button", { name: "Rozwiń" });
-        expect(expander).toHaveAttribute("aria-expanded", "false");
-
-        const grid = expander
-          .closest("div")
-          ?.parentElement?.parentElement?.querySelector("[aria-hidden]");
-        expect(grid).toHaveAttribute("aria-hidden", "true");
-      });
-
-      it("shows the chevron button", () => {
-        renderWithI18n(
-          <QuizCard description="Opis" tags={[]} onButtonClick={noop} />,
-        );
+  describe("expand / collapse", () => {
+    describe("given a plain card", () => {
+      it("renders the chevron collapsed", () => {
+        renderCard({ title: TITLE });
 
         expect(
-          screen.getByRole("button", { name: "Rozwiń" }),
+          screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
         ).toBeInTheDocument();
       });
 
-      describe("when the chevron is clicked", () => {
-        it("expands to show description and tags", () => {
-          renderWithI18n(
-            <QuizCard
-              description="Rozwinięty opis"
-              tags={["Tag A"]}
-              onButtonClick={noop}
-            />,
-          );
+      it("points the chevron at the body, which holds the description and the tags", () => {
+        renderCard({ title: TITLE });
 
-          fireEvent.click(screen.getByRole("button", { name: "Rozwiń" }));
+        const body = within(getBody());
 
-          expect(screen.getByRole("button", { name: "Zwiń" })).toHaveAttribute(
-            "aria-expanded",
-            "true",
-          );
-          expect(screen.getByText("Rozwinięty opis")).toBeVisible();
-          expect(screen.getByText("Tag A")).toBeVisible();
+        expect(body.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+        expect(body.getByRole("list")).toBeInTheDocument();
+      });
+
+      it("hides the body from assistive technology and from the keyboard", () => {
+        renderCard({ title: TITLE });
+
+        expect(getBody()).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
+      });
+
+      it("is open without a chevron on a wide screen, in CSS alone", () => {
+        renderCard({ title: TITLE });
+
+        expect(getBody()).toHaveClass(
+          ...BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" "),
+        );
+        expect(screen.getByRole("button", { name: EXPAND_NAME })).toHaveClass(
+          TOGGLE_HIDDEN_ON_WIDE_SCREEN_CLASS_NAME,
+        );
+      });
+
+      describe("when the chevron is activated", () => {
+        it("reports itself as expanded", () => {
+          renderCard({ title: TITLE });
+
+          fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
+
+          expect(
+            screen.getByRole("button", { name: COLLAPSE_NAME, expanded: true }),
+          ).toBeInTheDocument();
         });
 
-        it("changes the chevron direction", () => {
-          renderWithI18n(
-            <QuizCard description="Opis" tags={[]} onButtonClick={noop} />,
-          );
+        it("exposes the body", () => {
+          renderCard({ title: TITLE });
+          const body = getBody();
 
-          const chevronBtn = screen.getByRole("button", { name: "Rozwiń" });
-          const svgBefore = chevronBtn.querySelector("svg");
-          expect(svgBefore?.getAttribute("class") ?? "").not.toContain(
-            "rotate-180",
-          );
+          fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
 
-          fireEvent.click(chevronBtn);
+          expect(body).toHaveClass(...BODY_OPEN_CLASS_NAME.split(" "));
+          for (const className of BODY_COLLAPSED_CLASS_NAME.split(" ")) {
+            expect(body).not.toHaveClass(className);
+          }
+        });
 
-          const chevronBtnAfter = screen.getByRole("button", { name: "Zwiń" });
-          const svgAfter = chevronBtnAfter.querySelector("svg");
-          expect(svgAfter?.getAttribute("class") ?? "").toContain("rotate-180");
+        it("does not call onCardClick", () => {
+          const handleCardClick = vi.fn();
+          renderCard({ title: TITLE, onCardClick: handleCardClick });
+
+          fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
+
+          expect(handleCardClick).not.toHaveBeenCalled();
+        });
+      });
+
+      describe("when the chevron is activated twice", () => {
+        it("collapses again", () => {
+          renderCard({ title: TITLE });
+          const body = getBody();
+
+          fireEvent.click(screen.getByRole("button", { name: EXPAND_NAME }));
+          fireEvent.click(screen.getByRole("button", { name: COLLAPSE_NAME }));
+
+          expect(
+            screen.getByRole("button", { name: EXPAND_NAME, expanded: false }),
+          ).toBeInTheDocument();
+          expect(body).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
         });
       });
     });
 
-    describe("when isAlwaysExpanded is true", () => {
-      it("does not show the chevron", () => {
-        renderWithI18n(
-          <QuizCard
-            isAlwaysExpanded
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given isAlwaysExpanded", () => {
+      it("renders no chevron", () => {
+        renderCard({ title: TITLE, isAlwaysExpanded: true });
 
         expect(
-          screen.queryByRole("button", { name: "Rozwiń" }),
-        ).not.toBeInTheDocument();
-        expect(
-          screen.queryByRole("button", { name: "Zwiń" }),
-        ).not.toBeInTheDocument();
+          screen
+            .getAllByRole("button")
+            .map((button) => button.getAttribute("aria-label")),
+        ).toEqual([PLAY_NAME]);
       });
 
-      it("always shows description and tags", () => {
-        renderWithI18n(
-          <QuizCard
-            isAlwaysExpanded
-            description="Widoczny opis"
-            tags={["T1"]}
-            onButtonClick={noop}
-          />,
-        );
+      it("exposes the body", () => {
+        renderCard({ title: TITLE, isAlwaysExpanded: true });
 
-        expect(screen.getByText("Widoczny opis")).toBeVisible();
-        expect(screen.getByText("T1")).toBeVisible();
+        expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+        expect(getChipTexts()).toEqual(TAGS);
       });
     });
 
-    describe("when viewport is at least md", () => {
-      it("does not set aria-hidden on the collapsible grid", () => {
-        mockMatchMedia(true);
-        renderWithI18n(
-          <QuizCard
-            description="Desktop opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        expect(screen.getByText("Desktop opis")).toBeVisible();
-
-        const grid = document.querySelector('[class*="grid-template-rows"]');
-        expect(grid?.getAttribute("aria-hidden")).toBeNull();
-      });
-    });
-
-    describe("when isHighlighted is true", () => {
-      it("does not show the chevron", () => {
-        renderWithI18n(
-          <QuizCard
-            isHighlighted
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given isHighlighted", () => {
+      it("renders no chevron", () => {
+        renderCard({ title: TITLE, isHighlighted: true });
 
         expect(
-          screen.queryByRole("button", { name: "Rozwiń" }),
-        ).not.toBeInTheDocument();
+          screen
+            .getAllByRole("button")
+            .map((button) => button.getAttribute("aria-label")),
+        ).toEqual([PLAY_NAME]);
+      });
+
+      it("exposes the body", () => {
+        renderCard({ title: TITLE, isHighlighted: true });
+
+        expect(screen.getByRole("paragraph")).toHaveTextContent(DESCRIPTION);
+        expect(getChipTexts()).toEqual(TAGS);
       });
     });
   });
 
   describe("play button", () => {
-    describe("when isButtonLoading is true", () => {
-      it("shows a spinner instead of the play icon", () => {
-        renderWithI18n(
-          <QuizCard
-            isButtonLoading
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given isButtonLoading", () => {
+      it("shows the loading state", () => {
+        renderCard({ isButtonLoading: true });
 
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        const spinner = play.querySelector(".animate-spin");
-        expect(spinner).toBeTruthy();
-        expect(play.querySelector('img[src*="play"]')).toBeNull();
+        expect(screen.getByRole("button", { name: PLAY_NAME })).toHaveAttribute(
+          "aria-busy",
+          "true",
+        );
+      });
+
+      it("cannot be activated a second time", () => {
+        const handleButtonClick = vi.fn();
+        renderCard({ isButtonLoading: true, onButtonClick: handleButtonClick });
+
+        fireEvent.click(screen.getByRole("button", { name: PLAY_NAME }));
+
+        expect(handleButtonClick).not.toHaveBeenCalled();
       });
     });
 
-    describe("when isButtonDisabled is true", () => {
-      it("hides the play button", () => {
-        renderWithI18n(
-          <QuizCard
-            isButtonDisabled
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given isButtonDisabled", () => {
+      it("renders no play button", () => {
+        renderCard({ isButtonDisabled: true });
 
         expect(
-          screen.queryByRole("button", { name: "Rozpocznij quiz" }),
+          screen.queryByRole("button", { name: PLAY_NAME }),
         ).not.toBeInTheDocument();
       });
+    });
 
-      it("keeps the header row at 48px height", () => {
-        renderWithI18n(
-          <QuizCard
-            isButtonDisabled
-            title="Generacja Innowacja"
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given isShowStartText", () => {
+      it('renders the "Rozpocznij" label', () => {
+        renderCard({ isShowStartText: true });
 
-        const headerRow = screen
-          .getByRole("heading", { name: "Generacja Innowacja" })
-          .closest(".h-12");
-        expect(headerRow).not.toBeNull();
-        expect(headerRow?.className).toContain("min-h-12");
+        expect(
+          screen.getByRole("button", { name: PLAY_NAME }),
+        ).toHaveTextContent("Rozpocznij");
       });
     });
 
-    describe("when isHighlighted is true and isMainAction is false", () => {
-      it("renders the secondary play control with play icon", () => {
-        renderWithI18n(
-          <QuizCard
-            isHighlighted
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
+    describe("given no isShowStartText", () => {
+      it("renders the icon alone", () => {
+        renderCard();
 
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("ring-gi-primary");
-        expect(play.className).toContain("bg-gi-ash");
-        expect(play.querySelector("img")).toBeTruthy();
+        expect(
+          screen.getByRole("button", { name: PLAY_NAME }),
+        ).toHaveTextContent("");
       });
     });
 
-    describe("when isMainAction is true", () => {
-      it("renders the button with primary variant", () => {
-        renderWithI18n(
-          <QuizCard
-            isMainAction
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("bg-gi-primary");
-        expect(play.className).toContain("border-0");
-      });
-    });
-
-    describe("when isShowStartText is true", () => {
-      it('shows "Rozpocznij" label on desktop only', () => {
-        mockMatchMedia(true);
-        renderWithI18n(
-          <QuizCard
-            isShowStartText
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(within(play).getByText("Rozpocznij")).toBeInTheDocument();
-      });
-
-      it('does not show "Rozpocznij" label on mobile', () => {
-        mockMatchMedia(false);
-        renderWithI18n(
-          <QuizCard
-            isShowStartText
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(within(play).queryByText("Rozpocznij")).not.toBeInTheDocument();
-      });
-
-      it("uses primary filled styling when isMainAction is true", () => {
-        mockMatchMedia(true);
-        renderWithI18n(
-          <QuizCard
-            isShowStartText
-            isMainAction
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("bg-gi-primary");
-        expect(play.className).toContain("text-white");
-      });
-
-      it("uses ghost chrome styling when isMainAction is false", () => {
-        mockMatchMedia(true);
-        renderWithI18n(
-          <QuizCard
-            isShowStartText
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        expect(play.className).toContain("ring-gi-primary");
-        expect(play.className).toContain("bg-gi-ash");
-        expect(play.className).toContain("text-gi-primary");
-        expect(play.className).not.toContain("text-white");
-      });
-
-      it("keeps horizontal padding when loading", () => {
-        mockMatchMedia(true);
-        const { rerender } = renderWithI18n(
-          <QuizCard
-            isShowStartText
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const playIdle = screen.getByRole("button", {
-          name: "Rozpocznij quiz",
-        });
-        const idleClasses = playIdle.className.split(/\s+/);
-
-        rerender(
-          <I18nProvider i18n={i18n}>
-            <QuizCard
-              isShowStartText
-              isButtonLoading
-              description="Opis"
-              tags={[]}
-              onButtonClick={noop}
-            />
-          </I18nProvider>,
-        );
-
-        const playLoading = screen.getByRole("button", {
-          name: "Rozpocznij quiz",
-        });
-        const loadingClasses = playLoading.className.split(/\s+/);
-
-        expect(idleClasses).toContain("px-4");
-        expect(idleClasses).toContain("has-[>svg]:px-4");
-        expect(loadingClasses).toContain("px-4");
-        expect(loadingClasses).toContain("has-[>svg]:px-4");
-        expect(loadingClasses).not.toContain("has-[>svg]:px-3");
-      });
-
-      it("does not use icon-only fixed size when isMainAction is false", () => {
-        mockMatchMedia(true);
-        renderWithI18n(
-          <QuizCard
-            isShowStartText
-            description="Opis"
-            tags={[]}
-            onButtonClick={noop}
-          />,
-        );
-
-        const play = screen.getByRole("button", { name: "Rozpocznij quiz" });
-        const playClasses = play.className.split(/\s+/);
-
-        expect(playClasses).toContain("min-h-12");
-        expect(playClasses).toContain("px-4");
-        expect(playClasses).not.toContain("w-12");
-        expect(playClasses).not.toContain("h-12");
-        expect(playClasses).not.toContain("size-12");
-      });
-    });
-
-    describe("when clicked", () => {
+    describe("when activated", () => {
       it("calls onButtonClick", () => {
-        const onButtonClick = vi.fn();
-        renderWithI18n(
-          <QuizCard
-            description="Opis"
-            tags={[]}
-            onButtonClick={onButtonClick}
-          />,
-        );
+        const handleButtonClick = vi.fn();
+        renderCard({ onButtonClick: handleButtonClick });
 
-        fireEvent.click(
-          screen.getByRole("button", { name: "Rozpocznij quiz" }),
-        );
+        fireEvent.click(screen.getByRole("button", { name: PLAY_NAME }));
 
-        expect(onButtonClick).toHaveBeenCalledTimes(1);
+        expect(handleButtonClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("does not call onCardClick", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ title: TITLE, onCardClick: handleCardClick });
+
+        fireEvent.click(screen.getByRole("button", { name: PLAY_NAME }));
+
+        expect(handleCardClick).not.toHaveBeenCalled();
       });
     });
   });
 
   describe("card click", () => {
-    describe("when onCardClick is provided", () => {
-      it("calls onCardClick when the card is clicked", () => {
-        const onCardClick = vi.fn();
-        renderWithI18n(
-          <QuizCard
-            description="Kliknij mnie"
-            tags={[]}
-            onButtonClick={noop}
-            onCardClick={onCardClick}
-          />,
+    describe("given onCardClick and a title", () => {
+      it("calls it when the card is clicked", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ title: TITLE, onCardClick: handleCardClick });
+
+        fireEvent.click(getCard());
+
+        expect(handleCardClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls it when the description is clicked", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ title: TITLE, onCardClick: handleCardClick });
+
+        fireEvent.click(screen.getByRole("paragraph"));
+
+        expect(handleCardClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls it once when the title button is activated by keyboard", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ title: TITLE, onCardClick: handleCardClick });
+
+        const titleButton = screen.getByRole("button", { name: TITLE });
+        titleButton.focus();
+        fireEvent.click(titleButton, { detail: 0 });
+
+        expect(titleButton).toHaveFocus();
+        expect(handleCardClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("does not call onButtonClick", () => {
+        const handleButtonClick = vi.fn();
+        renderCard({
+          title: TITLE,
+          onButtonClick: handleButtonClick,
+          onCardClick: vi.fn(),
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: TITLE }));
+
+        expect(handleButtonClick).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("given onCardClick, a logo and a title", () => {
+      it("names the logo button after the title", () => {
+        renderCard({ title: TITLE, logoUrl: LOGO_URL, onCardClick: vi.fn() });
+
+        expect(screen.getByRole("button", { name: TITLE })).toContainElement(
+          screen.getByRole("img", { name: TITLE }),
         );
+      });
+    });
 
-        fireEvent.click(screen.getByText("Kliknij mnie"));
+    describe("given onCardClick but no title", () => {
+      it("renders no card-level button", () => {
+        renderCard({ logoUrl: LOGO_URL, onCardClick: vi.fn() });
 
-        expect(onCardClick).toHaveBeenCalledTimes(1);
+        expect(
+          screen
+            .getAllByRole("button")
+            .map((button) => button.getAttribute("aria-label")),
+        ).toEqual([EXPAND_NAME, PLAY_NAME]);
+      });
+
+      it("does not call it when the card is clicked", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ logoUrl: LOGO_URL, onCardClick: handleCardClick });
+
+        fireEvent.click(getCard());
+
+        expect(handleCardClick).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("given onCardClick and a title of whitespace only", () => {
+      it("is not interactive either", () => {
+        const handleCardClick = vi.fn();
+        renderCard({ title: " \n ", onCardClick: handleCardClick });
+
+        fireEvent.click(getCard());
+
+        expect(handleCardClick).not.toHaveBeenCalled();
+        expect(
+          screen
+            .getAllByRole("button")
+            .map((button) => button.getAttribute("aria-label")),
+        ).toEqual([EXPAND_NAME, PLAY_NAME]);
+      });
+    });
+
+    describe("given no onCardClick", () => {
+      it("renders no card-level button", () => {
+        renderCard({ title: TITLE });
+
+        expect(
+          screen.queryByRole("button", { name: TITLE }),
+        ).not.toBeInTheDocument();
       });
     });
   });

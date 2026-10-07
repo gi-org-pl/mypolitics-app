@@ -209,6 +209,18 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:45
+msgid "Rozpocznij"
+msgstr "Start"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:34
+msgid "Rozpocznij quiz"
+msgstr "Start the quiz"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:30
+msgid "Rozwiń"
+msgstr "Expand"
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
 msgstr "Polls"
@@ -257,3 +269,7 @@ msgstr "Back to categories"
 #: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:30
+msgid "Zwiń"
+msgstr "Collapse"
