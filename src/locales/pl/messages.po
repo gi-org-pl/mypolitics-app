@@ -116,8 +116,14 @@ msgstr "<0>Najbardziej zaawansowany test poglądów politycznych.</0> Poznaj swo
 msgid "<0>Powiedz, czego słuchasz.</0> Dowiedz się, jakim typem słuchacza jesteś i z kim dzielisz gust."
 msgstr "<0>Powiedz, czego słuchasz.</0> Dowiedz się, jakim typem słuchacza jesteś i z kim dzielisz gust."
 
-#: src/constants/home.ts:239
 #: src/constants/home.ts:247
+msgid "<0>Poznaj najbliższe sobie europejskie frakcje!</0> Dowiesz się także, która z nich jest Tobie najbliższa w określonych tematach."
+msgstr "<0>Poznaj najbliższe sobie europejskie frakcje!</0> Dowiesz się także, która z nich jest Tobie najbliższa w określonych tematach."
+
+#: src/constants/home.ts:239
+msgid "<0>Poznaj najbliższe sobie komitety wyborcze!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach."
+msgstr "<0>Poznaj najbliższe sobie komitety wyborcze!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach."
+
 #: src/constants/home.ts:255
 msgid "<0>Poznaj najbliższych sobie warszawskich polityków!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach."
 msgstr "<0>Poznaj najbliższych sobie warszawskich polityków!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach."
@@ -328,7 +334,7 @@ msgstr "Pełny opis"
 msgid "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 msgstr "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:32
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:33
 msgid "Podgląd wyników quizu myPolitics"
 msgstr "Podgląd wyników quizu myPolitics"
 
@@ -429,7 +435,7 @@ msgstr "Statystyki: {name}"
 msgid "Strona główna"
 msgstr "Strona główna"
 
-#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:41
+#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:39
 msgid "Stwórz własny"
 msgstr "Stwórz własny"
 
@@ -485,7 +491,7 @@ msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
 
-#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:26
+#: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:24
 msgid "Zobacz więcej"
 msgstr "Zobacz więcej"
 

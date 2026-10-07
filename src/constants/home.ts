@@ -236,7 +236,7 @@ export const HOME_QUIZZES: HomeQuiz[] = [
     name: msg`Wyborczy 2023`,
     categories: ["electoral"],
     logoUrl: wyborczyLogo,
-    description: msg`<0>Poznaj najbliższych sobie warszawskich polityków!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach.`,
+    description: msg`<0>Poznaj najbliższe sobie komitety wyborcze!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach.`,
     tags: [msg`+40K osób`, msg`9 min`],
   },
   {
@@ -244,7 +244,7 @@ export const HOME_QUIZZES: HomeQuiz[] = [
     name: msg`Eurowyborczy 2024`,
     categories: ["electoral"],
     logoUrl: eurowyborczyLogo,
-    description: msg`<0>Poznaj najbliższych sobie warszawskich polityków!</0> Dowiesz się także, który z nich jest Tobie najbliższy w określonych tematach.`,
+    description: msg`<0>Poznaj najbliższe sobie europejskie frakcje!</0> Dowiesz się także, która z nich jest Tobie najbliższa w określonych tematach.`,
     tags: [msg`+40K osób`, msg`9 min`],
   },
   {

@@ -34,7 +34,7 @@ const SOCIAL_QUIZZES = [
   "Orientacja seksualna",
 ];
 const ALL_QUIZZES = [...ELECTORAL_QUIZZES, ...SOCIAL_QUIZZES];
-const QUIZ_DESCRIPTION = "Poznaj najbliższych sobie warszawskich polityków!";
+const QUIZ_DESCRIPTION = "Poznaj najbliższe sobie komitety wyborcze!";
 const WIDE_WINDOW = { width: 1280, height: 900 };
 const NARROW_WINDOW = { width: 360, height: 740 };
 
