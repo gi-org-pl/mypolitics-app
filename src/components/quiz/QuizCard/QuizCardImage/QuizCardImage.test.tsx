@@ -37,6 +37,15 @@ describe("<QuizCardImage />", () => {
       expect(image).not.toHaveAttribute("aria-hidden");
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
     });
+
+    it("loads the picture lazily, so it is not downloaded while it is hidden or far from the viewport", () => {
+      renderImage();
+
+      expect(screen.getByRole("presentation")).toHaveAttribute(
+        "loading",
+        "lazy",
+      );
+    });
   });
 
   describe("given an open card", () => {
