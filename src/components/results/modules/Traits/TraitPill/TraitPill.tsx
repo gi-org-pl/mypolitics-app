@@ -2,7 +2,7 @@ import { Avatar } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
-import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
 import { toSingleLine } from "../utils/toSingleLine";
@@ -32,7 +32,7 @@ export const TraitPill = ({ item, party }: TraitPillProps) => {
     >
       <div
         data-testid="trait-pill-body"
-        className={`flex h-8 min-w-0 items-center gap-2 rounded-lg px-4 ${safeColor ? "bg-(--trait-color)" : "bg-gi-dark-gray"} ${isLight ? "text-gi-primary" : "text-white"} ${isHatched ? HATCH_CLASS_NAME : ""}`}
+        className={`flex h-8 min-w-0 items-center gap-2 rounded-lg px-4 ${safeColor ? "bg-(--trait-color)" : "bg-gi-dark-gray"} ${isLight ? "text-gi-primary" : "text-white"} ${isHatched ? HATCH_LIGHT_CLASS_NAME : ""}`}
         style={
           safeColor
             ? ({ "--trait-color": safeColor } as CSSProperties)
