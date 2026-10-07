@@ -113,6 +113,12 @@ msgstr ""
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
+#: src/components/survey/SurveyQuestion/SurveyQuestion.constants.ts:5
+msgctxt "survey question: emphasised phrase"
+msgid "nie"
+msgstr "not"
+
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
 msgstr "About"
@@ -205,6 +211,10 @@ msgstr "Terms"
 msgid "Sondaże"
 msgstr ""
 
+#: src/components/survey/SurveyQuestion/SurveyQuestion.constants.ts:22
+msgid "Sprawdź wyjaśnienie"
+msgstr "Check the explanation"
+
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
 msgstr "Statistics"
@@ -217,6 +227,12 @@ msgstr "Statistics: {name}"
 #: src/components/shared/Header/Header.tsx:105
 msgid "Strona główna"
 msgstr ""
+
+#. The word that ends the preview of an explanation: the preview is the explanation up to its first whole-word occurrence, e.g. 'Obraza uczuć religijnych to...'.
+#: src/components/survey/SurveyQuestion/SurveyQuestion.constants.ts:14
+msgctxt "survey question: explanation trigger phrase"
+msgid "to"
+msgstr "is"
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
