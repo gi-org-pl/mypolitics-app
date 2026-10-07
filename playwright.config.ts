@@ -79,9 +79,9 @@ export default defineConfig({
   webServer: {
     command: `yarn build && yarn preview --port ${PORT} --strictPort`,
     url: BASE_URL,
-    /* An app that already answers on the port is used as it is (also on CI,
-       where the workflow may have started the built app itself). */
-    reuseExistingServer: true,
+    /* Locally, a preview that already answers on the port is reused: make sure
+       it serves this build. CI always builds and serves its own. */
+    reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
 });
