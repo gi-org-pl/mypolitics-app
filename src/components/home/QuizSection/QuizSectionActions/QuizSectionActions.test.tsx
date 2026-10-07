@@ -2,6 +2,7 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { FORCED_COLORS_BORDER_CLASS_NAME } from "@/constants/forced-colors";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -37,6 +38,14 @@ describe("<QuizSectionActions />", () => {
       for (const button of screen.getAllByRole("button")) {
         expect(button).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
       }
+    });
+
+    it("keeps the shape of the filled create button in forced colours", () => {
+      renderActions();
+
+      expect(screen.getByRole("button", { name: CREATE_NAME })).toHaveClass(
+        ...FORCED_COLORS_BORDER_CLASS_NAME.split(" "),
+      );
     });
 
     it("draws the icon of the create button as a mask that survives forced colours", () => {

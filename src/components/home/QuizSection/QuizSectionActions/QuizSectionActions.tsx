@@ -3,13 +3,11 @@ import { Trans } from "@lingui/react/macro";
 
 import pencilRulerIcon from "@/assets/icons/pencil-ruler.svg";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { FORCED_COLORS_BORDER_CLASS_NAME } from "@/constants/forced-colors";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
-import {
-  ACTION_CLASS_NAME,
-  FORCED_COLORS_BORDER_CLASS_NAME,
-} from "./QuizSectionActions.constants";
+import { ACTION_CLASS_NAME } from "./QuizSectionActions.constants";
 import type { QuizSectionActionsProps } from "./QuizSectionActions.types";
 
 export const QuizSectionActions = ({
