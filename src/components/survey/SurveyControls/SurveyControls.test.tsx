@@ -2,12 +2,20 @@ import { fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+import arrowLeftIconUrl from "@/assets/icons/arrow-left.svg";
+import resetIconUrl from "@/assets/icons/reset.svg";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { SurveyControls } from "./SurveyControls";
 import type { SurveyControlsProps } from "./SurveyControls.types";
 
 const DIVIDER = "survey-controls-pill-divider";
+const FOCUS_CLASS_NAMES = [
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-solid",
+  "focus-visible:outline-gi-primary",
+];
 const DIALOG_TEXT =
   "Czy na pewno chcesz rozpocząć quiz Quiz Name od nowa? Twoje odpowiedzi nie zostaną zapisane.";
 
@@ -187,7 +195,7 @@ describe("<SurveyControls />", () => {
       await user.click(getResetButton());
 
       expect(getDialog()).toBeInTheDocument();
-      expect(screen.getByText(DIALOG_TEXT)).toBeInTheDocument();
+      expect(getDialog()).toHaveAccessibleDescription(DIALOG_TEXT);
     });
 
     it("does not call onReset", async () => {
@@ -353,6 +361,40 @@ describe("<SurveyControls />", () => {
         "aria-hidden",
         "true",
       );
+    });
+
+    it("keeps both icons visible when colours are forced", () => {
+      renderControls();
+
+      expect(getBackButton().firstElementChild).toHaveClass(
+        "bg-current",
+        "forced-colors:bg-[color:ButtonText]",
+        "forced-colors:in-data-[disabled=true]:bg-[color:GrayText]",
+      );
+      expect(getResetButton().firstElementChild).toHaveClass(
+        "bg-current",
+        "forced-colors:bg-[color:ButtonText]",
+        "forced-colors:in-data-[disabled=true]:bg-[color:GrayText]",
+      );
+    });
+
+    it("draws each icon as a mask of its own file", () => {
+      renderControls();
+
+      const backIcon = getBackButton().firstElementChild as HTMLElement;
+      const resetIcon = getResetButton().firstElementChild as HTMLElement;
+
+      expect(arrowLeftIconUrl).not.toBe(resetIconUrl);
+      expect(backIcon.style.maskImage).toBe(`url("${arrowLeftIconUrl}")`);
+      expect(resetIcon.style.maskImage).toBe(`url("${resetIconUrl}")`);
+    });
+
+    it("shows keyboard focus on both buttons with an outline", () => {
+      renderControls();
+
+      expect(getBackButton()).toHaveClass(...FOCUS_CLASS_NAMES);
+      expect(getResetButton()).toHaveClass(...FOCUS_CLASS_NAMES);
+      expect(getBackButton()).not.toHaveClass("focus-visible:ring-[3px]");
     });
 
     it("announces the number with its meaning", () => {

@@ -4,10 +4,14 @@ import { useLingui } from "@lingui/react/macro";
 import arrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import resetIcon from "@/assets/icons/reset.svg";
 
-import { BUTTON_CLASS_NAME, ICON_CLASS_NAME } from "./SurveyControls.constants";
+import {
+  BUTTON_CLASS_NAME,
+  BUTTON_ICON_CLASS_NAME,
+} from "./SurveyControls.constants";
 import type { SurveyControlsProps } from "./SurveyControls.types";
 import { SurveyControlsPill } from "./SurveyControlsPill/SurveyControlsPill";
 import { SurveyControlsResetModal } from "./SurveyControlsResetModal/SurveyControlsResetModal";
+import { getIconMaskStyle } from "./utils/getIconMaskStyle";
 import { useResetDialog } from "./utils/useResetDialog";
 
 export const SurveyControls = ({
@@ -36,8 +40,8 @@ export const SurveyControls = ({
       >
         <span
           aria-hidden="true"
-          className={`${ICON_CLASS_NAME} h-6 w-5.25`}
-          style={{ maskImage: `url("${arrowLeftIcon}")` }}
+          className={`${BUTTON_ICON_CLASS_NAME} h-6 w-5.25`}
+          style={getIconMaskStyle(arrowLeftIcon)}
         />
       </Button>
       <SurveyControlsPill
@@ -57,8 +61,8 @@ export const SurveyControls = ({
       >
         <span
           aria-hidden="true"
-          className={`${ICON_CLASS_NAME} size-6`}
-          style={{ maskImage: `url("${resetIcon}")` }}
+          className={`${BUTTON_ICON_CLASS_NAME} size-6`}
+          style={getIconMaskStyle(resetIcon)}
         />
       </Button>
       <SurveyControlsResetModal

@@ -14,6 +14,9 @@ const withI18n = (count: number) => (
 
 const DURATION = `${NUMBER_ANIMATION_MS}ms`;
 
+const getIcon = () =>
+  screen.getByText(/Pozostałe pytania w kategorii/).previousElementSibling;
+
 describe("<SurveyControlsCount />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -50,6 +53,16 @@ describe("<SurveyControlsCount />", () => {
       render(withI18n(30));
 
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
+      expect(getIcon()).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("keeps the icon visible when colours are forced", () => {
+      render(withI18n(30));
+
+      expect(getIcon()).toHaveClass(
+        "bg-current",
+        "forced-colors:bg-[color:CanvasText]",
+      );
     });
   });
 

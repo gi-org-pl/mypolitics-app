@@ -7,8 +7,10 @@ import {
   NUMBER_CLASS_NAME,
   NUMBER_ENTER_CLASS_NAME,
   NUMBER_LEAVE_CLASS_NAME,
+  PILL_ICON_CLASS_NAME,
 } from "../../SurveyControls.constants";
 import type { SurveyControlsCountProps } from "../../SurveyControls.types";
+import { getIconMaskStyle } from "../../utils/getIconMaskStyle";
 import { useNumberRoll } from "./utils/useNumberRoll";
 
 export const SurveyControlsCount = ({ count }: SurveyControlsCountProps) => {
@@ -18,10 +20,10 @@ export const SurveyControlsCount = ({ count }: SurveyControlsCountProps) => {
 
   return (
     <span className="flex shrink-0 items-center gap-1">
-      <img
-        src={cardQuestionIcon}
-        alt=""
-        className="h-5.25 w-[23.16px] shrink-0"
+      <span
+        aria-hidden="true"
+        className={`${PILL_ICON_CLASS_NAME} h-5.25 w-[23.16px]`}
+        style={getIconMaskStyle(cardQuestionIcon)}
       />
       <span className="sr-only">{t`Pozostałe pytania w kategorii: ${count}`}</span>
       <span aria-hidden="true" className="grid">

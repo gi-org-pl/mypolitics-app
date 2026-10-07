@@ -34,6 +34,28 @@ describe("<SurveyControlsResetModal />", () => {
 
       expect(action.querySelector("[aria-hidden='true']")).toBeInTheDocument();
     });
+
+    it("shows keyboard focus on the action with an outline", () => {
+      renderModal();
+
+      expect(screen.getByRole("button", { name: "Resetuj quiz" })).toHaveClass(
+        "focus-visible:outline-2",
+        "focus-visible:outline-offset-2",
+        "focus-visible:outline-solid",
+        "focus-visible:outline-gi-primary",
+      );
+    });
+
+    it("keeps the action icon visible when colours are forced", () => {
+      renderModal();
+
+      const action = screen.getByRole("button", { name: "Resetuj quiz" });
+
+      expect(action.querySelector("[aria-hidden='true']")).toHaveClass(
+        "bg-current",
+        "forced-colors:bg-[color:ButtonText]",
+      );
+    });
   });
 
   describe("given it is not open", () => {
@@ -54,6 +76,14 @@ describe("<SurveyControlsResetModal />", () => {
         ),
       ).toBeInTheDocument();
     });
+
+    it("describes the dialog with that text", () => {
+      renderModal();
+
+      expect(screen.getByRole("dialog")).toHaveAccessibleDescription(
+        "Czy na pewno chcesz rozpocząć quiz Quiz Name od nowa? Twoje odpowiedzi nie zostaną zapisane.",
+      );
+    });
   });
 
   describe("given an empty quiz name", () => {
@@ -65,6 +95,14 @@ describe("<SurveyControlsResetModal />", () => {
           "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane.",
         ),
       ).toBeInTheDocument();
+    });
+
+    it("describes the dialog with the text without a name", () => {
+      renderModal({ quizName: "" });
+
+      expect(screen.getByRole("dialog")).toHaveAccessibleDescription(
+        "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane.",
+      );
     });
 
     it("uses the text without a name for a name of only whitespace", () => {

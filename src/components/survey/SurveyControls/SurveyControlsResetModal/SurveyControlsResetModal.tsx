@@ -1,15 +1,19 @@
 import { Button, Modal } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
+import { useId } from "react";
 
 import resetIcon from "@/assets/icons/reset.svg";
 import { toTrimmedText } from "@/utils/text/toTrimmedText";
 
 import {
-  ICON_CLASS_NAME,
+  BUTTON_ICON_CLASS_NAME,
   RESET_ACTION_CLASS_NAME,
+  RESET_DESCRIPTION_CLASS_NAME,
   RESET_MODAL_CLASS_NAME,
+  RESET_TITLE_CLASS_NAME,
 } from "../SurveyControls.constants";
 import type { SurveyControlsResetModalProps } from "../SurveyControls.types";
+import { getIconMaskStyle } from "../utils/getIconMaskStyle";
 
 export const SurveyControlsResetModal = ({
   quizName: rawQuizName,
@@ -18,18 +22,24 @@ export const SurveyControlsResetModal = ({
   onConfirm,
 }: SurveyControlsResetModalProps) => {
   const { t } = useLingui();
+  const descriptionId = useId();
   const quizName = toTrimmedText(rawQuizName);
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      aria-describedby={descriptionId}
       className={RESET_MODAL_CLASS_NAME}
-      title={t`Rozpocząć od nowa?`}
+      title={
+        <span className={RESET_TITLE_CLASS_NAME}>{t`Rozpocząć od nowa?`}</span>
+      }
       description={
-        quizName === undefined
-          ? t`Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane.`
-          : t`Czy na pewno chcesz rozpocząć quiz ${quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane.`
+        <span id={descriptionId} className={RESET_DESCRIPTION_CLASS_NAME}>
+          {quizName === undefined
+            ? t`Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane.`
+            : t`Czy na pewno chcesz rozpocząć quiz ${quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane.`}
+        </span>
       }
       actions={
         <Button
@@ -39,8 +49,8 @@ export const SurveyControlsResetModal = ({
           className={RESET_ACTION_CLASS_NAME}
           RightIcon={
             <span
-              className={`${ICON_CLASS_NAME} size-4`}
-              style={{ maskImage: `url("${resetIcon}")` }}
+              className={`${BUTTON_ICON_CLASS_NAME} size-4`}
+              style={getIconMaskStyle(resetIcon)}
             />
           }
         >
