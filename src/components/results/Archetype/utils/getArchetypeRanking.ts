@@ -1,4 +1,5 @@
 import { getRankedValue } from "@/utils/results/getRankedValue";
+import { isOrientationShown } from "@/utils/results/isOrientationShown";
 
 import type { ArchetypeEntry, ArchetypeRanking } from "../Archetype.types";
 
@@ -10,7 +11,12 @@ export const getArchetypeRanking = (
   if (!Array.isArray(archetypes)) return { leader: null, rest: [] };
 
   const [leader = null, ...rest] = archetypes
-    .filter((archetype) => typeof archetype === "object" && archetype !== null)
+    .filter(
+      (archetype) =>
+        typeof archetype === "object" &&
+        archetype !== null &&
+        isOrientationShown(archetype.orientation),
+    )
     .map((archetype, index) => {
       const match = getRankedValue({ value: archetype.match });
 

@@ -580,6 +580,31 @@ describe("<Archetype />", () => {
     });
   });
 
+  describe("given a hidden archetype with the highest match", () => {
+    const archetypes = [
+      archetype("Omega", 95, { isHidden: true, description: "Opis Omegi." }),
+      ...ARCHETYPES,
+    ];
+
+    it("leads with the best archetype that is shown", () => {
+      renderArchetype({ archetypes });
+
+      expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+        "Alfa",
+      );
+      expect(getDescription().textContent).toBe(SHORT);
+    });
+
+    it("leaves the hidden one out of the ranking", () => {
+      renderArchetype({ archetypes });
+
+      press("Ranking");
+
+      expect(getRowNames()).toEqual(["Beta", "Gamma", "Delta", "Echo"]);
+      expect(screen.queryByText("Omega")).not.toBeInTheDocument();
+    });
+  });
+
   describe("given no archetypes", () => {
     it("renders an empty card under its title", () => {
       renderArchetype({ archetypes: [] });

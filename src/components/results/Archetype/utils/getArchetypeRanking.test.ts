@@ -10,6 +10,11 @@ const archetype = (id: string, match?: number): ArchetypeEntry => ({
   match,
 });
 
+const hidden = (id: string, match?: number): ArchetypeEntry => ({
+  orientation: createOrientation(id, id, { isHidden: true }),
+  match,
+});
+
 const ids = (archetypes: ArchetypeEntry[]): string[] =>
   archetypes.map(({ orientation }) => orientation.id);
 
@@ -100,6 +105,36 @@ describe("getArchetypeRanking()", () => {
     expect(leader?.orientation).toMatchObject({
       description: "s",
       fullDescription: "f",
+    });
+  });
+
+  describe("given a hidden archetype", () => {
+    it("leads with the best archetype that is shown", () => {
+      const { leader } = getArchetypeRanking([
+        archetype("a", 20),
+        hidden("b", 90),
+        archetype("c", 55),
+      ]);
+
+      expect(leader?.orientation.id).toBe("c");
+    });
+
+    it("leaves the hidden one out of the rest", () => {
+      const { rest } = getArchetypeRanking([
+        archetype("a", 20),
+        hidden("b", 40),
+        archetype("c", 55),
+        archetype("d", 30),
+      ]);
+
+      expect(ids(rest)).toEqual(["d", "a"]);
+    });
+
+    it("returns no leader when every archetype is hidden", () => {
+      expect(getArchetypeRanking([hidden("a", 80), hidden("b", 60)])).toEqual({
+        leader: null,
+        rest: [],
+      });
     });
   });
 

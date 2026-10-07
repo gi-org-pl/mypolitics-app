@@ -10,6 +10,11 @@ const entry = (id: string, value?: number): RankedEntry => ({
   value,
 });
 
+const hidden = (id: string, value?: number): RankedEntry => ({
+  orientation: createOrientation(id, id, { isHidden: true }),
+  value,
+});
+
 const ids = (entries: RankedEntry[]): string[] =>
   entries.map(({ orientation }) => orientation.id);
 
@@ -69,6 +74,29 @@ describe("sortRankedEntries()", () => {
         ]),
       ),
     ).toEqual(["b", "c", "a", "d"]);
+  });
+
+  describe("given a hidden orientation", () => {
+    it("leaves it out of the ranking", () => {
+      expect(
+        ids(sortRankedEntries([entry("a", 20), hidden("b", 90), entry("c")])),
+      ).toEqual(["a", "c"]);
+      expect(sortRankedEntries([hidden("a", 20), hidden("b")])).toEqual([]);
+    });
+
+    it("keeps the order of the others", () => {
+      expect(
+        ids(
+          sortRankedEntries([
+            entry("a", 50),
+            hidden("b", 70),
+            entry("c", 70),
+            hidden("d", 50),
+            entry("e", 50),
+          ]),
+        ),
+      ).toEqual(["c", "a", "e"]);
+    });
   });
 
   it("does not mutate the input", () => {
