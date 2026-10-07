@@ -13,19 +13,19 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
-#: src/components/results/modules/Traits/TraitPill/TraitPill.tsx:24
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
 msgid "{trait} - tylko {name}"
 msgstr "{trait} - tylko {name}"
 
-#: src/components/results/modules/Traits/TraitPill/TraitPill.tsx:25
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - wspólna z: {name}"
 
@@ -33,11 +33,11 @@ msgstr "{trait} - wspólna z: {name}"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
-#: src/components/results/modules/Traits/Traits.tsx:33
+#: src/components/results/Traits/Traits.tsx:33
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
@@ -113,7 +113,7 @@ msgstr "Odwiedź nasz profil na X"
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
