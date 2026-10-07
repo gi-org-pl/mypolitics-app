@@ -1,4 +1,4 @@
-import { Button } from "@gi/athena";
+import { Button } from "@gi-org-pl/athena";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import React, { useEffect, useRef, useState } from "react";

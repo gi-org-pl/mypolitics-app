@@ -1,4 +1,4 @@
-import { ProgressBar } from "@gi/athena";
+import { ProgressBar } from "@gi-org-pl/athena";
 import { useLayoutEffect, useState } from "react";
 import { BAR_ANIMATION_MS } from "./SurveySaturatedProgressBar.constants";
 import type { SurveySaturatedProgressBarProps } from "./SurveySaturatedProgressBar.types";
@@ -26,7 +26,9 @@ export function SurveySaturatedProgressBar({
   }, [saturatedPercentValue]);
 
   return (
-    <div className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}>
+    <div
+      className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}
+    >
       <ProgressBar
         size="regular"
         value={saturatedPercentValue}

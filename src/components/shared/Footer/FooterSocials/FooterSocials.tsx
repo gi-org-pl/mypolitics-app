@@ -1,4 +1,4 @@
-import { Button } from "@gi/athena";
+import { Button } from "@gi-org-pl/athena";
 import { i18n } from "@lingui/core";
 import React from "react";
 import { SOCIAL_LINKS } from "../Footer.constants.ts";
