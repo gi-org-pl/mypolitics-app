@@ -1,4 +1,4 @@
-import { Button } from "@gi/athena";
+import { Button } from "@gi-org-pl/athena";
 import type { MouseEvent, ReactElement } from "react";
 import { twMerge } from "tailwind-merge";
 

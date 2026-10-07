@@ -1,4 +1,4 @@
-import { Button } from "@gi/athena";
+import { Button } from "@gi-org-pl/athena";
 import type { MessageDescriptor } from "@lingui/core";
 import { Trans, useLingui } from "@lingui/react";
 import type { ReactElement, ReactNode } from "react";
@@ -200,29 +200,29 @@ export function QuizCard({
 
             {!isButtonDisabled ? (
               <Button
-                  type={playButtonType}
-                  variant="primary"
-                  isIconButton={!showStartTextLabel}
-                  isLoading={isButtonLoading}
-                  className={playButtonClassName}
-                  aria-label={i18n._(quizCardMessages.startQuiz)}
-                  LeftIcon={
-                    <PlayIcon
-                      isMainAction={isMainAction}
-                      alt={i18n._(quizCardMessages.startQuiz)}
-                    />
-                  }
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onButtonClick();
-                  }}
-                >
-                  {showStartTextLabel ? (
-                    <Trans
-                      id={quizCardMessages.start.id}
-                      message={quizCardMessages.start.message}
-                    />
-                  ) : undefined}
+                type={playButtonType}
+                variant="primary"
+                isIconButton={!showStartTextLabel}
+                isLoading={isButtonLoading}
+                className={playButtonClassName}
+                aria-label={i18n._(quizCardMessages.startQuiz)}
+                LeftIcon={
+                  <PlayIcon
+                    isMainAction={isMainAction}
+                    alt={i18n._(quizCardMessages.startQuiz)}
+                  />
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onButtonClick();
+                }}
+              >
+                {showStartTextLabel ? (
+                  <Trans
+                    id={quizCardMessages.start.id}
+                    message={quizCardMessages.start.message}
+                  />
+                ) : undefined}
               </Button>
             ) : null}
           </div>
