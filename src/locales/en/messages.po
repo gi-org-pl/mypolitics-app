@@ -29,6 +29,7 @@ msgstr "{value}% confidence"
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
+#: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
 #: src/components/results/ResultsHeader/ResultsHeader.tsx:45
 msgid "Brak dopasowania"
 msgstr "No match"
@@ -110,6 +111,10 @@ msgstr "Visit our X profile"
 msgid "Otwórz menu nawigacji"
 msgstr ""
 
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
+msgid "Pełny opis"
+msgstr "Full description"
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
 msgid "Pokaż kategorię"
 msgstr "Show category"
@@ -137,6 +142,10 @@ msgstr "Privacy"
 #: src/components/shared/Header/Header.constants.ts:18
 msgid "Quizy"
 msgstr ""
+
+#: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:47
+msgid "Ranking"
+msgstr "Ranking"
 
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
