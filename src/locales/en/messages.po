@@ -157,7 +157,7 @@ msgstr ""
 msgid "Pełny opis"
 msgstr "Full description"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:7
 msgid "Płeć"
 msgstr "Gender"
 
@@ -262,11 +262,11 @@ msgstr "Hide axes"
 msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgstr "In this test you will get an identity card tailored to you"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:9
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
 msgstr "Age"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
 msgid "Wielkość miejsca zamieszkania"
 msgstr "Size of the place you live in"
 
@@ -282,7 +282,7 @@ msgstr "Back to groups, close group: {name}"
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:16
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
 msgid "Wykształcenie"
 msgstr "Education"
 

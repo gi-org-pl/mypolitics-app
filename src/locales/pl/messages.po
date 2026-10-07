@@ -157,7 +157,7 @@ msgstr "Otwórz menu nawigacji"
 msgid "Pełny opis"
 msgstr "Pełny opis"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:7
 msgid "Płeć"
 msgstr "Płeć"
 
@@ -262,11 +262,11 @@ msgstr "Ukryj osie"
 msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgstr "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:9
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
 msgstr "Wiek"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
 msgid "Wielkość miejsca zamieszkania"
 msgstr "Wielkość miejsca zamieszkania"
 
@@ -282,7 +282,7 @@ msgstr "Wróć do grup, zamknij grupę: {name}"
 msgid "Wróć do kategorii"
 msgstr "Wróć do kategorii"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:16
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 

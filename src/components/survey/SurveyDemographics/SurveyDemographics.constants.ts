@@ -1,9 +1,6 @@
 import { msg } from "@lingui/core/macro";
 
-import type {
-  DemographicsField,
-  DemographicsFieldWidth,
-} from "./SurveyDemographics.types";
+import type { DemographicsField } from "./SurveyDemographics.types";
 
 export const DEMOGRAPHICS_FIELDS: DemographicsField[] = [
   { id: "age", name: msg`Wiek`, width: "half" },
@@ -15,8 +12,3 @@ export const DEMOGRAPHICS_FIELDS: DemographicsField[] = [
   },
   { id: "education", name: msg`Wykształcenie`, width: "full" },
 ];
-
-export const FIELD_WIDTH_CLASS_NAME: Record<DemographicsFieldWidth, string> = {
-  half: "col-span-1",
-  full: "col-span-2",
-};
