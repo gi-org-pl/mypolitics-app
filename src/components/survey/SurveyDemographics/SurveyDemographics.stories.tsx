@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs } from "storybook/preview-api";
 import { expect, fn, userEvent, within } from "storybook/test";
 
 import { SurveyDemographics } from "./SurveyDemographics";
@@ -52,6 +53,19 @@ const meta = {
     options,
     values: {},
     onChange: fn(),
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs<SurveyDemographicsProps>();
+
+    return (
+      <SurveyDemographics
+        {...args}
+        onChange={(values) => {
+          args.onChange(values);
+          updateArgs({ values });
+        }}
+      />
+    );
   },
 } satisfies Meta<typeof SurveyDemographics>;
 
