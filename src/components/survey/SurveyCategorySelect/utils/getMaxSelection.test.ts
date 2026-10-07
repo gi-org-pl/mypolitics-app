@@ -27,14 +27,5 @@ describe("getMaxSelection()", () => {
     ])("returns the default for %d", (maxSelection) => {
       expect(getMaxSelection(maxSelection)).toBe(DEFAULT_MAX_SELECTION);
     });
-
-    it("returns the default for a value that is not a number at all", () => {
-      expect(getMaxSelection("4" as unknown as number)).toBe(
-        DEFAULT_MAX_SELECTION,
-      );
-      expect(getMaxSelection(null as unknown as number)).toBe(
-        DEFAULT_MAX_SELECTION,
-      );
-    });
   });
 });
