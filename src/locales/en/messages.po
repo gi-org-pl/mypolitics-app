@@ -105,14 +105,6 @@ msgstr "With this error we open the eyes of the doubters! We say: this is our er
 msgid "myPolitics"
 msgstr "myPolitics"
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr ""
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
 #: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
 msgid "Nawigacja główna"
 msgstr "Main navigation"
@@ -160,6 +152,10 @@ msgstr "Open navigation menu"
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
 msgstr "Full description"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "Podgląd wyników quizu myPolitics"
+msgstr "Preview of the myPolitics quiz results"
 
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"

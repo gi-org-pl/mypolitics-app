@@ -1,38 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import FeaturedQuizBanner from "./FeaturedQuizBanner";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
-const meta: Meta<typeof FeaturedQuizBanner> = {
-  title: "Components/Quiz/FeaturedQuizBanner",
+import { FeaturedQuizBanner } from "./FeaturedQuizBanner";
+
+const meta = {
+  title: "Quiz/FeaturedQuizBanner",
   component: FeaturedQuizBanner,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
-  tags: ["autodocs"],
-};
+} satisfies Meta<typeof FeaturedQuizBanner>;
 
 export default meta;
-type Story = StoryObj<typeof FeaturedQuizBanner>;
 
-export const Default: Story = {
-  render: () => (
-    <div className="w-[800px] bg-white">
-      <FeaturedQuizBanner />
-    </div>
-  ),
-};
+type Story = StoryObj<typeof meta>;
 
-export const InContainer: Story = {
-  render: () => (
-    <div className="max-w-[778px] mx-auto">
-      <FeaturedQuizBanner />
-    </div>
-  ),
-};
+export const Default: Story = {};
 
-export const DarkContext: Story = {
-  render: () => (
-    <div className="w-[800px] bg-slate-900">
-      <FeaturedQuizBanner />
-    </div>
-  ),
+export const DarkBackground: Story = {
+  globals: {
+    backgrounds: { value: "dark" },
+  },
 };

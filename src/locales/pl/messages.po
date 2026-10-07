@@ -105,14 +105,6 @@ msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błą
 msgid "myPolitics"
 msgstr "myPolitics"
 
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
-msgid "mypolitics banner background"
-msgstr "mypolitics banner background"
-
-#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
-msgid "mypolitics banner content"
-msgstr "mypolitics banner content"
-
 #: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
 msgid "Nawigacja główna"
 msgstr "Nawigacja główna"
@@ -160,6 +152,10 @@ msgstr "Otwórz menu nawigacji"
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
 msgstr "Pełny opis"
+
+#: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:29
+msgid "Podgląd wyników quizu myPolitics"
+msgstr "Podgląd wyników quizu myPolitics"
 
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
