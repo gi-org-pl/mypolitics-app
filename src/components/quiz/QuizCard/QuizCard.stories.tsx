@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ComponentType, ReactElement } from "react";
-import myPoliticsLogo from "@/assets/images/myPolitics_logo.svg";
-import lata90Background from "@/assets/images/QuizCard_backgrounds/lata-90.png";
+import myPoliticsLogo from "@/assets/icons/quiz-logo-mypolitics.svg";
+import lata90Background from "@/assets/images/home/quiz-card-lata-90.png";
 
 import { QuizCard } from "./QuizCard";
 

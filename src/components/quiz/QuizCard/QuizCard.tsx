@@ -5,8 +5,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useState, useSyncExternalStore } from "react";
 import { twMerge } from "tailwind-merge";
 
-import playIconUrl from "@/assets/icons/fa-solid_play.svg";
-import playIconDarkUrl from "@/assets/icons/fa-solid_play-dark.svg";
+import playIconUrl from "@/assets/icons/play.svg";
 import { ChevronDown } from "@/components/shared/ChevronDown/ChevronDown";
 
 import type { QuizCardProps } from "./QuizCard.types";
@@ -38,16 +37,10 @@ function cn(...parts: Array<string | false | undefined>): string {
   return twMerge(parts.filter(Boolean).join(" "));
 }
 
-function PlayIcon({
-  isMainAction,
-  alt,
-}: {
-  isMainAction: boolean;
-  alt: string;
-}): ReactElement {
+function PlayIcon({ alt }: { alt: string }): ReactElement {
   return (
     <img
-      src={isMainAction ? playIconUrl : playIconDarkUrl}
+      src={playIconUrl}
       alt={alt}
       width={16}
       height={16}
@@ -206,12 +199,7 @@ export function QuizCard({
                 isLoading={isButtonLoading}
                 className={playButtonClassName}
                 aria-label={i18n._(quizCardMessages.startQuiz)}
-                LeftIcon={
-                  <PlayIcon
-                    isMainAction={isMainAction}
-                    alt={i18n._(quizCardMessages.startQuiz)}
-                  />
-                }
+                LeftIcon={<PlayIcon alt={i18n._(quizCardMessages.startQuiz)} />}
                 onClick={(e) => {
                   e.stopPropagation();
                   onButtonClick();
