@@ -133,7 +133,7 @@ export const UniversalAxis = ({
 
     const { name, displayValue: value } = entry;
 
-    return t`${name}: ${value}%`;
+    return entry.hasValue ? t`${name}: ${value}%` : t`${name}: brak wyniku`;
   };
   const describeComparison = (comparisonLayout: AxisLayout["comparison"]) => {
     if (!comparisonLayout) return null;
@@ -157,8 +157,8 @@ export const UniversalAxis = ({
           data-testid="universal-axis-track"
           className={`${trackShapeClassName} border-gi-primary/30 bg-white`}
         >
-          {layout.start && renderFill("start", layout.start)}
-          {layout.end && renderFill("end", layout.end)}
+          {layout.start?.hasValue && renderFill("start", layout.start)}
+          {layout.end?.hasValue && renderFill("end", layout.end)}
           {layout.start?.valuePlacement === "outside" &&
             renderOutsideValue("start", layout.start)}
           {layout.end?.valuePlacement === "outside" &&
