@@ -4,7 +4,7 @@ export const START_TEXT_CLASS_NAME = "hidden md:inline";
 
 // The button grows from the round icon button into a pill with the label.
 export const START_TEXT_BUTTON_CLASS_NAME =
-  "gap-3 p-0 text-base leading-none font-bold has-[>svg]:px-0 md:-my-0.5 md:h-12.75 md:w-auto md:px-4 md:has-[>svg]:px-4";
+  "gap-3 p-0 text-base leading-none font-bold has-[>svg]:px-0 md:-my-0.5 md:h-12.75 md:w-auto md:px-3.75 md:has-[>svg]:px-3.75";
 
 // Forced colours drop the fill, which would leave the icon floating: a
 // transparent border is drawn in a system colour there and keeps the button's
