@@ -20,7 +20,10 @@ When generating developer tasks based on this document:
   task creates a new repo, add a sub-task: "scaffold from vite-project-boilerplate".
 - Any deviation from §4 (tooling) requires a sub-task: "obtain Technical Leader approval for the new tech".
 - Default Definition of Done for any front-end task includes: lints clean (Biome), types clean
-  (TypeScript strict), unit tests added/updated, e2e covers happy path if user-facing flow changed.
+  (TypeScript strict), unit tests added/updated, e2e covers happy path if user-facing flow changed
+  (what counts as "user-facing flow" is defined in §4.6).
+- Every path a ticket names must exist in the §2 layout. Do not name grouping folders
+  (`modules/`, `charts/`, `common/`, ...) between the domain folder and the component folder.
 
 ---
 
@@ -93,11 +96,25 @@ Hard rules:
   `src/components/[domain-name]/`; only promote to `shared/` when ≥2 domains use it.
 - **Every API client is encapsulated** under `src/services/[api-name]/`. Pages/components must not
   instantiate Axios or call `axios.get` directly.
-- **All reusable code is easy to find.** If a util/type/constant is used in more than one domain, it
-  belongs in `src/utils/`, `src/types/`, or `src/constants/` — not next to a single component.
+- **All reusable code is easy to find.** If a util/type/constant is used by more than one component,
+  it belongs in `src/utils/`, `src/types/`, or `src/constants/` — not next to a single component.
+  §3.2 says exactly when to promote.
+- **No extra folder layers.** A component folder sits directly under `src/components/shared/` or
+  `src/components/[domain-name]/`. The only folders allowed below a component are its `utils/` and
+  its own subcomponents (§3.2).
+
+  ```txt
+  src/components/results/modules/ResultsHeader/   # Wrong — `modules/` is neither a domain nor a component
+  src/components/results/ResultsHeader/           # Right
+  ```
 
 When a ticket spans multiple files, follow the structure above when adding new files. Do not invent
-new top-level folders without TL approval.
+new folders (top-level or in between) without TL approval.
+
+**When a ticket or spec names a path that is not in this layout** and does not cite a Technical
+Leader approval for it, use the layout above, and state in the PR description which path you used
+instead and that the ticket needs updating. The layout wins because the first component placed in a
+new folder becomes the pattern every later one copies.
 
 ---
 
@@ -151,6 +168,96 @@ Canonical layout for a component:
 When writing a "create component X" task, default to listing the files above and explicitly drop the
 ones not needed (rather than the other way around).
 
+#### One component per file, composition only
+
+A component's `.tsx` holds that component and nothing else: its JSX, its props destructuring and
+calls to hooks/utils. Everything below moves out, because a piece that lives inside another
+component's file cannot be found, reused or tested on its own.
+
+| Found in the component file | Move it to |
+| --- | --- |
+| A function that returns JSX (`renderRow()`, `const renderFooter = () => <div/>`), at module level or inside the component | A subcomponent: `ComponentName/SubComponent/SubComponent.tsx` + its own test |
+| Any other function besides the component (formatting, sorting, mapping, deriving values) | `ComponentName/utils/functionName.ts` + its own test — one function per file |
+| Several `useState` / `useRef` / `useEffect` that serve one behaviour, or more than ~10 lines of derived state before the `return` | A local hook: `ComponentName/utils/useSomething.ts` + its own test |
+| Types and interfaces; constants with a meaning of their own (thresholds, limits, maps) | `ComponentName.types.ts`; `ComponentName.constants.ts` |
+
+Extract a subcomponent when **any** of these is true:
+
+- The JSX is produced by a local function — always, regardless of size.
+- The block has its own condition, state or handlers, or is a `.map()` body of more than one element.
+- The component's `return` is longer than ~40 lines of JSX, or the file is longer than ~150 lines.
+  These are signals that a split is missing, not numbers to squeeze under.
+
+Do not extract a static wrapper of a few elements with no logic (Minimization still applies).
+
+```tsx
+// Don't — rendering function and helper inside the component file
+const toLabel = (text?: string) => text?.trim() ?? "";
+
+export const ResultCard = ({ title, entries }: ResultCardProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const renderFooter = () => <button onClick={() => setIsOpen(!isOpen)}>…</button>;
+
+  return <Card title={toLabel(title)}>{renderFooter()}</Card>;
+};
+
+// Do — the parent only composes
+export const ResultCard = ({ title, entries }: ResultCardProps) => {
+  const { isOpen, toggle } = useResultCardView(entries);
+
+  return (
+    <Card title={toLabel(title)}>
+      <ResultCardFooter isOpen={isOpen} onToggle={toggle} />
+    </Card>
+  );
+};
+```
+
+```txt
+|- ResultCard/
+    |- ResultCard.tsx
+    |- ResultCard.test.tsx
+    |- ResultCardFooter/
+    |   |- ResultCardFooter.tsx
+    |   |- ResultCardFooter.test.tsx
+    |- utils/
+        |- toLabel.ts
+        |- toLabel.test.ts
+        |- useResultCardView.ts
+        |- useResultCardView.test.ts
+```
+
+#### Local or global — when to promote
+
+Search `src/utils/`, `src/types/` and `src/constants/` before writing a helper; reuse what exists.
+
+| The util / type / constant is… | It lives in |
+| --- | --- |
+| Used by one component and written in that component's terms (takes its types, names its concepts) | The component folder (`utils/`, `.types.ts`, `.constants.ts`) |
+| Used by a second component on its own account (not just to render the first one) — promote in the same PR that adds the second consumer and update both | `src/utils/[domain-name]/`, `src/types/[domain-name].ts`, `src/constants/[domain-name].ts` |
+| General-purpose even with one consumer today: only primitives or generics in the signature, nothing about the component in its name or body (clamping a number, "is this a finite number", collapsing whitespace) | `src/utils/[domain-name]/` (`number/`, `text/`, `object/`, ...) |
+| A subcomponent needed by a second parent | A sibling component in `src/components/[domain-name]/` (or `shared/` when ≥2 domains use it) |
+
+Never keep a private copy of a helper that already exists globally, and never copy one from another
+component — promote it.
+
+**A component's public API types are not "shared" in this sense.** Its props type and the types that
+describe its props (`RankedRowProps`, `RankedEntry`) stay in its `.types.ts`, however many parents
+import them to render it. Promote a type to `src/types/` when components use it independently of
+that component: a domain shape that several components take as input (`AxisOrientation`), or a type
+a global util works with.
+
+#### Imports between components
+
+- Allowed: another component's view file and its `.types.ts`, in order to render it and build its
+  props (`import { RankedRow } from "../RankedRow/RankedRow"`,
+  `import type { RankedEntry } from "../RankedRow/RankedRow.types"`).
+- Not allowed: anything from another component's `utils/`, its `.constants.ts`, or a subcomponent
+  nested inside it. Needing one of these means it is shared: promote it per the table above.
+- Self-check: no import path in the PR goes into a different component's folder and then into
+  `utils/`, a `.constants` file or a nested component folder
+  (`"../HorizontalBarChart/utils/getComparisonEntry"` is the pattern to look for).
+
 ### 3.3 Testing convention (`docs/frontend/conventions/TESTING_CONVENTION.md`)
 
 Use **BDD / Given–When–Then** structure for both unit and e2e tests.
@@ -180,6 +287,46 @@ Then they should be redirected to the dashboard
 
 Acceptance-criteria phrasing for testing tasks should mirror Given/When/Then so devs translate
 1:1 into test cases.
+
+**Each unit is tested on its own.** Every subcomponent, util and hook has a test file next to it
+that exercises it directly. The parent's test covers composition (which children appear, what is
+passed to them, what happens on their callbacks); it does not replace the children's tests. When
+code moves, its tests move with it.
+
+### 3.4 Component sizing, stories and narrow widths
+
+No canonical doc; these are repo rules. A component is placed by its parent, so it must not carry
+assumptions about the frame it was drawn in.
+
+- **Fluid width, automatic height.** The root element takes 100% of the parent's width (`w-full`)
+  and its height comes from its content. Widths, heights and min-heights of the Figma frame are not
+  component styles; neither are outer margins, nor the background or padding of the surface it was
+  drawn on. Fixed sizes are fine for inner elements whose size is the design (icons, avatars, bar
+  thickness).
+- **Stories show the component alone.** No decorator or wrapper that adds a background, padding,
+  border or fixed size (the global `withI18n` decorator is the only one). Check widths by resizing
+  the viewport, not by wrapping the story.
+- **Check every story at 320px, 360px and 800px** viewport width before opening the PR. At each
+  width there is no horizontal scroll, the component is exactly as wide as its parent, and the three
+  rules below hold.
+- **Wrap primary text, do not truncate it.** Text that carries the result — names, values, the title
+  of what is being shown — must be readable in full at 320px. Use `truncate` / `line-clamp` only for
+  secondary text, for a single part that alone is longer than the line, or where the spec fixes the
+  text to one line; in that last case give the text a shorter variant for narrow widths if one can
+  be supplied.
+- **Break multi-part labels at the part boundary.** For "Name — Value", when one line is not enough
+  the separator moves to the next line together with the part it introduces:
+
+  ```txt
+  Economic axis — Social democracy     # fits
+  Economic axis                        # does not fit: wrap here,
+  — Social democracy                   # never "Economic a… — Social dem…"
+  ```
+
+  Do it in CSS (flex-wrap / inline layout with the separator and value in one non-breaking unit),
+  not by measuring in JavaScript.
+- **Data marks stay fully visible.** A point, marker or bar at the minimum or maximum value must not
+  be cut by `overflow-hidden` or the container's rounded corners. Add a story for both extremes.
 
 ---
 
@@ -225,6 +372,21 @@ Acceptance-criteria phrasing for testing tasks should mirror Given/When/Then so 
 - **Pyramid:** lots of unit tests, few e2e tests.
 - Unit: Vitest + @testing-library/react + React Test Renderer; **target 95–100% coverage**.
 - E2E: Playwright + Gherkin; cover **all happy paths** (edge cases belong in unit tests).
+- **When e2e is required** (repo clarification of "user-facing flow"): Playwright drives the running
+  app, so a flow is user-facing once a user can reach it through a route in `src/pages/`.
+  - The PR adds or changes something a user can do on a route (new page, a component mounted on a
+    page, a changed step in an existing flow) → add or update the happy-path spec in
+    `e2e/[domain-name]/`.
+  - The PR adds or changes a component that no route renders yet → no e2e in that PR. Its
+    interactions (open/close, keyboard, focus) are covered by unit tests, and the PR description says
+    "No e2e: not mounted on any route". The PR that first mounts it on a page adds the e2e.
+  - Do not create a route or test-only page just to give a component an e2e spec.
+  - **Running e2e needs a running app, and the repo does not start one yet.** `yarn e2e` is only
+    `playwright test`: `playwright.config.ts` has `webServer` and `baseURL` commented out, the only
+    spec is the Playwright example, and the CI e2e job is switched off (`if: false`). The PR that
+    adds the first real spec therefore also configures `webServer` (the built app via
+    `yarn build && yarn preview`) and `baseURL` in `playwright.config.ts`, and enables the CI job —
+    so that `yarn e2e` works by itself locally and in CI. Until then, do not report e2e as run.
 
 ### 4.7 Internationalisation (Lingui)
 
@@ -248,17 +410,23 @@ Acceptance-criteria phrasing for testing tasks should mirror Given/When/Then so 
 ```md
 - [ ] Code follows folder structure (docs/frontend/conventions/PROJECT_STRUCTURE.md)
 - [ ] Naming follows docs/frontend/conventions/NAMING.md
+- [ ] Components sit directly in src/components/[domain]/ or shared/ — no extra folder layer
 - [ ] Component layout follows docs/frontend/conventions/COMPONENT_STRUCTURE.md
-- [ ] Unit tests added/updated, BDD style, coverage ≥95% on changed files
-- [ ] If user-facing: Playwright happy-path e2e added/updated (Gherkin)
+- [ ] Component files hold one component: no `renderX()` functions, no helpers — subcomponents, local `utils/`, local hooks instead
+- [ ] Nothing imported from another component's `utils/`, constants or subcomponents; shared and general-purpose code promoted to src/utils, src/types, src/constants
+- [ ] Unit tests added/updated, BDD style, coverage ≥95% on changed files; every subcomponent, util and hook has its own test file
+- [ ] If the flow is reachable through a route: Playwright happy-path e2e added/updated (Gherkin); otherwise PR states "No e2e: not mounted on any route"
+- [ ] Component fills its parent's width, height is automatic, no sizes copied from the Figma frame
+- [ ] Stories checked at 320 / 360 / 800px: no horizontal scroll, primary text wraps instead of truncating, data marks not clipped
 - [ ] Biome lint clean (no disabled rules without justification)
 - [ ] TypeScript clean (no `any`, no `@ts-ignore` without comment)
 - [ ] API responses validated with Zod
-- [ ] Storybook story added
+- [ ] Storybook story added, showing the component alone (no decorator background, padding or fixed size)
 - [ ] State escalation to Zustand justified in PR description (if applicable)
 - [ ] All user-visible strings wrapped in Lingui macros (`<Trans>`, `t`, `msg`) — no hardcoded literals
 - [ ] `yarn i18n:extract` run after adding/changing strings; `.po` files committed
-- [ ] CI green: build, lint, test, e2e
+- [ ] CI green: build, lint, test (and e2e once the CI job is enabled, §4.6) — or, where CI did not run on the PR, local results listed in the PR
+- [ ] PR description lists decisions and deviations from the ticket/spec; only files belonging to the task are committed
 ```
 
 ---
@@ -266,7 +434,23 @@ Acceptance-criteria phrasing for testing tasks should mirror Given/When/Then so 
 ## 6. Quick decision tree (for ticket triage)
 
 - "Where does this component go?" → used by ≥2 domains? `components/shared/`. Otherwise
-  `components/[domain]/`.
+  `components/[domain]/`. Directly there — no grouping folder, even if the ticket names one (§2).
+- "Should this JSX be a subcomponent?" → produced by a local function, or has its own
+  condition/state/handlers, or the file is past ~150 lines? Yes: nested folder, own test (§3.2).
+- "Can this function stay in the component file?" → no. Local `utils/` (one function per file, own
+  test); stateful logic becomes a local `useSomething` hook.
+- "Local `utils/` or `src/utils/`?" → second consumer, or general-purpose (primitives in, primitives
+  out, nothing component-specific)? Global. Otherwise local.
+- "Can I import that from another component?" → the component and its props types: yes. Its
+  `utils/`, constants or subcomponents: no, promote them first.
+- "Can I use the Figma frame's width/height?" → no. Parent's width, automatic height; stories without
+  chrome (§3.4).
+- "The label does not fit at 320px — truncate?" → not if it carries the result. Wrap it; break
+  multi-part labels at the part boundary (§3.4).
+- "Does this PR need an e2e spec?" → can a user reach the change through a route? Yes: add it. No:
+  unit tests, and say so in the PR (§4.6).
+- "The reviewer asks for something the ticket contradicts?" → follow the reviewer, note in the PR
+  that the ticket/spec needs updating (§8).
 - "Should I add Zustand?" → can Context + useState do it without perf pain or middleware? If yes,
   no.
 - "Should I write a custom CSS file?" → almost never. Use Tailwind utilities. Justify the exception.
@@ -297,3 +481,48 @@ Acceptance-criteria phrasing for testing tasks should mirror Given/When/Then so 
 | Testing tools | `docs/frontend/tools/TESTING.md` |
 | i18n (Lingui) | `lingui.config.js`, `src/locales/` |
 | Boilerplate | <https://github.com/Generacja-Innowacja/vite-project-boilerplate> |
+
+---
+
+## 8. Working process (environment, commits, PRs, review feedback)
+
+### 8.1 Before running anything
+
+- Run `node -v` first. The shell's default Node can be older than the required 24, and then every
+  `yarn` script and the pre-commit hook fail with errors that look unrelated. Switch to Node >= 24
+  (e.g. `nvm use 24`) in the same shell before any script or commit. Do not bypass the hook
+  (`--no-verify`) to get around a wrong Node version.
+
+### 8.2 Commits
+
+- The pre-commit hook runs `yarn lint:fix` and `yarn i18n:extract` on the whole repo. Both rewrite
+  files, so run them yourself **before staging**, then stage.
+- After every commit run `git status`. What the hook left modified is either yours (typically
+  `.po` line references that moved with your code — commit them) or not yours (a file you never
+  touched that got re-formatted — restore it, do not commit it).
+- A commit contains only files that belong to the task. Stage paths explicitly; no `git add -A`.
+
+### 8.3 Pull requests
+
+- Follow `.github/pull_request_template.md`. Under Changes, besides what was done, list:
+  - **Decisions** — every choice the ticket left open, and what you chose.
+  - **Deviations** — every place the result differs from the ticket, the spec or this file, with the
+    reason (including "the ticket named a path outside the §2 layout").
+  - **Verification** — the commands you ran and their results (tests passed, coverage of changed
+    files), and the viewport widths you checked.
+- CI is only set up for PRs that target `main` or `develop`. A stacked PR (targeting another
+  feature branch) may get no checks at all, so before opening it run `yarn lint`,
+  `yarn test:coverage` and `yarn build` locally (and `yarn e2e` when §4.6 requires a spec — see
+  there for what that needs) and state the results in the PR. Look at the PR's checks afterwards and
+  never describe a PR as "CI green" when CI did not run on it.
+
+### 8.4 Review feedback
+
+- A human reviewer's instruction overrides the ticket and the spec. Implement it, and state in the
+  PR which sentence of the ticket/spec is now outdated so it can be corrected at the source. If it
+  contradicts this file, do not silently pick one: name the conflict in the PR — the Technical
+  Leader's word decides, and this file is then updated to match.
+- Comments from an automated reviewer are suggestions: check each against the code, then fix it or
+  decline it with a concrete reason. Do not leave a comment unanswered.
+- A remark made on one component applies to all of them. Before replying, search your PR for the
+  same pattern elsewhere and fix every occurrence.
