@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SurveyAnswer } from "./SurveyAnswer";
@@ -182,6 +182,56 @@ describe("<SurveyAnswer />", () => {
       expect(() =>
         render(<SurveyAnswer title="Test" type="agree" />),
       ).not.toThrow();
+    });
+
+    it("does not throw when a custom-selectable answer is clicked", async () => {
+      const user = userEvent.setup();
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      await user.click(screen.getByRole("button", { name: "Test" }));
+      expect(screen.getByRole("button", { name: "Test" })).toBeEnabled();
+    });
+  });
+
+  describe("when the button is clicked again while the click animation runs", () => {
+    it("ignores the second click", async () => {
+      const onClick = vi.fn();
+      render(<SurveyAnswer title="Test" type="agree" onClick={onClick} />);
+      const button = screen.getByRole("button", { name: "Test" });
+
+      fireEvent.click(button);
+      await waitFor(() => expect(button).toHaveClass("pointer-events-none"));
+      fireEvent.click(button);
+
+      await waitFor(() => expect(onClick).toHaveBeenCalledTimes(1), {
+        timeout: 1000,
+      });
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("when the ripple has finished expanding", () => {
+    it("shrinks it back and lets the answer be clicked again", async () => {
+      render(<SurveyAnswer title="Test" type="agree" onClick={vi.fn()} />);
+      const button = screen.getByRole("button", { name: "Test" });
+      const ripple = button.firstElementChild as HTMLElement;
+
+      fireEvent.click(button);
+      await waitFor(() =>
+        expect(ripple.style.transition).toContain("ease-out"),
+      );
+      fireEvent.transitionEnd(ripple);
+
+      await waitFor(
+        () => expect(ripple.style.transition).toContain("ease-in"),
+        {
+          timeout: 1000,
+        },
+      );
+      await waitFor(
+        () => expect(button).not.toHaveClass("pointer-events-none"),
+        { timeout: 1000 },
+      );
     });
   });
 
