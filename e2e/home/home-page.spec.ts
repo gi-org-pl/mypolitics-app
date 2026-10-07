@@ -40,14 +40,19 @@ const NARROW_WINDOW = { width: 360, height: 740 };
 
 // Opens the home page and waits for the pictures it displays as well: one
 // that arrives late moves everything below it, and a click made at that moment
-// misses. A picture that is not displayed at this width is never downloaded.
+// misses. A picture that is not displayed at this width is never downloaded,
+// and a lazy one far below the window is not downloaded yet: the pictures of
+// the quiz cards are lazy and their height is fixed, so they move nothing.
 const openHomePage = async (page: Page) => {
   await openPage(page, HOME_PATH);
   await expect
     .poll(() =>
       page.evaluate(() =>
         Array.from(document.images).every(
-          (image) => image.complete || image.getClientRects().length === 0,
+          (image) =>
+            image.complete ||
+            image.loading === "lazy" ||
+            image.getClientRects().length === 0,
         ),
       ),
     )
