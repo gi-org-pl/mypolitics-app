@@ -8,15 +8,16 @@ import {
   FLOAT_KEYFRAMES,
 } from "./FeaturedQuizBanner.constants";
 
-// The banner is a picture frame: it is as wide as its parent and as tall as
-// the parent makes it, and never lower than the picture needs. Its pictures
+// The banner is a picture frame: it is as wide as its parent and takes its
+// height from the proportion of the picture; a parent that sets a height of
+// its own (a row shared with a taller card) stretches it. Its pictures
 // load lazily, so a page that does not display the banner on a narrow screen
 // does not download them there.
 export const FeaturedQuizBanner = () => {
   const { t } = useLingui();
 
   return (
-    <div className="relative h-full min-h-58.5 w-full overflow-hidden rounded-4xl bg-gi-dark-primary">
+    <div className="relative aspect-389/117 h-full w-full overflow-hidden rounded-4xl bg-gi-dark-primary">
       <style>{FLOAT_KEYFRAMES}</style>
 
       <img
