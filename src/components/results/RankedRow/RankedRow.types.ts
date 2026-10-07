@@ -1,7 +1,4 @@
-import type {
-  AxisEntry,
-  AxisOrientation,
-} from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisEntry, AxisOrientation } from "@/types/axis";
 
 export interface RankedBadge {
   iconUrl?: string;

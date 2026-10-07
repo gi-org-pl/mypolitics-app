@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/components/shared/UniversalAxis/UniversalAxis.types";
+import type { AxisOrientation } from "@/types/axis";
 import type { RankedComparison } from "@/types/results";
 
 export interface ArchetypeEntry {

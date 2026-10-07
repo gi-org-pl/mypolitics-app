@@ -4,8 +4,9 @@ import {
   DEFAULT_MARKER_POSITION,
   DOUBLE_SIDED_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
-} from "../UniversalAxis.constants";
-import type { AxisEntry, AxisOrientation } from "../UniversalAxis.types";
+} from "@/constants/axis";
+import type { AxisEntry, AxisOrientation } from "@/types/axis";
+
 import { getAxisLayout } from "./getAxisLayout";
 
 const orientationA: AxisOrientation = {
@@ -143,11 +144,15 @@ describe("getAxisLayout()", () => {
       expect(getAxisLayout({ start: entryA(140) }).start?.value).toBe(100);
     });
 
-    it("treats a missing or NaN value as an absent entry", () => {
-      const missingValue = { orientation: orientationA } as AxisEntry;
+    it("keeps an entry with a missing or NaN value and drops such a comparison", () => {
+      const missingValue: AxisEntry = { orientation: orientationA };
 
-      expect(getAxisLayout({ start: missingValue }).start).toBeNull();
-      expect(getAxisLayout({ start: entryA(Number.NaN) }).start).toBeNull();
+      expect(getAxisLayout({ start: missingValue }).start?.hasValue).toBe(
+        false,
+      );
+      expect(getAxisLayout({ start: entryA(Number.NaN) }).start?.hasValue).toBe(
+        false,
+      );
       expect(
         getAxisLayout({
           start: entryA(40),
@@ -355,6 +360,193 @@ describe("getAxisLayout()", () => {
 
       expect(layout.start?.valuePlacement).toBe("hidden");
       expect(layout.end?.valuePlacement).toBe("hidden");
+    });
+  });
+
+  describe("given a start entry without a value", () => {
+    it("returns one-sided mode with the start side present", () => {
+      const layout = getAxisLayout({ start: { orientation: orientationB } });
+
+      expect(layout.mode).toBe("one-sided");
+      expect(layout.start?.name).toBe("Orientation B");
+      expect(layout.end).toBeNull();
+    });
+
+    it("gives that side no fill and a hidden value", () => {
+      const layout = getAxisLayout({ start: { orientation: orientationB } });
+
+      expect(layout.start?.hasValue).toBe(false);
+      expect(layout.start?.width).toBe(0);
+      expect(layout.start?.valuePlacement).toBe("hidden");
+    });
+  });
+
+  describe("given an end entry without a value", () => {
+    it("returns one-sided mode with the end side present and unfilled", () => {
+      const layout = getAxisLayout({ end: { orientation: orientationB } });
+
+      expect(layout.mode).toBe("one-sided");
+      expect(layout.start).toBeNull();
+      expect(layout.end?.hasValue).toBe(false);
+      expect(layout.end?.width).toBe(0);
+    });
+  });
+
+  describe("given both entries, one without a value", () => {
+    const layout = getAxisLayout({
+      start: entryA(69),
+      end: { orientation: orientationB },
+    });
+
+    it("returns double-sided mode", () => {
+      expect(layout.mode).toBe("double-sided");
+    });
+
+    it("keeps the side without a value, with no fill and a hidden value", () => {
+      expect(layout.end?.name).toBe("Orientation B");
+      expect(layout.end?.hasValue).toBe(false);
+      expect(layout.end?.width).toBe(0);
+      expect(layout.end?.valuePlacement).toBe("hidden");
+    });
+
+    it("lays the other side out as usual", () => {
+      expect(layout.start).toEqual(
+        getAxisLayout({ start: entryA(69), end: entryB(0) }).start,
+      );
+      expect(layout.start?.hasValue).toBe(true);
+      expect(layout.start?.width).toBe(69);
+      expect(layout.start?.valuePlacement).toBe("inside");
+    });
+  });
+
+  describe("given both entries without a value", () => {
+    it("returns double-sided mode with both sides present and unfilled", () => {
+      const layout = getAxisLayout({
+        start: { orientation: orientationA },
+        end: { orientation: orientationB },
+      });
+
+      expect(layout.mode).toBe("double-sided");
+      expect(layout.start?.hasValue).toBe(false);
+      expect(layout.start?.width).toBe(0);
+      expect(layout.end?.hasValue).toBe(false);
+      expect(layout.end?.width).toBe(0);
+    });
+  });
+
+  describe("given a value that is not a number", () => {
+    it("treats the entry as present and without a value", () => {
+      const textValue = {
+        orientation: orientationA,
+        value: "40",
+      } as unknown as AxisEntry;
+
+      for (const entry of [entryB(Number.NaN), textValue]) {
+        const layout = getAxisLayout({ start: entryA(30), end: entry });
+
+        expect(layout.mode).toBe("double-sided");
+        expect(layout.end?.hasValue).toBe(false);
+        expect(layout.end?.value).toBe(0);
+        expect(layout.end?.width).toBe(0);
+        expect(layout.end?.valuePlacement).toBe("hidden");
+      }
+    });
+  });
+
+  describe("given a comparison and a taker entry without a value", () => {
+    it("hatches the whole track and positions only the other party image", () => {
+      const layout = getAxisLayout({
+        start: { orientation: orientationA },
+        comparison: friendEntry(60),
+      });
+
+      expect(layout.start?.width).toBe(0);
+      expect(layout.comparison?.band).toEqual({ from: 0, to: 100 });
+      expect(layout.comparison?.position).toBe(60);
+    });
+
+    it("does the same from the right cap for an end entry", () => {
+      const layout = getAxisLayout({
+        end: { orientation: orientationB },
+        comparison: friendEntry(60),
+      });
+
+      expect(layout.comparison?.band).toEqual({ from: 0, to: 100 });
+      expect(layout.comparison?.position).toBe(40);
+    });
+
+    it("hatches the whole track when the start side of a double-sided bar has no value", () => {
+      const layout = getAxisLayout({
+        start: { orientation: orientationA },
+        end: entryB(31),
+        comparison: friendEntry(90),
+      });
+
+      expect(layout.comparison?.band).toEqual({ from: 0, to: 100 });
+      expect(layout.comparison?.position).toBe(90);
+    });
+  });
+
+  describe("given a comparison without a value", () => {
+    it("returns no comparison", () => {
+      expect(
+        getAxisLayout({
+          start: entryA(40),
+          comparison: { orientation: friend },
+        }).comparison,
+      ).toBeNull();
+    });
+  });
+
+  describe("given entries with numbers", () => {
+    it("returns the same layout as before for every existing case", () => {
+      expect(
+        getAxisLayout({
+          start: entryA(69),
+          end: entryB(31),
+          comparison: friendEntry(90),
+        }),
+      ).toEqual({
+        mode: "double-sided",
+        start: {
+          name: "Orientation A",
+          imageUrl: "https://example.com/a.png",
+          color: "#59b6a6",
+          hasValue: true,
+          value: 69,
+          displayValue: 69,
+          width: 69,
+          valuePlacement: "hidden",
+        },
+        end: {
+          name: "Orientation B",
+          imageUrl: undefined,
+          color: "#bc831a",
+          hasValue: true,
+          value: 31,
+          displayValue: 31,
+          width: 31,
+          valuePlacement: "hidden",
+        },
+        marker: DEFAULT_MARKER_POSITION,
+        comparison: {
+          name: "Ania",
+          imageUrl: "https://example.com/ania.png",
+          color: "#004554",
+          value: 90,
+          displayValue: 90,
+          position: 90,
+          band: { from: 69, to: 90 },
+        },
+      });
+    });
+
+    it("keeps a zero value as a value", () => {
+      const layout = getAxisLayout({ start: entryA(0) });
+
+      expect(layout.start?.hasValue).toBe(true);
+      expect(layout.start?.width).toBe(0);
+      expect(layout.start?.valuePlacement).toBe("hidden");
     });
   });
 });

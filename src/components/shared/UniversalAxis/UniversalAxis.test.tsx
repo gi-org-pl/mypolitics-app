@@ -1,10 +1,10 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import type { AxisEntry, AxisOrientation } from "@/types/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { UniversalAxis } from "./UniversalAxis";
-import type { AxisEntry, AxisOrientation } from "./UniversalAxis.types";
 
 const orientationA: AxisOrientation = {
   id: "a",
@@ -462,6 +462,105 @@ describe("<UniversalAxis />", () => {
       const { container } = renderWithI18n(<UniversalAxis start={entryA(5)} />);
 
       expect(container.querySelector("[class*='animate']")).toBeNull();
+    });
+  });
+
+  describe("given an entry without a value", () => {
+    it("renders its cap", () => {
+      renderWithI18n(<UniversalAxis start={{ orientation: orientationA }} />);
+
+      expect(
+        screen.getByTestId("universal-axis-cap-start"),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("universal-axis-socket"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders its label when labels are on", () => {
+      renderWithI18n(
+        <UniversalAxis start={{ orientation: orientationA }} showLabels />,
+      );
+
+      expect(screen.getByTestId("universal-axis-labels")).toHaveTextContent(
+        "Orientation A",
+      );
+    });
+
+    it("renders no fill and no number for it", () => {
+      renderWithI18n(<UniversalAxis start={{ orientation: orientationA }} />);
+
+      expect(
+        screen.queryByTestId("universal-axis-fill-start"),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("universal-axis-value-start"),
+      ).not.toBeInTheDocument();
+      expect(screen.getByTestId("universal-axis-track")).toHaveTextContent("");
+    });
+
+    it("says in the description that its value is missing", () => {
+      renderWithI18n(<UniversalAxis start={{ orientation: orientationA }} />);
+
+      expect(
+        screen.getByRole("img", { name: "Orientation A: brak wyniku" }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a double-sided bar with one entry without a value", () => {
+    it("renders both caps", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={{ orientation: orientationB }}
+        />,
+      );
+
+      expect(
+        screen.getByTestId("universal-axis-cap-start"),
+      ).toBeInTheDocument();
+      expect(screen.getByTestId("universal-axis-cap-end")).toBeInTheDocument();
+    });
+
+    it("fills and describes only the side that has a value", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={{ orientation: orientationB }}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveStyle({
+        width: "69%",
+      });
+      expect(
+        screen.queryByTestId("universal-axis-fill-end"),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("img", {
+          name: "Orientation A: 69%, Orientation B: brak wyniku",
+        }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a comparison and a taker entry without a value", () => {
+    it("hatches the whole track", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: orientationA }}
+          comparison={friendEntry(60)}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-band")).toHaveStyle({
+        left: "0%",
+        width: "100%",
+      });
+      expect(
+        screen.getByTestId("universal-axis-comparison-image"),
+      ).toBeInTheDocument();
     });
   });
 });

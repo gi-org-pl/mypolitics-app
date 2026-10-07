@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import type { AxisOrientation } from "@/types/axis";
+
 import { UniversalAxis } from "./UniversalAxis";
-import type { AxisOrientation } from "./UniversalAxis.types";
 
 const createAvatarUrl = (color: string): string =>
   `data:image/svg+xml,${encodeURIComponent(
@@ -65,6 +66,13 @@ export const OneSidedSmallValue: Story = {
   },
 };
 
+export const OneSidedNoValue: Story = {
+  args: {
+    start: { orientation: socialism },
+    marker: false,
+  },
+};
+
 export const OneSided: Story = {
   args: {
     start: { orientation: socialism, value: 25 },
@@ -108,10 +116,34 @@ export const ComparisonOnly: Story = {
   },
 };
 
+export const ComparisonTakerNoValue: Story = {
+  args: {
+    start: { orientation: socialism },
+    comparison: { orientation: friend, value: 60 },
+    marker: false,
+  },
+};
+
 export const DoubleSidedEmpty: Story = {
   args: {
     start: { orientation: liberalism, value: 0 },
     end: { orientation: conservatism, value: 0 },
+    marker: false,
+  },
+};
+
+export const DoubleSidedOneNoValue: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism },
+    marker: false,
+  },
+};
+
+export const DoubleSidedBothNoValue: Story = {
+  args: {
+    start: { orientation: liberalism },
+    end: { orientation: conservatism },
     marker: false,
   },
 };
@@ -136,6 +168,14 @@ export const DoubleSidedWithLabels: Story = {
   args: {
     start: { orientation: liberalism, value: 69 },
     end: { orientation: conservatism, value: 31 },
+    showLabels: true,
+  },
+};
+
+export const DoubleSidedOneNoValueWithLabels: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism },
     showLabels: true,
   },
 };

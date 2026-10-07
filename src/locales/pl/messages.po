@@ -17,17 +17,50 @@ msgstr ""
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (otwiera się w nowej karcie)"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:136
+#: src/components/results/NolanChart/utils/useMapDescription.ts:52
+msgid "{name}: {quadrant}"
+msgstr "{name}: {quadrant}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+msgid "{name}: brak wyniku"
+msgstr "{name}: brak wyniku"
+
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
+#: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
+msgid "{startName} / {endName}"
+msgstr "{startName} / {endName}"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:40
+msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
+msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
+
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+msgid "{trait} - tylko {name}"
+msgstr "{trait} - tylko {name}"
+
+#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+msgid "{trait} - wspólna z: {name}"
+msgstr "{trait} - wspólna z: {name}"
 
 #: src/components/results/ResultsHeader/ResultsHeaderConfidence/ResultsHeaderConfidence.tsx:23
 msgid "{value}% pewności"
 msgstr "{value}% pewności"
 
+#: src/components/results/NolanChart/utils/useMapDescription.ts:41
+msgid "{xAxis}: {x}, {yAxis}: {y}"
+msgstr "{xAxis}: {x}, {yAxis}: {y}"
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
+
+#: src/components/results/AxisRow/AxisRow.tsx:29
+msgid "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
+msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
 #: src/components/results/ResultsHeader/ResultsHeader.tsx:45
@@ -35,9 +68,14 @@ msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:26
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:151
+#: src/components/results/NolanChart/utils/useNolanTitle.ts:20
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
+
+#: src/components/results/Traits/Traits.tsx:33
+msgid "Brak zdobytych cech"
+msgstr "Brak zdobytych cech"
 
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
@@ -115,6 +153,14 @@ msgstr "Otwórz menu nawigacji"
 msgid "Pełny opis"
 msgstr "Pełny opis"
 
+#: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
+msgid "Pokaż grupę"
+msgstr "Pokaż grupę"
+
+#: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
+msgid "Pokaż grupę: {name}"
+msgstr "Pokaż grupę: {name}"
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
 msgid "Pokaż kategorię"
 msgstr "Pokaż kategorię"
@@ -127,11 +173,15 @@ msgstr "Pokaż kategorię: {name}"
 msgid "Pokaż mniej"
 msgstr "Pokaż mniej"
 
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Pokaż osie"
+msgstr "Pokaż osie"
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartFlatList/HorizontalBarChartFlatList.tsx:35
 msgid "Pokaż wszystkie"
 msgstr "Pokaż wszystkie"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:143
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
@@ -179,6 +229,18 @@ msgstr "Tryb porównania"
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
+
+#: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
+msgid "Ukryj osie"
+msgstr "Ukryj osie"
+
+#: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
+msgid "Wróć do grup"
+msgstr "Wróć do grup"
+
+#: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
+msgid "Wróć do grup, zamknij grupę: {name}"
+msgstr "Wróć do grup, zamknij grupę: {name}"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
 msgid "Wróć do kategorii"
