@@ -2,11 +2,10 @@ import { ModuleWrapper } from "@/components/shared/ModuleWrapper/ModuleWrapper";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
 import type { AxisEntry } from "@/types/axis";
 import { isNumber } from "@/utils/number/isNumber";
+import { hasOrientationTitle } from "@/utils/results/hasOrientationTitle";
 import { toSingleLine } from "@/utils/text/toSingleLine";
-
 import { OrientationChip } from "../OrientationChip/OrientationChip";
 import type { SingleAxisChartProps } from "./SingleAxisChart.types";
-import { hasOrientationTitle } from "./utils/hasOrientationTitle";
 import { isAxisEmphasised } from "./utils/isAxisEmphasised";
 
 export const SingleAxisChart = ({
