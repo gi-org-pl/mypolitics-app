@@ -234,12 +234,18 @@ Search `src/utils/`, `src/types/` and `src/constants/` before writing a helper; 
 | The util / type / constant is… | It lives in |
 | --- | --- |
 | Used by one component and written in that component's terms (takes its types, names its concepts) | The component folder (`utils/`, `.types.ts`, `.constants.ts`) |
-| Used by a second component — promote in the same PR that adds the second consumer and update both | `src/utils/[domain-name]/`, `src/types/[domain-name].ts`, `src/constants/[domain-name].ts` |
+| Used by a second component on its own account (not just to render the first one) — promote in the same PR that adds the second consumer and update both | `src/utils/[domain-name]/`, `src/types/[domain-name].ts`, `src/constants/[domain-name].ts` |
 | General-purpose even with one consumer today: only primitives or generics in the signature, nothing about the component in its name or body (clamping a number, "is this a finite number", collapsing whitespace) | `src/utils/[domain-name]/` (`number/`, `text/`, `object/`, ...) |
 | A subcomponent needed by a second parent | A sibling component in `src/components/[domain-name]/` (or `shared/` when ≥2 domains use it) |
 
 Never keep a private copy of a helper that already exists globally, and never copy one from another
 component — promote it.
+
+**A component's public API types are not "shared" in this sense.** Its props type and the types that
+describe its props (`RankedRowProps`, `RankedEntry`) stay in its `.types.ts`, however many parents
+import them to render it. Promote a type to `src/types/` when components use it independently of
+that component: a domain shape that several components take as input (`AxisOrientation`), or a type
+a global util works with.
 
 #### Imports between components
 
@@ -375,6 +381,12 @@ assumptions about the frame it was drawn in.
     interactions (open/close, keyboard, focus) are covered by unit tests, and the PR description says
     "No e2e: not mounted on any route". The PR that first mounts it on a page adds the e2e.
   - Do not create a route or test-only page just to give a component an e2e spec.
+  - **Running e2e needs a running app, and the repo does not start one yet.** `yarn e2e` is only
+    `playwright test`: `playwright.config.ts` has `webServer` and `baseURL` commented out, the only
+    spec is the Playwright example, and the CI e2e job is switched off (`if: false`). The PR that
+    adds the first real spec therefore also configures `webServer` (the built app via
+    `yarn build && yarn preview`) and `baseURL` in `playwright.config.ts`, and enables the CI job —
+    so that `yarn e2e` works by itself locally and in CI. Until then, do not report e2e as run.
 
 ### 4.7 Internationalisation (Lingui)
 
@@ -413,7 +425,7 @@ assumptions about the frame it was drawn in.
 - [ ] State escalation to Zustand justified in PR description (if applicable)
 - [ ] All user-visible strings wrapped in Lingui macros (`<Trans>`, `t`, `msg`) — no hardcoded literals
 - [ ] `yarn i18n:extract` run after adding/changing strings; `.po` files committed
-- [ ] CI green: build, lint, test, e2e — or, where CI does not run (PR not targeting main/develop), local results listed in the PR
+- [ ] CI green: build, lint, test (and e2e once the CI job is enabled, §4.6) — or, where CI did not run on the PR, local results listed in the PR
 - [ ] PR description lists decisions and deviations from the ticket/spec; only files belonging to the task are committed
 ```
 
@@ -498,10 +510,11 @@ assumptions about the frame it was drawn in.
     reason (including "the ticket named a path outside the §2 layout").
   - **Verification** — the commands you ran and their results (tests passed, coverage of changed
     files), and the viewport widths you checked.
-- CI runs only for PRs that target `main` or `develop`. A stacked PR (targeting another feature
-  branch) gets no checks, so before opening it run `yarn lint`, `yarn test:coverage`, `yarn build`
-  (and `yarn e2e` when §4.6 requires a spec) locally and state the results in the PR. Never describe
-  a PR as "CI green" when CI did not run.
+- CI is only set up for PRs that target `main` or `develop`. A stacked PR (targeting another
+  feature branch) may get no checks at all, so before opening it run `yarn lint`,
+  `yarn test:coverage` and `yarn build` locally (and `yarn e2e` when §4.6 requires a spec — see
+  there for what that needs) and state the results in the PR. Look at the PR's checks afterwards and
+  never describe a PR as "CI green" when CI did not run on it.
 
 ### 8.4 Review feedback
 
