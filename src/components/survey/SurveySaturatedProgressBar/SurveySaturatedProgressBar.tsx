@@ -1,4 +1,4 @@
-import { ProgressBar } from "@gi/athena";
+import { ProgressBar } from "@gi-org-pl/athena";
 import { useLayoutEffect, useState } from "react";
 import { BAR_ANIMATION_MS } from "./SurveySaturatedProgressBar.constants";
 import type { SurveySaturatedProgressBarProps } from "./SurveySaturatedProgressBar.types";
