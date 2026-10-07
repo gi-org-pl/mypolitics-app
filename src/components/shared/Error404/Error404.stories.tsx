@@ -1,11 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
-import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { Error404 } from "./Error404";
 
 const meta: Meta<typeof Error404> = {
-  title: "Component/Error404",
+  title: "Shared/Error404",
   component: Error404,
   decorators: [
     (Story) => (
@@ -15,9 +14,7 @@ const meta: Meta<typeof Error404> = {
     ),
   ],
   parameters: {
-    viewport: {
-      options: INITIAL_VIEWPORTS,
-    },
+    layout: "fullscreen",
   },
 };
 
@@ -26,10 +23,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Desktop: Story = {};
+
 export const Mobile: Story = {
   globals: {
-    viewport: {
-      value: "iphone6",
-    },
+    viewport: { value: "mobile1" },
   },
 };

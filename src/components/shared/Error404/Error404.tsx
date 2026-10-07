@@ -1,41 +1,40 @@
 import { Button } from "@gi-org-pl/athena";
 import { t } from "@lingui/core/macro";
-
 import { Trans } from "@lingui/react/macro";
 import { Link } from "react-router";
 import bear404 from "@/assets/icons/bear-404.svg";
 import { PATHS } from "@/constants/paths";
 
-export const Error404: React.FC = () => {
+export const Error404 = () => {
   return (
-    <main className="flex max-md:flex-col items-start justify-center md:items-center min-h-160 md:min-h-100 h-full m-2.5 md:mx-auto gap-6 max-w-5xl">
+    <div className="flex w-full flex-col items-start gap-6 px-4 py-8 text-gi-primary md:flex-row md:items-center md:justify-center md:gap-8">
       <img
         src={bear404}
         alt={t`Ilustracja misia — błąd 404`}
-        className="w-16 h-16 md:w-48 md:h-48"
+        className="size-16 shrink-0 md:size-48"
       />
 
-      <div className="flex flex-col md:justify-center items-start h-auto gap-2.5">
-        <h1 className="max-md:text-xl text-[32px] font-bold text-gi-primary">
+      <div className="flex min-w-0 flex-col items-start gap-2.5">
+        <h1 className="font-(family-name:--font-family-poppins) text-xl leading-normal font-bold md:text-[32px]">
           <Trans>
             To jest błąd 404{" "}
             <span className="text-cyan-500">na miarę naszych możliwości</span>!
           </Trans>
         </h1>
 
-        <p className="max-md:text-base text-2xl text-gi-primary">
+        <p className="w-0 min-w-full font-(family-name:--font-family-poppins) text-base leading-normal md:text-2xl">
           <Trans>
             My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz
             błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!
           </Trans>
         </p>
 
-        <Link to={PATHS.home}>
-          <Button variant="primary" className="text-base font-bold">
+        <Button asChild variant="primary" className="text-base font-bold">
+          <Link to={PATHS.home}>
             <Trans>Strona główna</Trans>
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
-    </main>
+    </div>
   );
 };
