@@ -1,7 +1,6 @@
 import { SurveyAnswer } from "@/components/survey/SurveyAnswer/SurveyAnswer";
-
-import { getRowFadeStyle } from "../utils/getRowFadeStyle";
 import type { SurveyCategorySelectRowProps } from "./SurveyCategorySelectRow.types";
+import { getRowFadeStyle } from "./utils/getRowFadeStyle";
 
 export const SurveyCategorySelectRow = ({
   name,

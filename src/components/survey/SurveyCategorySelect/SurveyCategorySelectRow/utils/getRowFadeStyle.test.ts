@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { ROW_FADE_MS, ROW_STAGGER_MS } from "../SurveyCategorySelect.constants";
+import {
+  ROW_FADE_MS,
+  ROW_STAGGER_MS,
+} from "../../SurveyCategorySelect.constants";
 import { getRowFadeStyle } from "./getRowFadeStyle";
 
 describe("getRowFadeStyle()", () => {
