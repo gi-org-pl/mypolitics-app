@@ -28,7 +28,7 @@ export const NolanRows = ({
       coordinate={position?.x}
       lean={position?.poles.horizontal}
       color={color}
-      otherParty={comparison?.party}
+      otherOrientation={comparison?.orientation}
       otherValues={comparison?.horizontal}
     />
     <NolanRow
@@ -36,7 +36,7 @@ export const NolanRows = ({
       coordinate={position?.y}
       lean={position?.poles.vertical}
       color={color}
-      otherParty={comparison?.party}
+      otherOrientation={comparison?.orientation}
       otherValues={comparison?.vertical}
     />
   </div>

@@ -2,14 +2,17 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
+import type { Orientation } from "@/types/orientation";
+
 import { ResultsHeader } from "./ResultsHeader";
-import type { ResultsHeaderOrientation } from "./ResultsHeader.types";
 
 const imageUrl = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55"><rect width="55" height="55" fill="#dcdfe3"/><rect x="18.5" y="18.5" width="18" height="18" fill="none" stroke="white" stroke-width="2"/><path d="M18.5 18.5l18 18M36.5 18.5l-18 18" stroke="white" stroke-width="2"/></svg>',
 )}`;
 
-const orientation: ResultsHeaderOrientation = {
+const orientation: Orientation = {
+  id: "orientation",
+  type: "ideology",
   name: "Orientation Name",
   imageUrl,
 };
@@ -132,7 +135,7 @@ export const LongSlogan: Story = {
 
 export const NoImage: Story = {
   args: {
-    orientation: { name: "Orientation Name" },
+    orientation: { ...orientation, imageUrl: undefined },
   },
 };
 

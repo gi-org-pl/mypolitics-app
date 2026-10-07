@@ -23,7 +23,11 @@ export const HorizontalBarChartCategoryHeading = ({
     <RankedRow
       isHeading
       prefix={name}
-      entry={leader ?? { orientation: { id: "", name: t`Brak wyniku` } }}
+      entry={
+        leader ?? {
+          orientation: { id: "", type: "other", name: t`Brak wyniku` },
+        }
+      }
       comparison={
         leader
           ? getComparisonEntry(comparison, leader.orientation?.id)

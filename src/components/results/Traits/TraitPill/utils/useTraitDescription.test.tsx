@@ -11,24 +11,24 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <I18nProvider i18n={i18n}>{children}</I18nProvider>
 );
 
-const describeTrait = (holder: TraitHolder, partyName?: string) =>
-  renderHook(() => useTraitDescription("Anarchizm", holder, partyName), {
+const describeTrait = (holder: TraitHolder, otherName?: string) =>
+  renderHook(() => useTraitDescription("Anarchizm", holder, otherName), {
     wrapper,
   }).result.current;
 
 describe("useTraitDescription()", () => {
   describe("given a trait both hold", () => {
-    it("says it is shared with the other party", () => {
+    it("says it is shared with the other side", () => {
       expect(describeTrait("both", "Ania")).toBe("Anarchizm - wspólna z: Ania");
     });
   });
 
-  describe("given a trait only the other party holds", () => {
+  describe("given a trait only the other side holds", () => {
     it("says it is only theirs", () => {
       expect(describeTrait("other", "Ania")).toBe("Anarchizm - tylko Ania");
     });
 
-    it("collapses a party name with line breaks into one line", () => {
+    it("collapses the other name with line breaks into one line", () => {
       expect(describeTrait("other", " Ania\n\nNowak ")).toBe(
         "Anarchizm - tylko Ania Nowak",
       );

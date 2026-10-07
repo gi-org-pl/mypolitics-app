@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { ArchetypeEntry } from "../Archetype.types";
 import { getArchetypeRanking } from "./getArchetypeRanking";
 
 const archetype = (id: string, match?: number): ArchetypeEntry => ({
-  orientation: { id, name: id },
+  orientation: createOrientation(id, id),
   match,
 });
 

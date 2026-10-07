@@ -3,19 +3,22 @@ import type { CSSProperties } from "react";
 
 import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import type { TraitPillProps } from "./TraitPill.types";
 import { getPillHolder } from "./utils/getPillHolder";
 import { isLightColor } from "./utils/isLightColor";
 import { useTraitDescription } from "./utils/useTraitDescription";
 
-export const TraitPill = ({ item, party }: TraitPillProps) => {
-  const holder = getPillHolder(item.holder, party);
+export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
+  const { orientation } = item;
+  const name = toSingleLine(orientation.name);
+  const holder = getPillHolder(item.holder, otherOrientation);
   const isTheirs = holder !== "taker";
   const isHatched = holder === "other";
-  const description = useTraitDescription(item.name, holder, party?.name);
+  const description = useTraitDescription(name, holder, otherOrientation?.name);
 
-  const safeColor = getSafeColor(item.color);
+  const safeColor = getSafeColor(orientation.color);
   const isLight = isLightColor(safeColor);
 
   return (
@@ -33,10 +36,10 @@ export const TraitPill = ({ item, party }: TraitPillProps) => {
             : undefined
         }
       >
-        {item.imageUrl && (
+        {orientation.imageUrl && (
           <img
             data-testid="trait-pill-image"
-            src={item.imageUrl}
+            src={orientation.imageUrl}
             alt=""
             className={`-mx-2 size-8 shrink-0 object-cover ${isLight ? "brightness-0" : ""}`}
           />
@@ -45,14 +48,14 @@ export const TraitPill = ({ item, party }: TraitPillProps) => {
           aria-hidden={isTheirs || undefined}
           className="min-w-0 truncate text-base leading-5 font-bold"
         >
-          {item.name}
+          {name}
         </span>
         {isTheirs && <span className="sr-only">{description}</span>}
       </div>
       {isTheirs && (
         <Avatar
           size="small"
-          src={party?.imageUrl}
+          src={otherOrientation?.imageUrl}
           dataTestId="trait-pill-avatar"
           className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash"
         />

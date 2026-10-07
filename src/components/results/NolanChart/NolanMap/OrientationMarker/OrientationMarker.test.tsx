@@ -2,23 +2,25 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 
 import type { NolanPosition } from "../../NolanChart.types";
-import { PartyMarker } from "./PartyMarker";
+import { OrientationMarker } from "./OrientationMarker";
 
 const at = (x: number, y: number) => ({ x, y }) as NolanPosition;
-const friend = {
-  id: "friend",
-  name: "Rafał",
+const friend = createOrientation("friend", "Rafał", {
+  type: "person",
   imageUrl: "https://example.com/friend.png",
-};
+});
 
 const getDisc = () => screen.getByTestId("nolan-chart-comparison");
 const getImage = () => screen.getByTestId("nolan-chart-comparison-image");
 
-describe("<PartyMarker />", () => {
+describe("<OrientationMarker />", () => {
   it("renders the image at the position, on the shared hatching", () => {
-    render(<PartyMarker party={friend} position={at(-0.16, -0.36)} />);
+    render(
+      <OrientationMarker orientation={friend} position={at(-0.16, -0.36)} />,
+    );
 
     expect(getDisc().style.getPropertyValue("--nolan-x")).toBe("42%");
     expect(getDisc().style.getPropertyValue("--nolan-y")).toBe("68%");
@@ -30,7 +32,7 @@ describe("<PartyMarker />", () => {
   });
 
   it("keeps the image fully on the map at an edge or a corner", () => {
-    render(<PartyMarker party={friend} position={at(1, 1)} />);
+    render(<OrientationMarker orientation={friend} position={at(1, 1)} />);
 
     expect(getDisc().style.getPropertyValue("--nolan-x")).toBe("100%");
     expect(getDisc().style.getPropertyValue("--nolan-y")).toBe("0%");
@@ -41,7 +43,7 @@ describe("<PartyMarker />", () => {
   });
 
   it("clips the hatched disc to the map's rounded corners", () => {
-    render(<PartyMarker party={friend} position={at(1, 1)} />);
+    render(<OrientationMarker orientation={friend} position={at(1, 1)} />);
 
     expect(getDisc().parentElement).toHaveClass(
       "absolute",
@@ -51,11 +53,11 @@ describe("<PartyMarker />", () => {
     );
   });
 
-  describe("given a party without an image", () => {
+  describe("given an orientation without an image", () => {
     it("renders a neutral placeholder", () => {
       render(
-        <PartyMarker
-          party={{ id: "friend", name: "Rafał" }}
+        <OrientationMarker
+          orientation={{ id: "friend", type: "person", name: "Rafał" }}
           position={at(0, 0)}
         />,
       );
@@ -64,18 +66,18 @@ describe("<PartyMarker />", () => {
       expect(getImage()).toHaveClass("bg-gi-dark-gray");
     });
 
-    it("does not throw without a party", () => {
-      render(<PartyMarker position={at(0, 0)} />);
+    it("does not throw without an orientation", () => {
+      render(<OrientationMarker position={at(0, 0)} />);
 
       expect(getImage()).toHaveClass("bg-gi-dark-gray");
     });
   });
 
-  describe("given a party colour", () => {
+  describe("given an orientation colour", () => {
     it("applies a safe one behind the image through a custom property", () => {
       render(
-        <PartyMarker
-          party={{ ...friend, color: "#123456" }}
+        <OrientationMarker
+          orientation={{ ...friend, color: "#123456" }}
           position={at(0, 0)}
         />,
       );
@@ -88,8 +90,13 @@ describe("<PartyMarker />", () => {
 
     it("ignores an unsafe one", () => {
       render(
-        <PartyMarker
-          party={{ id: "friend", name: "Rafał", color: "url(x)" }}
+        <OrientationMarker
+          orientation={{
+            id: "friend",
+            type: "person",
+            name: "Rafał",
+            color: "url(x)",
+          }}
           position={at(0, 0)}
         />,
       );

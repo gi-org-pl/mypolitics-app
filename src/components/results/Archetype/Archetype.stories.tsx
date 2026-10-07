@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 
 import { Archetype } from "./Archetype";
 import type { ArchetypeEntry } from "./Archetype.types";
@@ -22,8 +23,9 @@ const createArchetype = (
   id: string,
   name: string,
   color: string,
-): AxisOrientation => ({
+): Orientation => ({
   id,
+  type: "identity",
   name,
   color,
   imageUrl: createPortraitUrl(color),
@@ -81,6 +83,7 @@ const placeholders: ArchetypeEntry[] = [
   {
     orientation: {
       id: "a",
+      type: "identity",
       name: "Orientation Name",
       imageUrl: placeholderImageUrl,
     },
@@ -89,11 +92,10 @@ const placeholders: ArchetypeEntry[] = [
     fullDescription: "Full description",
   },
   ...["b", "c", "d", "e"].map((id, index) => ({
-    orientation: {
-      id,
-      name: "Orientation Name",
+    orientation: createOrientation(id, "Orientation Name", {
+      type: "identity",
       imageUrl: placeholderImageUrl,
-    },
+    }),
     match: 70 - index * 15,
   })),
 ];
@@ -101,7 +103,7 @@ const placeholders: ArchetypeEntry[] = [
 const friend = createArchetype("friend", "Ania", "#004554");
 
 const comparison = {
-  party: friend,
+  orientation: friend,
   values: { green: 55, citizen: 86, patriot: 64, unknown: 40 },
 };
 

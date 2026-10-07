@@ -1,11 +1,11 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 export interface ResultEntry {
-  orientation: AxisOrientation;
+  orientation: Orientation;
   value?: number;
 }
 
 export interface RankedComparison {
-  party: AxisOrientation;
+  orientation: Orientation;
   values: Record<string, number>;
 }

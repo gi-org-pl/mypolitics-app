@@ -1,4 +1,5 @@
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 export interface RankedBadge {
   iconUrl?: string;
@@ -7,7 +8,7 @@ export interface RankedBadge {
 }
 
 export interface RankedEntry {
-  orientation: AxisOrientation;
+  orientation: Orientation;
   value?: number;
   badge?: RankedBadge;
 }

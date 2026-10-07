@@ -25,7 +25,11 @@ export const Traits = ({
       {items.length > 0 ? (
         <ul className="flex min-w-0 flex-wrap gap-2.5">
           {items.map((item) => (
-            <TraitPill key={item.id} item={item} party={comparison?.party} />
+            <TraitPill
+              key={item.orientation.id}
+              item={item}
+              otherOrientation={comparison?.orientation}
+            />
           ))}
         </ul>
       ) : (

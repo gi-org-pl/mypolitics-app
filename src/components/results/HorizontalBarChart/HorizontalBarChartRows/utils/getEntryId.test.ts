@@ -6,9 +6,11 @@ import { getEntryId } from "./getEntryId";
 describe("getEntryId()", () => {
   describe("given an entry with an orientation", () => {
     it("returns the orientation id", () => {
-      expect(getEntryId({ orientation: { id: "alfa", name: "Alfa" } })).toBe(
-        "alfa",
-      );
+      expect(
+        getEntryId({
+          orientation: { id: "alfa", type: "ideology", name: "Alfa" },
+        }),
+      ).toBe("alfa");
     });
   });
 

@@ -10,11 +10,17 @@ import { NolanRows } from "./NolanRows";
 const createAxis = (name: string): NolanAxis => ({
   name,
   start: {
-    entry: { orientation: { id: `${name}-start`, name: "Start" }, value: 0 },
+    entry: {
+      orientation: { id: `${name}-start`, type: "ideology", name: "Start" },
+      value: 0,
+    },
     names: { extreme: `${name}: skrajny start` },
   },
   end: {
-    entry: { orientation: { id: `${name}-end`, name: "End" }, value: 100 },
+    entry: {
+      orientation: { id: `${name}-end`, type: "ideology", name: "End" },
+      value: 100,
+    },
     names: { extreme: `${name}: skrajny koniec` },
   },
 });
@@ -27,7 +33,7 @@ const POSITION = getNolanPosition(
 );
 
 const friend: NolanComparison = {
-  party: { id: "friend", name: "Rafał" },
+  orientation: { id: "friend", type: "person", name: "Rafał" },
   horizontal: { start: 58, end: 42 },
   vertical: { start: 68, end: 32 },
 };
@@ -108,7 +114,7 @@ describe("<NolanRows />", () => {
   });
 
   describe("given a comparison", () => {
-    it("passes each row the other party's value for its own axis", () => {
+    it("passes each row the other side's value for its own axis", () => {
       renderWithI18n(
         <NolanRows
           id="rows"

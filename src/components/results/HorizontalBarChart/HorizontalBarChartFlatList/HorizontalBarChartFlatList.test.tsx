@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
@@ -12,7 +12,7 @@ const RANKING: RankedEntry[] = [
   ["Gamma", 55],
   ["Delta", 40],
 ].map(([name, value]) => ({
-  orientation: { id: String(name).toLowerCase(), name: String(name) },
+  orientation: createOrientation(String(name).toLowerCase(), String(name)),
   value: Number(value),
 }));
 
@@ -88,7 +88,7 @@ describe("<HorizontalBarChartFlatList />", () => {
         <HorizontalBarChartFlatList
           ranking={RANKING}
           comparison={{
-            party: { id: "ania", name: "Ania" },
+            orientation: { id: "ania", type: "person", name: "Ania" },
             values: { alfa: 30 },
           }}
         />,

@@ -9,7 +9,7 @@ export const getAxisComparison = (
 ): AxisEntry | undefined => {
   const value = comparison?.values?.[axis.id];
 
-  return comparison?.party && isNumber(value)
-    ? { orientation: comparison.party, value }
+  return comparison?.orientation && isNumber(value)
+    ? { orientation: comparison.orientation, value }
     : undefined;
 };

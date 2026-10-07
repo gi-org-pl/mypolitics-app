@@ -1,8 +1,8 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
 import { AxisPill } from "./AxisPill/AxisPill";
-import { PartyMarker } from "./PartyMarker/PartyMarker";
+import { OrientationMarker } from "./OrientationMarker/OrientationMarker";
 import { QuadrantGrid } from "./QuadrantGrid/QuadrantGrid";
 import { TakerDot } from "./TakerDot/TakerDot";
 
@@ -12,7 +12,7 @@ interface NolanMapProps {
   verticalName: string;
   quadrants?: Partial<NolanQuadrants>;
   position: NolanPosition | null;
-  otherParty?: AxisOrientation;
+  otherOrientation?: Orientation;
   otherPosition: NolanPosition | null;
 }
 
@@ -22,7 +22,7 @@ export const NolanMap = ({
   verticalName,
   quadrants,
   position,
-  otherParty,
+  otherOrientation,
   otherPosition,
 }: NolanMapProps) => (
   <div
@@ -43,7 +43,10 @@ export const NolanMap = ({
         />
         {position && <TakerDot position={position} />}
         {otherPosition && (
-          <PartyMarker party={otherParty} position={otherPosition} />
+          <OrientationMarker
+            orientation={otherOrientation}
+            position={otherPosition}
+          />
         )}
       </div>
       <div className="relative w-8 shrink-0">

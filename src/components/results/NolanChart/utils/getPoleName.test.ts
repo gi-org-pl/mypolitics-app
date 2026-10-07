@@ -6,11 +6,11 @@ import { getPoleName } from "./getPoleName";
 const axis: NolanAxis = {
   name: "Gospodarka",
   start: {
-    entry: { orientation: { id: "left", name: "Lewica" } },
+    entry: { orientation: { id: "left", type: "ideology", name: "Lewica" } },
     names: { moderate: " Umiarkowana\nlewica ", extreme: "Skrajna lewica" },
   },
   end: {
-    entry: { orientation: { id: "right", name: "Prawica" } },
+    entry: { orientation: { id: "right", type: "ideology", name: "Prawica" } },
     names: { moderate: "Umiarkowana prawica" },
   },
 };

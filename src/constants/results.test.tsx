@@ -35,7 +35,10 @@ describe("MATCH_BAND_COLORS", () => {
   )("holds a colour the bar accepts and draws for the %s band", (band, color) => {
     renderWithI18n(
       <UniversalAxis
-        start={{ orientation: { id: band, name: band, color }, value: 60 }}
+        start={{
+          orientation: { id: band, type: "ideology", name: band, color },
+          value: 60,
+        }}
         marker={false}
       />,
     );

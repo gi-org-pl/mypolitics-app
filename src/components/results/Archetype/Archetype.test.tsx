@@ -4,6 +4,7 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { MATCH_BAND_COLORS } from "@/constants/results";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { Archetype } from "./Archetype";
@@ -20,6 +21,7 @@ const archetype = (
 ): ArchetypeEntry => ({
   orientation: {
     id: name.toLowerCase(),
+    type: "identity",
     name,
     color: OWN_COLOR,
     imageUrl: `${name.toLowerCase()}.png`,
@@ -47,7 +49,7 @@ const NO_MATCH: ArchetypeEntry[] = [
   archetype("Beta", 30),
 ];
 
-const FRIEND = { id: "ania", name: "Ania" };
+const FRIEND = createOrientation("ania", "Ania", { type: "person" });
 
 const renderArchetype = (props: Partial<ArchetypeProps> = {}) =>
   renderWithI18n(
@@ -189,7 +191,7 @@ describe("<Archetype />", () => {
     it("does not draw the comparison on the unnamed leader", () => {
       renderArchetype({
         archetypes: NO_MATCH,
-        comparison: { party: FRIEND, values: { alfa: 60 } },
+        comparison: { orientation: FRIEND, values: { alfa: 60 } },
       });
 
       expect(
@@ -336,7 +338,7 @@ describe("<Archetype />", () => {
         archetypes: [
           LEADER,
           archetype("Beta", 70, {
-            orientation: { id: "beta", name: "Beta" },
+            orientation: { id: "beta", type: "ideology", name: "Beta" },
           }),
           archetype("Gamma", 55),
         ],
@@ -363,7 +365,9 @@ describe("<Archetype />", () => {
       renderArchetype({
         archetypes: [
           LEADER,
-          archetype("Beta", 70, { orientation: { id: "beta", name: "Beta" } }),
+          archetype("Beta", 70, {
+            orientation: { id: "beta", type: "ideology", name: "Beta" },
+          }),
         ],
       });
 
@@ -376,7 +380,9 @@ describe("<Archetype />", () => {
     it("draws the cap of an archetype without an image with colour only", () => {
       renderArchetype({
         archetypes: [
-          archetype("Alfa", 85, { orientation: { id: "alfa", name: "Alfa" } }),
+          archetype("Alfa", 85, {
+            orientation: { id: "alfa", type: "ideology", name: "Alfa" },
+          }),
         ],
       });
 
@@ -518,7 +524,7 @@ describe("<Archetype />", () => {
 
   describe("given a comparison", () => {
     const comparison = {
-      party: FRIEND,
+      orientation: FRIEND,
       values: { alfa: 60, gamma: 90, unknown: 99 },
     };
 

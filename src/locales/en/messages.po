@@ -67,13 +67,13 @@ msgstr "<0>{displayName} </0><1><2>—</2> {displayLeadName}</1>"
 msgid "Brak dopasowania"
 msgstr "No match"
 
-#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:26
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:20
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
 msgstr "No result"
 
-#: src/components/results/Traits/Traits.tsx:33
+#: src/components/results/Traits/Traits.tsx:37
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 

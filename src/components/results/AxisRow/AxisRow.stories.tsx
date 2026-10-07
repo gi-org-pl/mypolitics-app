@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { AxisRow } from "./AxisRow";
 
@@ -12,22 +12,25 @@ const createIconUrl = (content: string): string =>
 const PLACEHOLDER_ICON =
   '<path transform="translate(8 8)" fill-rule="evenodd" d="M0 0v16h16V0H0Zm2.28 1.33L8 7.06l5.72-5.73H2.28Zm12.39.95L8.94 8l5.73 5.72V2.28Zm-.95 12.39L8 8.94l-5.72 5.73h11.44ZM1.33 13.72 7.06 8 1.33 2.28v11.44Z" fill="white"/>';
 
-const progressivism: AxisOrientation = {
+const progressivism: Orientation = {
   id: "progressivism",
+  type: "ideology",
   name: "Progresywizm",
   imageUrl: createIconUrl(PLACEHOLDER_ICON),
   color: "#9b59b6",
 };
 
-const traditionalism: AxisOrientation = {
+const traditionalism: Orientation = {
   id: "traditionalism",
+  type: "ideology",
   name: "Tradycjonalizm",
   imageUrl: createIconUrl(PLACEHOLDER_ICON),
   color: "#1abc9c",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: createIconUrl(
     '<rect width="32" height="32" fill="#004554"/><circle cx="16" cy="12" r="6" fill="white"/><path d="M4 32a12 12 0 0 1 24 0Z" fill="white"/>',

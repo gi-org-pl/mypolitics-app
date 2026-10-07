@@ -2,7 +2,7 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import type { RankedEntry } from "../RankedRow/RankedRow.types";
 import { HorizontalBarChart } from "./HorizontalBarChart";
@@ -16,7 +16,7 @@ const entry = (
   value?: number,
   badge?: RankedEntry["badge"],
 ): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
   badge,
 });
@@ -43,7 +43,7 @@ const CATEGORIES: RankedCategory[] = [
   { name: "Światopogląd", entries: [entry("Delta", 75), entry("Alfa", 10)] },
 ];
 
-const FRIEND = { id: "ania", name: "Ania" };
+const FRIEND = createOrientation("ania", "Ania", { type: "person" });
 
 const renderChart = (props: Partial<HorizontalBarChartProps> = {}) =>
   renderWithI18n(<HorizontalBarChart title="Kandydaci" {...props} />);
@@ -488,7 +488,7 @@ describe("<HorizontalBarChart />", () => {
 
   describe("given a comparison", () => {
     const comparison = {
-      party: FRIEND,
+      orientation: FRIEND,
       values: { alfa: 30, gamma: 80, zulu: 50 },
     };
 
@@ -534,7 +534,7 @@ describe("<HorizontalBarChart />", () => {
     it("passes the value to a category leader and to the opened ranking", () => {
       renderChart({
         categories: CATEGORIES,
-        comparison: { party: FRIEND, values: { beta: 20, gamma: 45 } },
+        comparison: { orientation: FRIEND, values: { beta: 20, gamma: 45 } },
       });
 
       expect(

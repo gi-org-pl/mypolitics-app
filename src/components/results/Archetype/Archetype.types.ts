@@ -1,8 +1,8 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import type { RankedComparison } from "@/types/results";
 
 export interface ArchetypeEntry {
-  orientation: AxisOrientation;
+  orientation: Orientation;
   match?: number;
   shortDescription?: string;
   fullDescription?: string;

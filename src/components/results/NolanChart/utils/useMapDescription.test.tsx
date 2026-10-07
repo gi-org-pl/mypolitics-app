@@ -71,7 +71,7 @@ describe("useMapDescription()", () => {
     });
   });
 
-  describe("given the other party", () => {
+  describe("given the other side", () => {
     it("adds their quadrant name", () => {
       expect(
         describeMap({ otherName: " Rafał ", otherPosition: OTHER_EXTREME }),

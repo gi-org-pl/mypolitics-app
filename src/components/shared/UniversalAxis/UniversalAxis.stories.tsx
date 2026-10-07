@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { UniversalAxis } from "./UniversalAxis";
 
@@ -9,29 +9,33 @@ const createAvatarUrl = (color: string): string =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="${color}"/><rect x="8.5" y="8.5" width="15" height="15" fill="none" stroke="white"/><path d="M8.5 8.5l15 15M23.5 8.5l-15 15" stroke="white"/></svg>`,
   )}`;
 
-const liberalism: AxisOrientation = {
+const liberalism: Orientation = {
   id: "liberalism",
+  type: "ideology",
   name: "Orientation A",
   imageUrl: createAvatarUrl("#59b6a6"),
   color: "#59b6a6",
 };
 
-const conservatism: AxisOrientation = {
+const conservatism: Orientation = {
   id: "conservatism",
+  type: "ideology",
   name: "Orientation B",
   imageUrl: createAvatarUrl("#bc831a"),
   color: "#bc831a",
 };
 
-const socialism: AxisOrientation = {
+const socialism: Orientation = {
   id: "socialism",
+  type: "ideology",
   name: "Orientation Name",
   imageUrl: createAvatarUrl("#d5213d"),
   color: "#d5213d",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: createAvatarUrl("#004554"),
   color: "#004554",

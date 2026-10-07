@@ -1,11 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { RankedEntry } from "../../../RankedRow/RankedRow.types";
 import { useFoldedRanking } from "./useFoldedRanking";
 
 const RANKING: RankedEntry[] = ["a", "b", "c", "d", "e"].map((id) => ({
-  orientation: { id, name: id },
+  orientation: createOrientation(id, id),
   value: 50,
 }));
 

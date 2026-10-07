@@ -41,7 +41,7 @@ export const NolanChart = ({
     horizontalName,
     verticalName,
     position,
-    otherName: comparison?.party?.name,
+    otherName: comparison?.orientation?.name,
     otherPosition,
     quadrants,
     centreName,
@@ -68,7 +68,7 @@ export const NolanChart = ({
             verticalName={verticalName}
             quadrants={quadrants}
             position={position}
-            otherParty={comparison?.party}
+            otherOrientation={comparison?.orientation}
             otherPosition={otherPosition}
           />
         </div>

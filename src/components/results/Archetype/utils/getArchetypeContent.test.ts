@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { ArchetypeEntry } from "../Archetype.types";
 import { getArchetypeContent } from "./getArchetypeContent";
 
@@ -7,7 +9,11 @@ const archetype = (
   id: string,
   match: number,
   rest: Partial<ArchetypeEntry> = {},
-): ArchetypeEntry => ({ orientation: { id, name: id }, match, ...rest });
+): ArchetypeEntry => ({
+  orientation: createOrientation(id, id),
+  match,
+  ...rest,
+});
 
 const REST = [archetype("b", 70), archetype("c", 20)];
 

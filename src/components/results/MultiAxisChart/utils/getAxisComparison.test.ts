@@ -1,24 +1,27 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { createAxisPair } from "@/utils/vitest/createAxisPair";
 import type { AxisComparison } from "../MultiAxisChart.types";
 import { getAxisComparison } from "./getAxisComparison";
 
-const friend: AxisOrientation = { id: "friend", name: "Ania" };
+const friend: Orientation = { id: "friend", type: "person", name: "Ania" };
 const force = createAxisPair("force", "Pacyfizm", "Militaryzm", 5, 95);
 
 describe("getAxisComparison()", () => {
   describe("given a value for the axis", () => {
-    it("returns the other party with that value", () => {
+    it("returns the other side with that value", () => {
       expect(
-        getAxisComparison(force, { party: friend, values: { force: 20 } }),
+        getAxisComparison(force, {
+          orientation: friend,
+          values: { force: 20 },
+        }),
       ).toEqual({ orientation: friend, value: 20 });
     });
 
     it("keeps a value of zero", () => {
       expect(
-        getAxisComparison(force, { party: friend, values: { force: 0 } }),
+        getAxisComparison(force, { orientation: friend, values: { force: 0 } }),
       ).toEqual({ orientation: friend, value: 0 });
     });
   });
@@ -26,7 +29,10 @@ describe("getAxisComparison()", () => {
   describe("given no value for the axis", () => {
     it("returns nothing", () => {
       expect(
-        getAxisComparison(force, { party: friend, values: { other: 20 } }),
+        getAxisComparison(force, {
+          orientation: friend,
+          values: { other: 20 },
+        }),
       ).toBeUndefined();
     });
   });
@@ -35,13 +41,13 @@ describe("getAxisComparison()", () => {
     it("returns nothing", () => {
       expect(
         getAxisComparison(force, {
-          party: friend,
+          orientation: friend,
           values: { force: "20" } as unknown as Record<string, number>,
         }),
       ).toBeUndefined();
       expect(
         getAxisComparison(force, {
-          party: friend,
+          orientation: friend,
           values: { force: Number.NaN },
         }),
       ).toBeUndefined();
@@ -58,7 +64,7 @@ describe("getAxisComparison()", () => {
       ).toBeUndefined();
       expect(
         getAxisComparison(force, {
-          party: friend,
+          orientation: friend,
         } as unknown as AxisComparison),
       ).toBeUndefined();
     });

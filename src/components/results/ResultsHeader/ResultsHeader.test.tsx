@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { ResultsHeader } from "./ResultsHeader";
@@ -12,11 +12,15 @@ const LONG_NAME =
 const LONG_TEXT =
   "Wolność, równość i solidarność dla każdego, kto chce budować wspólną przyszłość";
 
+const liberalism = createOrientation("liberalism", "Liberalizm", {
+  imageUrl: IMAGE_URL,
+});
+
 const renderHeader = (props: Partial<ResultsHeaderProps> = {}) => {
   const onTabChange = vi.fn();
   const view = renderWithI18n(
     <ResultsHeader
-      orientation={{ name: "Liberalizm", imageUrl: IMAGE_URL }}
+      orientation={liberalism}
       confidence={80}
       activeTab="results"
       onTabChange={onTabChange}
@@ -339,7 +343,7 @@ describe("<ResultsHeader />", () => {
 
   describe("given an orientation without an image", () => {
     it("renders a placeholder inside the ring", () => {
-      renderHeader({ orientation: { name: "Liberalizm" } });
+      renderHeader({ orientation: { ...liberalism, imageUrl: undefined } });
 
       const placeholder = screen.getByTestId(
         "results-header-image-placeholder",
@@ -356,7 +360,7 @@ describe("<ResultsHeader />", () => {
 
   describe("given a name longer than the room", () => {
     it("clamps it to two lines and keeps it complete", () => {
-      renderHeader({ orientation: { name: LONG_NAME } });
+      renderHeader({ orientation: { ...liberalism, name: LONG_NAME } });
 
       const heading = screen.getByRole("heading", { name: LONG_NAME });
 

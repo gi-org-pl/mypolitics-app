@@ -5,9 +5,11 @@ import { getArchetypeId } from "./getArchetypeId";
 
 describe("getArchetypeId()", () => {
   it("returns the id of the archetype orientation", () => {
-    expect(getArchetypeId({ orientation: { id: "alfa", name: "Alfa" } })).toBe(
-      "alfa",
-    );
+    expect(
+      getArchetypeId({
+        orientation: { id: "alfa", type: "ideology", name: "Alfa" },
+      }),
+    ).toBe("alfa");
   });
 
   it("returns an empty id for an archetype without an orientation", () => {

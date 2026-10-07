@@ -5,25 +5,29 @@ import {
   DOUBLE_SIDED_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
 } from "@/constants/axis";
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { getAxisLayout } from "./getAxisLayout";
 
-const orientationA: AxisOrientation = {
+const orientationA: Orientation = {
   id: "a",
+  type: "ideology",
   name: "Orientation A",
   imageUrl: "https://example.com/a.png",
   color: "#59b6a6",
 };
 
-const orientationB: AxisOrientation = {
+const orientationB: Orientation = {
   id: "b",
+  type: "ideology",
   name: "Orientation B",
   color: "#bc831a",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
   color: "#004554",
@@ -184,6 +188,19 @@ describe("getAxisLayout()", () => {
         imageUrl: "https://example.com/a.png",
         color: "#59b6a6",
       });
+    });
+
+    it("returns an empty name for an orientation without one", () => {
+      const layout = getAxisLayout({
+        start: { orientation: { ...orientationA, name: undefined }, value: 40 },
+        comparison: {
+          orientation: { ...friend, name: undefined },
+          value: 60,
+        },
+      });
+
+      expect(layout.start?.name).toBe("");
+      expect(layout.comparison?.name).toBe("");
     });
 
     it("drops an empty image url", () => {
@@ -454,7 +471,7 @@ describe("getAxisLayout()", () => {
   });
 
   describe("given a comparison and a taker entry without a value", () => {
-    it("hatches the whole track and positions only the other party image", () => {
+    it("hatches the whole track and positions only the other side image", () => {
       const layout = getAxisLayout({
         start: { orientation: orientationA },
         comparison: friendEntry(60),

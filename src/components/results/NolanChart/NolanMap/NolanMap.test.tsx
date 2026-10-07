@@ -30,7 +30,7 @@ const renderMap = (
       verticalName="Światopogląd"
       quadrants={quadrants}
       position={position}
-      otherParty={{ id: "friend", name: "Rafał" }}
+      otherOrientation={{ id: "friend", type: "person", name: "Rafał" }}
       otherPosition={otherPosition}
     />,
   );
@@ -103,7 +103,7 @@ describe("<NolanMap />", () => {
     });
   });
 
-  describe("given the other party's position", () => {
+  describe("given the other side's position", () => {
     it("draws their marker after the taker's, and never fills their quadrant", () => {
       renderMap(CENTRE, OTHER);
 

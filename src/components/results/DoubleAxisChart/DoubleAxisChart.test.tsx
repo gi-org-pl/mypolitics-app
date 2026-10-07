@@ -1,27 +1,30 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { DoubleAxisChart } from "./DoubleAxisChart";
 
-const euroscepticism: AxisOrientation = {
+const euroscepticism: Orientation = {
   id: "euroscepticism",
+  type: "ideology",
   name: "Eurosceptycyzm",
   imageUrl: "https://example.com/euroscepticism.svg",
   color: "#b57459",
 };
 
-const federalism: AxisOrientation = {
+const federalism: Orientation = {
   id: "federalism",
+  type: "ideology",
   name: "Federacjonizm",
   imageUrl: "https://example.com/federalism.svg",
   color: "#1976be",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
   color: "#004554",
@@ -33,8 +36,8 @@ const LONG_END_NAME = "Federacjonizm z równie długą nazwą autorską";
 const renderChart = (
   startValue?: number,
   endValue?: number,
-  start: AxisOrientation = euroscepticism,
-  end: AxisOrientation = federalism,
+  start: Orientation = euroscepticism,
+  end: Orientation = federalism,
 ) =>
   renderWithI18n(
     <DoubleAxisChart
@@ -298,7 +301,7 @@ describe("<DoubleAxisChart />", () => {
     it.each([
       "",
       "   ",
-      undefined as unknown as string,
+      undefined,
     ])("renders the chip with the image alone for %j", (name) => {
       renderChart(69, 31, { ...euroscepticism, name });
 

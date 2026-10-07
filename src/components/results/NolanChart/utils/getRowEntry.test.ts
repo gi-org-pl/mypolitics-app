@@ -7,6 +7,7 @@ const pole: NolanPole = {
   entry: {
     orientation: {
       id: "left",
+      type: "ideology",
       name: "Lewica",
       imageUrl: "https://example.com/left.svg",
       color: "#111111",

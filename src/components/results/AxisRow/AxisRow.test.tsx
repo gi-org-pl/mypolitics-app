@@ -1,28 +1,31 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { AxisRow } from "./AxisRow";
 import type { AxisRowProps } from "./AxisRow.types";
 
-const progressivism: AxisOrientation = {
+const progressivism: Orientation = {
   id: "progressivism",
+  type: "ideology",
   name: "Progresywizm",
   imageUrl: "https://example.com/progressivism.svg",
   color: "#9b59b6",
 };
 
-const traditionalism: AxisOrientation = {
+const traditionalism: Orientation = {
   id: "traditionalism",
+  type: "ideology",
   name: "Tradycjonalizm",
   imageUrl: "https://example.com/traditionalism.svg",
   color: "#1abc9c",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
 };

@@ -1,11 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { ArchetypeEntry } from "../../Archetype.types";
 import { ArchetypeRankingPreview } from "./ArchetypeRankingPreview";
 
 const archetype = (id: string, imageUrl?: string): ArchetypeEntry => ({
-  orientation: { id, name: id, imageUrl },
+  orientation: createOrientation(id, id, { imageUrl }),
 });
 
 const getSources = (): (string | null | undefined)[] =>

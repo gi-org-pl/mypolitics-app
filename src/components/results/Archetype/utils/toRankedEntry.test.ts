@@ -6,7 +6,13 @@ import type { ArchetypeEntry } from "../Archetype.types";
 import { toRankedEntry } from "./toRankedEntry";
 
 const archetype = (match?: number): ArchetypeEntry => ({
-  orientation: { id: "a", name: "Alfa", imageUrl: "a.png", color: "#123456" },
+  orientation: {
+    id: "a",
+    type: "ideology",
+    name: "Alfa",
+    imageUrl: "a.png",
+    color: "#123456",
+  },
   match,
   shortDescription: "s",
   fullDescription: "f",
@@ -17,6 +23,7 @@ describe("toRankedEntry()", () => {
     expect(toRankedEntry(archetype(64))).toEqual({
       orientation: {
         id: "a",
+        type: "ideology",
         name: "Alfa",
         imageUrl: "a.png",
         color: MATCH_BAND_COLORS.partial,

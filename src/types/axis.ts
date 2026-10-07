@@ -1,12 +1,7 @@
-export interface AxisOrientation {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  color?: string;
-}
+import type { Orientation } from "@/types/orientation";
 
 export interface AxisEntry {
-  orientation: AxisOrientation;
+  orientation: Orientation;
   value?: number;
 }
 

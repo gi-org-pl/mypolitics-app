@@ -62,6 +62,12 @@ describe("getHeaderResult()", () => {
     });
   });
 
+  describe("given an orientation without a name", () => {
+    it("returns the result with an empty name", () => {
+      expect(getHeaderResult({}, 90)?.name).toBe("");
+    });
+  });
+
   describe("given an orientation without an image", () => {
     it("returns the result without an image", () => {
       expect(getHeaderResult({ name: "Liberalizm" }, 90)?.imageUrl).toBe(

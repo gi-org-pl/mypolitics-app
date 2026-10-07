@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { hasOrientationTitle } from "./hasOrientationTitle";
 
-const orientation: AxisOrientation = {
+const orientation: Orientation = {
   id: "radicalism",
+  type: "ideology",
   name: "Radykalizm",
   imageUrl: "https://example.com/radicalism.svg",
 };
@@ -26,20 +27,21 @@ describe("hasOrientationTitle()", () => {
   });
 
   describe("given an image without a name", () => {
-    it.each([
-      "",
-      " \n ",
-      undefined as unknown as string,
-    ])("returns true for the name %j", (name) => {
+    it.each(["", " \n ", undefined])("returns true for the name %j", (name) => {
       expect(hasOrientationTitle({ ...orientation, name })).toBe(true);
     });
   });
 
   describe("given neither a name nor an image", () => {
     it.each([undefined, ""])("returns false for the image %j", (imageUrl) => {
-      expect(hasOrientationTitle({ id: "x", name: "  ", imageUrl })).toBe(
-        false,
-      );
+      expect(
+        hasOrientationTitle({
+          id: "x",
+          type: "ideology",
+          name: "  ",
+          imageUrl,
+        }),
+      ).toBe(false);
     });
   });
 });

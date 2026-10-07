@@ -1,27 +1,31 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { UniversalAxis } from "./UniversalAxis";
 
-const orientationA: AxisOrientation = {
+const orientationA: Orientation = {
   id: "a",
+  type: "ideology",
   name: "Orientation A",
   imageUrl: "https://example.com/a.png",
   color: "#59b6a6",
 };
 
-const orientationB: AxisOrientation = {
+const orientationB: Orientation = {
   id: "b",
+  type: "ideology",
   name: "Orientation B",
   imageUrl: "https://example.com/b.png",
   color: "#bc831a",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
   color: "#004554",
@@ -194,6 +198,38 @@ describe("<UniversalAxis />", () => {
     });
   });
 
+  describe("given an orientation without a name", () => {
+    it("keeps the label row reserved", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{
+            orientation: { ...orientationA, name: undefined },
+            value: 69,
+          }}
+          showLabels
+        />,
+      );
+
+      const labels = screen.getByTestId("universal-axis-labels");
+
+      expect(labels).toHaveClass("h-3");
+      expect(labels).toHaveTextContent("");
+    });
+
+    it("describes the bar by its value alone", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{
+            orientation: { ...orientationA, name: undefined },
+            value: 69,
+          }}
+        />,
+      );
+
+      expect(screen.getByRole("img")).toHaveAccessibleName(": 69%");
+    });
+  });
+
   describe("given marker is false", () => {
     it("does not render the marker", () => {
       renderWithI18n(<UniversalAxis start={entryA(25)} marker={false} />);
@@ -215,7 +251,7 @@ describe("<UniversalAxis />", () => {
   });
 
   describe("given a comparison", () => {
-    it("renders the hatched band and the other party image", () => {
+    it("renders the hatched band and the other side image", () => {
       renderWithI18n(
         <UniversalAxis start={entryA(25)} comparison={friendEntry(77)} />,
       );
@@ -235,7 +271,7 @@ describe("<UniversalAxis />", () => {
       ).toBe("77%");
     });
 
-    it("draws the other party image above everything else", () => {
+    it("draws the other side image above everything else", () => {
       const { container } = renderWithI18n(
         <UniversalAxis start={entryA(25)} comparison={friendEntry(77)} />,
       );
@@ -276,7 +312,7 @@ describe("<UniversalAxis />", () => {
       });
     });
 
-    it("renders a colour-only image when the other party has no image", () => {
+    it("renders a colour-only image when the other side has no image", () => {
       renderWithI18n(
         <UniversalAxis
           start={entryA(25)}

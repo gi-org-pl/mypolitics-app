@@ -1,11 +1,7 @@
+import type { Orientation } from "@/types/orientation";
 import type { MatchBand } from "@/utils/results/getMatchBand";
 
 export type ResultsTab = "results" | "comparison";
-
-export interface ResultsHeaderOrientation {
-  name: string;
-  imageUrl?: string;
-}
 
 export interface ResultsHeaderLink {
   url: string;
@@ -13,7 +9,7 @@ export interface ResultsHeaderLink {
 }
 
 export interface ResultsHeaderProps {
-  orientation?: ResultsHeaderOrientation;
+  orientation?: Orientation;
   confidence?: number;
   slogan?: string;
   link?: ResultsHeaderLink;
