@@ -1,60 +1,49 @@
 import { useState } from "react";
 
-import type { Promotion, PromotionBannerProps } from "./PromotionBanner.types";
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 
-const getCurrentPromotion = (promotions: Promotion[]): Promotion | null => {
-  const now = new Date();
-  const activePromotions = promotions.filter(
-    (promotion) => now >= promotion.date.start && now <= promotion.date.end,
-  );
-
-  if (activePromotions.length === 0) {
-    return null;
-  }
-
-  return activePromotions[Math.floor(Math.random() * activePromotions.length)];
-};
+import type { PromotionBannerProps } from "./PromotionBanner.types";
+import { getCurrentPromotion } from "./utils/getCurrentPromotion";
 
 export const PromotionBanner = ({
   promotions,
   fallback,
 }: PromotionBannerProps) => {
-  const [activePromotion] = useState<Promotion | null>(() =>
-    getCurrentPromotion(promotions),
-  );
+  // Picked once, so the banner does not change while the page is open.
+  const [activePromotion] = useState(() => getCurrentPromotion(promotions));
 
   if (activePromotion === null) {
     return fallback ?? null;
   }
 
+  // One picture per width: the two that do not fit the screen are not
+  // displayed, so the link has a single image in the accessibility tree.
   return (
     <a
       aria-label={activePromotion.name}
       href={activePromotion.url}
       rel="noopener noreferrer"
       target="_blank"
-      className="w-full"
+      className={`block w-full overflow-hidden rounded-2xl ${FOCUS_CLASS_NAME}`}
     >
-      <div className="relative w-full overflow-hidden rounded-2xl">
-        <img
-          src={activePromotion.imageUrl.mobile}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="block w-full h-auto object-cover md:hidden"
-        />
-        <img
-          src={activePromotion.imageUrl.tablet}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="hidden w-full h-auto object-cover md:block lg:hidden"
-        />
-        <img
-          src={activePromotion.imageUrl.desktop}
-          alt={activePromotion.name}
-          title={activePromotion.name}
-          className="hidden w-full h-auto object-cover lg:block"
-        />
-      </div>
+      <img
+        src={activePromotion.imageUrl.mobile}
+        alt={activePromotion.name}
+        title={activePromotion.name}
+        className="block h-auto w-full object-cover md:hidden"
+      />
+      <img
+        src={activePromotion.imageUrl.tablet}
+        alt={activePromotion.name}
+        title={activePromotion.name}
+        className="hidden h-auto w-full object-cover md:block lg:hidden"
+      />
+      <img
+        src={activePromotion.imageUrl.desktop}
+        alt={activePromotion.name}
+        title={activePromotion.name}
+        className="hidden h-auto w-full object-cover lg:block"
+      />
     </a>
   );
 };
