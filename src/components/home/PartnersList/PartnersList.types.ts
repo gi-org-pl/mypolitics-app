@@ -11,7 +11,7 @@ export interface PartnerSection {
 
 /**
  * All string values (section.title, partner.title) must be translated at the call site.
- * PartnersList does not apply any Lingui macros internally.
+ * PartnersList only adds the colon after a section title.
  */
 export interface PartnersListProps {
   sections: PartnerSection[];

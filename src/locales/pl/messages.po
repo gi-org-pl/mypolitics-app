@@ -34,6 +34,10 @@ msgstr "{name}: brak wyniku"
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
 
+#: src/components/home/PartnersList/PartnersSection/PartnersSection.tsx:16
+msgid "{title}:"
+msgstr "{title}:"
+
 #: src/components/results/NolanChart/utils/useMapDescription.ts:40
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
