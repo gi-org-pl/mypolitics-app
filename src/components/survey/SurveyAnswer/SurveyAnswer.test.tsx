@@ -201,18 +201,42 @@ describe("<SurveyAnswer />", () => {
       expect(onClick).not.toHaveBeenCalled();
     });
 
-    it("renders with opacity-50 and cursor-not-allowed classes", () => {
-      const { container } = render(
-        <SurveyAnswer
-          title="Test"
-          type="agree"
-          onClick={vi.fn()}
-          isDisabled={true}
-        />,
+    it("is disabled for assistive technology and not clickable", () => {
+      render(<SurveyAnswer title="Test" type="agree" isDisabled={true} />);
+      const button = screen.getByRole("button", { name: "Test" });
+      expect(button).toBeDisabled();
+      expect(button).toHaveClass("cursor-not-allowed", "pointer-events-none");
+    });
+
+    it("fades the icon and the title, not the border and background", () => {
+      render(<SurveyAnswer title="Test" type="agree" isDisabled={true} />);
+      const button = screen.getByRole("button", { name: "Test" });
+      expect(getIcon().parentElement).toHaveClass("opacity-50", "saturate-0");
+      expect(screen.getByText("Test")).toHaveClass("opacity-50", "saturate-0");
+      expect(button).not.toHaveClass("opacity-50");
+      expect(button).toHaveClass("border-gi-dark-ash", "bg-background");
+    });
+  });
+
+  describe("given an enabled answer", () => {
+    it("does not fade the icon or the title", () => {
+      render(<SurveyAnswer title="Test" type="agree" />);
+      expect(getIcon().parentElement).not.toHaveClass("opacity-50");
+      expect(screen.getByText("Test")).not.toHaveClass("opacity-50");
+    });
+
+    it("draws the light border when it is not selected", () => {
+      render(<SurveyAnswer title="Test" type="custom-selectable" />);
+      expect(screen.getByRole("button", { name: "Test" })).toHaveClass(
+        "border-gi-dark-ash",
       );
-      const button = container.querySelector("button");
-      expect(button).toHaveClass("opacity-50");
-      expect(button).toHaveClass("cursor-not-allowed");
+    });
+
+    it("draws the dark border when it is selected", () => {
+      render(<SurveyAnswer title="Test" type="custom-selectable" isSelected />);
+      const button = screen.getByRole("button", { name: "Test" });
+      expect(button).toHaveClass("border-gi-dark-gray");
+      expect(button).not.toHaveClass("border-gi-dark-ash");
     });
   });
 
