@@ -1,68 +1,73 @@
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
+import { createRoutesStub } from "react-router";
+import { describe, expect, it } from "vitest";
 import App from "./root";
 
-vi.mock("react-router", async () => {
-  const actual = await vi.importActual("react-router");
-  return {
-    ...actual,
-    Scripts: () => <div data-testid="scripts" />,
-    ScrollRestoration: () => null,
-  };
-});
+const ROUTE_CONTENT = "Treść strony";
 
-vi.mock("./components/shared/Header/Header", () => ({
-  Header: () => <header data-testid="header">Header</header>,
-}));
+const RouteContent = () => <p>{ROUTE_CONTENT}</p>;
 
-vi.mock("./components/shared/Footer/Footer", () => ({
-  Footer: () => <footer data-testid="footer">Footer</footer>,
-}));
+const renderApp = () => {
+  const Stub = createRoutesStub([
+    {
+      path: "/",
+      Component: App,
+      children: [{ index: true, Component: RouteContent }],
+    },
+  ]);
+
+  render(<Stub initialEntries={["/"]} />, { container: document });
+};
 
 describe("root App", () => {
-  describe("structure", () => {
-    it("renders the Header", () => {
-      render(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>,
-      );
-      expect(screen.getByTestId("header")).toBeInTheDocument();
+  describe("given any route", () => {
+    it("renders the header", () => {
+      renderApp();
+
+      expect(screen.getByRole("banner")).toBeInTheDocument();
     });
 
-    it("renders the Footer", () => {
-      render(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>,
-      );
-      expect(screen.getByTestId("footer")).toBeInTheDocument();
+    it("renders the footer", () => {
+      renderApp();
+
+      expect(screen.getByRole("contentinfo")).toBeInTheDocument();
     });
 
-    it("renders child route content via Outlet", () => {
-      render(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>,
-      );
-      expect(document.querySelector("main")).toBeInTheDocument();
+    it("renders the route content inside main", () => {
+      renderApp();
+
+      expect(
+        within(screen.getByRole("main")).getByText(ROUTE_CONTENT),
+      ).toBeInTheDocument();
     });
-  });
 
-  describe("sticky footer", () => {
-    it("pushes the footer to the bottom when content is short", () => {
-      render(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>,
+    it("renders header, main and footer in that order", () => {
+      renderApp();
+
+      const header = screen.getByRole("banner");
+      const main = screen.getByRole("main");
+      const footer = screen.getByRole("contentinfo");
+
+      expect(header.compareDocumentPosition(main)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
       );
+      expect(main.compareDocumentPosition(footer)).toBe(
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+    });
 
-      const container = document.querySelector(".flex.min-h-screen.flex-col");
-      const main = document.querySelector("main");
+    it("renders nothing of its own inside main besides the route content", () => {
+      renderApp();
 
-      expect(container).toBeInTheDocument();
-      expect(main).toHaveClass("flex-1");
+      expect(screen.getByRole("main")).toHaveTextContent(
+        new RegExp(`^${ROUTE_CONTENT}$`),
+      );
+    });
+
+    it("declares the language of the page", () => {
+      renderApp();
+
+      expect(document.documentElement).toHaveAttribute("lang", "pl");
     });
   });
 });
