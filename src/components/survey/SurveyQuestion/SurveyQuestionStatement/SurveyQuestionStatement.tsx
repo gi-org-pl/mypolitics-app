@@ -18,7 +18,14 @@ export const SurveyQuestionStatement = ({
   return (
     <p className="w-full rounded-3xl bg-gi-light-primary px-4 py-8 text-left text-lg leading-[21px] font-bold wrap-break-word text-white">
       {withKeys(parts, (part) => part.text).map(({ item, key }) => (
-        <span key={key} className={item.isMatched ? "underline" : undefined}>
+        <span
+          key={key}
+          className={
+            item.isMatched
+              ? "font-extrabold underline decoration-2 underline-offset-2"
+              : undefined
+          }
+        >
           {item.text}
         </span>
       ))}

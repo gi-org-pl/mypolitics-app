@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { userEvent, within } from "storybook/test";
+import { fireEvent, within } from "storybook/test";
 
 import { SurveyQuestion } from "./SurveyQuestion";
 
@@ -27,7 +27,7 @@ export default meta;
 type Story = StoryObj<typeof SurveyQuestion>;
 
 const openExplanation: Story["play"] = async ({ canvasElement }) => {
-  await userEvent.click(within(canvasElement).getByRole("button"));
+  await fireEvent.click(within(canvasElement).getByRole("button"));
 };
 
 export const WithExplanation: Story = {};

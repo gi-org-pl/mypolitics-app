@@ -33,12 +33,12 @@ export const SurveyQuestionExplanation = ({
           type="button"
           aria-expanded={isOpen}
           aria-controls={panelId}
-          className="col-start-1 row-start-1 min-w-0 cursor-pointer px-3 py-2 text-left outline-none after:absolute after:inset-0 after:rounded-b-2xl after:content-[''] focus-visible:after:ring-[3px] focus-visible:after:ring-white/75 focus-visible:after:ring-inset"
+          className="col-start-1 row-start-1 min-w-0 cursor-pointer self-start px-3 py-2 text-left outline-none after:absolute after:inset-0 after:rounded-b-2xl after:content-[''] focus-visible:after:ring-[3px] focus-visible:after:ring-white/75 focus-visible:after:ring-inset"
           onClick={() => setIsOpen((wasOpen) => !wasOpen)}
         >
           <span
-            className={`flex h-3.5 items-center justify-between gap-1 transition-opacity duration-300 motion-reduce:transition-none ${
-              isOpen ? "opacity-0" : "opacity-100"
+            className={`flex h-3.5 items-center justify-between gap-1 transition-opacity duration-100 motion-reduce:transition-none ${
+              isOpen ? "opacity-0" : "opacity-100 delay-200"
             }`}
           >
             <span className="min-w-0 truncate text-sm leading-[17px] font-bold text-white/75">
@@ -56,7 +56,7 @@ export const SurveyQuestionExplanation = ({
         <div
           id={panelId}
           aria-hidden={!isOpen}
-          className={`col-start-1 row-span-2 row-start-1 min-h-0 overflow-hidden rounded-b-2xl transition-[opacity,visibility] duration-300 motion-reduce:transition-none ${
+          className={`col-start-1 row-span-2 row-start-1 min-h-0 overflow-hidden rounded-b-2xl transition-[opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
             isOpen ? "visible opacity-100" : "invisible opacity-0"
           }`}
         >

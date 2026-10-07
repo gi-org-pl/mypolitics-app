@@ -71,9 +71,15 @@ describe("<SurveyQuestionStatement />", () => {
       expect(screen.getByRole("paragraph")).toHaveTextContent(
         "Karać (nie, raczej nie.)",
       );
-      expect(
-        screen.getAllByText("nie").map((occurrence) => occurrence.className),
-      ).toEqual(["underline", "underline"]);
+
+      const occurrences = screen.getAllByText("nie");
+
+      expect(occurrences).toHaveLength(2);
+      expect(occurrences[0]).toHaveClass("underline");
+      expect(occurrences[1]).toHaveClass("underline");
+      expect(screen.getByText("Karać (")).not.toHaveClass("underline");
+      expect(screen.getByText(", raczej")).not.toHaveClass("underline");
+      expect(screen.getByText(".)")).not.toHaveClass("underline");
     });
   });
 
