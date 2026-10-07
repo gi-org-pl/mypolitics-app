@@ -209,11 +209,11 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:45
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:46
 msgid "Rozpocznij"
 msgstr "Start"
 
-#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:34
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:35
 msgid "Rozpocznij quiz"
 msgstr "Start the quiz"
 

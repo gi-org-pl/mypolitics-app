@@ -6,7 +6,10 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { QuizCardPlayButton } from "./QuizCardPlayButton";
-import { START_TEXT_CLASS_NAME } from "./QuizCardPlayButton.constants";
+import {
+  FORCED_COLORS_BORDER_CLASS_NAME,
+  START_TEXT_CLASS_NAME,
+} from "./QuizCardPlayButton.constants";
 import type { QuizCardPlayButtonProps } from "./QuizCardPlayButton.types";
 
 const BUTTON_NAME = "Rozpocznij quiz";
@@ -53,6 +56,14 @@ describe("<QuizCardPlayButton />", () => {
 
       expect(icon.style.maskImage).toMatch(/^url\(".+"\)$/);
       expect(icon).toHaveClass(...BUTTON_ICON_MASK_CLASS_NAME.split(" "));
+    });
+
+    it("keeps its shape in forced colours, which drop the fill", () => {
+      renderPlayButton();
+
+      expect(getButton()).toHaveClass(
+        ...FORCED_COLORS_BORDER_CLASS_NAME.split(" "),
+      );
     });
 
     it("shows keyboard focus as an outline instead of Athena's ring", () => {

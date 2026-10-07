@@ -8,6 +8,7 @@ import { withoutPropagation } from "@/utils/event/withoutPropagation";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
 import {
+  FORCED_COLORS_BORDER_CLASS_NAME,
   LIGHT_BUTTON_CLASS_NAME,
   START_TEXT_BUTTON_CLASS_NAME,
   START_TEXT_CLASS_NAME,
@@ -28,7 +29,7 @@ export const QuizCardPlayButton = ({
       variant="primary"
       isIconButton={!isShowStartText}
       isLoading={isLoading}
-      className={`size-12 ${FOCUS_CLASS_NAME} ${
+      className={`size-12 ${FORCED_COLORS_BORDER_CLASS_NAME} ${FOCUS_CLASS_NAME} ${
         isLight ? LIGHT_BUTTON_CLASS_NAME : ""
       } ${isShowStartText ? START_TEXT_BUTTON_CLASS_NAME : ""}`}
       aria-label={t`Rozpocznij quiz`}
