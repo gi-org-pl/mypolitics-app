@@ -96,6 +96,69 @@ describe("<QuizCardHeader />", () => {
     });
   });
 
+  describe("given a logoUrl that fails to load", () => {
+    it("renders the title as the text of the heading", () => {
+      renderHeader({ logoUrl: LOGO_URL });
+
+      fireEvent.error(screen.getByRole("img", { name: TITLE }));
+
+      expect(screen.getByRole("heading", { name: TITLE })).toHaveTextContent(
+        TITLE,
+      );
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("keeps the title button of a clickable card, named after the title", () => {
+      renderHeader({ logoUrl: LOGO_URL, onCardClick: vi.fn() });
+
+      fireEvent.error(screen.getByRole("img", { name: TITLE }));
+
+      expect(screen.getByRole("button", { name: TITLE })).toHaveTextContent(
+        TITLE,
+      );
+    });
+  });
+
+  describe("given a logoUrl but no title", () => {
+    it("renders the logo as a decorative image", () => {
+      renderHeader({ title: undefined, logoUrl: LOGO_URL });
+
+      const logo = screen.getByRole("presentation");
+
+      expect(logo).toHaveAttribute("src", LOGO_URL);
+      expect(logo).toHaveAttribute("alt", "");
+    });
+
+    it("renders no heading, as there is nothing to name it with", () => {
+      renderHeader({ title: undefined, logoUrl: LOGO_URL });
+
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    });
+
+    it("renders no button for the card, even with onCardClick", () => {
+      renderHeader({
+        title: undefined,
+        logoUrl: LOGO_URL,
+        onCardClick: vi.fn(),
+      });
+
+      expect(
+        screen
+          .getAllByRole("button")
+          .map((button) => button.getAttribute("aria-label")),
+      ).toEqual([EXPAND_NAME, PLAY_NAME]);
+    });
+
+    it("renders the buttons alone once the logo fails to load", () => {
+      renderHeader({ title: undefined, logoUrl: LOGO_URL });
+
+      fireEvent.error(screen.getByRole("presentation"));
+
+      expect(screen.queryByRole("presentation")).not.toBeInTheDocument();
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    });
+  });
+
   describe("given no logoUrl but a title", () => {
     it("renders the title as the text of the heading", () => {
       renderHeader();

@@ -12,6 +12,7 @@ export interface QuizCardProps {
   tags: string[];
   isHighlighted?: boolean;
   isAlwaysExpanded?: boolean;
+  isImageHiddenOnWide?: boolean;
   isShowStartText?: boolean;
   isButtonLoading?: boolean;
   isButtonDisabled?: boolean;
@@ -29,5 +30,6 @@ export type QuizCardViewInput = Pick<
   | "tags"
   | "isHighlighted"
   | "isAlwaysExpanded"
+  | "isImageHiddenOnWide"
   | "onCardClick"
 >;

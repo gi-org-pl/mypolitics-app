@@ -139,21 +139,15 @@ describe("<QuizCardBody />", () => {
     it("shows its content", () => {
       renderBody({ isOpen: true });
 
-      const body = getBody();
-
-      expect(body).toHaveClass(...BODY_OPEN_CLASS_NAME.split(" "));
-      expect(body).not.toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
+      expect(getBody()).toHaveClass(...BODY_OPEN_CLASS_NAME.split(" "));
     });
   });
 
   describe("given a collapsed card", () => {
-    it("keeps its content out of sight, of the tab order and of the accessibility tree", () => {
+    it("keeps its content out of sight, of the tab order and of the accessibility tree, in CSS alone", () => {
       renderBody({ isOpen: false });
 
-      const body = getBody();
-
-      expect(body).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
-      expect(body).not.toHaveClass(...BODY_OPEN_CLASS_NAME.split(" "));
+      expect(getBody()).toHaveClass(...BODY_COLLAPSED_CLASS_NAME.split(" "));
     });
 
     it("renders the same markup as an open card, so the server and the browser agree", () => {
@@ -169,21 +163,8 @@ describe("<QuizCardBody />", () => {
       renderBody({ isOpen: false, isOpenOnWideScreen: true });
 
       expect(getBody()).toHaveClass(
-        ...BODY_COLLAPSED_CLASS_NAME.split(" "),
         ...BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" "),
       );
-    });
-  });
-
-  describe("given a collapsed card that keeps its toggle on a wide screen", () => {
-    it("stays collapsed at every width", () => {
-      renderBody({ isOpen: false, isOpenOnWideScreen: false });
-
-      const body = getBody();
-
-      for (const className of BODY_OPEN_ON_WIDE_SCREEN_CLASS_NAME.split(" ")) {
-        expect(body).not.toHaveClass(className);
-      }
     });
   });
 

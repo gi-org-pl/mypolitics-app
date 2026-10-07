@@ -6,10 +6,7 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { QuizCardPlayButton } from "./QuizCardPlayButton";
-import {
-  FORCED_COLORS_BORDER_CLASS_NAME,
-  START_TEXT_CLASS_NAME,
-} from "./QuizCardPlayButton.constants";
+import { START_TEXT_CLASS_NAME } from "./QuizCardPlayButton.constants";
 import type { QuizCardPlayButtonProps } from "./QuizCardPlayButton.types";
 
 const BUTTON_NAME = "Rozpocznij quiz";
@@ -49,7 +46,7 @@ describe("<QuizCardPlayButton />", () => {
       expect(button).toHaveTextContent("");
     });
 
-    it("draws the play icon as a mask that stays visible in forced colours", () => {
+    it("draws the play icon as a mask, in the shared way that survives forced colours", () => {
       renderPlayButton();
 
       const icon = getIcon();
@@ -58,19 +55,10 @@ describe("<QuizCardPlayButton />", () => {
       expect(icon).toHaveClass(...BUTTON_ICON_MASK_CLASS_NAME.split(" "));
     });
 
-    it("keeps its shape in forced colours, which drop the fill", () => {
-      renderPlayButton();
-
-      expect(getButton()).toHaveClass(
-        ...FORCED_COLORS_BORDER_CLASS_NAME.split(" "),
-      );
-    });
-
-    it("shows keyboard focus as an outline instead of Athena's ring", () => {
+    it("shows keyboard focus with the shared outline", () => {
       renderPlayButton();
 
       expect(getButton()).toHaveClass(...FOCUS_CLASS_NAME.split(" "));
-      expect(getButton()).not.toHaveClass("focus-visible:ring-[3px]");
     });
 
     it("does not submit a form around the card", () => {

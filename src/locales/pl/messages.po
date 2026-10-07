@@ -404,7 +404,7 @@ msgstr "Rozpocznij"
 msgid "Rozpocznij quiz"
 msgstr "Rozpocznij quiz"
 
-#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:32
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Rozwiń"
 msgstr "Rozwiń"
 
@@ -489,6 +489,6 @@ msgstr "Zamknij menu nawigacji"
 msgid "Zobacz więcej"
 msgstr "Zobacz więcej"
 
-#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:32
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Zwiń"
 msgstr "Zwiń"

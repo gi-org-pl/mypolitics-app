@@ -2,38 +2,32 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { QuizCardBadge } from "./QuizCardBadge";
+import type { QuizCardBadgePlacement } from "./QuizCardBadge.types";
 
 const BADGE_TEXT = "Kiedyś to było... no właśnie, jak?";
+const PLACEMENTS: QuizCardBadgePlacement[] = [
+  "top",
+  "belowImage",
+  "belowImageOnNarrowScreen",
+];
 
 describe("<QuizCardBadge />", () => {
-  describe("given a card without an image", () => {
+  describe.each(PLACEMENTS)("given the placement '%s'", (placement) => {
     it("renders the text as a paragraph", () => {
       render(
         <QuizCardBadge
           text={BADGE_TEXT}
-          isBelowImage={false}
+          placement={placement}
           isHighlighted={false}
         />,
       );
 
       expect(screen.getByRole("paragraph")).toHaveTextContent(BADGE_TEXT);
     });
-  });
 
-  describe("given a card with an image", () => {
-    it("renders the same text", () => {
+    it("renders the same text on a highlighted card", () => {
       render(
-        <QuizCardBadge text={BADGE_TEXT} isBelowImage isHighlighted={false} />,
-      );
-
-      expect(screen.getByRole("paragraph")).toHaveTextContent(BADGE_TEXT);
-    });
-  });
-
-  describe("given a highlighted card", () => {
-    it("renders the same text", () => {
-      render(
-        <QuizCardBadge text={BADGE_TEXT} isBelowImage={false} isHighlighted />,
+        <QuizCardBadge text={BADGE_TEXT} placement={placement} isHighlighted />,
       );
 
       expect(screen.getByRole("paragraph")).toHaveTextContent(BADGE_TEXT);
@@ -46,11 +40,7 @@ describe("<QuizCardBadge />", () => {
         "Zamiast o politykę, pokłóćmy się o muzykę, filmy, książki i wszystko inne!";
 
       render(
-        <QuizCardBadge
-          text={longText}
-          isBelowImage={false}
-          isHighlighted={false}
-        />,
+        <QuizCardBadge text={longText} placement="top" isHighlighted={false} />,
       );
 
       expect(screen.getByRole("paragraph")).toHaveTextContent(longText);
