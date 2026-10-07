@@ -77,9 +77,9 @@ msgstr "No result"
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 
-#: src/components/shared/Header/Header.constants.ts:8
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
-msgstr ""
+msgstr "Debates"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
@@ -87,7 +87,7 @@ msgstr "Generacja Innowacja"
 
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
-msgstr ""
+msgstr "Teddy bear illustration — 404 error"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
 msgid "Informacje"
@@ -99,7 +99,7 @@ msgstr "Information: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:27
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
-msgstr ""
+msgstr "With this error we open the eyes of the doubters! We say: this is our error, made by us, and it is not our last word!"
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
 msgid "myPolitics"
@@ -112,6 +112,10 @@ msgstr ""
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:35
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
+
+#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
+msgid "Nawigacja główna"
+msgstr "Main navigation"
 
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
@@ -145,9 +149,9 @@ msgstr "Visit our Telegram profile"
 msgid "Odwiedź nasz profil na X"
 msgstr "Visit our X profile"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:30
 msgid "Otwórz menu nawigacji"
-msgstr ""
+msgstr "Open navigation menu"
 
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
@@ -189,9 +193,9 @@ msgstr "compared with {name}: {value}%"
 msgid "Prywatność"
 msgstr "Privacy"
 
-#: src/components/shared/Header/Header.constants.ts:18
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:29
 msgid "Quizy"
-msgstr ""
+msgstr "Quizzes"
 
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:47
 msgid "Ranking"
@@ -201,9 +205,9 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/shared/Header/Header.constants.ts:13
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
-msgstr ""
+msgstr "Polls"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
@@ -214,13 +218,13 @@ msgid "Statystyki: {name}"
 msgstr "Statistics: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:35
-#: src/components/shared/Header/Header.tsx:105
+#: src/components/shared/Header/Header.tsx:16
 msgid "Strona główna"
-msgstr ""
+msgstr "Home page"
 
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
-msgstr ""
+msgstr "This is a 404 error <0>made to the best of our abilities</0>!"
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
 msgid "Tryb porównania"
@@ -246,6 +250,6 @@ msgstr "Back to groups, close group: {name}"
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:30
 msgid "Zamknij menu nawigacji"
-msgstr ""
+msgstr "Close navigation menu"

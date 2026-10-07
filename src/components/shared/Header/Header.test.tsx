@@ -1,101 +1,158 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+
 import { Header } from "./Header";
 
-vi.mock("@lingui/react/macro", () => ({
-  Trans: ({ children }: { children: React.ReactNode }) => children,
-}));
+const NAVIGATION_NAME = "Nawigacja główna";
+const OPEN_MENU_NAME = "Otwórz menu nawigacji";
+const CLOSE_MENU_NAME = "Zamknij menu nawigacji";
 
-vi.mock("@lingui/core/macro", () => ({
-  t: (strings: TemplateStringsArray) => strings[0],
-}));
-
-vi.mock("@/assets/vectors/debates-icon.svg", () => ({
-  default: "debates-icon.svg",
-}));
-vi.mock("@/assets/vectors/hamburger-menu.svg", () => ({
-  default: "hamburger-menu.svg",
-}));
-vi.mock("@/assets/vectors/mypoliticslogo-light.svg", () => ({
-  default: "mypoliticslogo-light.svg",
-}));
-vi.mock("@/assets/vectors/quizzes-icon.svg", () => ({
-  default: "quizzes-icon.svg",
-}));
-vi.mock("@/assets/vectors/polls-icon.svg", () => ({
-  default: "polls-icon.svg",
-}));
-
-const renderHeader = (path: string = PATHS.home) => {
+const renderHeader = (path: string = PATHS.home) =>
   renderWithI18n(
     <MemoryRouter initialEntries={[path]}>
       <Header />
     </MemoryRouter>,
   );
+
+const getNavigations = () =>
+  screen.getAllByRole("navigation", { name: NAVIGATION_NAME });
+
+const openMenu = () => {
+  fireEvent.click(screen.getByRole("button", { name: OPEN_MENU_NAME }));
+
+  return getNavigations()[1];
 };
 
 describe("<Header />", () => {
-  it("renders the logo linking to home", () => {
-    renderHeader();
+  describe("given any page", () => {
+    it("renders the banner landmark", () => {
+      renderHeader();
 
-    expect(
-      screen.getByRole("link", { name: /strona główna/i }),
-    ).toHaveAttribute("href", PATHS.home);
+      expect(screen.getByRole("banner")).toBeInTheDocument();
+    });
+
+    it("renders the logo as a link to the home page", () => {
+      renderHeader();
+
+      expect(
+        screen.getByRole("link", { name: "Strona główna" }),
+      ).toHaveAttribute("href", PATHS.home);
+    });
+
+    it("renders the navigation bar with debates, polls and quizzes in that order", () => {
+      renderHeader();
+
+      const [bar] = getNavigations();
+
+      expect(
+        within(bar)
+          .getAllByRole("link")
+          .map((link) => link.textContent),
+      ).toEqual(["Debaty", "Sondaże", "Quizy"]);
+    });
+
+    it("renders the menu button collapsed, with the menu closed", () => {
+      renderHeader();
+
+      expect(
+        screen.getByRole("button", { name: OPEN_MENU_NAME, expanded: false }),
+      ).toBeInTheDocument();
+      expect(getNavigations()).toHaveLength(1);
+    });
   });
 
-  it("renders all nav items", () => {
-    renderHeader();
+  describe("given the page a navigation link leads to", () => {
+    it("marks that link as the current page", () => {
+      renderHeader(PATHS.quizzes);
 
-    const desktopNav = screen.getByTestId("desktopNav");
-
-    expect(
-      within(desktopNav).getByRole("link", { name: /debaty/i }),
-    ).toBeInTheDocument();
-    expect(
-      within(desktopNav).getByRole("link", { name: /sondaże/i }),
-    ).toBeInTheDocument();
-    expect(
-      within(desktopNav).getByRole("link", { name: /quizy/i }),
-    ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Quizy", current: "page" }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it("applies active style to current route", () => {
-    renderHeader(PATHS.quizzes);
+  describe("when the menu button is clicked", () => {
+    it("opens the menu with quizzes first and debates last", () => {
+      renderHeader();
 
-    expect(
-      screen.getByRole("link", { current: "page", name: /quizy/i }),
-    ).toHaveClass("bg-gi-primary");
+      const menu = openMenu();
+
+      expect(
+        within(menu)
+          .getAllByRole("link")
+          .map((link) => link.textContent),
+      ).toEqual(["Quizy", "Sondaże", "Debaty"]);
+    });
+
+    it("marks the button as expanded and offers to close the menu", () => {
+      renderHeader();
+
+      openMenu();
+
+      expect(
+        screen.getByRole("button", { name: CLOSE_MENU_NAME, expanded: true }),
+      ).toBeInTheDocument();
+    });
+
+    it("points the button at the menu it controls", () => {
+      renderHeader();
+
+      const menu = openMenu();
+
+      expect(
+        screen.getByRole("button", { name: CLOSE_MENU_NAME }),
+      ).toHaveAttribute("aria-controls", menu.id);
+    });
   });
 
-  it("opens and closes mobile menu", () => {
-    renderHeader();
+  describe("when the menu button is clicked again", () => {
+    it("closes the menu", () => {
+      renderHeader();
 
-    fireEvent.click(
-      screen.getByRole("button", { name: /otwórz menu nawigacji/i }),
-    );
+      openMenu();
+      fireEvent.click(screen.getByRole("button", { name: CLOSE_MENU_NAME }));
 
-    expect(screen.getByTestId("mobileMenu")).toBeInTheDocument();
-
-    fireEvent.click(
-      within(screen.getByTestId("mobileMenu")).getByRole("link", {
-        name: /quizy/i,
-      }),
-    );
-
-    expect(screen.queryByTestId("mobileMenu")).not.toBeInTheDocument();
+      expect(getNavigations()).toHaveLength(1);
+      expect(
+        screen.getByRole("button", { name: OPEN_MENU_NAME, expanded: false }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it("closes mobile menu when clicking outside", () => {
-    renderHeader();
+  describe("when a link of the open menu is clicked", () => {
+    it("closes the menu", () => {
+      renderHeader();
 
-    fireEvent.click(
-      screen.getByRole("button", { name: /otwórz menu nawigacji/i }),
-    );
-    fireEvent.mouseDown(document.body);
+      const menu = openMenu();
+      fireEvent.click(within(menu).getByRole("link", { name: "Quizy" }));
 
-    expect(screen.queryByTestId("mobileMenu")).not.toBeInTheDocument();
+      expect(getNavigations()).toHaveLength(1);
+    });
+  });
+
+  describe("when the user presses outside the open menu", () => {
+    it("closes the menu", () => {
+      renderHeader();
+
+      openMenu();
+      fireEvent.mouseDown(document.body);
+
+      expect(getNavigations()).toHaveLength(1);
+    });
+  });
+
+  describe("when the user presses inside the open menu", () => {
+    it("keeps the menu open", () => {
+      renderHeader();
+
+      const menu = openMenu();
+      fireEvent.mouseDown(menu);
+
+      expect(getNavigations()).toHaveLength(2);
+    });
   });
 });

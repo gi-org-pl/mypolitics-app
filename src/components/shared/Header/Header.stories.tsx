@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
+import { userEvent, within } from "storybook/test";
 import { PATHS } from "@/constants/paths";
 import { Header } from "./Header";
 import type { HeaderStoryProps } from "./Header.types";
@@ -36,5 +37,17 @@ export const ActiveDebaty: Story = {
 export const ActiveQuizy: Story = {
   args: {
     initialPath: PATHS.quizzes,
+  },
+};
+
+export const MenuOpen: Story = {
+  args: {
+    initialPath: PATHS.quizzes,
+  },
+  globals: {
+    viewport: { value: "mobile1" },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button"));
   },
 };

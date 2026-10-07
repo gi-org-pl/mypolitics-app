@@ -77,7 +77,7 @@ msgstr "Brak wyniku"
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
-#: src/components/shared/Header/Header.constants.ts:8
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
 msgstr "Debaty"
 
@@ -113,6 +113,10 @@ msgstr "mypolitics banner background"
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
+msgid "Nawigacja główna"
+msgstr "Nawigacja główna"
+
 #: src/components/shared/Footer/Footer.constants.ts:8
 msgid "O nas"
 msgstr "O nas"
@@ -145,7 +149,7 @@ msgstr "Odwiedź nasz profil na Telegramie"
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:30
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
@@ -189,7 +193,7 @@ msgstr "porównanie z {name}: {value}%"
 msgid "Prywatność"
 msgstr "Prywatność"
 
-#: src/components/shared/Header/Header.constants.ts:18
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:29
 msgid "Quizy"
 msgstr "Quizy"
 
@@ -201,7 +205,7 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/shared/Header/Header.constants.ts:13
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
 msgstr "Sondaże"
 
@@ -214,7 +218,7 @@ msgid "Statystyki: {name}"
 msgstr "Statystyki: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:35
-#: src/components/shared/Header/Header.tsx:105
+#: src/components/shared/Header/Header.tsx:16
 msgid "Strona główna"
 msgstr "Strona główna"
 
@@ -246,6 +250,6 @@ msgstr "Wróć do grup, zamknij grupę: {name}"
 msgid "Wróć do kategorii"
 msgstr "Wróć do kategorii"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:30
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
