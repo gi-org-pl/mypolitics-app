@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { openPage } from "../utils/openPage";
+
 const HOME_PATH = "/";
 const QUIZZES_PATH = "/quizzes";
 const TERMS_PATH = "/terms";
@@ -12,19 +14,6 @@ const NOT_FOUND_HEADING = /To jest błąd 404/;
 const TALL_WINDOW = { width: 1280, height: 1600 };
 const LOW_WINDOW = { width: 1280, height: 320 };
 const NARROW_WINDOW = { width: 360, height: 740 };
-
-// Opens an address and waits until the page stands still: the app has rendered
-// its content and every font it uses has arrived. A web font that lands in the
-// middle of a click reflows the page between press and release, and the click
-// then misses its target.
-const openPage = async (page: Page, path: string) => {
-  await page.goto(path);
-  await expect(page.getByRole("contentinfo")).toBeVisible();
-  await expect(page.getByRole("main")).not.toBeEmpty();
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-  });
-};
 
 const expectHeaderNavigation = async (page: Page) => {
   const navigation = page.getByRole("banner").getByRole("navigation");
