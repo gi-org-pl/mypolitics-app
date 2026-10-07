@@ -5,4 +5,3 @@ export default flatRoutes({
   rootDirectory: "pages",
   ignoredRouteFiles: ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}"],
 }) satisfies RouteConfig;
-
