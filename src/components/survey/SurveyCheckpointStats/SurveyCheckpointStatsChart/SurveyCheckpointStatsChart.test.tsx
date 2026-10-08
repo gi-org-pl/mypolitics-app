@@ -76,12 +76,18 @@ describe("<SurveyCheckpointStatsChart />", () => {
   it("lets the legend move under the pie where the two do not fit side by side", () => {
     const { container } = renderChart();
 
-    expect(container.firstElementChild).toHaveClass(
-      "flex",
-      "flex-wrap",
-      "max-w-full",
-    );
+    expect(container.firstElementChild).toHaveClass("flex", "flex-wrap");
     expect(container.firstElementChild).not.toHaveClass("overflow-hidden");
+  });
+
+  it("fills the width of its parent and keeps the pie and the legend centred", () => {
+    const { container } = renderChart();
+
+    expect(container.firstElementChild).toHaveClass(
+      "w-full",
+      "min-w-0",
+      "justify-center",
+    );
   });
 
   it.each([
