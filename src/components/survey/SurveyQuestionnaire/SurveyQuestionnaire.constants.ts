@@ -1,4 +1,5 @@
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
+import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
 import type { CheckpointCardRegistry } from "@/types/checkpoint";
 
 // The card component of every checkpoint type that has one. A card task
@@ -12,4 +13,5 @@ import type { CheckpointCardRegistry } from "@/types/checkpoint";
 // screen read it, so it must not import any of them.
 export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
   halfway: SurveyCheckpointHalfway,
+  stats: SurveyCheckpointStats,
 };
