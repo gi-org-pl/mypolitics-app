@@ -24,3 +24,6 @@ export const SINGLE_AXIS_MIDPOINT = 50;
 export const ARCHETYPE_ORIENTATION_TYPE: OrientationType = "identity";
 
 export const EMPTY_SCORE_TOTAL: ScoreTotal = { points: 0, maximum: 0 };
+
+// The seed of every draw of a session that has none.
+export const FALLBACK_SEED = "mypolitics";
