@@ -463,7 +463,7 @@ msgstr "Poprzednie pytanie"
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
-#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:30
+#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:29
 msgid "Postęp quizu"
 msgstr "Postęp quizu"
 
@@ -479,11 +479,11 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:44
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:32
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:43
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:31
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
 
@@ -635,7 +635,7 @@ msgstr "Wieś"
 msgid "Wolę nie podawać"
 msgstr "Wolę nie podawać"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:45
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
 msgid "Wróć"
 msgstr "Wróć"
 

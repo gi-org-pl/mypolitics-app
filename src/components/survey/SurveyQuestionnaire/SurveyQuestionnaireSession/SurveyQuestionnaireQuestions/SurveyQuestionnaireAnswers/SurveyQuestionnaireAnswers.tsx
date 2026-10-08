@@ -2,9 +2,9 @@ import { Button } from "@gi-org-pl/athena";
 import { Trans } from "@lingui/react/macro";
 
 import { SurveyAnswer } from "@/components/survey/SurveyAnswer/SurveyAnswer";
+import { isButtonPress } from "@/utils/event/isButtonPress";
 import { SKIP_CLASS_NAME } from "./SurveyQuestionnaireAnswers.constants";
 import type { SurveyQuestionnaireAnswersProps } from "./SurveyQuestionnaireAnswers.types";
-import { isButtonPress } from "./utils/isButtonPress";
 import { useAnswersToDraw } from "./utils/useAnswersToDraw";
 
 // The answers of a question, as a group named by its statement, and "Pomiń"

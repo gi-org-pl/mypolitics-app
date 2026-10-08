@@ -1,12 +1,11 @@
 import { msg } from "@lingui/core/macro";
-import type { ComponentType, CSSProperties } from "react";
+import type { ComponentType } from "react";
 
 import type { SurveyPhase, SurveyPhaseContentProps } from "@/types/survey";
 import { SurveyQuestionnaireCategorySelect } from "./SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect";
 import { SurveyQuestionnaireDemographics } from "./SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics";
 import { SurveyQuestionnaireHandIn } from "./SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn";
 import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions/SurveyQuestionnaireQuestions";
-import type { ChangeDirection } from "./SurveyQuestionnaireSession.types";
 
 // What is drawn in each phase. A later phase is a component that takes
 // `SurveyPhaseContentProps`, added here under its phase: the bar, the pill,
@@ -28,17 +27,6 @@ export const CONTENT_CHANGE_MS = 200;
 // How long a lock that nothing answers holds the screen. Longer than the
 // acknowledgement of an answer, so the change it waits for comes first.
 export const SCREEN_LOCK_LIMIT_MS = 1000;
-
-// A class name cannot be built from a number, so the duration is a style.
-export const CONTENT_CHANGE_STYLE: CSSProperties = {
-  transitionDuration: `${CONTENT_CHANGE_MS}ms`,
-};
-
-// Where the new content comes from: the side the taker is moving to.
-export const CONTENT_ARRIVAL_CLASS_NAME: Record<ChangeDirection, string> = {
-  forwards: "starting:translate-x-4 starting:opacity-0",
-  backwards: "starting:-translate-x-4 starting:opacity-0",
-};
 
 export const ALMOST_DONE_LABEL = msg`Prawie koniec!`;
 export const ALMOST_READY_LABEL = msg`Prawie gotowe`;

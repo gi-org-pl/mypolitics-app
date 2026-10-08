@@ -1,9 +1,10 @@
 import { ProgressBar } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 
+import { getPercent } from "@/utils/number/getPercent";
+
 import { BAR_CLASS_NAME } from "./SurveySaturatedProgressBar.constants";
 import type { SurveySaturatedProgressBarProps } from "./SurveySaturatedProgressBar.types";
-import { getProgressPercent } from "./utils/getProgressPercent";
 import { getSaturatedPercentValue } from "./utils/getSaturatedPercentValue";
 import { useValueFlash } from "./utils/useValueFlash";
 
@@ -12,9 +13,7 @@ export function SurveySaturatedProgressBar({
   maxValue,
 }: SurveySaturatedProgressBarProps) {
   const { t } = useLingui();
-  const shownValue = getSaturatedPercentValue(
-    getProgressPercent(value, maxValue),
-  );
+  const shownValue = getSaturatedPercentValue(getPercent(value, maxValue));
   const isFlashing = useValueFlash(shownValue);
 
   return (

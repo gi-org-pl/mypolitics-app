@@ -1,14 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it } from "vitest";
-import { CONTENT_CHANGE_MS } from "../SurveyQuestionnaireSession.constants";
 import type { ChangeDirection } from "../SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition";
+
+const DURATION_MS = 200;
 
 const getTransition = (contentKey: string, direction?: ChangeDirection) => (
   <SurveyQuestionnaireTransition
     contentKey={contentKey}
     direction={direction}
+    durationMs={DURATION_MS}
     contentRef={createRef<HTMLDivElement>()}
   >
     <p>Treść {contentKey}</p>
@@ -33,6 +35,7 @@ describe("<SurveyQuestionnaireTransition />", () => {
       render(
         <SurveyQuestionnaireTransition
           contentKey="first"
+          durationMs={DURATION_MS}
           contentRef={contentRef}
         >
           <p>Treść first</p>
@@ -93,13 +96,13 @@ describe("<SurveyQuestionnaireTransition />", () => {
       expect(getContent("first")).not.toHaveClass("starting:translate-x-4");
     });
 
-    it("moves for the length of the constant, and not at all under reduced motion", () => {
+    it("moves for the length it is given, and not at all under reduced motion", () => {
       const { rerender } = render(getTransition("first"));
 
       rerender(getTransition("second", "forwards"));
 
       expect(getContent("second").style.transitionDuration).toBe(
-        `${CONTENT_CHANGE_MS}ms`,
+        `${DURATION_MS}ms`,
       );
       expect(getContent("second")).toHaveClass(
         "transition-[opacity,translate]",

@@ -1,6 +1,9 @@
 import { useSurveySession } from "@/utils/survey/useSurveySession";
 import { SurveyQuestionnaireFrame } from "./SurveyQuestionnaireFrame/SurveyQuestionnaireFrame";
-import { SURVEY_PHASE_CONTENT } from "./SurveyQuestionnaireSession.constants";
+import {
+  CONTENT_CHANGE_MS,
+  SURVEY_PHASE_CONTENT,
+} from "./SurveyQuestionnaireSession.constants";
 import type { SurveyQuestionnaireSessionProps } from "./SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition/SurveyQuestionnaireTransition";
 import { getSurveyFrame } from "./utils/getSurveyFrame";
@@ -38,6 +41,7 @@ export const SurveyQuestionnaireSession = ({
       <SurveyQuestionnaireTransition
         contentKey={contentKey}
         direction={direction}
+        durationMs={CONTENT_CHANGE_MS}
         contentRef={contentRef}
       >
         {Content && (

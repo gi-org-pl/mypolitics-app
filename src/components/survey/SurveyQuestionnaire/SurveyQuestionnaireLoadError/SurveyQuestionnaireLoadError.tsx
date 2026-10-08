@@ -2,15 +2,15 @@ import { Button } from "@gi-org-pl/athena";
 import { Trans } from "@lingui/react/macro";
 
 import { TALL_BUTTON_CLASS_NAME } from "@/constants/button";
+import { NOTICE_CARD_CLASS_NAME } from "@/constants/notice";
 
-import { NOTICE_CLASS_NAME } from "../SurveyQuestionnaire.constants";
 import type { SurveyQuestionnaireLoadErrorProps } from "./SurveyQuestionnaireLoadError.types";
 
 // The quiz could not be read. The card is announced when it appears.
 export const SurveyQuestionnaireLoadError = ({
   onRetry,
 }: SurveyQuestionnaireLoadErrorProps) => (
-  <div role="alert" className={NOTICE_CLASS_NAME}>
+  <div role="alert" className={NOTICE_CARD_CLASS_NAME}>
     <div className="flex w-full flex-col gap-2">
       <h1 className="text-lg leading-[21px] font-bold">
         <Trans>Nie udało się wczytać quizu</Trans>

@@ -463,7 +463,7 @@ msgstr "Previous question"
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 
-#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:30
+#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:29
 msgid "Postęp quizu"
 msgstr "Quiz progress"
 
@@ -479,11 +479,11 @@ msgstr "Learn what shapes your orientation"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:44
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:32
 msgid "Prawie gotowe"
 msgstr "Almost ready"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:43
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:31
 msgid "Prawie koniec!"
 msgstr "Almost done!"
 
@@ -635,7 +635,7 @@ msgstr "Village"
 msgid "Wolę nie podawać"
 msgstr "I prefer not to say"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:45
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
 msgid "Wróć"
 msgstr "Go back"
 
