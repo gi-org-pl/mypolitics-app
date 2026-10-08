@@ -29,6 +29,14 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
 msgstr "“{leading}” or “{other}”? At this stage of the quiz you are closer to the first of these sides."
 
+#: src/components/survey/SurveyCheckpointAxisPuzzle/utils/useAxisPuzzleDescription.ts:29
+msgid "„{start}” i „{end}”: bliżej Ci do strony „{leading}”"
+msgstr "“{start}” and “{end}”: you are closer to the “{leading}” side"
+
+#: src/components/survey/SurveyCheckpointAxisPuzzle/utils/useAxisPuzzleDescription.ts:25
+msgid "„{start}” i „{end}”: wynik ukryty"
+msgstr "“{start}” and “{end}”: the reading is hidden"
+
 #: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:29
 msgid "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
 msgstr "“{start}” and “{end}”: the higher score is on the “{leading}” side"
@@ -45,11 +53,11 @@ msgstr "{label} (opens in a new tab)"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -245,7 +253,7 @@ msgstr "No match"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -771,11 +779,11 @@ msgstr "Skip"
 msgid "Poprzednie pytanie"
 msgstr "Previous question"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:145
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
 msgid "porównanie z {name}"
 msgstr "compared with {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:157
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 

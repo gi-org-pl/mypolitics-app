@@ -642,3 +642,138 @@ describe("getAxisLayout() - showValues", () => {
     }
   });
 });
+
+describe("getAxisLayout() - isMasked", () => {
+  describe("given isMasked and two entries with values", () => {
+    const input = { start: entryA(69), end: entryB(31), isMasked: true };
+
+    it("keeps the double-sided mode and both sides with their names, images and colours", () => {
+      const layout = getAxisLayout(input);
+
+      expect(layout.mode).toBe("double-sided");
+      expect(layout.start).toMatchObject({
+        name: "Orientation A",
+        imageUrl: "https://example.com/a.png",
+        color: "#59b6a6",
+      });
+      expect(layout.end).toMatchObject({
+        name: "Orientation B",
+        color: "#bc831a",
+      });
+    });
+
+    it("gives both sides no width and no shown value", () => {
+      const layout = getAxisLayout(input);
+
+      for (const side of [layout.start, layout.end]) {
+        expect(side).toMatchObject({
+          hasValue: false,
+          value: 0,
+          displayValue: 0,
+          width: 0,
+          valuePlacement: "hidden",
+        });
+      }
+    });
+
+    it("has no marker, also when one is configured", () => {
+      expect(getAxisLayout(input).marker).toBeNull();
+      expect(getAxisLayout({ ...input, marker: 30 }).marker).toBeNull();
+    });
+
+    it("has no comparison, also when one is passed", () => {
+      expect(
+        getAxisLayout({ ...input, comparison: friendEntry(90) }).comparison,
+      ).toBeNull();
+    });
+
+    it("is marked as masked", () => {
+      expect(getAxisLayout(input).isMasked).toBe(true);
+    });
+
+    it("shows no value whatever showValues says", () => {
+      expect(getAxisLayout({ ...input, showValues: true })).toEqual(
+        getAxisLayout({ ...input, showValues: false }),
+      );
+    });
+  });
+
+  describe("given isMasked and the same entries without values", () => {
+    it("returns the same layout", () => {
+      const withValues = getAxisLayout({
+        start: entryA(69),
+        end: entryB(31),
+        comparison: friendEntry(90),
+        marker: 30,
+        isMasked: true,
+      });
+      const withOtherValues = getAxisLayout({
+        start: entryA(12),
+        end: entryB(140),
+        isMasked: true,
+      });
+      const withoutValues = getAxisLayout({
+        start: { orientation: orientationA },
+        end: { orientation: orientationB },
+        isMasked: true,
+      });
+
+      expect(withValues).toEqual(withoutValues);
+      expect(withOtherValues).toEqual(withoutValues);
+    });
+  });
+
+  describe("given isMasked in another mode", () => {
+    it("keeps the mode of the entries that are passed, with nothing to draw on the track", () => {
+      const oneSided = getAxisLayout({ end: entryB(64), isMasked: true });
+      const empty = getAxisLayout({
+        comparison: friendEntry(40),
+        isMasked: true,
+      });
+
+      expect(oneSided).toMatchObject({
+        mode: "one-sided",
+        start: null,
+        end: { name: "Orientation B", hasValue: false, width: 0 },
+        marker: null,
+        comparison: null,
+        isMasked: true,
+      });
+      expect(empty).toEqual({
+        mode: "empty",
+        start: null,
+        end: null,
+        marker: null,
+        comparison: null,
+        isMasked: true,
+      });
+    });
+  });
+
+  describe("given isMasked is false or absent", () => {
+    it("returns the layout it returned before", () => {
+      const input = {
+        start: entryA(69),
+        end: entryB(31),
+        comparison: friendEntry(90),
+        marker: 30,
+      };
+      const layout = getAxisLayout(input);
+
+      expect(layout).toEqual(getAxisLayout({ ...input, isMasked: false }));
+      expect(layout).not.toHaveProperty("isMasked");
+      expect(getAxisLayout({ ...input, isMasked: false })).not.toHaveProperty(
+        "isMasked",
+      );
+      expect(layout.start?.width).toBe(69);
+      expect(layout.end?.width).toBe(31);
+      expect(layout.marker).toBe(30);
+      expect(layout.comparison?.band).toEqual({ from: 69, to: 90 });
+      expect(getAxisLayout({ start: entryA(64) }).start).toMatchObject({
+        hasValue: true,
+        value: 64,
+        valuePlacement: "inside",
+      });
+    });
+  });
+});

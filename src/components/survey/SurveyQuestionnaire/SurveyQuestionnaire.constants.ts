@@ -1,4 +1,5 @@
 import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
+import { SurveyCheckpointAxisPuzzle } from "@/components/survey/SurveyCheckpointAxisPuzzle/SurveyCheckpointAxisPuzzle";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import type { CheckpointCardRegistry } from "@/types/checkpoint";
 
@@ -14,4 +15,5 @@ import type { CheckpointCardRegistry } from "@/types/checkpoint";
 export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
   halfway: SurveyCheckpointHalfway,
   "axis-closeness": SurveyCheckpointAxisCloseness,
+  "axis-puzzle": SurveyCheckpointAxisPuzzle,
 };
