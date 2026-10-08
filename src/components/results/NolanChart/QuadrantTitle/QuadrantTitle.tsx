@@ -1,5 +1,6 @@
+import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
+
 import type { NolanTitle } from "../NolanChart.types";
-import { getColorStyle } from "../utils/getColorStyle";
 
 const TEXT_CLASS_NAME = "min-w-0 truncate text-base leading-5 font-bold";
 
@@ -28,7 +29,7 @@ export const QuadrantTitle = ({
     data-testid="nolan-chart-title"
     data-look={look}
     className={`@container flex h-8 w-full min-w-0 items-center justify-center rounded-lg px-4 ${LOOK_CLASS_NAMES[look][color ? "colored" : "neutral"]}`}
-    style={getColorStyle(color)}
+    style={getNolanColorStyle(color)}
   >
     <span
       className={`${TEXT_CLASS_NAME} ${shortName ? "@max-[176px]:sr-only" : ""}`}

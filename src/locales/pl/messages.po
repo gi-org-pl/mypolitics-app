@@ -29,6 +29,10 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
 msgstr "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
 
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:29
+msgid "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
+msgstr "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
+
 #: src/components/survey/SurveyCategorySelect/SurveyCategorySelectPrompt/SurveyCategorySelectPrompt.tsx:15
 msgid "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
 msgstr "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
@@ -45,11 +49,11 @@ msgstr "{name}: {percent}%"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
@@ -75,11 +79,11 @@ msgstr "{title}:"
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:18
 msgid "{trait} - tylko {name}"
 msgstr "{trait} - tylko {name}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:19
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - wspólna z: {name}"
 
@@ -249,11 +253,11 @@ msgstr "Brak odpowiedzi"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
-#: src/components/results/Traits/Traits.tsx:37
+#: src/components/results/Traits/Traits.tsx:39
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
@@ -456,6 +460,14 @@ msgstr "Kobieta"
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:24
 msgid "Kolorujemy wykresy"
 msgstr "Kolorujemy wykresy"
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:29
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:28
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
 
 #: src/constants/checkpoint.ts:310
 msgctxt "checkpoint-nolan-path-full"
@@ -775,7 +787,11 @@ msgstr "Pomiń"
 msgid "Poprzednie pytanie"
 msgstr "Poprzednie pytanie"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:145
+msgid "porównanie z {name}"
+msgstr "porównanie z {name}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
@@ -901,6 +917,10 @@ msgstr "Rzadki okaz"
 msgctxt "checkpoint-axis-closeness-single"
 msgid "Skala „{orientation}”: jak dotąd wysoki wynik."
 msgstr "Skala „{orientation}”: jak dotąd wysoki wynik."
+
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:22
+msgid "Skala „{orientation}”: wysoki wynik"
+msgstr "Skala „{orientation}”: wysoki wynik"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:29
 msgid "Słuchamy wywiadów w telewizji"
