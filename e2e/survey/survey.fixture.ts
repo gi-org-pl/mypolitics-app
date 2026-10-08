@@ -22,7 +22,7 @@ const toAnswer = (questionId: string, text: string, index: number) => ({
   text,
   weight: 2,
   questionId,
-  orientationIds: [],
+  orientationIds: [] as string[],
 });
 
 const toQuestion = (
