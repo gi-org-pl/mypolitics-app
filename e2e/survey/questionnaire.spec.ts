@@ -13,6 +13,10 @@ import {
   AXIS_QUESTIONS,
   axisSurveyFixture,
 } from "./survey-axis.fixture";
+import {
+  CHECKPOINT_QUESTIONS,
+  checkpointSurveyFixture,
+} from "./survey-checkpoint.fixture";
 
 const HOME_PATH = "/";
 const QUIZ_PATH = "/quizzes/mypolitics";
@@ -807,6 +811,141 @@ test.describe("Feature: Questionnaire", () => {
       await expect(page.getByRole("contentinfo")).toBeVisible();
       await expect(page).toHaveURL(UNKNOWN_QUIZ_PATH);
       expect(api.surveyRequests).toHaveLength(0);
+    });
+  });
+});
+
+// The Checkpoints phase. Each card is reached with a quiz that can fire it:
+// a card task adds its scenarios in a `test.describe` of its own below, with
+// its own fixture handed to `mockSurveyApi`.
+
+const getCheckpoint = (page: Page) =>
+  page.getByRole("main").getByRole("region", { name: "Checkpoint" });
+
+// Answers the questions of a quiz from the first one up to the given count,
+// each with the same answer.
+const answerQuestions = async (
+  page: Page,
+  questions: (typeof QUESTIONS)[number][],
+  count: number,
+  text: string,
+) => {
+  for (const question of questions.slice(0, count)) {
+    await answer(page, question, text);
+  }
+};
+
+test.describe("Feature: Questionnaire checkpoints - halfway through", () => {
+  // The midpoint of nine questions: the boundary after the fifth.
+  const midpoint = 5;
+  const sixthQuestion = CHECKPOINT_QUESTIONS[midpoint];
+
+  // One category, so the quiz opens on its first question.
+  const openCheckpointQuiz = async (page: Page) => {
+    await openPage(page, QUIZ_PATH);
+    await expectQuestion(page, CHECKPOINT_QUESTIONS[0]);
+  };
+
+  test.beforeEach(async ({ page }) => {
+    await mockSurveyApi(page, checkpointSurveyFixture);
+  });
+
+  test("Scenario: A checkpoint appears and is dismissed", async ({ page }) => {
+    await test.step("Given a user opened the nine-question quiz", async () => {
+      await openCheckpointQuiz(page);
+      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+
+    await test.step("When they answer the first five questions", async () => {
+      await answerQuestions(
+        page,
+        CHECKPOINT_QUESTIONS,
+        midpoint,
+        "Częściowo za",
+      );
+    });
+
+    await test.step('Then a region named "Checkpoint" is shown in place of the question', async () => {
+      await expect(getCheckpoint(page)).toBeVisible();
+      await expect(getAnswers(page, sixthQuestion)).toHaveCount(0);
+      await expect(
+        page.getByText(sixthQuestion.text, { exact: true }),
+      ).toHaveCount(0);
+      await expect(getButton(page, "Pomiń")).toHaveCount(0);
+    });
+
+    await test.step("And back is off and reset is on", async () => {
+      await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+      await expect(getButton(page, "Zacznij od nowa")).toBeEnabled();
+    });
+
+    await test.step('And the card reads "55%" and says how many minutes the rest will take', async () => {
+      await expect(
+        getCheckpoint(page).getByText("55%", { exact: true }),
+      ).toBeVisible();
+      // The minutes depend on how fast the questions were answered.
+      await expect(getCheckpoint(page).getByRole("paragraph")).toHaveText(
+        /ok\. \d+ min\./,
+      );
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the sixth question", async () => {
+      await expectQuestion(page, sixthQuestion);
+      await expect(getCheckpoint(page)).toHaveCount(0);
+      await expect(getButton(page, "Poprzednie pytanie")).toBeEnabled();
+    });
+  });
+
+  test("Scenario: Turning checkpoints off holds for the session and after a reset", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the nine-question quiz and answered the first five questions", async () => {
+      await openCheckpointQuiz(page);
+      await answerQuestions(
+        page,
+        CHECKPOINT_QUESTIONS,
+        midpoint,
+        "Częściowo za",
+      );
+      await expect(getCheckpoint(page)).toBeVisible();
+    });
+
+    await test.step('When they press "Wyłącz checkpointy"', async () => {
+      await getButton(page, "Wyłącz checkpointy").click();
+    });
+
+    await test.step("Then they see the sixth question", async () => {
+      await expectQuestion(page, sixthQuestion);
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+
+    await test.step("When they press reset and confirm", async () => {
+      await getButton(page, "Zacznij od nowa").click();
+      await page
+        .getByRole("dialog", { name: "Rozpocząć od nowa?" })
+        .getByRole("button", { name: "Resetuj quiz" })
+        .click();
+      await expectQuestion(page, CHECKPOINT_QUESTIONS[0]);
+      await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+    });
+
+    await test.step("And they answer the first five questions again", async () => {
+      await answerQuestions(
+        page,
+        CHECKPOINT_QUESTIONS,
+        midpoint,
+        "Częściowo przeciw",
+      );
+    });
+
+    await test.step('Then they see the sixth question and no region named "Checkpoint" appears', async () => {
+      await expectQuestion(page, sixthQuestion);
+      await expect(getCheckpoint(page)).toHaveCount(0);
     });
   });
 });
