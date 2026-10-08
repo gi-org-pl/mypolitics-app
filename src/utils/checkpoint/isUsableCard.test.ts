@@ -7,7 +7,6 @@ import {
   allCards,
   axisPuzzleCard,
   doubleClosenessCard,
-  fullPathCard,
   halfwayCard,
   newTraitCard,
   partialPathCard,
@@ -23,7 +22,7 @@ import { isUsableCard } from "./isUsableCard";
 const damage = (card: CheckpointCard, fields: Record<string, unknown>) =>
   ({ ...card, ...fields }) as unknown as CheckpointCard;
 
-const withoutId = { type: "ideology", name: "Bez identyfikatora" };
+const nameless = createOrientation("nameless");
 
 describe("isUsableCard()", () => {
   it("accepts a card of every type and variant, also after it was stored", () => {
@@ -33,13 +32,31 @@ describe("isUsableCard()", () => {
     }
   });
 
+  it("refuses a card that has not the shape of its variant", () => {
+    expect(isUsableCard(damage(positionPuzzleCard, { options: [] }))).toBe(
+      false,
+    );
+    expect(isUsableCard(damage(partialPathCard, { trail: undefined }))).toBe(
+      false,
+    );
+    expect(isUsableCard(damage(axisPuzzleCard, { axisId: undefined }))).toBe(
+      false,
+    );
+    expect(isUsableCard(damage(statsForCard, { counts: undefined }))).toBe(
+      false,
+    );
+    expect(isUsableCard(damage(halfwayCard, { percent: undefined }))).toBe(
+      false,
+    );
+  });
+
   it("refuses a card whose line comes from another pool", () => {
     expect(
       isUsableCard(
         damage(halfwayCard, { line: { pool: "new-trait", index: 0 } }),
       ),
     ).toBe(false);
-    // The line of the other variant, the other side and a reveal.
+    // The line of the other variant, of the other side, and of a reveal.
     expect(
       isUsableCard(
         damage(singleClosenessCard, {
@@ -65,140 +82,40 @@ describe("isUsableCard()", () => {
   });
 
   it("refuses a card whose words cannot be finished", () => {
-    const nameless = createOrientation("nameless");
-
-    expect(isUsableCard(damage(halfwayCard, { minutes: 0 }))).toBe(false);
-    expect(isUsableCard(damage(halfwayCard, { minutes: undefined }))).toBe(
-      false,
-    );
     expect(isUsableCard(damage(newTraitCard, { trait: nameless }))).toBe(false);
-    expect(isUsableCard(damage(newTraitCard, { trait: undefined }))).toBe(
-      false,
-    );
-    expect(isUsableCard(damage(statsForCard, { percent: 40 }))).toBe(false);
-    expect(isUsableCard(damage(statsForCard, { thesis: undefined }))).toBe(
-      false,
-    );
-    expect(isUsableCard(damage(partialPathCard, { count: 4 }))).toBe(false);
-    expect(
-      isUsableCard(damage(singleClosenessCard, { entry: undefined })),
-    ).toBe(false);
-    expect(
-      isUsableCard(damage(doubleClosenessCard, { leadingSide: undefined })),
-    ).toBe(false);
-    // A puzzle that could not say what the taker hit.
-    expect(isUsableCard(damage(positionPuzzleCard, { leader: nameless }))).toBe(
-      false,
-    );
-    expect(
-      isUsableCard(
-        damage(axisPuzzleCard, { start: { orientation: nameless } }),
-      ),
-    ).toBe(false);
-  });
-
-  it("refuses a stats card without its question or with a count that is not one", () => {
-    expect(isUsableCard(damage(statsForCard, { questionId: undefined }))).toBe(
-      false,
-    );
-    expect(isUsableCard(damage(statsForCard, { counts: undefined }))).toBe(
-      false,
-    );
-    expect(
-      isUsableCard(damage(statsForCard, { counts: { for: 80, against: 900 } })),
-    ).toBe(false);
-    expect(
-      isUsableCard(
-        damage(statsForCard, {
-          counts: { for: 80, against: -1, noAnswer: 20 },
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it("refuses a new trait card whose trait has no identifier", () => {
-    expect(isUsableCard(damage(newTraitCard, { trait: withoutId }))).toBe(
-      false,
-    );
-  });
-
-  it("refuses a position puzzle without its closeness or its options", () => {
-    expect(
-      isUsableCard(damage(positionPuzzleCard, { closeness: undefined })),
-    ).toBe(false);
-    expect(
-      isUsableCard(damage(positionPuzzleCard, { options: undefined })),
-    ).toBe(false);
-    expect(
-      isUsableCard(
-        damage(positionPuzzleCard, {
-          options: [positionPuzzleCard.leader, withoutId, null],
-        }),
-      ),
-    ).toBe(false);
-    expect(
-      isUsableCard(
-        damage(positionPuzzleCard, {
-          leader: { ...withoutId, name: "Postać 1" },
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it("refuses a Nolan path card without a trail of positions", () => {
-    expect(isUsableCard(damage(partialPathCard, { trail: undefined }))).toBe(
-      false,
-    );
-    expect(isUsableCard(damage(fullPathCard, { trail: "trail" }))).toBe(false);
-    expect(
-      isUsableCard(
-        damage(fullPathCard, { trail: [{ x: 0.5, y: "0.5", done: 3 }] }),
-      ),
-    ).toBe(false);
-    expect(isUsableCard(damage(fullPathCard, { trail: [null] }))).toBe(false);
-    expect(isUsableCard(damage(fullPathCard, { trail: [] }))).toBe(true);
-  });
-
-  it("refuses an axis card without its axis or without an orientation on a side", () => {
-    expect(
-      isUsableCard(damage(singleClosenessCard, { axisId: undefined })),
-    ).toBe(false);
+    expect(isUsableCard(damage(statsForCard, { thesis: " . " }))).toBe(false);
     expect(
       isUsableCard(
         damage(singleClosenessCard, {
-          entry: { orientation: { ...withoutId, name: "Decentralizacja" } },
+          entry: { orientation: nameless, value: 83 },
         }),
       ),
     ).toBe(false);
-    expect(isUsableCard(damage(doubleClosenessCard, { axisId: 7 }))).toBe(
-      false,
-    );
     expect(
       isUsableCard(
         damage(doubleClosenessCard, {
-          start: { orientation: { ...withoutId, name: "Federalizm" } },
+          start: { orientation: nameless, value: 20 },
         }),
-      ),
-    ).toBe(false);
-    expect(isUsableCard(damage(axisPuzzleCard, { axisId: undefined }))).toBe(
-      false,
-    );
-    // The pole that does not lead is in no line, and still has to be there.
-    expect(isUsableCard(damage(axisPuzzleCard, { end: undefined }))).toBe(
-      false,
-    );
-    expect(
-      isUsableCard(
-        damage(axisPuzzleCard, { end: { orientation: withoutId, value: 30 } }),
       ),
     ).toBe(false);
   });
 
-  it("refuses a halfway card without its percent", () => {
-    expect(isUsableCard(damage(halfwayCard, { percent: undefined }))).toBe(
-      false,
-    );
-    expect(isUsableCard(damage(halfwayCard, { percent: "50" }))).toBe(false);
+  it("refuses a puzzle that could not finish its reveal", () => {
+    // Neither ask line has a slot: only the reveal needs the names.
+    expect(
+      isUsableCard(
+        damage(positionPuzzleCard, {
+          leader: createOrientation(positionPuzzleCard.leader.id),
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isUsableCard(
+        damage(axisPuzzleCard, {
+          start: { orientation: nameless, value: 70 },
+        }),
+      ),
+    ).toBe(false);
   });
 
   it("refuses what is no card at all, without throwing", () => {

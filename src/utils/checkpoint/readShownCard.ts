@@ -15,25 +15,24 @@ import { isUsableCard } from "./isUsableCard";
 const OUTCOMES: readonly CheckpointOutcome[] = ["hit", "miss"];
 
 // One stored item of the cards shown as a shown card, or nothing when it is
-// not one. It has to hold a card with a known type, a whole-number boundary
-// and a line that exists in the pools, and the card has to be usable as that
-// type: a card of another shape would count for the pacing, could be up with
-// no words after a reload, and would cost its type every later card. Of its
-// reveal lines only those are kept that exist and come from the pool of that
-// outcome of its type.
+// not one. It has to hold a card with a known type and a line that exists in
+// the pools, and the card has to be usable as that type - a whole-number
+// boundary and every value of its variant included: a card of another shape
+// would count for the pacing, could be up with no words after a reload, and
+// would cost its type every later card. Of its reveal lines only those are
+// kept that exist and come from the pool of that outcome of its type.
 export const readShownCard = (
   stored: unknown,
 ): CheckpointShownCard | undefined => {
   const { card, revealLines } = (stored ?? {}) as Partial<
     Record<keyof CheckpointShownCard, unknown>
   >;
-  const { type, boundary, line } = (card ?? {}) as Partial<
+  const { type, line } = (card ?? {}) as Partial<
     Record<keyof CheckpointCard, unknown>
   >;
 
   if (
     !isOneOf(CHECKPOINT_PRIORITY, type) ||
-    !Number.isInteger(boundary) ||
     !isCheckpointLine(line) ||
     !isUsableCard(card as CheckpointCard)
   ) {

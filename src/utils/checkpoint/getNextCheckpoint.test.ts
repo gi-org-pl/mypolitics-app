@@ -819,6 +819,91 @@ describe("getNextCheckpoint()", () => {
     });
   });
 
+  describe("given a card of every type and variant", () => {
+    const allQuadrants = createCompass([
+      "topLeft",
+      "topRight",
+      "bottomRight",
+      "bottomLeft",
+    ]);
+    const inputs: CheckpointEngineInput[] = [
+      createEngineInput({
+        survey: createSurvey(),
+        entries: [{ questionId: "q1", answerId: "q1-disagree" }],
+        state: createState(12, 60),
+        aggregates: {
+          q1: {
+            resultsCounted: 500,
+            chosen: { "q1-strongly-agree": 470, "q1-disagree": 30 },
+          },
+        },
+      }),
+      createEngineInput({
+        state: createState(12, 60, {
+          unlockedTraits: [createOrientation("trait", "Cecha")],
+        }),
+      }),
+      createEngineInput({
+        state: createState(30, 60, {
+          archetypes: createArchetypes([80, 60, 55, 50]),
+        }),
+      }),
+      createEngineInput({
+        state: createState(12, 60, {
+          compass: createCompass(["topLeft", "bottomRight"]),
+        }),
+      }),
+      createEngineInput({
+        state: createState(12, 60, { compass: allQuadrants }),
+      }),
+      createEngineInput({
+        state: createState(40, 80, { compass: allQuadrants }),
+        record: createRecord([
+          { ...partialPathCard, boundary: 12 },
+          { ...doubleClosenessCard, boundary: 24 },
+        ]),
+      }),
+      createEngineInput({
+        state: createState(12, 60, { axes: [createSingleAxis("scale", 83)] }),
+      }),
+      createEngineInput({ state: createState(12, 60, { axes: [pair] }) }),
+      createEngineInput({
+        state: createState(12, 60, { axes: [pair] }),
+        enabledTypes: ["axis-puzzle"],
+      }),
+      createEngineInput(),
+    ];
+
+    it("comes back from the storage of the tab as it was handed over", () => {
+      const cards = inputs.map((input) => getNextCheckpoint(input));
+
+      expect(
+        cards.map((card) =>
+          card && "variant" in card
+            ? `${card.type}/${card.variant}`
+            : card?.type,
+        ),
+      ).toEqual([
+        "stats",
+        "new-trait",
+        "position-puzzle",
+        "nolan-path/partial",
+        "nolan-path/full",
+        "nolan-path/full",
+        "axis-closeness/single",
+        "axis-closeness/double",
+        "axis-puzzle",
+        "halfway",
+      ]);
+
+      for (const card of cards) {
+        expect(
+          afterShowing(createRecord(), card as CheckpointCard).cardsShown,
+        ).toEqual([{ card }]);
+      }
+    });
+  });
+
   describe("given malformed input", () => {
     it("returns nothing and does not throw", () => {
       const malformed = [
