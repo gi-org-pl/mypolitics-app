@@ -20,6 +20,10 @@ const LOAD_ERROR_HEADING = "Nie udało się wczytać quizu";
 const EMAIL_HEADING = "Zapisz swoje wyniki!";
 const SEND_LABEL = "Wyślij i zobacz wyniki";
 const ADDRESS = "biuro@mypolitics.pl";
+const LINK_NOT_SENT = "Nie udało się wysłać linku na Twój e-mail.";
+const NOT_SAVED = "Nie udało się zapisać Twoich odpowiedzi.";
+// Longer than the stay of the loader, 6 seconds.
+const LEAVE_TIMEOUT_MS = 20_000;
 const [FIRST_QUESTION, SECOND_QUESTION, THIRD_QUESTION, FOURTH_QUESTION] =
   QUESTIONS;
 
@@ -138,9 +142,45 @@ const chooseAllFields = async (page: Page, age: string) => {
   await expect(getButton(page, "Zobacz wyniki")).toBeEnabled();
 };
 
+// The lines of the loader, oldest first. A new one arrives every 1.2 seconds.
+const getLoaderLines = (page: Page) =>
+  page.getByRole("main").getByRole("list").getByRole("listitem");
+
+// The loader: the pill, no bar, a first line, and the two result actions,
+// which never work here. Back is off too.
+const expectLoader = async (page: Page) => {
+  const main = page.getByRole("main");
+
+  await expect(main.getByText("Prawie gotowe").first()).toBeVisible();
+  await expect(getProgressBar(page)).toHaveCount(0);
+  await expect(getLoaderLines(page).first()).toBeVisible();
+  await expect(getButton(page, "Pobierz")).toBeDisabled();
+  await expect(getButton(page, "Pełne wyniki")).toBeDisabled();
+  await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+};
+
+// The loader stays for the time of five lines, 6 seconds, however fast the
+// result is. Nothing shortens that for the tests: the wait for the results
+// page covers it.
 const expectResultsPage = async (page: Page, sessionId: string) => {
-  await expect(page).toHaveURL(`${RESULTS_ADDRESS}${sessionId}`);
+  await expect(page).toHaveURL(`${RESULTS_ADDRESS}${sessionId}`, {
+    timeout: LEAVE_TIMEOUT_MS,
+  });
   await expect(page.getByRole("heading", { name: "Wyniki" })).toBeVisible();
+};
+
+// The storage of a tab is kept per site, so it is read from a page of the app
+// that does not start a session.
+const expectNoStoredSession = async (page: Page) => {
+  await openPage(page, HOME_PATH);
+
+  expect(
+    await page.evaluate(() =>
+      Object.keys(sessionStorage).filter((key) =>
+        key.includes("survey-session"),
+      ),
+    ),
+  ).toEqual([]);
 };
 
 const getSessionId = (result: unknown): string =>
@@ -148,6 +188,9 @@ const getSessionId = (result: unknown): string =>
 
 test.describe("Feature: Questionnaire", () => {
   let api: SurveyApiMock;
+
+  // A scenario that reaches the result waits out the stay of the loader.
+  test.describe.configure({ timeout: 60_000 });
 
   test.beforeEach(async ({ page }) => {
     api = await mockSurveyApi(page);
@@ -275,7 +318,12 @@ test.describe("Feature: Questionnaire", () => {
       await getButton(page, "Pomiń").click();
     });
 
-    await test.step("Then one result is created with the picked topic, the two answers and no demographics", async () => {
+    await test.step('Then they see the loader under "Prawie gotowe", with no progress bar, a first line, and "Pobierz" and "Pełne wyniki" off', async () => {
+      await expectLoader(page);
+      await expect(getButton(page, "Zacznij od nowa")).toBeDisabled();
+    });
+
+    await test.step("And one result is created with the picked topic, the two answers and no demographics", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,
@@ -288,10 +336,20 @@ test.describe("Feature: Questionnaire", () => {
       });
     });
 
-    await test.step("And they land on the results address that ends with the identifier that was sent", async () => {
+    await test.step("When the result is calculated and the stay is over", async () => {
+      // Nothing to do: the result is calculated at its second read.
+    });
+
+    await test.step("Then they land on the results address that ends with the identifier that was sent", async () => {
       await expectResultsPage(page, getSessionId(api.results[0]));
       expect(api.results).toHaveLength(1);
+      expect(api.repeatedResults).toHaveLength(0);
+      expect(api.linkRequests).toHaveLength(0);
       expect(api.surveyRequests).toHaveLength(1);
+    });
+
+    await test.step("And nothing of the session is left in the tab's storage", async () => {
+      await expectNoStoredSession(page);
     });
   });
 
@@ -327,7 +385,11 @@ test.describe("Feature: Questionnaire", () => {
       await getButton(page, SEND_LABEL).click();
     });
 
-    await test.step("Then the result is created with the four values, the age as a number, and without the address", async () => {
+    await test.step('Then they see the loader under "Prawie gotowe", with no progress bar, a first line, and "Pobierz" and "Pełne wyniki" off', async () => {
+      await expectLoader(page);
+    });
+
+    await test.step("And the result is created with the four values, the age as a number, and without the address", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,
@@ -347,8 +409,20 @@ test.describe("Feature: Questionnaire", () => {
         ],
       });
       expect(JSON.stringify(api.results[0])).not.toContain("biuro");
+    });
+
+    await test.step("When the result is calculated and the stay is over", async () => {
+      // Nothing to do: the result is calculated at its second read.
+    });
+
+    await test.step("Then they land on the results address that ends with the identifier that was sent", async () => {
       await expectResultsPage(page, getSessionId(api.results[0]));
       await expect(page).not.toHaveURL(/biuro/);
+      expect(api.results).toHaveLength(1);
+    });
+
+    await test.step("And nothing of the session is left in the tab's storage", async () => {
+      await expectNoStoredSession(page);
     });
   });
 
@@ -374,6 +448,10 @@ test.describe("Feature: Questionnaire", () => {
       ).toHaveCount(0);
     });
 
+    await test.step('And they see the loader under "Prawie gotowe", with no progress bar, a first line, and "Pobierz" and "Pełne wyniki" off', async () => {
+      await expectLoader(page);
+    });
+
     await test.step("And the result is created with the four values", async () => {
       expect(api.results[0]).toMatchObject({
         surveyId: SURVEY_ID,
@@ -384,9 +462,197 @@ test.describe("Feature: Questionnaire", () => {
           education: "higher",
         },
       });
+    });
+
+    await test.step("When the result is calculated and the stay is over", async () => {
+      // Nothing to do: the result is calculated at its second read.
+    });
+
+    await test.step("Then they land on the results address that ends with the identifier that was sent", async () => {
       await expectResultsPage(page, getSessionId(api.results[0]));
       expect(api.results).toHaveLength(1);
       expect(api.linkRequests).toHaveLength(0);
+    });
+
+    await test.step("And nothing of the session is left in the tab's storage", async () => {
+      await expectNoStoredSession(page);
+    });
+  });
+
+  test("Scenario: The link is requested after the result exists", async ({
+    page,
+  }) => {
+    await test.step("Given a user answered every question, skipped demographics and typed an address with the consent ticked", async () => {
+      await answerEveryQuestion(page);
+      await getButton(page, "Pomiń").click();
+      await expectEmailCard(page);
+      await typeAddress(page, ADDRESS);
+      await getConsentBox(page).click();
+      await expect(getConsentBox(page)).toBeChecked();
+      expect(api.calls).toEqual([]);
+    });
+
+    await test.step('When they press "Wyślij i zobacz wyniki"', async () => {
+      await getButton(page, SEND_LABEL).click();
+    });
+
+    await test.step("Then the result is created, without the address", async () => {
+      await expect.poll(() => api.results).toHaveLength(1);
+      expect(JSON.stringify(api.results[0])).not.toContain("biuro");
+      expect(api.results[0]).not.toHaveProperty("demographics");
+    });
+
+    await test.step('And after it one request reaches the link endpoint, with the address, the consent, the consent wording, the language "pl" and the identifier of that result, and no answer', async () => {
+      await expect.poll(() => api.linkRequests).toHaveLength(1);
+      expect(api.calls).toEqual(["result", "link"]);
+      expect(api.linkRequests[0]).toEqual({
+        email: ADDRESS,
+        resultId: getSessionId(api.results[0]),
+        marketingConsent: true,
+        consentWording: "marketing-v1",
+        language: "pl",
+      });
+    });
+
+    await test.step("And they land on the results address", async () => {
+      await expectResultsPage(page, getSessionId(api.results[0]));
+      await expect(page).not.toHaveURL(/biuro/);
+      expect(api.calls).toEqual(["result", "link"]);
+    });
+  });
+
+  test("Scenario: The link could not be sent", async ({ page }) => {
+    await test.step('Given the link endpoint answers "unavailable"', async () => {
+      api.setLinkAvailable(false);
+    });
+
+    await test.step("And a user answered every question, skipped demographics and typed an address", async () => {
+      await answerEveryQuestion(page);
+      await getButton(page, "Pomiń").click();
+      await expectEmailCard(page);
+      await typeAddress(page, ADDRESS);
+    });
+
+    await test.step('When they press "Wyślij i zobacz wyniki"', async () => {
+      await getButton(page, SEND_LABEL).click();
+    });
+
+    await test.step("Then the result is created and the link is requested once", async () => {
+      await expect.poll(() => api.linkRequests).toHaveLength(1);
+      expect(api.calls).toEqual(["result", "link"]);
+      expect(api.linkRequests[0]).toEqual({
+        email: ADDRESS,
+        resultId: getSessionId(api.results[0]),
+        marketingConsent: false,
+        language: "pl",
+      });
+    });
+
+    await test.step('And they see "Nie udało się wysłać linku na Twój e-mail." and stay on the page', async () => {
+      await expect(page.getByRole("main").getByRole("alert")).toContainText(
+        LINK_NOT_SENT,
+        { timeout: LEAVE_TIMEOUT_MS },
+      );
+      await expect(getButton(page, "Zobacz wyniki")).toBeFocused();
+      await expect(getButton(page, "Zacznij od nowa")).toBeDisabled();
+      await expect(getButton(page, "Pobierz")).toBeDisabled();
+      await expect(page).toHaveURL(QUIZ_PATH);
+      expect(api.calls).toEqual(["result", "link"]);
+    });
+
+    await test.step('When they press "Zobacz wyniki"', async () => {
+      await getButton(page, "Zobacz wyniki").click();
+    });
+
+    await test.step("Then they land on the results address", async () => {
+      await expectResultsPage(page, getSessionId(api.results[0]));
+      expect(api.calls).toEqual(["result", "link"]);
+    });
+  });
+
+  test("Scenario: A refresh during the wait", async ({ page }) => {
+    // The run before the refresh is left to show this many lines, so that a
+    // run that starts over is told from one that carried on.
+    const linesBeforeRefresh = 4;
+    let firstLine = "";
+
+    await test.step("Given a user reached the loader and the result is stored but not calculated", async () => {
+      api.setResultCalculated(false);
+      await answerEveryQuestion(page);
+      await getButton(page, "Pomiń").click();
+      await expectEmailCard(page);
+      await getButton(page, "Pomiń").click();
+      await expectLoader(page);
+      await expect.poll(() => api.results).toHaveLength(1);
+      await expect
+        .poll(() => getLoaderLines(page).count(), { timeout: LEAVE_TIMEOUT_MS })
+        .toBeGreaterThanOrEqual(linesBeforeRefresh);
+      firstLine = await getLoaderLines(page).first().innerText();
+    });
+
+    await test.step("When they reload the page", async () => {
+      await page.reload();
+    });
+
+    await test.step("Then they see the loader again, from its first line", async () => {
+      await expectLoader(page);
+      expect(await getLoaderLines(page).count()).toBeLessThan(
+        linesBeforeRefresh,
+      );
+      await expect(getLoaderLines(page).first()).toHaveText(firstLine);
+      await expect(page).toHaveURL(QUIZ_PATH);
+    });
+
+    await test.step('And the same result is sent again and answered "already exists"', async () => {
+      await expect.poll(() => api.repeatedResults).toHaveLength(1);
+      expect(api.repeatedResults[0]).toEqual(api.results[0]);
+      expect(api.results).toHaveLength(1);
+    });
+
+    await test.step("When the result is calculated and the stay is over", async () => {
+      api.setResultCalculated(true);
+    });
+
+    await test.step("Then they land on the same results address", async () => {
+      await expectResultsPage(page, getSessionId(api.results[0]));
+      expect(api.results).toHaveLength(1);
+    });
+  });
+
+  test("Scenario: The answers cannot be saved", async ({ page }) => {
+    await test.step("Given the API refuses the result", async () => {
+      api.setResultRefused(true);
+    });
+
+    await test.step("When a user reaches the loader", async () => {
+      await answerEveryQuestion(page);
+      await getButton(page, "Pomiń").click();
+      await expectEmailCard(page);
+      await getButton(page, "Pomiń").click();
+    });
+
+    await test.step('Then they see "Nie udało się zapisać Twoich odpowiedzi." with "Spróbuj ponownie", and reset is on', async () => {
+      await expect(page.getByRole("main").getByRole("alert")).toContainText(
+        NOT_SAVED,
+      );
+      await expect(getButton(page, "Spróbuj ponownie")).toBeFocused();
+      await expect(getButton(page, "Zacznij od nowa")).toBeEnabled();
+      await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+      await expect(getLoaderLines(page)).toHaveCount(0);
+      // A refused hand-in is not sent again by itself.
+      expect(api.calls).toEqual(["result"]);
+      expect(api.results).toHaveLength(0);
+    });
+
+    await test.step('When the API accepts the result and they press "Spróbuj ponownie"', async () => {
+      api.setResultRefused(false);
+      await getButton(page, "Spróbuj ponownie").click();
+    });
+
+    await test.step("Then they land on the results address", async () => {
+      await expect.poll(() => api.results).toHaveLength(1);
+      await expectResultsPage(page, getSessionId(api.results[0]));
+      expect(api.calls).toEqual(["result", "result"]);
     });
   });
 
