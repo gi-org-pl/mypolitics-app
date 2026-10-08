@@ -38,12 +38,21 @@ export const requestResultLink = async (
         }),
         language: input.language,
       },
-      toRequestConfig({
-        signal: options?.signal,
-        timeoutMs: isNumber(options?.timeoutMs)
-          ? options.timeoutMs
-          : RESULT_LINK_TIMEOUT_MS,
-      }),
+      {
+        ...toRequestConfig({
+          signal: options?.signal,
+          timeoutMs: isNumber(options?.timeoutMs)
+            ? options.timeoutMs
+            : RESULT_LINK_TIMEOUT_MS,
+        }),
+        // The request is kept alive: once it has started, the browser
+        // finishes it even when the page is reloaded or left, so a link that
+        // was asked for is not lost with the page. Only `fetch` can ask for
+        // that, so this one call goes through the fetch adapter of Axios; a
+        // browser that does not know the flag sends an ordinary request.
+        adapter: "fetch",
+        fetchOptions: { keepalive: true },
+      },
     );
 
     return status === HttpStatusCode.Accepted ? "accepted" : "unavailable";
