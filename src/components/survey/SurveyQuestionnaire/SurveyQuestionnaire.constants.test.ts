@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
+import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
 
 import { CHECKPOINT_CARDS } from "./SurveyQuestionnaire.constants";
@@ -12,5 +13,13 @@ describe("CHECKPOINT_CARDS", () => {
 
   it('makes "halfway" one of the enabled types', () => {
     expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("halfway");
+  });
+
+  it('holds SurveyCheckpointNewTrait under "new-trait"', () => {
+    expect(CHECKPOINT_CARDS["new-trait"]).toBe(SurveyCheckpointNewTrait);
+  });
+
+  it('makes "new-trait" one of the enabled types', () => {
+    expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("new-trait");
   });
 });
