@@ -77,6 +77,14 @@ msgstr "Brak wyniku"
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
+
 #: src/components/shared/Header/Header.constants.ts:8
 msgid "Debaty"
 msgstr "Debaty"
@@ -189,6 +197,10 @@ msgstr "Pokaż osie"
 msgid "Pokaż wszystkie"
 msgstr "Pokaż wszystkie"
 
+#: src/components/survey/SurveyControls/SurveyControls.tsx:36
+msgid "Poprzednie pytanie"
+msgstr "Poprzednie pytanie"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
@@ -196,6 +208,10 @@ msgstr "porównanie z {name}: {value}%"
 #: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
 msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
 msgstr "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
+
+#: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:28
+msgid "Pozostałe pytania w kategorii: {count}"
+msgstr "Pozostałe pytania w kategorii: {count}"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -212,6 +228,14 @@ msgstr "Ranking"
 #: src/components/shared/Footer/Footer.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+msgid "Resetuj quiz"
+msgstr "Resetuj quiz"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+msgid "Rozpocząć od nowa?"
+msgstr "Rozpocząć od nowa?"
 
 #: src/components/shared/Header/Header.constants.ts:13
 msgid "Sondaże"
@@ -285,6 +309,10 @@ msgstr "Wróć do kategorii"
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:57
+msgid "Zacznij od nowa"
+msgstr "Zacznij od nowa"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
 msgid "Zakres wykorzystania danych"
