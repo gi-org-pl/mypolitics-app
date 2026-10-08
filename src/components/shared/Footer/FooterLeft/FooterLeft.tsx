@@ -1,37 +1,27 @@
-import { i18n } from "@lingui/core";
-import { msg } from "@lingui/core/macro";
-import React from "react";
+import { t } from "@lingui/core/macro";
 import giLogo from "@/assets/icons/gilogo.svg";
 import myPoliticsLogo from "@/assets/icons/mypoliticslogo.svg";
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 
-export const FooterLeft: React.FC = () => {
+export const FooterLeft = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="flex flex-row items-center justify-center md:justify-start gap-2 h-4">
-      <span className="text-base leading-6 text-gi-primary whitespace-nowrap flex items-center">
-        {i18n._(msg`© ${currentYear}`)}
+    <div className="flex items-center justify-center gap-2 md:justify-start">
+      <span className="text-sm leading-4 font-light whitespace-nowrap text-gi-primary">
+        {t`© ${currentYear}`}
       </span>
-      <div className="w-px h-3 bg-current text-gi-gray shrink-0" />
-      <img
-        src={myPoliticsLogo}
-        alt={i18n._(msg`myPolitics`)}
-        className="h-4 w-auto"
-        data-testid="footer-mypolitics-logo"
-      />
-      <div className="w-px h-3 bg-current text-gi-gray shrink-0" />
+      <div className="h-3 w-px shrink-0 bg-gi-primary/25" />
+      <img src={myPoliticsLogo} alt={t`myPolitics`} className="h-4 w-auto" />
+      <div className="h-3 w-px shrink-0 bg-gi-primary/25" />
       <a
         href={PATHS.generacjaInnowacja}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center h-4"
+        className={`flex h-4 items-center ${FOCUS_CLASS_NAME}`}
       >
-        <img
-          src={giLogo}
-          alt={i18n._(msg`Generacja Innowacja`)}
-          className="h-4 w-auto"
-        />
+        <img src={giLogo} alt={t`Generacja Innowacja`} className="h-4 w-auto" />
       </a>
     </div>
   );

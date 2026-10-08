@@ -1,0 +1,229 @@
+import { expect, type Page, test } from "@playwright/test";
+
+const HOME_PATH = "/";
+const QUIZZES_PATH = "/quizzes";
+const TERMS_PATH = "/terms";
+const UNKNOWN_PATH = "/nie-ma-takiej-strony";
+const POLLS_ADDRESS = "https://polls.mypolitics.pl";
+const OPEN_MENU_NAME = "Otwórz menu nawigacji";
+const NAVIGATION_LINKS = ["Debaty", "Sondaże", "Quizy"];
+const FOOTER_LINKS = ["Regulamin", "Prywatność", "O nas"];
+const NOT_FOUND_HEADING = /To jest błąd 404/;
+const TALL_WINDOW = { width: 1280, height: 1600 };
+const LOW_WINDOW = { width: 1280, height: 320 };
+const NARROW_WINDOW = { width: 360, height: 740 };
+
+// Opens an address and waits until the page stands still: the app has rendered
+// its content and every font it uses has arrived. A web font that lands in the
+// middle of a click reflows the page between press and release, and the click
+// then misses its target.
+const openPage = async (page: Page, path: string) => {
+  await page.goto(path);
+  await expect(page.getByRole("contentinfo")).toBeVisible();
+  await expect(page.getByRole("main")).not.toBeEmpty();
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+  });
+};
+
+const expectHeaderNavigation = async (page: Page) => {
+  const navigation = page.getByRole("banner").getByRole("navigation");
+
+  for (const name of NAVIGATION_LINKS) {
+    await expect(navigation.getByRole("link", { name })).toBeVisible();
+  }
+};
+
+const expectFooter = async (page: Page) => {
+  const footer = page.getByRole("contentinfo");
+
+  for (const name of FOOTER_LINKS) {
+    await expect(footer.getByRole("link", { name })).toBeVisible();
+  }
+};
+
+const getBox = async (page: Page, role: "main" | "contentinfo") => {
+  const box = await page.getByRole(role).boundingBox();
+
+  if (!box) {
+    throw new Error(`The ${role} landmark is not rendered`);
+  }
+
+  return box;
+};
+
+test.describe("Feature: Application shell", () => {
+  test("Scenario: The shell is on the home page", async ({ page }) => {
+    await test.step("Given a user opens the home page", async () => {
+      await openPage(page, HOME_PATH);
+    });
+
+    await test.step("Then they see the header navigation", async () => {
+      await expectHeaderNavigation(page);
+    });
+
+    await test.step("And the polls link leads outside the app, in a new tab", async () => {
+      const polls = page
+        .getByRole("banner")
+        .getByRole("link", { name: "Sondaże" });
+
+      await expect(polls).toHaveAttribute("href", POLLS_ADDRESS);
+      await expect(polls).toHaveAttribute("target", "_blank");
+    });
+
+    await test.step("And they see the footer", async () => {
+      await expectFooter(page);
+    });
+  });
+
+  test("Scenario: The footer stays at the bottom of a short page", async ({
+    page,
+  }) => {
+    await test.step("Given a user opens a page whose content is shorter than the window", async () => {
+      await page.setViewportSize(TALL_WINDOW);
+      await openPage(page, UNKNOWN_PATH);
+      await expect(
+        page.getByRole("heading", { name: NOT_FOUND_HEADING }),
+      ).toBeVisible();
+    });
+
+    await test.step("Then the footer ends at the bottom of the window", async () => {
+      await expect(async () => {
+        const footer = await getBox(page, "contentinfo");
+
+        expect(footer.y + footer.height).toBeCloseTo(TALL_WINDOW.height, 0);
+      }).toPass();
+    });
+  });
+
+  test("Scenario: The footer follows the content of a long page", async ({
+    page,
+  }) => {
+    await test.step("Given a user opens a page whose content is longer than the window", async () => {
+      await page.setViewportSize(LOW_WINDOW);
+      await openPage(page, UNKNOWN_PATH);
+      await expect(
+        page.getByRole("heading", { name: NOT_FOUND_HEADING }),
+      ).toBeVisible();
+    });
+
+    await test.step("Then the footer starts where the content ends, below the window", async () => {
+      await expect(async () => {
+        const main = await getBox(page, "main");
+        const footer = await getBox(page, "contentinfo");
+
+        expect(footer.y).toBeCloseTo(main.y + main.height, 0);
+        expect(footer.y + footer.height).toBeGreaterThan(LOW_WINDOW.height);
+      }).toPass();
+    });
+
+    await test.step("And the page scrolls as a whole down to the footer", async () => {
+      await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
+
+      await expect(page.getByRole("contentinfo")).toBeInViewport();
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    });
+
+    await test.step("When they follow a link of the footer", async () => {
+      await page
+        .getByRole("contentinfo")
+        .getByRole("link", { name: "Regulamin" })
+        .click();
+      await expect(page).toHaveURL(TERMS_PATH);
+    });
+
+    await test.step("Then the new page starts at the top", async () => {
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+      await expect(page.getByRole("banner")).toBeInViewport();
+    });
+  });
+
+  test("Scenario: An unknown address shows the not-found page inside the shell", async ({
+    page,
+  }) => {
+    await test.step("Given a user opens an address that does not exist", async () => {
+      await openPage(page, UNKNOWN_PATH);
+    });
+
+    await test.step("Then they see the not-found page", async () => {
+      await expect(
+        page
+          .getByRole("main")
+          .getByRole("heading", { name: NOT_FOUND_HEADING }),
+      ).toBeVisible();
+    });
+
+    await test.step("And they still see the header navigation and the footer", async () => {
+      await expectHeaderNavigation(page);
+      await expectFooter(page);
+    });
+
+    await test.step("When they choose the way back to the home page", async () => {
+      await page
+        .getByRole("main")
+        .getByRole("link", { name: "Strona główna" })
+        .click();
+    });
+
+    await test.step("Then they are on the home page, without the not-found page", async () => {
+      await expect(page).toHaveURL(HOME_PATH);
+      await expect(
+        page.getByRole("heading", { name: NOT_FOUND_HEADING }),
+      ).toBeHidden();
+    });
+  });
+
+  test("Scenario: The menu of a narrow window opens, navigates and closes", async ({
+    page,
+  }) => {
+    const menu = page.getByRole("banner").getByRole("navigation");
+
+    await test.step("Given a user opens the home page in a narrow window", async () => {
+      await page.setViewportSize(NARROW_WINDOW);
+      await openPage(page, HOME_PATH);
+      await expect(
+        page.getByRole("button", { name: OPEN_MENU_NAME }),
+      ).toBeVisible();
+      await expect(menu).toBeHidden();
+    });
+
+    await test.step("When they open the navigation menu", async () => {
+      await page.getByRole("button", { name: OPEN_MENU_NAME }).click();
+    });
+
+    await test.step("Then they see the navigation links, quizzes first", async () => {
+      await expect(menu.getByRole("link")).toHaveText(
+        [...NAVIGATION_LINKS].reverse(),
+      );
+    });
+
+    await test.step("When they choose the quizzes link", async () => {
+      await menu.getByRole("link", { name: "Quizy" }).click();
+    });
+
+    // The quizzes page itself comes with its own task: until it exists, this
+    // scenario checks what the menu does, not what the destination shows.
+    await test.step("Then the app is at the quizzes address", async () => {
+      await expect(page).toHaveURL(QUIZZES_PATH);
+    });
+
+    await test.step("And the menu is closed again", async () => {
+      await expect(menu).toBeHidden();
+      await expect(
+        page.getByRole("button", { name: OPEN_MENU_NAME }),
+      ).toHaveAttribute("aria-expanded", "false");
+    });
+
+    await test.step("When they open the navigation menu again", async () => {
+      await page.getByRole("button", { name: OPEN_MENU_NAME }).click();
+    });
+
+    await test.step("Then the quizzes link is marked as the current page", async () => {
+      await expect(menu.getByRole("link", { name: "Quizy" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+      await expect(menu.locator('[aria-current="page"]')).toHaveCount(1);
+    });
+  });
+});

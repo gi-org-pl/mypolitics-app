@@ -1,11 +1,15 @@
 import { Button } from "@gi-org-pl/athena";
-import { i18n } from "@lingui/core";
-import React from "react";
-import { SOCIAL_LINKS } from "../Footer.constants.ts";
+import { useLingui } from "@lingui/react";
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import { LINK_ICON_MASK_CLASS_NAME } from "@/constants/icon";
+import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
+import { SOCIAL_LINKS } from "./FooterSocials.constants";
 
-export const FooterSocials: React.FC = () => {
+export const FooterSocials = () => {
+  const { i18n } = useLingui();
+
   return (
-    <div className="flex flex-wrap justify-center gap-3 max-w-[208px] md:max-w-none md:flex-nowrap order-2 md:order-1">
+    <div className="order-2 flex max-w-53.5 flex-wrap justify-center gap-2 md:order-1 md:max-w-none md:flex-nowrap md:gap-3">
       {SOCIAL_LINKS.map((social) => (
         <Button
           key={social.platform}
@@ -14,7 +18,7 @@ export const FooterSocials: React.FC = () => {
           type="ghost"
           variant="primary"
           size="regular"
-          className="rounded-full"
+          className={FOCUS_CLASS_NAME}
         >
           <a
             href={social.href}
@@ -22,15 +26,9 @@ export const FooterSocials: React.FC = () => {
             rel="noopener noreferrer"
             aria-label={i18n._(social.ariaLabel)}
           >
-            <img
-              src={
-                new URL(
-                  `../../../../assets/icons/${social.platform}logo.svg`,
-                  import.meta.url,
-                ).href
-              }
-              alt={`${social.platform} logo`}
-              className="h-4 w-auto"
+            <span
+              className={`${LINK_ICON_MASK_CLASS_NAME} h-4 w-4.5 mask-auto`}
+              style={getIconMaskStyle(social.icon)}
             />
           </a>
         </Button>

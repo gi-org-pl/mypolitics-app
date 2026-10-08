@@ -1,34 +1,30 @@
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+
+import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+
 import { Error404 } from "./Error404";
 
-const renderError = () => {
+const renderError = () =>
   renderWithI18n(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={["/nie-ma-takiej-strony"]}>
       <Error404 />
     </MemoryRouter>,
   );
-};
 
 describe("<Error404 />", () => {
-  describe("content", () => {
-    it("renders the 404 heading", () => {
+  describe("given an address that does not exist", () => {
+    it("renders the whole 404 sentence as the main heading", () => {
       renderError();
 
       expect(
-        screen.getByText(/to jest błąd 404/i).closest("h1"),
-      ).toBeInTheDocument();
-    });
-
-    it("renders the teal highlighted portion of the heading", () => {
-      renderError();
-
-      expect(
-        screen.getByText(/na miarę naszych możliwości/i),
+        screen.getByRole("heading", {
+          level: 1,
+          name: "To jest błąd 404 na miarę naszych możliwości!",
+        }),
       ).toBeInTheDocument();
     });
 
@@ -36,36 +32,49 @@ describe("<Error404 />", () => {
       renderError();
 
       expect(
-        screen.getByText(/my tym błędem otwieramy oczy niedowiarkom!/i),
+        screen.getByText(
+          "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!",
+        ),
       ).toBeInTheDocument();
     });
 
-    it("renders the bear illustration with an alt attribute", () => {
+    it("renders the bear illustration with a text alternative", () => {
       renderError();
 
-      const img = screen.getByAltText(/ilustracja misia/i);
-
-      expect(img).toBeInTheDocument();
-      expect(img).toHaveAttribute("src");
+      expect(
+        screen.getByRole("img", { name: "Ilustracja misia — błąd 404" }),
+      ).toHaveAttribute("src");
     });
-  });
 
-  describe('when "Strona główna" button is clicked', () => {
-    it("navigates to the home path", () => {
-      const user = userEvent.setup();
-      renderWithI18n(
-        <MemoryRouter initialEntries={["/404"]}>
-          <Error404 />
-        </MemoryRouter>,
+    it("offers a single link back to the home page", () => {
+      renderError();
+
+      expect(screen.getAllByRole("link")).toEqual([
+        screen.getByRole("link", { name: "Strona główna" }),
+      ]);
+      expect(
+        screen.getByRole("link", { name: "Strona główna" }),
+      ).toHaveAttribute("href", PATHS.home);
+    });
+
+    it("does not nest a button inside the link", () => {
+      renderError();
+
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("leaves the main landmark to the page shell", () => {
+      renderError();
+
+      expect(screen.queryByRole("main")).not.toBeInTheDocument();
+    });
+
+    it("shows keyboard focus on the link as the shared outline", () => {
+      renderError();
+
+      expect(screen.getByRole("link", { name: "Strona główna" })).toHaveClass(
+        ...FOCUS_CLASS_NAME.split(" "),
       );
-
-      const link = screen.getByRole("link", {
-        name: /strona główna/i,
-      });
-
-      expect(link).toHaveAttribute("href", PATHS.home);
-
-      user.click(link);
     });
   });
 });

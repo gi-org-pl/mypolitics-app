@@ -64,7 +64,7 @@ msgstr "{value}% pewności"
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:14
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:13
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
@@ -95,7 +95,7 @@ msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedz
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
-#: src/components/shared/Header/Header.constants.ts:8
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
 msgstr "Debaty"
 
@@ -103,7 +103,7 @@ msgstr "Debaty"
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:24
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
@@ -123,7 +123,7 @@ msgstr "Informacje: {name}"
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:19
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:16
 msgid "myPolitics"
 msgstr "myPolitics"
 
@@ -135,45 +135,53 @@ msgstr "mypolitics banner background"
 msgid "mypolitics banner content"
 msgstr "mypolitics banner content"
 
+#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
+msgid "Nawigacja główna"
+msgstr "Nawigacja główna"
+
+#: src/components/shared/Footer/FooterLegal/FooterLegal.tsx:12
+msgid "Nawigacja w stopce"
+msgstr "Nawigacja w stopce"
+
 #. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
 #: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
 msgctxt "survey question: emphasised phrase"
 msgid "nie"
 msgstr "nie"
 
-#: src/components/shared/Footer/Footer.constants.ts:8
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
 msgstr "O nas"
 
-#: src/components/shared/Footer/Footer.constants.ts:45
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:52
 msgid "Odwiedź nasz kanał na YouTube"
 msgstr "Odwiedź nasz kanał na YouTube"
 
-#: src/components/shared/Footer/Footer.constants.ts:15
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:16
 msgid "Odwiedź nasz profil na Facebooku"
 msgstr "Odwiedź nasz profil na Facebooku"
 
-#: src/components/shared/Footer/Footer.constants.ts:40
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:46
 msgid "Odwiedź nasz profil na GitHub"
 msgstr "Odwiedź nasz profil na GitHub"
 
-#: src/components/shared/Footer/Footer.constants.ts:25
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:28
 msgid "Odwiedź nasz profil na Instagramie"
 msgstr "Odwiedź nasz profil na Instagramie"
 
-#: src/components/shared/Footer/Footer.constants.ts:30
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:34
 msgid "Odwiedź nasz profil na LinkedIn"
 msgstr "Odwiedź nasz profil na LinkedIn"
 
-#: src/components/shared/Footer/Footer.constants.ts:35
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:40
 msgid "Odwiedź nasz profil na Telegramie"
 msgstr "Odwiedź nasz profil na Telegramie"
 
-#: src/components/shared/Footer/Footer.constants.ts:20
+#: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:22
 msgid "Odwiedź nasz profil na X"
 msgstr "Odwiedź nasz profil na X"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:37
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
@@ -229,11 +237,11 @@ msgstr "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/shared/Footer/Footer.constants.ts:7
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
 
-#: src/components/shared/Header/Header.constants.ts:18
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
 msgstr "Quizy"
 
@@ -241,7 +249,7 @@ msgstr "Quizy"
 msgid "Ranking"
 msgstr "Ranking"
 
-#: src/components/shared/Footer/Footer.constants.ts:6
+#: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
 
@@ -253,7 +261,7 @@ msgstr "Resetuj quiz"
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 
-#: src/components/shared/Header/Header.constants.ts:13
+#: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
 msgstr "Sondaże"
 
@@ -269,8 +277,8 @@ msgstr "Statystyki"
 msgid "Statystyki: {name}"
 msgstr "Statystyki: {name}"
 
-#: src/components/shared/Error404/Error404.tsx:35
-#: src/components/shared/Header/Header.tsx:105
+#: src/components/shared/Error404/Error404.tsx:39
+#: src/components/shared/Header/Header.tsx:21
 msgid "Strona główna"
 msgstr "Strona główna"
 
@@ -344,6 +352,6 @@ msgstr "Zacznij od nowa"
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
-#: src/components/shared/Header/Header.tsx:121
+#: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"

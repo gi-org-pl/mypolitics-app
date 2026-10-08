@@ -1,66 +1,68 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
+import { describe, expect, it } from "vitest";
+
+import { PATHS } from "@/constants/paths";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+
 import { Footer } from "./Footer";
 
-describe("Footer", () => {
-  it("renders copyright with current year", () => {
-    renderWithI18n(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>,
-    );
-    const currentYear = new Date().getFullYear();
-    // Using a more flexible matcher since the text might be split
-    expect(
-      screen.getByText((content) => content.includes(`© ${currentYear}`)),
-    ).toBeInTheDocument();
-  });
+const renderFooter = () =>
+  renderWithI18n(
+    <MemoryRouter>
+      <Footer />
+    </MemoryRouter>,
+  );
 
-  it("renders myPolitics logo", () => {
-    renderWithI18n(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>,
-    );
-    expect(screen.getByTestId("footer-mypolitics-logo")).toBeInTheDocument();
-  });
+describe("<Footer />", () => {
+  describe("given any page", () => {
+    it("renders the content info landmark", () => {
+      renderFooter();
 
-  it("renders Generacja Innowacja logo with link", () => {
-    renderWithI18n(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>,
-    );
-    const giLink = screen.getByRole("link", { name: /Generacja Innowacja/i });
-    expect(giLink).toHaveAttribute("href", "https://gi.org.pl");
-    expect(giLink).toHaveAttribute("target", "_blank");
-  });
+      expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    });
 
-  it("renders social links", () => {
-    renderWithI18n(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>,
-    );
-    // 7 social links
-    const links = screen.getAllByRole("link");
-    const socialLinks = links.filter(
-      (link) =>
-        link.getAttribute("href")?.startsWith("http") &&
-        !link.getAttribute("href")?.includes("gi.org.pl"),
-    );
-    expect(socialLinks).toHaveLength(7);
-  });
+    it("renders the brand row with the current year and both logos", () => {
+      renderFooter();
 
-  it("renders legal links", () => {
-    renderWithI18n(
-      <MemoryRouter>
-        <Footer />
-      </MemoryRouter>,
-    );
-    expect(screen.getByText(/Regulamin/i)).toBeInTheDocument();
-    expect(screen.getByText(/Prywatność/i)).toBeInTheDocument();
-    expect(screen.getByText(/O nas/i)).toBeInTheDocument();
+      const footer = within(screen.getByRole("contentinfo"));
+
+      expect(
+        footer.getByText(`© ${new Date().getFullYear()}`),
+      ).toBeInTheDocument();
+      expect(footer.getByRole("img", { name: "myPolitics" })).toBeVisible();
+      expect(
+        footer.getByRole("link", { name: "Generacja Innowacja" }),
+      ).toHaveAttribute("href", PATHS.generacjaInnowacja);
+    });
+
+    it("renders a link to every social profile", () => {
+      renderFooter();
+
+      const footer = within(screen.getByRole("contentinfo"));
+
+      expect(
+        footer.getAllByRole("link", { name: /^Odwiedź nasz/ }),
+      ).toHaveLength(7);
+    });
+
+    it("renders the legal links inside the footer navigation", () => {
+      renderFooter();
+
+      const navigation = within(
+        screen.getByRole("navigation", { name: "Nawigacja w stopce" }),
+      );
+
+      expect(
+        navigation.getByRole("link", { name: "Regulamin" }),
+      ).toHaveAttribute("href", PATHS.terms);
+      expect(
+        navigation.getByRole("link", { name: "Prywatność" }),
+      ).toHaveAttribute("href", PATHS.privacy);
+      expect(navigation.getByRole("link", { name: "O nas" })).toHaveAttribute(
+        "href",
+        PATHS.about,
+      );
+    });
   });
 });
