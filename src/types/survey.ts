@@ -175,6 +175,27 @@ export interface SurveySession {
   resultState: SurveyResultState; // memory only - never stored
 }
 
+// What is written to the storage of the tab.
+export type StoredSurveySession = Omit<SurveySession, "email" | "resultState">;
+
+// A session whose parts are of the right kind but whose content is not checked
+// against the quiz yet: what storage held, or a session that fitted an earlier
+// reading of the quiz. A `SurveySession` is always one of these.
+export interface UnfittedSurveySession
+  extends Omit<
+    SurveySession,
+    "entries" | "topicIds" | "phase" | "demographics" | "checkpointRecord"
+  > {
+  entries: readonly (SurveyAnswerEntry | undefined)[]; // `undefined` = an entry that could not be read
+  topicIds: readonly unknown[];
+  phase?: SurveyPhase;
+  demographics: Record<string, unknown>;
+  checkpointRecord: {
+    cardsShown: unknown[];
+    timeSamples: readonly (SurveyTimeSample | undefined)[];
+  };
+}
+
 export interface SurveySessionConfig {
   isEmailSendingSetUp: boolean;
 }
