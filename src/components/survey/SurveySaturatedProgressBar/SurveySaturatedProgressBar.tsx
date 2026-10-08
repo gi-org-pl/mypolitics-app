@@ -1,38 +1,34 @@
 import { ProgressBar } from "@gi-org-pl/athena";
-import { useLayoutEffect, useState } from "react";
-import { BAR_ANIMATION_MS } from "./SurveySaturatedProgressBar.constants";
+import { useLingui } from "@lingui/react/macro";
+
+import { getPercent } from "@/utils/number/getPercent";
+
+import { BAR_CLASS_NAME } from "./SurveySaturatedProgressBar.constants";
 import type { SurveySaturatedProgressBarProps } from "./SurveySaturatedProgressBar.types";
 import { getSaturatedPercentValue } from "./utils/getSaturatedPercentValue";
+import { useValueFlash } from "./utils/useValueFlash";
 
 export function SurveySaturatedProgressBar({
   value,
   maxValue,
 }: SurveySaturatedProgressBarProps) {
-  const [flash, setFlash] = useState(false);
-
-  const rawPercent = maxValue > 0 ? (value / maxValue) * 100 : 0;
-  const saturatedPercentValue = getSaturatedPercentValue(rawPercent);
-
-  useLayoutEffect(() => {
-    setFlash(true);
-
-    const timeout = setTimeout(() => {
-      setFlash(false);
-    }, BAR_ANIMATION_MS);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [saturatedPercentValue]);
+  const { t } = useLingui();
+  const shownValue = getSaturatedPercentValue(getPercent(value, maxValue));
+  const isFlashing = useValueFlash(shownValue);
 
   return (
     <div
-      className={`transition-opacity ${flash ? "opacity-75" : "opacity-100"}`}
+      className={`w-full transition-opacity motion-reduce:transition-none ${
+        isFlashing ? "motion-safe:opacity-75" : "opacity-100"
+      }`}
     >
       <ProgressBar
-        size="regular"
-        value={saturatedPercentValue}
+        size="small"
         variant="default"
+        value={shownValue}
+        aria-label={t`Postęp quizu`}
+        aria-valuenow={Math.round(shownValue)}
+        className={BAR_CLASS_NAME}
       />
     </div>
   );

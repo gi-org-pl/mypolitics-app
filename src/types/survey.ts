@@ -58,6 +58,8 @@ export type SurveyLoadResult =
   | { status: "not-found" }
   | { status: "failed" };
 
+export type SurveyLoadState = { status: "loading" } | SurveyLoadResult;
+
 export type ResidenceAreaSize =
   | "village"
   | "city_below_50k"
@@ -100,6 +102,23 @@ export interface SurveyResult {
   id: string; // the identifier the result was asked for by
   isCalculated: boolean;
 }
+
+export type ResultLinkLanguage = "pl" | "en";
+
+// What the request for the result link is made of. The address and the
+// consent come from the e-mail card; results calculation adds the rest.
+export interface ResultLinkInput {
+  email: string; // the address
+  resultId: string; // the session identifier - the result the link opens
+  marketingConsent: boolean; // SurveyEmail.hasConsent
+  language: ResultLinkLanguage;
+}
+
+export type ResultLinkOutcome =
+  | "accepted" // 202
+  | "invalid" // 400
+  | "limited" // 429
+  | "unavailable"; // 503, any other reply, no connection, no reply in time, no endpoint configured
 
 export type SurveyPhase =
   | "category-select"
@@ -229,6 +248,15 @@ export interface SurveySessionApi {
 }
 
 export type SurveySessionActions = Omit<SurveySessionApi, "session">;
+
+// What every phase of the questionnaire screen is given. The content of a
+// phase is a component that takes exactly this.
+export interface SurveyPhaseContentProps {
+  survey: Survey;
+  session: SurveySessionApi; // from useSurveySession(survey); the screen calls the hook once
+  lock: () => void; // call at a press that changes the screen only after a delay; the screen releases it
+  onLeave: () => void; // end the session and open the results destination
+}
 
 // What an event makes of a session. It returns the very session it was handed
 // when the event does not apply at that moment.

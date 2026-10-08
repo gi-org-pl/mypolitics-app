@@ -217,6 +217,10 @@ msgctxt "checkpoint-new-trait"
 msgid "A to niespodzianka!"
 msgstr "Now that is a surprise!"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:36
+msgid "Adres e-mail"
+msgstr "E-mail address"
+
 #: src/constants/home.ts:77
 msgid "Algorytm jest jawny"
 msgstr "The algorithm is open"
@@ -268,6 +272,10 @@ msgstr "Are you sure you want to start the quiz {quizName} over? Your answers wi
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:44
+msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "We care about your privacy: your personal data (including your e-mail address) will never be linked to data about your views."
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
@@ -323,6 +331,10 @@ msgstr "Philosophical"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect.tsx:26
+msgid "Idziemy dalej"
+msgstr "Let's go"
+
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
 msgstr "Teddy bear illustration — 404 error"
@@ -334,6 +346,10 @@ msgstr "Information"
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
 msgid "Informacje: {name}"
 msgstr "Information: {name}"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:12
+msgid "Inna"
+msgstr "Other"
 
 #: src/constants/checkpoint.ts:213
 msgctxt "checkpoint-axis-closeness-double"
@@ -401,6 +417,10 @@ msgstr "We are fully transparent and do not hide how we match users. <0>See how 
 msgid "Kiedyś to było... no właśnie, jak?"
 msgstr "Those were the days... but what were they like?"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:10
+msgid "Kobieta"
+msgstr "Woman"
+
 #: src/constants/checkpoint.ts:310
 msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
@@ -420,6 +440,10 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Ktoś inny jest Tobie najbliższy. Kto? Teraz nie powiemy!"
 msgstr "Someone else is closest to you. Who? We are not telling yet!"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:19
+msgid "Liczymy Twoje wyniki"
+msgstr "We are calculating your results"
+
 #: src/constants/checkpoint.ts:389
 msgctxt "checkpoint-axis-puzzle-ask"
 msgid "Mała zagadka"
@@ -434,6 +458,26 @@ msgstr "You already have {count} quadrants of the compass behind you, and the qu
 msgctxt "checkpoint-new-trait"
 msgid "Masz nową cechę: „{trait}”... to dobrze, niedobrze?"
 msgstr "You have a new trait: “{trait}”... good, bad?"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:11
+msgid "Mężczyzna"
+msgstr "Man"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:21
+msgid "Miasto do 50 tys. mieszkańców"
+msgstr "Town of up to 50,000 residents"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:23
+msgid "Miasto od 200 do 500 tys. mieszkańców"
+msgstr "City of 200,000 to 500,000 residents"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:22
+msgid "Miasto od 50 do 200 tys. mieszkańców"
+msgstr "City of 50,000 to 200,000 residents"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:24
+msgid "Miasto powyżej 500 tys. mieszkańców"
+msgstr "City of over 500,000 residents"
 
 #: src/constants/home.ts:70
 msgid "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
@@ -504,6 +548,14 @@ msgstr "There are no quizzes of this kind yet."
 msgctxt "checkpoint-position-puzzle-miss"
 msgid "Nie tym razem"
 msgstr "Not this time"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:16
+msgid "Nie udało się wczytać quizu"
+msgstr "The quiz could not be loaded"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:27
+msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
+msgstr "Your answers could not be saved. Check your connection and try again."
 
 #: src/constants/checkpoint.ts:454
 msgctxt "checkpoint-axis-puzzle-miss"
@@ -600,6 +652,10 @@ msgstr "Against the current"
 msgid "Podgląd wyników quizu myPolitics"
 msgstr "Preview of the myPolitics quiz results"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:28
+msgid "Podstawowe"
+msgstr "Primary"
+
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
 msgstr "Show group"
@@ -628,6 +684,10 @@ msgstr "Show axes"
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:41
+msgid "Polityka prywatności."
+msgstr "Privacy policy."
+
 #: src/constants/checkpoint.ts:136
 msgctxt "checkpoint-halfway"
 msgid "Połowa za Tobą"
@@ -637,7 +697,13 @@ msgstr "Half of it is behind you"
 msgid "Polskie Lata 90."
 msgstr "Poland in the 1990s"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:36
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
+#: src/components/survey/SurveyPhaseActions/SurveyPhaseActions.tsx:48
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireQuestions/SurveyQuestionnaireAnswers/SurveyQuestionnaireAnswers.tsx:46
+msgid "Pomiń"
+msgstr "Skip"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:38
 msgid "Poprzednie pytanie"
 msgstr "Previous question"
 
@@ -650,6 +716,10 @@ msgctxt "checkpoint-position-puzzle-hit"
 msgid "Postać najbliższa Twoim odpowiedziom to jak dotąd {position}."
 msgstr "So far the character closest to your answers is {position}."
 
+#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:29
+msgid "Postęp quizu"
+msgstr "Quiz progress"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
 msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
 msgstr "This will let you compare yourself with others in the future!"
@@ -661,6 +731,14 @@ msgstr "Learn what shapes your orientation"
 #: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:28
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
+msgid "Prawie gotowe"
+msgstr "Almost ready"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+msgid "Prawie koniec!"
+msgstr "Almost done!"
 
 #: src/constants/home.ts:278
 msgid "Preferencje muzyczne"
@@ -744,6 +822,10 @@ msgstr "Polls"
 msgid "Społecznościowe"
 msgstr "Community"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:19
+msgid "Sprawdź połączenie z internetem i spróbuj ponownie."
+msgstr "Check your internet connection and try again."
+
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:13
 msgid "Sprawdź wyjaśnienie"
 msgstr "Check the explanation"
@@ -752,6 +834,15 @@ msgstr "Check the explanation"
 msgctxt "checkpoint-axis-puzzle-ask"
 msgid "Sprawdźmy intuicję"
 msgstr "Time to test your intuition"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:28
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:38
+msgid "Spróbuj ponownie"
+msgstr "Try again"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:30
+msgid "Średnie"
+msgstr "Secondary"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
@@ -868,6 +959,10 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "Twój wynik po stronie „{leading}” jest wyższy niż po stronie „{other}”!"
 msgstr "Your score on the “{leading}” side is higher than on the “{other}” side!"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:37
+msgid "twoj@mail.com"
+msgstr "your@mail.com"
+
 #: src/constants/checkpoint.ts:304
 msgctxt "checkpoint-nolan-path-full"
 msgid "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
@@ -927,6 +1022,10 @@ msgstr "In this test you will get an identity card tailored to you"
 msgid "Warszawski Radar Wyborczy"
 msgstr "Warsaw Election Radar"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoading/SurveyQuestionnaireLoading.tsx:14
+msgid "Wczytywanie quizu"
+msgstr "Loading the quiz"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
 msgstr "Age"
@@ -939,6 +1038,22 @@ msgstr "The great crossing!"
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
 msgid "Wielkość miejsca zamieszkania"
 msgstr "Size of the place you live in"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:20
+msgid "Wieś"
+msgstr "Village"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:13
+msgid "Wolę nie podawać"
+msgstr "I prefer not to say"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:42
+msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
+msgstr "Enter a full e-mail address, for example your@mail.com."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
+msgid "Wróć"
+msgstr "Go back"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
@@ -961,6 +1076,10 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Wszystkie ćwiartki kompasu są już za Tobą."
 msgstr "All the quadrants of the compass are behind you now."
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:29
+msgid "Wybierz wszystkie cztery pola albo pomiń"
+msgstr "Pick all four fields or skip"
+
 #: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:8
 msgid "Wyborcze"
 msgstr "Electoral"
@@ -973,12 +1092,28 @@ msgstr "Elections 2023"
 msgid "Wykształcenie"
 msgstr "Education"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:30
+msgid "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+msgstr "I agree to the processing of my personal data for the purpose of sending me marketing content by the Generacja Innowacja Foundation."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:41
+msgid "Wyślemy na Twój e-mail link do wyników, dzięki czemu łatwo do nich wrócisz."
+msgstr "We will e-mail you a link to your results, so you can easily come back to them."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
+msgid "Wyślij i zobacz wyniki"
+msgstr "Send and see results"
+
 #: src/constants/checkpoint.ts:448
 msgctxt "checkpoint-axis-puzzle-miss"
 msgid "Wyszło inaczej, niż się spodziewasz."
 msgstr "It came out differently than you expect."
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:57
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:31
+msgid "Wyższe"
+msgstr "Higher"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:59
 msgid "Zacznij od nowa"
 msgstr "Start over"
 
@@ -999,6 +1134,14 @@ msgstr "Instead of politics, let's argue about music!"
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:38
+msgid "Zapisz swoje wyniki!"
+msgstr "Save your results!"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:29
+msgid "Zasadnicze zawodowe"
+msgstr "Basic vocational"
+
 #: src/constants/checkpoint.ts:487
 msgctxt "checkpoint-position-puzzle-ask"
 msgid "Zgadnij, kto to"
@@ -1012,6 +1155,10 @@ msgstr "You know yourself"
 #: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:24
 msgid "Zobacz więcej"
 msgstr "See more"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:27
+msgid "Zobacz wyniki"
+msgstr "See results"
 
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Zwiń"
