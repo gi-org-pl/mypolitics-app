@@ -7,13 +7,14 @@ import { useQuestionActions } from "./utils/useQuestionActions";
 
 // The second phase: the current question and its answers. The screen is
 // locked at the press of an answer, because the answer itself is recorded
-// only when its acknowledgement has played.
+// only when its acknowledgement has played. A done question is timed, and may
+// be followed by a checkpoint card: both are the actions' to see to.
 export const SurveyQuestionnaireQuestions = ({
   survey,
   session,
   lock,
 }: SurveyPhaseContentProps) => {
-  const { answer, skip } = useQuestionActions(session);
+  const { answer, skip } = useQuestionActions(survey, session);
   const question = getCurrentQuestion(survey, session.session);
 
   if (!question) return null;

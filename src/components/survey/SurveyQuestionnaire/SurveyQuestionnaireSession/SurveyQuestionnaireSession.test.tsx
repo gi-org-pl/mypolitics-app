@@ -410,7 +410,7 @@ describe("<SurveyQuestionnaireSession />", () => {
     });
   });
 
-  describe("given a phase with no content registered", () => {
+  describe("given a card phase with no card that can be put up", () => {
     it("closes a card phase and shows the question", () => {
       const { getSession } = renderScreen(
         onQuestion(1, {

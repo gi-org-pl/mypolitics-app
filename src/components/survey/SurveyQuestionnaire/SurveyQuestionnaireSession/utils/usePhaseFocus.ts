@@ -1,5 +1,7 @@
 import { type RefObject, useEffect, useRef } from "react";
 
+import { PHASE_FOCUS_ATTRIBUTE } from "@/constants/focus";
+
 interface PhaseFocus {
   topRef: RefObject<HTMLDivElement | null>; // the top of the screen
   contentRef: RefObject<HTMLDivElement | null>; // the top of the content
@@ -8,7 +10,9 @@ interface PhaseFocus {
 // When the content changes, the view returns to the top of the screen - only
 // as far as needed, so nothing moves while the top is in sight - and the focus
 // goes to the top of the new content, so a screen reader starts with what the
-// phase is. The content that is on screen when the screen appears is left
+// phase is. A content that marks an element of its own for it gets the focus
+// there instead: a checkpoint card is read from its text, not from its
+// visual. The content that is on screen when the screen appears is left
 // alone: nothing changed, and the page keeps its own focus and scroll.
 export const usePhaseFocus = (contentKey: string): PhaseFocus => {
   const topRef = useRef<HTMLDivElement>(null);
@@ -18,9 +22,14 @@ export const usePhaseFocus = (contentKey: string): PhaseFocus => {
   useEffect(() => {
     if (shownKey.current === contentKey) return;
 
+    const content = contentRef.current;
+    const target =
+      content?.querySelector<HTMLElement>(`[${PHASE_FOCUS_ATTRIBUTE}]`) ??
+      content;
+
     shownKey.current = contentKey;
     topRef.current?.scrollIntoView({ block: "nearest" });
-    contentRef.current?.focus({ preventScroll: true });
+    target?.focus({ preventScroll: true });
   }, [contentKey]);
 
   return { topRef, contentRef };
