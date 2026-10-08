@@ -265,6 +265,36 @@ describe("getSurveySessionStore()", () => {
       expect(store.getState()).toBe(session);
     });
 
+    it("goes on in memory when a change cannot be written as JSON", () => {
+      const survey = createQuiz();
+      const store = getSurveySessionStore(survey);
+      const stored = createStartedSession(survey, 1);
+      const circular: Record<string, unknown> = { type: "halfway" };
+
+      circular.self = circular;
+
+      const withCircularCard: SurveySession = {
+        ...stored,
+        phase: "checkpoints",
+        checkpointRecord: { cardsShown: [circular], timeSamples: [] },
+      };
+      const withBigInt: SurveySession = {
+        ...stored,
+        phase: "checkpoints",
+        checkpointRecord: { cardsShown: [{ count: 10n }], timeSamples: [] },
+      };
+
+      store.setState(stored, true);
+
+      expect(() => store.setState(withCircularCard, true)).not.toThrow();
+      expect(store.getState()).toBe(withCircularCard);
+      expect(() => store.setState(withBigInt, true)).not.toThrow();
+      expect(store.getState()).toBe(withBigInt);
+      expect(readRecord(survey)).toMatchObject({
+        state: { id: stored.id, phase: "questions" },
+      });
+    });
+
     it("goes on in memory when the storage fills up mid-session", () => {
       const survey = createQuiz();
       const store = getSurveySessionStore(survey);

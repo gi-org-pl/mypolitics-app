@@ -87,4 +87,42 @@ describe("bindSessionAction()", () => {
       expect(listener).not.toHaveBeenCalled();
     });
   });
+
+  describe("when the quiz was read again with other questions", () => {
+    // The store holds three done questions of the quiz as it was read first;
+    // the quiz as read now has lost the second one.
+    const withoutSecond = createSurvey({
+      questions: survey.questions.filter(({ id }) => id !== "q2"),
+    });
+
+    it("hands the action the session as it fits the quiz as read now", () => {
+      const store = createSessionStore(createStartedSession(survey, 3));
+      const action = vi.fn<SurveySessionAction>((_survey, current) => current);
+
+      bindSessionAction(store, withoutSecond, action)();
+
+      expect(action.mock.calls[0][1].entries).toEqual([{ questionId: "q1" }]);
+      expect(action.mock.calls[0][1].phase).toBe("questions");
+    });
+
+    it("answers the question that is current in the quiz as read now", () => {
+      const store = createSessionStore(createStartedSession(survey, 3));
+
+      bindSessionAction(store, withoutSecond, answerQuestion)("q3-agree");
+
+      expect(store.getState().entries).toEqual([
+        { questionId: "q1" },
+        { questionId: "q3", answerId: "q3-agree" },
+      ]);
+    });
+
+    it("leaves the store alone when the action does not apply", () => {
+      const session = createStartedSession(survey, 3);
+      const store = createSessionStore(session);
+
+      bindSessionAction(store, withoutSecond, answerQuestion)("q4-agree");
+
+      expect(store.getState()).toBe(session);
+    });
+  });
 });

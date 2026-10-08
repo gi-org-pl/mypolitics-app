@@ -1,13 +1,12 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import type { DemographicsValues, Survey } from "@/types/survey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
-import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { useSurveySession } from "./useSurveySession";
 
 const COMPLETE: DemographicsValues = {
@@ -40,7 +39,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      expect(result.current.session).toBe(
+      expect(result.current.session).toEqual(
         getSurveySessionStore(survey).getState(),
       );
       expect(result.current.session.phase).toBe("category-select");
@@ -116,22 +115,26 @@ describe("useSurveySession()", () => {
       expect(result.current.session.topicIds).toEqual([]);
     });
 
-    it("applies the actions of the e-mail card", () => {
+    it("applies the actions of the e-mail card once sending is set up", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
       const email = { address: "jan@example.com", hasConsent: true };
 
-      act(() =>
-        getSurveySessionStore(survey).setState(
-          leaveSessionDemographics(
-            survey,
-            createStartedSession(survey, 5),
-            false,
-            { isEmailSendingSetUp: true },
-          ),
-          true,
-        ),
-      );
+      vi.spyOn(
+        SURVEY_SESSION_CONFIG,
+        "isEmailSendingSetUp",
+        "get",
+      ).mockReturnValue(true);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.leaveDemographics(false);
+      });
       expect(result.current.session.phase).toBe("email-capture");
 
       act(() => result.current.setEmail(email));
@@ -141,18 +144,41 @@ describe("useSurveySession()", () => {
       expect(result.current.session.phase).toBe("demographics");
       expect(result.current.session.email).toEqual(email);
 
-      act(() =>
-        getSurveySessionStore(survey).setState(
-          { ...result.current.session, phase: "email-capture" },
-          true,
-        ),
-      );
+      act(() => result.current.leaveDemographics(false));
+      expect(result.current.session.phase).toBe("email-capture");
+      expect(result.current.session.email).toEqual(email);
+
       act(() => result.current.leaveEmailCapture(true));
       expect(result.current.session.phase).toBe("results-calculation");
       expect(result.current.session.email).toEqual(email);
 
       act(() => result.current.setEmail(null));
       expect(result.current.session.email).toBeNull();
+    });
+
+    it("leaves the e-mail card out for a taker under 18", () => {
+      const survey = createQuiz();
+      const { result } = renderSession(survey);
+
+      vi.spyOn(
+        SURVEY_SESSION_CONFIG,
+        "isEmailSendingSetUp",
+        "get",
+      ).mockReturnValue(true);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+        result.current.setDemographics({ ...COMPLETE, age: "17" });
+        result.current.leaveDemographics(true);
+      });
+
+      expect(result.current.session.phase).toBe("results-calculation");
+      expect(result.current.session.areDemographicsGiven).toBe(true);
     });
 
     it("stores every change at once", () => {
@@ -170,6 +196,59 @@ describe("useSurveySession()", () => {
       expect(JSON.parse(readRecord(survey) ?? "{}").state.entries).toEqual([
         { questionId: "q1", answerId: "q1-agree" },
       ]);
+    });
+  });
+
+  describe("when a card cannot be written as JSON", () => {
+    it("shows the card and goes on in memory, without throwing", () => {
+      const survey = createQuiz();
+      const { result } = renderSession(survey);
+      const circular: Record<string, unknown> = { type: "halfway" };
+
+      circular.self = circular;
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.answer("q1-agree");
+      });
+
+      const record = readRecord(survey);
+
+      expect(() =>
+        act(() => result.current.showCheckpoint(circular)),
+      ).not.toThrow();
+      expect(result.current.session.phase).toBe("checkpoints");
+      expect(result.current.session.checkpointRecord.cardsShown).toEqual([
+        circular,
+      ]);
+      expect(readRecord(survey)).toBe(record);
+
+      expect(() =>
+        act(() => {
+          result.current.closeCheckpoint();
+          result.current.skip();
+        }),
+      ).not.toThrow();
+      expect(result.current.session.phase).toBe("questions");
+      expect(result.current.session.entries).toHaveLength(2);
+    });
+
+    it("does the same for a card that holds a bigint", () => {
+      const survey = createQuiz();
+      const { result } = renderSession(survey);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.answer("q1-agree");
+      });
+
+      expect(() =>
+        act(() => result.current.showCheckpoint({ count: 10n })),
+      ).not.toThrow();
+      expect(result.current.session.phase).toBe("checkpoints");
+      expect(JSON.parse(readRecord(survey) ?? "{}").state.phase).toBe(
+        "questions",
+      );
     });
   });
 
@@ -292,7 +371,7 @@ describe("useSurveySession()", () => {
       act(() => result.current.leave());
 
       expect(result.current.session).toBe(session);
-      expect(getSurveySessionStore(survey).getState()).toBe(session);
+      expect(getSurveySessionStore(survey).getState()).toEqual(session);
     });
 
     it("writes nothing to storage afterwards", () => {
@@ -415,7 +494,11 @@ describe("useSurveySession()", () => {
 
       rerender({ quiz: createSurvey({ id: survey.id, name: "Test quiz" }) });
 
-      expect(result.current.session).toBe(session);
+      expect(result.current.session).toEqual(session);
+      expect(result.current.session.id).toBe(session.id);
+      expect(result.current.session.entries).toEqual([
+        { questionId: "q1", answerId: "q1-agree" },
+      ]);
     });
 
     it("applies the actions to the quiz as it is read now", () => {
@@ -449,6 +532,101 @@ describe("useSurveySession()", () => {
         { questionId: "q1", answerId: "q1-agree" },
         { questionId: "q2", answerId: "q2-gas" },
       ]);
+    });
+  });
+
+  describe("when the quiz is read again with other questions", () => {
+    const withoutSecond = (survey: Survey): Survey =>
+      createSurvey({
+        id: survey.id,
+        questions: survey.questions.filter(({ id }) => id !== "q2"),
+      });
+
+    it("hands out the session as it fits the quiz as read now", () => {
+      const survey = createQuiz();
+      const { result, rerender } = renderSession(survey);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.answer("q1-agree", 3);
+        result.current.skip(4);
+        result.current.skip(5);
+      });
+
+      const { id } = result.current.session;
+
+      rerender({ quiz: withoutSecond(survey) });
+
+      expect(result.current.session.id).toBe(id);
+      expect(result.current.session.entries).toEqual([
+        { questionId: "q1", answerId: "q1-agree" },
+      ]);
+      expect(result.current.session.checkpointRecord.timeSamples).toEqual([
+        { questionId: "q1", seconds: 3 },
+      ]);
+      expect(result.current.session.phase).toBe("questions");
+    });
+
+    it("goes on from the question that is current in the quiz as read now", () => {
+      const survey = createQuiz();
+      const { result, rerender } = renderSession(survey);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+      });
+      rerender({ quiz: withoutSecond(survey) });
+      act(() => result.current.answer("q3-agree"));
+
+      expect(result.current.session.entries).toEqual([
+        { questionId: "q1" },
+        { questionId: "q3", answerId: "q3-agree" },
+      ]);
+      expect(JSON.parse(readRecord(survey) ?? "{}").state.entries).toEqual([
+        { questionId: "q1" },
+        { questionId: "q3", answerId: "q3-agree" },
+      ]);
+    });
+
+    it("never leaves the questions phase without a question to ask", () => {
+      const survey = createQuiz();
+      const { result, rerender } = renderSession(survey);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+      });
+      rerender({
+        quiz: createSurvey({
+          id: survey.id,
+          questions: survey.questions.slice(0, 2),
+        }),
+      });
+
+      expect(result.current.session.entries).toHaveLength(2);
+      expect(result.current.session.phase).toBe("demographics");
+    });
+
+    it("writes nothing until the session changes", () => {
+      const survey = createQuiz();
+      const { result, rerender } = renderSession(survey);
+
+      act(() => {
+        result.current.skipTopics();
+        result.current.skip();
+        result.current.skip();
+        result.current.skip();
+      });
+
+      const record = readRecord(survey);
+
+      rerender({ quiz: withoutSecond(survey) });
+
+      expect(readRecord(survey)).toBe(record);
     });
   });
 });

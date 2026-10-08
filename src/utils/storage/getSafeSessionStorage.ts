@@ -1,11 +1,10 @@
+import type { TextStorage } from "@/types/storage";
 import { safely } from "@/utils/function/safely";
 
 // The storage of the tab, with calls that never throw - or nothing, when the
 // browser refuses it or there is no browser. A read that fails finds nothing
 // and a write that fails is dropped, so the caller goes on in memory.
-export const getSafeSessionStorage = ():
-  | Pick<Storage, "getItem" | "setItem" | "removeItem">
-  | undefined => {
+export const getSafeSessionStorage = (): TextStorage | undefined => {
   const storage = safely<Storage | undefined>(
     () => globalThis.sessionStorage,
     undefined,

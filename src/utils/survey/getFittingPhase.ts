@@ -7,15 +7,16 @@ import type {
 
 import { isPhaseInSession } from "./isPhaseInSession";
 
-// The phase a restored session is in. The stored phase is kept when the
-// entries allow it and it is part of the session. Otherwise it is repaired by
-// one rule - the questions when a question is open, demographics when none is
-// - except that e-mail capture left out of the session gives way to
-// demographics. The phase of the session it is handed is not read.
-export const getRestoredPhase = (
+// The phase of a session that is being fitted to the quiz. The phase it had
+// is kept when the entries allow it and it is part of the session. Otherwise
+// it is repaired by one rule - the questions when a question is open,
+// demographics when none is - except that e-mail capture left out of the
+// session gives way to demographics. The phase of the session it is handed is
+// not read: the session is there for its entries, its cards and its settings.
+export const getFittingPhase = (
   survey: Survey,
   session: SurveySession,
-  storedPhase: SurveyPhase | undefined,
+  phase: SurveyPhase | undefined,
   config: SurveySessionConfig,
 ): SurveyPhase => {
   const hasEntries = session.entries.length > 0;
@@ -34,13 +35,13 @@ export const getRestoredPhase = (
     "short-results": false,
   };
 
-  if (storedPhase === undefined || !isPhaseAllowed[storedPhase]) {
+  if (phase === undefined || !isPhaseAllowed[phase]) {
     return repairedPhase;
   }
 
-  if (isPhaseInSession(storedPhase, survey, session, config)) {
-    return storedPhase;
+  if (isPhaseInSession(phase, survey, session, config)) {
+    return phase;
   }
 
-  return storedPhase === "email-capture" ? "demographics" : repairedPhase;
+  return phase === "email-capture" ? "demographics" : repairedPhase;
 };

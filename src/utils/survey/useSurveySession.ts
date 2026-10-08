@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useStore } from "zustand";
 
+import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import type {
   Survey,
   SurveySessionActions,
@@ -13,6 +14,7 @@ import { bindSessionAction } from "./bindSessionAction";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
 import { confirmSessionTopics } from "./confirmSessionTopics";
 import { createSession } from "./createSession";
+import { fitSession } from "./fitSession";
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
@@ -30,11 +32,18 @@ import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 
 // The session of a quiz and its actions, bound to the quiz as it was handed
 // in. The store is found by the quiz identifier, so the same quiz read again
-// in another language keeps its session. The actions stay the same functions
-// for as long as the quiz object does.
+// in another language keeps its session. The session handed out is the one of
+// the store as it fits the quiz as read now: when a reading has other
+// questions than the one before, the entries that no longer fit are left out,
+// by the rules of a restore. The actions stay the same functions for as long
+// as the quiz object does.
 export const useSurveySession = (survey: Survey): SurveySessionApi => {
   const store = getSurveySessionStore(survey);
-  const session = useStore(store);
+  const storedSession = useStore(store);
+  const session = useMemo(
+    () => fitSession(survey, storedSession, SURVEY_SESSION_CONFIG),
+    [survey, storedSession],
+  );
   const actions = useMemo<SurveySessionActions>(
     () => ({
       setTopics: bindSessionAction(store, survey, setSessionTopics),
