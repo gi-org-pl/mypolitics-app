@@ -81,6 +81,10 @@ msgstr "Brak zdobytych cech"
 msgid "Debaty"
 msgstr "Debaty"
 
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
+msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
+
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:32
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
@@ -153,6 +157,10 @@ msgstr "Otwórz menu nawigacji"
 msgid "Pełny opis"
 msgstr "Pełny opis"
 
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:7
+msgid "Płeć"
+msgstr "Płeć"
+
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
 msgstr "Pokaż grupę"
@@ -184,6 +192,10 @@ msgstr "Pokaż wszystkie"
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
+msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
+msgstr "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
 
 #: src/components/shared/Footer/Footer.constants.ts:7
 msgid "Prywatność"
@@ -222,9 +234,21 @@ msgstr "Strona główna"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
+#: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:16
+msgid "To znaczy?"
+msgstr "To znaczy?"
+
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
 msgid "Tryb porównania"
 msgstr "Tryb porównania"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:9
+msgid "Twoja tożsamość"
+msgstr "Twoja tożsamość"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+msgid "Twoje dane pozostaną całkowicie anonimowe."
+msgstr "Twoje dane pozostaną całkowicie anonimowe."
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
@@ -233,6 +257,18 @@ msgstr "Twoje wyniki"
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
 msgstr "Ukryj osie"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:21
+msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
+msgstr "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
+msgid "Wiek"
+msgstr "Wiek"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
+msgid "Wielkość miejsca zamieszkania"
+msgstr "Wielkość miejsca zamieszkania"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
@@ -245,6 +281,14 @@ msgstr "Wróć do grup, zamknij grupę: {name}"
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
 msgid "Wróć do kategorii"
 msgstr "Wróć do kategorii"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
+msgid "Wykształcenie"
+msgstr "Wykształcenie"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+msgid "Zakres wykorzystania danych"
+msgstr "Zakres wykorzystania danych"
 
 #: src/components/shared/Header/Header.tsx:121
 msgid "Zamknij menu nawigacji"
