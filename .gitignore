@@ -47,3 +47,4 @@ storybook-static
 
 # LLMs
 .claude
+.design

@@ -79,3 +79,12 @@ export const DisabledCustomSelectable: Story = {
     title: "Odpowiedź możliwa do wybrania",
   },
 };
+
+export const LongTitle: Story = {
+  args: {
+    type: "custom-selectable",
+    isSelected: true,
+    title:
+      "Bardzo długa odpowiedź, która nie mieści się w jednej linii wąskiego ekranu i dlatego zawija się do kolejnych",
+  },
+};

@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 import {
   ANSWER_TYPE_CONFIG,
   CLICK_ANIMATION_MS,
@@ -43,28 +45,29 @@ export function SurveyAnswer({
     }
   };
 
-  const borderColor = isSelected ? "#324C52" : "#D3D9DA";
-
   return (
     <button
       ref={buttonRef}
       type="button"
       disabled={isDisabled}
+      aria-pressed={type === "custom-selectable" ? isSelected : undefined}
       onClick={handleClick}
-      style={{ ...style, borderColor }}
-      className={[
-        "relative w-full h-14 flex items-center gap-3 rounded-3xl px-4 text-left border overflow-hidden transition-colors hover:bg-gi-ash",
-        "font-roboto font-bold text-base",
+      style={style}
+      className={twMerge(
+        "relative flex min-h-14 w-full items-center gap-3 overflow-hidden rounded-3xl border p-[15px] text-left transition-colors hover:bg-gi-ash",
+        "font-roboto text-base font-bold",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gi-primary",
         bgClass,
         textClass,
-        isDisabled || animationPhase
-          ? "cursor-not-allowed pointer-events-none"
-          : "",
-        isDisabled ? "saturate-0 opacity-50" : "",
-      ].join(" ")}
+        isSelected ? "border-gi-dark-gray" : "border-gi-dark-ash",
+        (isDisabled || animationPhase) &&
+          "pointer-events-none cursor-not-allowed",
+      )}
     >
       {rippleColor && (
         <span
+          aria-hidden="true"
+          data-testid="survey-answer-ripple"
           className="absolute inset-0"
           onTransitionEnd={handleRippleTransitionEnd}
           style={{
@@ -85,11 +88,22 @@ export function SurveyAnswer({
 
       <span
         ref={iconRef}
-        className="shrink-0 flex items-center justify-center w-6 h-6 relative z-10"
+        className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center"
       >
-        <img src={iconName} alt="Ikona odpowiedzi" className="w-6 h-6" />
+        <img
+          src={iconName}
+          alt=""
+          className={twMerge("h-6 w-6", isDisabled && "opacity-50 saturate-0")}
+        />
       </span>
-      <span className="grow relative z-10">{title}</span>
+      <span
+        className={twMerge(
+          "relative z-10 min-w-0 grow wrap-break-word leading-[19px]",
+          isDisabled && "opacity-50",
+        )}
+      >
+        {title}
+      </span>
     </button>
   );
 }

@@ -13,6 +13,16 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. Ends the one-line preview of an explanation, right after the trigger phrase, e.g. 'Obraza uczuć religijnych to...'.
+#: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:15
+msgctxt "survey question: explanation preview ellipsis"
+msgid "..."
+msgstr "..."
+
+#: src/components/survey/SurveyCategorySelect/SurveyCategorySelectPrompt/SurveyCategorySelectPrompt.tsx:15
+msgid "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
+msgstr "{count, plural, one {Choose the # topic that matters most to you.} other {Choose the # topics that matter most to you.}}"
+
 #: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (opens in a new tab)"
@@ -77,9 +87,21 @@ msgstr "No result"
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Are you sure you want to start the quiz {quizName} over? Your answers will not be saved."
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
+msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
 msgstr "Debates"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
+msgstr "Your answers in this section let us analyse results in the future, to improve the quiz and to prepare analyses on data.mypolitics.pl."
 
 #: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:24
 msgid "Generacja Innowacja"
@@ -121,6 +143,12 @@ msgstr "Main navigation"
 msgid "Nawigacja w stopce"
 msgstr "Footer navigation"
 
+#. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
+#: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
+msgctxt "survey question: emphasised phrase"
+msgid "nie"
+msgstr "not"
+
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
 msgstr "About"
@@ -161,6 +189,10 @@ msgstr "Open navigation menu"
 msgid "Pełny opis"
 msgstr "Full description"
 
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:7
+msgid "Płeć"
+msgstr "Gender"
+
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
 msgstr "Show group"
@@ -189,9 +221,21 @@ msgstr "Show axes"
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
+#: src/components/survey/SurveyControls/SurveyControls.tsx:36
+msgid "Poprzednie pytanie"
+msgstr "Previous question"
+
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
+msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
+msgstr "This will let you compare yourself with others in the future!"
+
+#: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:28
+msgid "Pozostałe pytania w kategorii: {count}"
+msgstr "Questions left in the category: {count}"
 
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
@@ -209,9 +253,21 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+msgid "Resetuj quiz"
+msgstr "Reset quiz"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+msgid "Rozpocząć od nowa?"
+msgstr "Start over?"
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
 msgstr "Polls"
+
+#: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:13
+msgid "Sprawdź wyjaśnienie"
+msgstr "Check the explanation"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
@@ -226,13 +282,31 @@ msgstr "Statistics: {name}"
 msgid "Strona główna"
 msgstr "Home page"
 
+#. The word that ends the preview of an explanation: the preview is the explanation up to its first whole-word occurrence, e.g. 'Obraza uczuć religijnych to...'.
+#: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:5
+msgctxt "survey question: explanation trigger phrase"
+msgid "to"
+msgstr "is"
+
 #: src/components/shared/Error404/Error404.tsx:20
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "This is a 404 error <0>made to the best of our abilities</0>!"
 
+#: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:16
+msgid "To znaczy?"
+msgstr "Meaning?"
+
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
 msgid "Tryb porównania"
 msgstr "Comparison mode"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:9
+msgid "Twoja tożsamość"
+msgstr "Your identity"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+msgid "Twoje dane pozostaną całkowicie anonimowe."
+msgstr "Your data stays completely anonymous."
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
@@ -241,6 +315,18 @@ msgstr "Your results"
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
 msgstr "Hide axes"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:21
+msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
+msgstr "In this test you will get an identity card tailored to you"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
+msgid "Wiek"
+msgstr "Age"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
+msgid "Wielkość miejsca zamieszkania"
+msgstr "Size of the place you live in"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
@@ -253,6 +339,18 @@ msgstr "Back to groups, close group: {name}"
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartOpenCategory/HorizontalBarChartOpenCategory.tsx:52
 msgid "Wróć do kategorii"
 msgstr "Back to categories"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
+msgid "Wykształcenie"
+msgstr "Education"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:57
+msgid "Zacznij od nowa"
+msgstr "Start over"
+
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+msgid "Zakres wykorzystania danych"
+msgstr "How the data is used"
 
 #: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
