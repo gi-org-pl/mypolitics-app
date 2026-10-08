@@ -53,7 +53,7 @@ describe("readCheckpointRecord()", () => {
     );
   });
 
-  it("drops an item with no card, an unknown type, no boundary or a line that does not exist", () => {
+  it("drops an item with no card, an unknown type, no boundary, a line that does not exist or a card that is not usable", () => {
     expect(
       readCheckpointRecord(
         toStored([
@@ -64,6 +64,8 @@ describe("readCheckpointRecord()", () => {
           { card: { ...halfwayCard, boundary: undefined } },
           { card: { ...halfwayCard, line: { pool: "halfway", index: 3 } } },
           { card: { ...halfwayCard, line: undefined } },
+          { card: { ...halfwayCard, line: { pool: "new-trait", index: 0 } } },
+          { card: { ...newTraitCard, trait: undefined } },
         ]),
       ).cardsShown,
     ).toEqual([]);

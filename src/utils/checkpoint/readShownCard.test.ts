@@ -4,6 +4,8 @@ import {
   allCards,
   axisPuzzleCard,
   halfwayCard,
+  newTraitCard,
+  partialPathCard,
 } from "./getNextCheckpoint.fixtures";
 import { readShownCard } from "./readShownCard";
 
@@ -86,5 +88,45 @@ describe("readShownCard()", () => {
     ]) {
       expect(readShownCard({ card: { ...halfwayCard, line } })).toBeUndefined();
     }
+  });
+
+  it("returns nothing for a card that is not usable as its type", () => {
+    // A line that exists, from the pool of another type.
+    expect(
+      readShownCard({
+        card: { ...halfwayCard, line: { pool: "new-trait", index: 0 } },
+      }),
+    ).toBeUndefined();
+    // A card that lost the value its words need, and one that lost a value
+    // the engine reads back.
+    expect(
+      readShownCard({ card: { ...newTraitCard, trait: undefined } }),
+    ).toBeUndefined();
+    expect(
+      readShownCard({ card: { ...partialPathCard, trail: undefined } }),
+    ).toBeUndefined();
+    expect(
+      readShownCard({ card: { ...axisPuzzleCard, axisId: undefined } }),
+    ).toBeUndefined();
+  });
+
+  it("leaves out a reveal line that comes from another pool", () => {
+    expect(
+      readShownCard({
+        card: axisPuzzleCard,
+        revealLines: {
+          // The miss pool under the hit, and the pool of the other puzzle.
+          hit: { pool: "axis-puzzle-miss", index: 0 },
+          miss: { pool: "position-puzzle-miss", index: 0 },
+        },
+      }),
+    ).toEqual({ card: axisPuzzleCard });
+    // A card that is not a puzzle has no reveal.
+    expect(
+      readShownCard({
+        card: halfwayCard,
+        revealLines: { hit: { pool: "axis-puzzle-hit", index: 0 } },
+      }),
+    ).toEqual({ card: halfwayCard });
   });
 });

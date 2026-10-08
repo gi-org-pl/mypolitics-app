@@ -1,4 +1,7 @@
-import { CHECKPOINT_PRIORITY } from "@/constants/checkpoint";
+import {
+  CHECKPOINT_PRIORITY,
+  CHECKPOINT_REVEAL_POOLS,
+} from "@/constants/checkpoint";
 import type {
   CheckpointCard,
   CheckpointOutcome,
@@ -7,13 +10,17 @@ import type {
 import { isOneOf } from "@/utils/array/isOneOf";
 
 import { isCheckpointLine } from "./isCheckpointLine";
+import { isUsableCard } from "./isUsableCard";
 
 const OUTCOMES: readonly CheckpointOutcome[] = ["hit", "miss"];
 
 // One stored item of the cards shown as a shown card, or nothing when it is
-// not one: it has to hold a card with a known type, a whole-number boundary
-// and a line that exists in the pools. Of its reveal lines only those that
-// exist are kept.
+// not one. It has to hold a card with a known type, a whole-number boundary
+// and a line that exists in the pools, and the card has to be usable as that
+// type: a card of another shape would count for the pacing, could be up with
+// no words after a reload, and would cost its type every later card. Of its
+// reveal lines only those are kept that exist and come from the pool of that
+// outcome of its type.
 export const readShownCard = (
   stored: unknown,
 ): CheckpointShownCard | undefined => {
@@ -27,7 +34,8 @@ export const readShownCard = (
   if (
     !isOneOf(CHECKPOINT_PRIORITY, type) ||
     !Number.isInteger(boundary) ||
-    !isCheckpointLine(line)
+    !isCheckpointLine(line) ||
+    !isUsableCard(card as CheckpointCard)
   ) {
     return undefined;
   }
@@ -37,7 +45,10 @@ export const readShownCard = (
       outcome
     ];
 
-    return isCheckpointLine(revealLine) ? [[outcome, revealLine]] : [];
+    return isCheckpointLine(revealLine) &&
+      revealLine.pool === CHECKPOINT_REVEAL_POOLS[type]?.[outcome]
+      ? [[outcome, revealLine]]
+      : [];
   });
 
   return {
