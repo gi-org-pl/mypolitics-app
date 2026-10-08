@@ -261,6 +261,18 @@ msgstr "Reset quiz"
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
 
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:46
+msgid "Rozpocznij"
+msgstr "Start"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardPlayButton/QuizCardPlayButton.tsx:35
+msgid "Rozpocznij quiz"
+msgstr "Start the quiz"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
+msgid "Rozwiń"
+msgstr "Expand"
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
 msgstr "Polls"
@@ -355,3 +367,7 @@ msgstr "How the data is used"
 #: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
+
+#: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
+msgid "Zwiń"
+msgstr "Collapse"
