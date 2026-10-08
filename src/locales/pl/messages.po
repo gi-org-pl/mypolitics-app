@@ -49,6 +49,10 @@ msgstr "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wy
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (otwiera się w nowej karcie)"
 
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:25
+msgid "{name} jest blisko Ciebie"
+msgstr "{name} jest blisko Ciebie"
+
 #: src/components/results/NolanChart/utils/useMapDescription.ts:53
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
@@ -1116,6 +1120,10 @@ msgstr "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
 msgstr "Ukryj osie"
+
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:21
+msgid "Ukryta postać jest blisko Ciebie"
+msgstr "Ukryta postać jest blisko Ciebie"
 
 #: src/constants/checkpoint.ts:259
 msgctxt "checkpoint-nolan-path-partial"
