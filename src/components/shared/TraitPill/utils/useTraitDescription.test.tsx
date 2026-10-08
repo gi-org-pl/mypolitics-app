@@ -4,7 +4,7 @@ import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
-import type { TraitHolder } from "../../Traits.types";
+import type { TraitHolder } from "../TraitPill.types";
 import { useTraitDescription } from "./useTraitDescription";
 
 const wrapper = ({ children }: { children: ReactNode }) => (

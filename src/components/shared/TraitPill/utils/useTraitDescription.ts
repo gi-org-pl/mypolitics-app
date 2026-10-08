@@ -2,7 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
-import type { TraitHolder } from "../../Traits.types";
+import type { TraitHolder } from "../TraitPill.types";
 
 export const useTraitDescription = (
   trait: string,
