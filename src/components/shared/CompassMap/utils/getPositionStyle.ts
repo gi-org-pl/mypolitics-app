@@ -1,11 +1,15 @@
 import type { CSSProperties } from "react";
 
 import type { CompassMapPoint } from "../CompassMap.types";
+import { getMapPoint } from "./getMapPoint";
 
 const toPercent = (share: number): string => `${share * 100}%`;
 
-export const getPositionStyle = ({ x, y }: CompassMapPoint): CSSProperties =>
-  ({
-    "--nolan-x": toPercent((x + 1) / 2),
-    "--nolan-y": toPercent((1 - y) / 2),
-  }) as CSSProperties;
+export const getPositionStyle = (position: CompassMapPoint): CSSProperties => {
+  const { x, y } = getMapPoint(position);
+
+  return {
+    "--nolan-x": toPercent(x),
+    "--nolan-y": toPercent(y),
+  } as CSSProperties;
+};

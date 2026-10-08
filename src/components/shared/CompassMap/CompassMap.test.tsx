@@ -140,6 +140,81 @@ describe("<CompassMap />", () => {
     });
   });
 
+  describe("given a trail", () => {
+    const trail = [
+      { x: 0.6, y: 0.7 },
+      { x: -0.2, y: 0.4 },
+      { x: -0.54, y: -0.34 },
+    ];
+
+    it("renders the line after the quadrants and before the halo and the dot", () => {
+      renderMap({ position: MODERATE, trail });
+
+      const line = screen.getByTestId("compass-map-trail");
+
+      expect(getMap()).toContainElement(line);
+      expect(isBefore(getQuadrant("bottomRight"), line)).toBe(true);
+      expect(isBefore(line, screen.getByTestId("nolan-chart-halo"))).toBe(true);
+      expect(isBefore(line, screen.getByTestId("nolan-chart-dot"))).toBe(true);
+    });
+
+    it("ends the line where the dot is", () => {
+      renderMap({ position: MODERATE, trail });
+
+      expect(screen.getByTestId("compass-map-trail").getAttribute("d")).toMatch(
+        / 23 67$/,
+      );
+      expect(
+        screen
+          .getByTestId("nolan-chart-dot")
+          .style.getPropertyValue("--nolan-x"),
+      ).toBe("23%");
+      expect(
+        screen
+          .getByTestId("nolan-chart-dot")
+          .style.getPropertyValue("--nolan-y"),
+      ).toBe("67%");
+    });
+
+    it("draws the other side of a comparison on top of the line", () => {
+      renderMap({ trail, otherOrientation: friend, otherPosition: EXTREME });
+
+      expect(
+        isBefore(
+          screen.getByTestId("compass-map-trail"),
+          screen.getByTestId("nolan-chart-comparison"),
+        ),
+      ).toBe(true);
+    });
+
+    it("draws the line without a position too", () => {
+      renderMap({ position: null, trail });
+
+      expect(screen.getByTestId("compass-map-trail")).toBeInTheDocument();
+      expect(screen.queryByTestId("nolan-chart-dot")).not.toBeInTheDocument();
+    });
+
+    it("stays one image named by the description", () => {
+      renderMap({ trail, description: DESCRIPTION });
+
+      expect(screen.getAllByRole("img")).toEqual([getMap()]);
+      expect(getMap()).toHaveAccessibleName(DESCRIPTION);
+    });
+  });
+
+  describe("given no trail", () => {
+    it.each([
+      { name: "absent", trail: undefined },
+      { name: "empty", trail: [] },
+      { name: "a single point", trail: [{ x: 0.2, y: 0.2 }] },
+    ])("renders no line: $name", ({ trail }) => {
+      renderMap({ trail });
+
+      expect(screen.queryByTestId("compass-map-trail")).not.toBeInTheDocument();
+      expect(getMap().querySelector("svg")).toBeNull();
+    });
+  });
+
   describe("given the other side of a comparison", () => {
     it("renders its image on the hatched disc", () => {
       renderMap({ otherOrientation: friend, otherPosition: EXTREME });

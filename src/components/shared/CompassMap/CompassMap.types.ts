@@ -19,6 +19,7 @@ export type CompassMapQuadrants = Partial<
 export interface CompassMapProps {
   quadrants?: CompassMapQuadrants;
   position: CompassMapPosition | null; // the taker: the dot, its halo and the filled quadrant. null = none of the three
+  trail?: CompassMapPoint[]; // the route, oldest point first: a dotted line through the points. Fewer than two distinct points = no line
   otherOrientation?: Orientation; // the other side of a comparison
   otherPosition?: CompassMapPoint | null;
   description?: string; // given: the map is one image with this description. Absent: the parent describes it
