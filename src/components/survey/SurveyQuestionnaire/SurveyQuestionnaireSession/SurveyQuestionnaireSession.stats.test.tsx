@@ -118,8 +118,11 @@ describe("<SurveyQuestionnaireSession /> - the stats card", () => {
           .getAllByRole("listitem")
           .map((row) => row.textContent),
       ).toEqual(["Za", "Przeciw", "Brak odpowiedzi"]);
+      // The line is drawn from a pool, and its lines name the percent and
+      // the statement in either order.
+      expect(within(getCard()).getByRole("paragraph")).toHaveTextContent("8%");
       expect(within(getCard()).getByRole("paragraph")).toHaveTextContent(
-        /8%.*„Stwierdzenie q5”/,
+        "„Stwierdzenie q5”",
       );
       expect(screen.queryByText(SIXTH_STATEMENT)).not.toBeInTheDocument();
       expect(getSession().phase).toBe("checkpoints");
