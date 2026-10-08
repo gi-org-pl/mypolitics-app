@@ -1,3 +1,4 @@
+import type { TraitHolder } from "@/components/shared/TraitPill/TraitPill.types";
 import type { Orientation } from "@/types/orientation";
 
 export interface TraitsComparison {
@@ -13,8 +14,6 @@ export interface TraitsProps {
   onStatsClick?: () => void;
   onInfoClick?: () => void;
 }
-
-export type TraitHolder = "taker" | "both" | "other";
 
 export interface TraitItem {
   orientation: Orientation;
