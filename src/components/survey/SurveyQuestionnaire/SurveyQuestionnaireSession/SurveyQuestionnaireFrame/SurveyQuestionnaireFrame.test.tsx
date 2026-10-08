@@ -6,11 +6,9 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createMessage } from "@/utils/vitest/createMessage";
 
-import type {
-  SurveyFrame,
-  SurveyQuestionnaireFrameProps,
-} from "../../SurveyQuestionnaire.types";
+import type { SurveyFrame } from "../SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireFrame } from "./SurveyQuestionnaireFrame";
+import type { SurveyQuestionnaireFrameProps } from "./SurveyQuestionnaireFrame.types";
 
 const QUESTION_FRAME: SurveyFrame = {
   progress: { done: 2, all: 10 },

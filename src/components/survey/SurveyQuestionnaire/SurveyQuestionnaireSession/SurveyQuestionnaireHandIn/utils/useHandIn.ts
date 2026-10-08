@@ -4,7 +4,7 @@ import { createResult } from "@/services/api/client/createResult";
 import type { SurveyPhaseContentProps } from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/buildResultInput";
 
-import type { HandIn } from "../../../SurveyQuestionnaire.types";
+import type { HandIn } from "../SurveyQuestionnaireHandIn.types";
 
 // The hand-in of the stand-in phase. The session is handed in at once when
 // the phase opens, and again at every retry: always the hand-in that was built

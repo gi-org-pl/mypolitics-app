@@ -2,9 +2,8 @@ import { Button } from "@gi-org-pl/athena";
 import { Trans } from "@lingui/react/macro";
 
 import { SurveyAnswer } from "@/components/survey/SurveyAnswer/SurveyAnswer";
-
-import type { SurveyQuestionnaireAnswersProps } from "../../../SurveyQuestionnaire.types";
 import { SKIP_CLASS_NAME } from "./SurveyQuestionnaireAnswers.constants";
+import type { SurveyQuestionnaireAnswersProps } from "./SurveyQuestionnaireAnswers.types";
 import { isButtonPress } from "./utils/isButtonPress";
 import { useAnswersToDraw } from "./utils/useAnswersToDraw";
 

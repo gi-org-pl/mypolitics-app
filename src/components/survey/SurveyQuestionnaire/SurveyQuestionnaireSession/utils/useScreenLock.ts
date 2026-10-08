@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-
-import type { ScreenLock } from "../../SurveyQuestionnaire.types";
 import {
   CONTENT_CHANGE_MS,
   SCREEN_LOCK_LIMIT_MS,
 } from "../SurveyQuestionnaireSession.constants";
+import type { ScreenLock } from "../SurveyQuestionnaireSession.types";
 
 interface LockState {
   contentKey: string; // the content the state belongs to

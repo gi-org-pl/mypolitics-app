@@ -4,7 +4,7 @@ import { Trans } from "@lingui/react/macro";
 import { TALL_BUTTON_CLASS_NAME } from "@/constants/button";
 
 import { NOTICE_CLASS_NAME } from "../SurveyQuestionnaire.constants";
-import type { SurveyQuestionnaireLoadErrorProps } from "../SurveyQuestionnaire.types";
+import type { SurveyQuestionnaireLoadErrorProps } from "./SurveyQuestionnaireLoadError.types";
 
 // The quiz could not be read. The card is announced when it appears.
 export const SurveyQuestionnaireLoadError = ({

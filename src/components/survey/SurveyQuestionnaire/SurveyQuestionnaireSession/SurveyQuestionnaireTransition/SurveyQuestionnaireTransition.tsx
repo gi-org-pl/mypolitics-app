@@ -1,8 +1,8 @@
-import type { SurveyQuestionnaireTransitionProps } from "../../SurveyQuestionnaire.types";
 import {
   CONTENT_ARRIVAL_CLASS_NAME,
   CONTENT_CHANGE_STYLE,
 } from "../SurveyQuestionnaireSession.constants";
+import type { SurveyQuestionnaireTransitionProps } from "./SurveyQuestionnaireTransition.types";
 
 // The movement between two contents. The old content leaves at once and the
 // new one arrives from the side the taker is moving to, in one short CSS

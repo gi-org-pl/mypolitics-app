@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it } from "vitest";
-
-import type { ChangeDirection } from "../../SurveyQuestionnaire.types";
 import { CONTENT_CHANGE_MS } from "../SurveyQuestionnaireSession.constants";
+import type { ChangeDirection } from "../SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition";
 
 const getTransition = (contentKey: string, direction?: ChangeDirection) => (

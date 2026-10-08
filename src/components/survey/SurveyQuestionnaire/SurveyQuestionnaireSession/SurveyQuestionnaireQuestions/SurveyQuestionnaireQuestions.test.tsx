@@ -134,6 +134,20 @@ describe("<SurveyQuestionnaireQuestions />", () => {
     });
   });
 
+  describe("when the question leaves the screen while an answer is being acknowledged", () => {
+    it("records nothing: the answer was not acknowledged", () => {
+      const { getSession, unmount } = renderPhase();
+
+      fireEvent.click(getAnswer("Częściowo za"));
+      unmount();
+      finishAcknowledgement();
+      act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS * 4));
+
+      expect(getSession().entries).toEqual([]);
+      expect(getSession().phase).toBe("questions");
+    });
+  });
+
   describe('when "Pomiń" is pressed', () => {
     it("records a skip at once, and locks nothing", () => {
       const { lock, getSession } = renderPhase();

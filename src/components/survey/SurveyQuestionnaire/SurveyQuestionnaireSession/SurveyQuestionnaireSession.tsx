@@ -1,8 +1,7 @@
 import { useSurveySession } from "@/utils/survey/useSurveySession";
-
-import type { SurveyQuestionnaireSessionProps } from "../SurveyQuestionnaire.types";
 import { SurveyQuestionnaireFrame } from "./SurveyQuestionnaireFrame/SurveyQuestionnaireFrame";
 import { SURVEY_PHASE_CONTENT } from "./SurveyQuestionnaireSession.constants";
+import type { SurveyQuestionnaireSessionProps } from "./SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition/SurveyQuestionnaireTransition";
 import { getSurveyFrame } from "./utils/getSurveyFrame";
 import { useContentChange } from "./utils/useContentChange";

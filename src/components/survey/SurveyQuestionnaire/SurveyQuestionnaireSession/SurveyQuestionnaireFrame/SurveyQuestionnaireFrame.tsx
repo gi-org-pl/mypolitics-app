@@ -4,7 +4,7 @@ import { SurveyControls } from "@/components/survey/SurveyControls/SurveyControl
 import { SurveySaturatedProgressBar } from "@/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar";
 import { cancelEvent } from "@/utils/event/cancelEvent";
 
-import type { SurveyQuestionnaireFrameProps } from "../../SurveyQuestionnaire.types";
+import type { SurveyQuestionnaireFrameProps } from "./SurveyQuestionnaireFrame.types";
 
 // The frame of the screen: the bar and the controls bar, which stay mounted
 // whatever the content does, and the content under them. While locked, nothing

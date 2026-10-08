@@ -1,7 +1,7 @@
 import { SURVEY_PHASES } from "@/constants/survey";
 import type { SurveySession } from "@/types/survey";
 
-import type { ChangeDirection } from "../../SurveyQuestionnaire.types";
+import type { ChangeDirection } from "../SurveyQuestionnaireSession.types";
 
 // Which way the taker moved between two sessions. Backwards is a step back:
 // a done question is open again, or an earlier phase is shown with the same

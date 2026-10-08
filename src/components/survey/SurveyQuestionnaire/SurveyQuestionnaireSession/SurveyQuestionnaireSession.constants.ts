@@ -2,12 +2,11 @@ import { msg } from "@lingui/core/macro";
 import type { ComponentType, CSSProperties } from "react";
 
 import type { SurveyPhase, SurveyPhaseContentProps } from "@/types/survey";
-
-import type { ChangeDirection } from "../SurveyQuestionnaire.types";
 import { SurveyQuestionnaireCategorySelect } from "./SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect";
 import { SurveyQuestionnaireDemographics } from "./SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics";
 import { SurveyQuestionnaireHandIn } from "./SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn";
 import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions/SurveyQuestionnaireQuestions";
+import type { ChangeDirection } from "./SurveyQuestionnaireSession.types";
 
 // What is drawn in each phase. A later phase is a component that takes
 // `SurveyPhaseContentProps`, added here under its phase: the bar, the pill,

@@ -5,7 +5,7 @@ import type { SurveySession } from "@/types/survey";
 import type {
   ChangeDirection,
   ContentChange,
-} from "../../SurveyQuestionnaire.types";
+} from "../SurveyQuestionnaireSession.types";
 import { getChangeDirection } from "./getChangeDirection";
 import { getContentKey } from "./getContentKey";
 

@@ -5,13 +5,12 @@ import { getCurrentQuestion } from "@/utils/survey/getCurrentQuestion";
 import { getProgress } from "@/utils/survey/getProgress";
 import { getQuestionsLeftInCategory } from "@/utils/survey/getQuestionsLeftInCategory";
 import { getVisibleCategories } from "@/utils/survey/getVisibleCategories";
-
-import type { SurveyFrame } from "../../SurveyQuestionnaire.types";
 import {
   ALMOST_DONE_LABEL,
   ALMOST_READY_LABEL,
   GO_BACK_LABEL,
 } from "../SurveyQuestionnaireSession.constants";
+import type { SurveyFrame } from "../SurveyQuestionnaireSession.types";
 
 // The bar and the controls bar of a session, for every phase - also for the
 // phases whose content comes with a later task. Whether back and reset work is

@@ -13,16 +13,18 @@ const renderActions = (done = 0) => {
   // The stores live as long as the module does: a quiz of its own.
   const survey: Survey = createSurvey({ id: crypto.randomUUID() });
 
-  getSurveySessionStore(survey).setState(
-    createStartedSession(survey, done),
-    true,
-  );
+  const store = getSurveySessionStore(survey);
 
-  return renderHook(() => {
-    const session = useSurveySession(survey);
+  store.setState(createStartedSession(survey, done), true);
 
-    return { session: session.session, actions: useQuestionActions(session) };
-  });
+  return {
+    ...renderHook(() => {
+      const session = useSurveySession(survey);
+
+      return { session: session.session, actions: useQuestionActions(session) };
+    }),
+    getStoredSession: store.getState,
+  };
 };
 
 describe("useQuestionActions()", () => {
@@ -61,6 +63,26 @@ describe("useQuestionActions()", () => {
 
       expect(result.current.session.entries).toEqual([{ questionId: "q1" }]);
       expect(result.current.session.checkpointRecord.timeSamples).toEqual([]);
+    });
+  });
+
+  describe("when answer is called after the question has left the screen", () => {
+    it("records nothing", () => {
+      const { result, unmount, getStoredSession } = renderActions();
+      const { actions } = result.current;
+
+      unmount();
+      act(() => actions.answer("q1-agree"));
+
+      expect(getStoredSession().entries).toEqual([]);
+    });
+
+    it("still records a skip, which is never late", () => {
+      const { result, getStoredSession } = renderActions();
+
+      act(() => result.current.actions.skip());
+
+      expect(getStoredSession().entries).toEqual([{ questionId: "q1" }]);
     });
   });
 
