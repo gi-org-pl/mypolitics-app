@@ -193,6 +193,18 @@ describe("createResult()", () => {
 
       expect(adapter.mock.calls[0][0].timeout).toBe(8000);
     });
+
+    it("never waits longer than 30 seconds, whatever limit the caller passes", async () => {
+      adapter.mockImplementation(createApiReply(201));
+
+      await createResult(input, { timeoutMs: 120_000 });
+      await createResult(input, { timeoutMs: 0 });
+
+      expect(adapter.mock.calls.map(([{ timeout }]) => timeout)).toEqual([
+        API_TIMEOUT_MS,
+        1,
+      ]);
+    });
   });
 
   describe("when cancelled", () => {

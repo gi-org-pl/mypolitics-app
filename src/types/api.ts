@@ -1,6 +1,6 @@
 export interface ApiRequestOptions {
   signal?: AbortSignal;
-  timeoutMs?: number; // default API_TIMEOUT_MS
+  timeoutMs?: number; // a shorter limit than API_TIMEOUT_MS; a longer one is cut to it
 }
 
 export type ApiFailure =

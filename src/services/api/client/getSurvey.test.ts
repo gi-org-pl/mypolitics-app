@@ -86,6 +86,18 @@ describe("getSurvey()", () => {
         5000,
       ]);
     });
+
+    it("never gives the request more than 30 seconds", async () => {
+      adapter.mockImplementation(createApiReply(200, surveyResponse));
+
+      await getSurvey(SURVEY_ID, "pl", { timeoutMs: 60_000 });
+      await getSurvey(SURVEY_ID, "pl", { timeoutMs: 0 });
+
+      expect(adapter.mock.calls.map(([{ timeout }]) => timeout)).toEqual([
+        API_TIMEOUT_MS,
+        1,
+      ]);
+    });
   });
 
   describe("given a quiz", () => {
