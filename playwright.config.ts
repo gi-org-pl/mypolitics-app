@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { RESULT_LINK_ADDRESS } from "./e2e/survey/mockSurveyApi";
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -78,6 +80,11 @@ export default defineConfig({
   /* Build the app and serve the build before starting the tests */
   webServer: {
     command: `yarn build && yarn preview --port ${PORT} --strictPort`,
+    /* The e-mail phase of the questionnaire exists only in a build that has
+       the address of its endpoint, and Vite fixes that address when the app
+       is built. The address is under the reserved `.test` domain: nothing
+       answers there, and the tests stand in for it. */
+    env: { VITE_RESULTS_EMAIL_URL: RESULT_LINK_ADDRESS },
     url: BASE_URL,
     /* Locally, a preview that already answers on the port is reused: make sure
        it serves this build. CI always builds and serves its own. */

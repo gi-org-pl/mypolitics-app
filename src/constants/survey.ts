@@ -7,6 +7,7 @@ import type {
   SurveyPhase,
   SurveySessionConfig,
 } from "@/types/survey";
+import { getResultLinkUrl } from "@/utils/survey/getResultLinkUrl";
 
 // The API has no slugs, so the map is kept by hand: one entry per quiz that
 // has a survey in this API.
@@ -100,9 +101,21 @@ export const DEMOGRAPHICS_VALUES: Record<
   education: DEMOGRAPHICS_EDUCATION_LEVELS,
 };
 
-// The one switch for the e-mail phase.
+// Where the request for the result link goes: a value of the build, read once
+// when the app starts. Absent unless the build has an `https` address.
+export const RESULT_LINK_URL: string | undefined = getResultLinkUrl(
+  import.meta.env.VITE_RESULTS_EMAIL_URL,
+);
+export const RESULT_LINK_TIMEOUT_MS = 10_000;
+
+// Names the consent text of the e-mail card. It changes whenever that text
+// changes, in the same commit.
+export const EMAIL_CONSENT_WORDING = "marketing-v1";
+export const EMAIL_MAX_LENGTH = 254;
+
+// The one switch for the e-mail phase: on when the endpoint is configured.
 export const SURVEY_SESSION_CONFIG: SurveySessionConfig = {
-  isEmailSendingSetUp: false,
+  isEmailSendingSetUp: RESULT_LINK_URL !== undefined,
 };
 
 // The record of a quiz is kept under `${key}:${surveyId}`.

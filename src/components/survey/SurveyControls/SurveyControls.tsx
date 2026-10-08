@@ -4,6 +4,7 @@ import { useLingui } from "@lingui/react/macro";
 import arrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import resetIcon from "@/assets/icons/reset.svg";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
+import { toTrimmedText } from "@/utils/text/toTrimmedText";
 
 import {
   BUTTON_CLASS_NAME,
@@ -21,6 +22,7 @@ export const SurveyControls = ({
   questionsLeft,
   isPreviousDisabled = false,
   isResetDisabled = false,
+  previousLabel,
   onPrevious,
   onReset,
 }: SurveyControlsProps) => {
@@ -33,7 +35,7 @@ export const SurveyControls = ({
         type="outlined"
         variant="primary"
         isIconButton
-        aria-label={t`Poprzednie pytanie`}
+        aria-label={toTrimmedText(previousLabel) ?? t`Poprzednie pytanie`}
         disabled={isPreviousDisabled}
         onClick={onPrevious}
         className={BUTTON_CLASS_NAME}
