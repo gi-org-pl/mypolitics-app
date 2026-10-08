@@ -9,6 +9,11 @@ import {
   SURVEY_ID,
 } from "./survey.fixture";
 import {
+  AXIS_ORIENTATIONS,
+  AXIS_QUESTIONS,
+  axisSurveyFixture,
+} from "./survey-axis.fixture";
+import {
   CHECKPOINT_QUESTIONS,
   checkpointSurveyFixture,
 } from "./survey-checkpoint.fixture";
@@ -941,6 +946,99 @@ test.describe("Feature: Questionnaire checkpoints - halfway through", () => {
     await test.step('Then they see the sixth question and no region named "Checkpoint" appears', async () => {
       await expectQuestion(page, sixthQuestion);
       await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+  });
+});
+
+// The axis closeness card depends on the whole chain: the axes as the API
+// sends them, the scores counted during the quiz, the engine, the registry of
+// cards and the bar of the result screen. The quiz is a fixture of its own,
+// with one axis.
+test.describe("Feature: Questionnaire - a quiz with axes", () => {
+  const [FIRST_ORIENTATION, SECOND_ORIENTATION] = AXIS_ORIENTATIONS;
+  const FIRST_NAME = FIRST_ORIENTATION.generalName;
+  const SECOND_NAME = SECOND_ORIENTATION.generalName;
+  const SIXTH_QUESTION = AXIS_QUESTIONS[5];
+
+  const getCard = (page: Page) =>
+    page.getByRole("main").getByRole("region", { name: "Checkpoint" });
+
+  test.beforeEach(async ({ page }) => {
+    await mockSurveyApi(page);
+    // Routes registered later are asked first: this quiz is sent in place of
+    // the one the mock has, and everything else is left to the mock.
+    await page.route("**/v1/survey/**", (route) =>
+      route.request().method() === "GET"
+        ? route.fulfill({
+            json: axisSurveyFixture,
+            headers: { "access-control-allow-origin": "*" },
+          })
+        : route.fallback(),
+    );
+  });
+
+  test("Scenario: A quiz with axes tells the taker where they stand", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the nine-question quiz with one axis", async () => {
+      await openPage(page, QUIZ_PATH);
+      await expect(
+        page.getByRole("group", { name: AXIS_QUESTIONS[0].text }),
+      ).toBeVisible();
+      await expect(getTopics(page)).toHaveCount(0);
+    });
+
+    await test.step('When they answer the first five questions with "Zdecydowanie za"', async () => {
+      for (const question of AXIS_QUESTIONS.slice(0, 5)) {
+        await page
+          .getByRole("group", { name: question.text })
+          .getByRole("button", { name: "Zdecydowanie za", exact: true })
+          .click();
+      }
+    });
+
+    await test.step('Then a region named "Checkpoint" shows the name of the first orientation as its title', async () => {
+      await expect(getCard(page)).toBeVisible();
+      await expect(
+        getCard(page).getByText(FIRST_NAME, { exact: true }).first(),
+      ).toBeVisible();
+      await expect(getCard(page).getByText(FIRST_NAME).first()).toHaveText(
+        FIRST_NAME,
+      );
+    });
+
+    await test.step("And a bar described in words, with no percentage on it or in its description", async () => {
+      const bar = getCard(page).getByRole("img");
+
+      await expect(bar).toHaveCount(1);
+      await expect(bar).toHaveAccessibleName(
+        `„${FIRST_NAME}” i „${SECOND_NAME}”: wyższy wynik po stronie „${FIRST_NAME}”`,
+      );
+      await expect(bar).toContainText(FIRST_NAME);
+      await expect(bar).toContainText(SECOND_NAME);
+      await expect(bar).not.toContainText(/[\d%]/);
+      await expect(getCard(page)).not.toContainText(/[\d%]/);
+    });
+
+    await test.step("And a statement that names both orientations", async () => {
+      const statement = getCard(page).getByRole("paragraph");
+
+      await expect(statement).toContainText(`„${FIRST_NAME}”`);
+      await expect(statement).toContainText(`„${SECOND_NAME}”`);
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the sixth question", async () => {
+      await expect(
+        page.getByRole("group", { name: SIXTH_QUESTION.text }),
+      ).toBeVisible();
+      await expect(
+        page.getByText(SIXTH_QUESTION.text, { exact: true }),
+      ).toBeVisible();
+      await expect(getCard(page)).toHaveCount(0);
     });
   });
 });

@@ -10,6 +10,7 @@ export interface AxisLayoutInput {
   end?: AxisEntry;
   comparison?: AxisEntry;
   marker?: number | false;
+  showValues?: boolean; // default true. false = no number is drawn on or next to any fill
 }
 
 export type AxisMode = "empty" | "one-sided" | "double-sided";

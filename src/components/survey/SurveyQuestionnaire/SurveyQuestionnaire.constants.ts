@@ -1,3 +1,4 @@
+import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import type { CheckpointCardRegistry } from "@/types/checkpoint";
@@ -13,5 +14,6 @@ import type { CheckpointCardRegistry } from "@/types/checkpoint";
 // screen read it, so it must not import any of them.
 export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
   halfway: SurveyCheckpointHalfway,
+  "axis-closeness": SurveyCheckpointAxisCloseness,
   "new-trait": SurveyCheckpointNewTrait,
 };

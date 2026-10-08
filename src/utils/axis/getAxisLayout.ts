@@ -37,8 +37,9 @@ const getValuePlacement = (
   mode: AxisMode,
   width: number,
   hasComparison: boolean,
+  showValues: boolean,
 ): AxisValuePlacement => {
-  if (hasComparison || width <= MIN_AXIS_VALUE) return "hidden";
+  if (!showValues || hasComparison || width <= MIN_AXIS_VALUE) return "hidden";
 
   if (mode === "double-sided") {
     return width >= DOUBLE_SIDED_FIT_THRESHOLD ? "inside" : "hidden";
@@ -52,6 +53,7 @@ const getSideLayout = (
   mode: AxisMode,
   width: number,
   hasComparison: boolean,
+  showValues: boolean,
 ): AxisSideLayout => {
   const value = getEntryValue(entry);
 
@@ -63,7 +65,7 @@ const getSideLayout = (
     value,
     displayValue: Math.round(value),
     width,
-    valuePlacement: getValuePlacement(mode, width, hasComparison),
+    valuePlacement: getValuePlacement(mode, width, hasComparison, showValues),
   };
 };
 
@@ -147,6 +149,7 @@ export const getAxisLayout = ({
   end,
   comparison,
   marker,
+  showValues = true,
 }: AxisLayoutInput): AxisLayout => {
   const presentStart = isPresentEntry(start) ? start : null;
   const presentEnd = isPresentEntry(end) ? end : null;
@@ -161,10 +164,10 @@ export const getAxisLayout = ({
   );
 
   const startLayout = presentStart
-    ? getSideLayout(presentStart, mode, startWidth, hasComparison)
+    ? getSideLayout(presentStart, mode, startWidth, hasComparison, showValues)
     : null;
   const endLayout = presentEnd
-    ? getSideLayout(presentEnd, mode, endWidth, hasComparison)
+    ? getSideLayout(presentEnd, mode, endWidth, hasComparison, showValues)
     : null;
 
   return {
