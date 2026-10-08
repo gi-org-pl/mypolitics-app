@@ -58,6 +58,8 @@ export type SurveyLoadResult =
   | { status: "not-found" }
   | { status: "failed" };
 
+export type SurveyLoadState = { status: "loading" } | SurveyLoadResult;
+
 export type ResidenceAreaSize =
   | "village"
   | "city_below_50k"
@@ -229,6 +231,15 @@ export interface SurveySessionApi {
 }
 
 export type SurveySessionActions = Omit<SurveySessionApi, "session">;
+
+// What every phase of the questionnaire screen is given. The content of a
+// phase is a component that takes exactly this.
+export interface SurveyPhaseContentProps {
+  survey: Survey;
+  session: SurveySessionApi; // from useSurveySession(survey); the screen calls the hook once
+  lock: () => void; // call at a press that changes the screen only after a delay; the screen releases it
+  onLeave: () => void; // end the session and open the results destination
+}
 
 // What an event makes of a session. It returns the very session it was handed
 // when the event does not apply at that moment.
