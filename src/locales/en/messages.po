@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/survey/SurveyCategorySelect/SurveyCategorySelectPrompt/SurveyCategorySelectPrompt.tsx:15
+msgid "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
+msgstr "{count, plural, one {Choose the # topic that matters most to you.} other {Choose the # topics that matter most to you.}}"
+
 #: src/components/results/ResultsHeader/ResultsHeaderLinkButton/ResultsHeaderLinkButton.tsx:26
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (opens in a new tab)"
