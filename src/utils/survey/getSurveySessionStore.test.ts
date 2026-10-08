@@ -212,6 +212,33 @@ describe("getSurveySessionStore()", () => {
       expect(getSurveySessionStore(survey).getState().id).not.toBe(stored.id);
     });
 
+    it("hands out the restored session as the one it started with", () => {
+      const survey = createQuiz();
+
+      writeRecord(survey, createStartedSession(survey, 1));
+
+      const store = getSurveySessionStore(survey);
+
+      expect(store.restoredSession).toBe(store.getState());
+
+      store.setState(createStartedSession(survey, 2), true);
+
+      expect(store.restoredSession).not.toBe(store.getState());
+    });
+
+    it("names no restored session for a session created on this page", () => {
+      const fresh = createQuiz();
+      const broken = createQuiz();
+      const foreign = createQuiz();
+
+      sessionStorage.setItem(getSessionStorageKey(broken.id), '{"state":null}');
+      writeRecord(foreign, createStartedSession(createQuiz(), 2));
+
+      expect(getSurveySessionStore(fresh).restoredSession).toBeUndefined();
+      expect(getSurveySessionStore(broken).restoredSession).toBeUndefined();
+      expect(getSurveySessionStore(foreign).restoredSession).toBeUndefined();
+    });
+
     it("restores once: a record written later does not reach the store", () => {
       const survey = createQuiz();
       const store = getSurveySessionStore(survey);

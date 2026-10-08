@@ -9,6 +9,7 @@ import type {
   StoredSurveySession,
   Survey,
   SurveySession,
+  SurveySessionStore,
 } from "@/types/survey";
 import { getSafeSessionStorage } from "@/utils/storage/getSafeSessionStorage";
 import { toJsonStorage } from "@/utils/storage/toJsonStorage";
@@ -16,7 +17,7 @@ import { toJsonStorage } from "@/utils/storage/toJsonStorage";
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { restoreSession } from "./restoreSession";
 
-const stores = new Map<string, StoreApi<SurveySession>>();
+const stores = new Map<string, SurveySessionStore>();
 
 // One store per quiz identifier, for as long as the page lives: a quiz read
 // again in another language finds the session it had.
@@ -29,9 +30,12 @@ const stores = new Map<string, StoreApi<SurveySession>>();
 // The store holds the session as it was last written. It is not fitted again
 // when the quiz is read again: `useSurveySession` does that for the quiz it is
 // handed, and a caller that reads the store by itself uses `fitSession`.
-export const getSurveySessionStore = (
-  survey: Survey,
-): StoreApi<SurveySession> => {
+//
+// The store also says whether the session it started with was read from
+// storage: `restoredSession` is that session, and is absent for a session
+// created on this page. The identifier of a new session is random, so a
+// session with the identifier of the record is the record.
+export const getSurveySessionStore = (survey: Survey): SurveySessionStore => {
   const knownStore = stores.get(survey.id);
 
   if (knownStore) return knownStore;
@@ -41,12 +45,9 @@ export const getSurveySessionStore = (
   const storage = textStorage
     ? toJsonStorage<StorageValue<StoredSurveySession>>(textStorage)
     : undefined;
-  const session = restoreSession(
-    survey,
-    storage?.getItem(name),
-    SURVEY_SESSION_CONFIG,
-  );
-  const store = storage
+  const stored = storage?.getItem(name);
+  const session = restoreSession(survey, stored, SURVEY_SESSION_CONFIG);
+  const sessionStore: StoreApi<SurveySession> = storage
     ? createStore<SurveySession>()(
         persist(() => session, {
           name,
@@ -58,6 +59,9 @@ export const getSurveySessionStore = (
         }),
       )
     : createStore<SurveySession>()(() => session);
+  const store: SurveySessionStore = Object.assign(sessionStore, {
+    restoredSession: stored?.state?.id === session.id ? session : undefined,
+  });
 
   stores.set(survey.id, store);
 

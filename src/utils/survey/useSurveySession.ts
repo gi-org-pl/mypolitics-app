@@ -20,6 +20,7 @@ import { getSurveySessionStore } from "./getSurveySessionStore";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { leaveSessionEmailCapture } from "./leaveSessionEmailCapture";
 import { resetSession } from "./resetSession";
+import { setSessionCheckpointRecord } from "./setSessionCheckpointRecord";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
 import { setSessionResultState } from "./setSessionResultState";
@@ -58,6 +59,11 @@ export const useSurveySession = (survey: Survey): SurveySessionApi => {
         store,
         survey,
         turnSessionCheckpointsOff,
+      ),
+      setCheckpointRecord: bindSessionAction(
+        store,
+        survey,
+        setSessionCheckpointRecord,
       ),
       setDemographics: bindSessionAction(store, survey, setSessionDemographics),
       leaveDemographics: bindSessionAction(

@@ -70,6 +70,17 @@ describe("useSurveySession()", () => {
         { type: "halfway" },
       ]);
 
+      act(() =>
+        result.current.setCheckpointRecord({
+          cardsShown: [{ type: "halfway", isRevealed: true }],
+          timeSamples: [{ questionId: "q1", seconds: 4 }],
+        }),
+      );
+      expect(result.current.session.phase).toBe("checkpoints");
+      expect(result.current.session.checkpointRecord.cardsShown).toEqual([
+        { type: "halfway", isRevealed: true },
+      ]);
+
       act(() => result.current.closeCheckpoint());
       expect(result.current.session.phase).toBe("questions");
 
@@ -313,7 +324,7 @@ describe("useSurveySession()", () => {
       const { session: nextSession, ...nextActions } = result.current;
 
       expect(nextSession).not.toBe(session);
-      expect(Object.keys(actions)).toHaveLength(17);
+      expect(Object.keys(actions)).toHaveLength(18);
 
       for (const [name, action] of Object.entries(actions)) {
         expect(nextActions[name as keyof typeof actions]).toBe(action);
