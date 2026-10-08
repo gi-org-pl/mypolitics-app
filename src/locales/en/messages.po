@@ -29,6 +29,10 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
 msgstr "“{leading}” or “{other}”? At this stage of the quiz you are closer to the first of these sides."
 
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:29
+msgid "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
+msgstr "“{start}” and “{end}”: the higher score is on the “{leading}” side"
+
 #: src/components/survey/SurveyCategorySelect/SurveyCategorySelectPrompt/SurveyCategorySelectPrompt.tsx:15
 msgid "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
 msgstr "{count, plural, one {Choose the # topic that matters most to you.} other {Choose the # topics that matter most to you.}}"
@@ -41,11 +45,11 @@ msgstr "{label} (opens in a new tab)"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:138
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -237,7 +241,7 @@ msgstr "No match"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -763,7 +767,11 @@ msgstr "Skip"
 msgid "Poprzednie pytanie"
 msgstr "Previous question"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:145
+msgid "porównanie z {name}"
+msgstr "compared with {name}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 
@@ -885,6 +893,10 @@ msgstr "A rare specimen"
 msgctxt "checkpoint-axis-closeness-single"
 msgid "Skala „{orientation}”: jak dotąd wysoki wynik."
 msgstr "The “{orientation}” scale: a high score so far."
+
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:22
+msgid "Skala „{orientation}”: wysoki wynik"
+msgstr "The “{orientation}” scale: a high score"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:29
 msgid "Słuchamy wywiadów w telewizji"

@@ -1,3 +1,4 @@
+import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
 import type { CheckpointCardRegistry } from "@/types/checkpoint";
 
 // The card component of every checkpoint type that has one. A card task
@@ -9,4 +10,6 @@ import type { CheckpointCardRegistry } from "@/types/checkpoint";
 //
 // This file imports card components and nothing else. The phases of the
 // screen read it, so it must not import any of them.
-export const CHECKPOINT_CARDS: CheckpointCardRegistry = {};
+export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
+  "axis-closeness": SurveyCheckpointAxisCloseness,
+};
