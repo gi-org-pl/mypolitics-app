@@ -1,27 +1,14 @@
-import React from "react";
-import type { Feature, FeaturesListProps } from "./FeaturesList.types";
+import { withKeys } from "@/utils/array/withKeys";
 
-const FeatureCard = ({ feature }: { feature: Feature }) => {
-  return (
-    <article className="flex flex-col gap-2 p-6 rounded-3xl border border-gi-primary/10 bg-white md:rounded-[2rem]">
-      <h3 className="text-[24px] leading-[1.4] text-gi-primary font-bold">
-        {feature.title}
-      </h3>
-      <p className="text-[16px] leading-[1.4] text-gi-primary m-0 [&_a]:underline">
-        {feature.description}
-      </p>
-    </article>
-  );
-};
+import { FeatureCard } from "./FeatureCard/FeatureCard";
+import type { FeaturesListProps } from "./FeaturesList.types";
 
-export const FeaturesList: React.FC<FeaturesListProps> = ({ features }) => {
-  return (
-    <ul className="grid gap-4 grid-cols-1 md:grid-cols-3">
-      {features.map((feature, index) => (
-        <li key={`${feature.title}-${index}`}>
-          <FeatureCard feature={feature} />
-        </li>
-      ))}
-    </ul>
-  );
-};
+export const FeaturesList = ({ features }: FeaturesListProps) => (
+  <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
+    {withKeys(features, (feature) => feature.title).map(({ item, key }) => (
+      <li key={key}>
+        <FeatureCard feature={item} />
+      </li>
+    ))}
+  </ul>
+);

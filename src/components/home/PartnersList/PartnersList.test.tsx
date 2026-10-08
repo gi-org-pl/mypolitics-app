@@ -1,117 +1,75 @@
-import { render, screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+
 import { PartnersList } from "./PartnersList";
 import type { PartnerSection } from "./PartnersList.types";
 
-const sectionWithTitle: PartnerSection = {
-  title: "Section title",
+const PARTNERS_SECTION: PartnerSection = {
+  title: "Partnerzy",
   partners: [
     {
-      title: "Linked partner",
-      logoUrl: "linked-partner.svg",
-      www: "https://example.com/linked-partner",
+      title: "Demagog",
+      logoUrl: "/assets/demagog.png",
+      www: "https://demagog.org.pl",
     },
-    {
-      title: "Second linked partner",
-      logoUrl: "second-linked-partner.svg",
-      www: "https://example.com/second-linked-partner",
-    },
+    { title: "Onet", logoUrl: "/assets/onet.png" },
   ],
 };
 
-const sectionWithoutTitle: PartnerSection = {
-  partners: [
-    {
-      title: "Third linked partner",
-      logoUrl: "third-linked-partner.svg",
-      www: "https://example.com/third-linked-partner",
-    },
-    {
-      title: "Unlinked partner",
-      logoUrl: "unlinked-partner.svg",
-    },
-  ],
+const PATRONS_SECTION: PartnerSection = {
+  title: "Patroni medialni",
+  partners: [{ title: "Wprost", logoUrl: "/assets/wprost.png" }],
+};
+
+const UNTITLED_SECTION: PartnerSection = {
+  partners: [{ title: "Polityka", logoUrl: "/assets/polityka.png" }],
 };
 
 describe("<PartnersList />", () => {
-  describe("given sections with partners", () => {
-    it("renders a logo for each partner", () => {
-      render(
-        <PartnersList sections={[sectionWithTitle, sectionWithoutTitle]} />,
+  describe("when it gets sections", () => {
+    it("renders one list of logos per section, in the given order", () => {
+      renderWithI18n(
+        <PartnersList sections={[PARTNERS_SECTION, PATRONS_SECTION]} />,
       );
 
-      expect(screen.getAllByRole("img")).toHaveLength(4);
-    });
+      const [partners, patrons] = screen.getAllByRole("list");
 
-    it("renders the correct alt and title attributes on each logo", () => {
-      render(<PartnersList sections={[sectionWithTitle]} />);
-
-      const linkedPartnerLogo = screen.getByAltText("Linked partner");
-      const secondLinkedPartnerLogo = screen.getByAltText(
-        "Second linked partner",
-      );
-
-      expect(linkedPartnerLogo).toHaveAttribute("alt", "Linked partner");
-      expect(linkedPartnerLogo).toHaveAttribute("title", "Linked partner");
-      expect(secondLinkedPartnerLogo).toHaveAttribute(
-        "alt",
-        "Second linked partner",
-      );
-      expect(secondLinkedPartnerLogo).toHaveAttribute(
-        "title",
-        "Second linked partner",
-      );
-    });
-  });
-
-  describe("given a partner with a www URL", () => {
-    it("wraps the logo in an external link", () => {
-      render(<PartnersList sections={[sectionWithTitle]} />);
-
+      expect(partners).toHaveAccessibleName("Partnerzy");
+      expect(within(partners).getAllByRole("img")).toHaveLength(2);
+      expect(patrons).toHaveAccessibleName("Patroni medialni");
       expect(
-        screen.getByRole("link", { name: "Linked partner" }),
-      ).toHaveAttribute("href", "https://example.com/linked-partner");
+        within(patrons).getByRole("img", { name: "Wprost" }),
+      ).toBeVisible();
     });
 
-    it('sets target="_blank" and rel="noopener noreferrer" on the link', () => {
-      render(<PartnersList sections={[sectionWithTitle]} />);
+    it("passes each partner to its section", () => {
+      renderWithI18n(<PartnersList sections={[PARTNERS_SECTION]} />);
 
-      const link = screen.getByRole("link", { name: "Linked partner" });
-
-      expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    });
-  });
-
-  describe("given a partner without a www URL", () => {
-    it("renders the logo without a link wrapper", () => {
-      render(<PartnersList sections={[sectionWithoutTitle]} />);
-
-      expect(screen.getByAltText("Unlinked partner").closest("a")).toBeNull();
+      expect(screen.getByRole("link", { name: "Demagog" })).toHaveAttribute(
+        "href",
+        "https://demagog.org.pl",
+      );
+      expect(screen.getByRole("img", { name: "Onet" })).toBeVisible();
     });
   });
 
-  describe("given a section with a title", () => {
-    it("renders the section title with a colon suffix", () => {
-      render(<PartnersList sections={[sectionWithTitle]} />);
+  describe("when two sections have no title", () => {
+    it("renders both", () => {
+      renderWithI18n(
+        <PartnersList sections={[UNTITLED_SECTION, UNTITLED_SECTION]} />,
+      );
 
-      expect(screen.getByText("Section title:")).toBeInTheDocument();
+      expect(screen.getAllByRole("img", { name: "Polityka" })).toHaveLength(2);
     });
   });
 
-  describe("given a section without a title", () => {
-    it("does not render any section title", () => {
-      render(<PartnersList sections={[sectionWithoutTitle]} />);
-
-      expect(screen.queryByText("Section title:")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("given an empty sections array", () => {
+  describe("when the list of sections is empty", () => {
     it("renders nothing", () => {
-      const { container } = render(<PartnersList sections={[]} />);
+      const { container } = renderWithI18n(<PartnersList sections={[]} />);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 });

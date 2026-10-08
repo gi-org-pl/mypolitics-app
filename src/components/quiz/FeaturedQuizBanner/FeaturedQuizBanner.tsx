@@ -1,43 +1,40 @@
-import { t } from "@lingui/core/macro";
-import React from "react";
-import quizBannerBg from "@/assets/images/home/quiz-banner-bg.png";
+import { useLingui } from "@lingui/react/macro";
+
+import quizBannerBackground from "@/assets/images/home/quiz-banner-bg.png";
 import quizBannerContent from "@/assets/images/home/quiz-banner-content.png";
 
-const FeaturedQuizBanner: React.FC = () => {
+import {
+  FLOAT_CLASS_NAME,
+  FLOAT_KEYFRAMES,
+} from "./FeaturedQuizBanner.constants";
+
+// The banner is a picture frame: it is as wide as its parent and takes its
+// height from the proportion of the picture; a parent that sets a height of
+// its own (a row shared with a taller card) stretches it. Its pictures
+// load lazily, so a page that does not display the banner on a narrow screen
+// does not download them there.
+export const FeaturedQuizBanner = () => {
+  const { t } = useLingui();
+
   return (
-    <>
-      <style>{`
-        @keyframes quiz-banner-float {
-          0%,
-          100% {
-            transform: translate(0px, 0px);
-          }
-          25% {
-            transform: translate(6px, -6px);
-          }
-          50% {
-            transform: translate(0px, -10px);
-          }
-          75% {
-            transform: translate(-6px, -6px);
-          }
-        }
-      `}</style>
-      <div className="relative flex h-[292px] w-full items-center justify-center overflow-hidden rounded-4xl bg-[#01171B]">
-        <img
-          src={quizBannerBg}
-          alt={t`mypolitics banner background`}
-          className="absolute inset-0 h-full w-full object-cover"
-          aria-hidden="true"
-        />
+    <div className="relative aspect-389/117 h-full w-full overflow-hidden rounded-4xl bg-gi-dark-primary">
+      <style>{FLOAT_KEYFRAMES}</style>
+
+      <img
+        src={quizBannerBackground}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover"
+      />
+
+      <div className="absolute inset-0 flex items-center justify-center">
         <img
           src={quizBannerContent}
-          alt={t`mypolitics banner content`}
-          className="relative h-[calc(100%+30px)] w-auto animate-[quiz-banner-float_4s_ease-in-out_infinite] motion-reduce:animate-none object-contain drop-shadow-[0_0_32px_rgba(0,0,0,0.5)]"
+          alt={t`Podgląd wyników quizu myPolitics`}
+          loading="lazy"
+          className={`w-auto max-w-none shrink-0 drop-shadow-[0_0_32px_rgba(0,0,0,0.5)] ${FLOAT_CLASS_NAME}`}
         />
       </div>
-    </>
+    </div>
   );
 };
-
-export default FeaturedQuizBanner;

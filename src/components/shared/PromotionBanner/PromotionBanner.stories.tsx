@@ -11,8 +11,8 @@ const activePromotion: Promotion = {
   name: "Dołącz do kampanii myPolitics",
   url: "https://mypolitics.pl",
   date: {
-    start: new Date("2026-01-01T00:00:00.000Z"),
-    end: new Date("2026-12-31T23:59:59.999Z"),
+    start: new Date("2024-01-01T00:00:00.000Z"),
+    end: new Date("2099-12-31T23:59:59.999Z"),
   },
   imageUrl: {
     mobile: bannerMobile,
@@ -22,37 +22,25 @@ const activePromotion: Promotion = {
 };
 
 const secondActivePromotion: Promotion = {
+  ...activePromotion,
   name: "Dołącz do społeczności myPolitics",
-  url: "https://mypolitics.pl",
-  date: {
-    start: new Date("2026-01-01T00:00:00.000Z"),
-    end: new Date("2026-12-31T23:59:59.999Z"),
-  },
-  imageUrl: {
-    mobile: bannerMobile,
-    tablet: bannerTablet,
-    desktop: bannerDesktop,
-  },
 };
 
 const expiredPromotion: Promotion = {
   ...activePromotion,
   name: "Zakończona kampania myPolitics",
   date: {
-    start: new Date("2025-01-01T00:00:00.000Z"),
-    end: new Date("2025-12-31T23:59:59.999Z"),
+    start: new Date("2023-01-01T00:00:00.000Z"),
+    end: new Date("2023-12-31T23:59:59.999Z"),
   },
 };
 
 const meta = {
+  title: "Shared/PromotionBanner",
   component: PromotionBanner,
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-5xl p-6">
-        <Story />
-      </div>
-    ),
-  ],
+  parameters: {
+    layout: "fullscreen",
+  },
 } satisfies Meta<typeof PromotionBanner>;
 
 export default meta;
@@ -62,20 +50,6 @@ type Story = StoryObj<typeof meta>;
 export const Active: Story = {
   args: {
     promotions: [activePromotion],
-  },
-};
-
-export const ActiveMobile: Story = {
-  args: {
-    promotions: [activePromotion],
-  },
-  parameters: {
-    viewport: {
-      defaultViewport: "mobile1",
-    },
-    chromatic: {
-      viewports: [375],
-    },
   },
 };
 

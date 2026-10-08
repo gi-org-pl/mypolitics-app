@@ -1,32 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import MYPOLITICS_LOGO from "@/assets/vectors/mypolitics.svg";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import myPoliticsLogo from "@/assets/vectors/mypolitics.svg";
+
 import { PartnersList } from "./PartnersList";
 import type { Partner, PartnerSection } from "./PartnersList.types";
 
-const meta: Meta<typeof PartnersList> = {
-  title: "home/PartnersList",
-  component: PartnersList,
-  parameters: {
-    layout: "padded",
-  },
-};
-
-export default meta;
-
-type Story = StoryObj<typeof PartnersList>;
-
 const linkedPartner = (partnerNumber: number): Partner => ({
   title: `Partner ${partnerNumber}`,
-  logoUrl: MYPOLITICS_LOGO,
+  logoUrl: myPoliticsLogo,
   www: "https://mypolitics.pl",
 });
 
 const unlinkedPartner = (partnerNumber: number): Partner => ({
   title: `Partner ${partnerNumber}`,
-  logoUrl: MYPOLITICS_LOGO,
+  logoUrl: myPoliticsLogo,
 });
 
-const defaultSections: PartnerSection[] = [
+const sections: PartnerSection[] = [
   {
     title: "Partnerzy",
     partners: Array.from({ length: 4 }, (_, index) =>
@@ -40,24 +30,34 @@ const defaultSections: PartnerSection[] = [
     ),
   },
   {
-    title: "Mówili o nas",
     partners: Array.from({ length: 8 }, (_, index) =>
       index % 4 === 0 ? unlinkedPartner(index + 9) : linkedPartner(index + 9),
     ),
   },
 ];
 
-export const Default: Story = {
-  args: {
-    sections: defaultSections,
+const meta = {
+  title: "Home/PartnersList",
+  component: PartnersList,
+  parameters: {
+    layout: "fullscreen",
   },
-};
+  args: {
+    sections,
+  },
+} satisfies Meta<typeof PartnersList>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};
 
 export const SingleSection: Story = {
   args: {
     sections: [
       {
-        partners: Array.from({ length: 16 }, (_, index) =>
+        partners: Array.from({ length: 28 }, (_, index) =>
           linkedPartner(index + 1),
         ),
       },
@@ -71,6 +71,20 @@ export const NoLinks: Story = {
       {
         partners: Array.from({ length: 10 }, (_, index) =>
           unlinkedPartner(index + 1),
+        ),
+      },
+    ],
+  },
+};
+
+export const LongSectionTitle: Story = {
+  args: {
+    sections: [
+      {
+        title:
+          "Organizacje, redakcje i twórcy, którzy pisali i mówili o naszych quizach",
+        partners: Array.from({ length: 6 }, (_, index) =>
+          linkedPartner(index + 1),
         ),
       },
     ],

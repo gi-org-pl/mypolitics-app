@@ -1,92 +1,52 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
 import { FeaturesList } from "./FeaturesList";
 import type { Feature } from "./FeaturesList.types";
 
-describe("<FeaturesList />", () => {
-  describe("given a list of features", () => {
-    it("renders a card for each feature", () => {
-      const features: Feature[] = [
-        { title: "Title 1", description: "Desc 1" },
-        { title: "Title 2", description: "Desc 2" },
-      ];
+const FEATURES: Feature[] = [
+  { title: "+4 000 000 osób", description: "Pomogliśmy milionom." },
+  { title: "Nikt nas nie finansuje", description: "Tworzą nas wolontariusze." },
+];
 
-      render(<FeaturesList features={features} />);
+const getCardTitles = () =>
+  screen
+    .getAllByRole("listitem")
+    .map((item) => within(item).getByRole("heading").textContent);
+
+describe("<FeaturesList />", () => {
+  describe("when it gets features", () => {
+    it("renders one card per feature, in the given order", () => {
+      render(<FeaturesList features={FEATURES} />);
+
+      expect(getCardTitles()).toEqual(FEATURES.map(({ title }) => title));
+    });
+
+    it("passes the description of each feature to its card", () => {
+      render(<FeaturesList features={FEATURES} />);
+
+      const [first, second] = screen.getAllByRole("article");
+
+      expect(within(first).getByText("Pomogliśmy milionom.")).toBeVisible();
+      expect(
+        within(second).getByText("Tworzą nas wolontariusze."),
+      ).toBeVisible();
+    });
+  });
+
+  describe("when two features share a title", () => {
+    it("renders both", () => {
+      render(<FeaturesList features={[FEATURES[0], FEATURES[0]]} />);
 
       expect(screen.getAllByRole("article")).toHaveLength(2);
     });
-
-    it("renders the title of each feature", () => {
-      const features: Feature[] = [
-        { title: "Title 1", description: "Desc 1" },
-        { title: "Title 2", description: "Desc 2" },
-      ];
-
-      render(<FeaturesList features={features} />);
-
-      expect(screen.getByRole("heading", { name: "Title 1" })).toBeVisible();
-      expect(screen.getByRole("heading", { name: "Title 2" })).toBeVisible();
-    });
-
-    it("renders the description of each feature", () => {
-      const features: Feature[] = [
-        { title: "Title 1", description: "Desc 1" },
-        { title: "Title 2", description: "Desc 2" },
-      ];
-
-      render(<FeaturesList features={features} />);
-
-      expect(screen.getByText("Desc 1")).toBeVisible();
-      expect(screen.getByText("Desc 2")).toBeVisible();
-    });
   });
 
-  describe("given a feature with a ReactNode description", () => {
-    it("renders the inline link within the description", () => {
-      const features: Feature[] = [
-        {
-          title: "Title 1",
-          description: (
-            <>
-              Learn more <a href="/docs">here</a>.
-            </>
-          ),
-        },
-      ];
-
-      render(<FeaturesList features={features} />);
-
-      expect(screen.getByRole("link", { name: "here" })).toHaveAttribute(
-        "href",
-        "/docs",
-      );
-    });
-  });
-
-  describe("given an empty features array", () => {
-    it("renders no cards", () => {
+  describe("when the list of features is empty", () => {
+    it("renders an empty list", () => {
       render(<FeaturesList features={[]} />);
 
-      expect(screen.queryAllByRole("article")).toHaveLength(0);
-    });
-  });
-
-  describe("layout", () => {
-    it("applies a single-column layout on mobile", () => {
-      const features: Feature[] = [{ title: "Title 1", description: "Desc 1" }];
-
-      const { container } = render(<FeaturesList features={features} />);
-
-      const list = container.querySelector("ul");
-      expect(list).toHaveClass("grid-cols-1");
-    });
-
-    it("applies a 3-column grid layout on desktop", () => {
-      const features: Feature[] = [{ title: "Title 1", description: "Desc 1" }];
-
-      const { container } = render(<FeaturesList features={features} />);
-
-      const list = container.querySelector("ul");
-      expect(list).toHaveClass("md:grid-cols-3");
+      expect(screen.getByRole("list")).toBeEmptyDOMElement();
     });
   });
 });
