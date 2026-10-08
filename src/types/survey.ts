@@ -103,6 +103,23 @@ export interface SurveyResult {
   isCalculated: boolean;
 }
 
+export type ResultLinkLanguage = "pl" | "en";
+
+// What the request for the result link is made of. The address and the
+// consent come from the e-mail card; results calculation adds the rest.
+export interface ResultLinkInput {
+  email: string; // the address
+  resultId: string; // the session identifier - the result the link opens
+  marketingConsent: boolean; // SurveyEmail.hasConsent
+  language: ResultLinkLanguage;
+}
+
+export type ResultLinkOutcome =
+  | "accepted" // 202
+  | "invalid" // 400
+  | "limited" // 429
+  | "unavailable"; // 503, any other reply, no connection, no reply in time, no endpoint configured
+
 export type SurveyPhase =
   | "category-select"
   | "questions"

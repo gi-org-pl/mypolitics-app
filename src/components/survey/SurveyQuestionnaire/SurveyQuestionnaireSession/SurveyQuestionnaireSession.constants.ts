@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 import type { SurveyPhase, SurveyPhaseContentProps } from "@/types/survey";
 import { SurveyQuestionnaireCategorySelect } from "./SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect";
 import { SurveyQuestionnaireDemographics } from "./SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics";
+import { SurveyQuestionnaireEmailCapture } from "./SurveyQuestionnaireEmailCapture/SurveyQuestionnaireEmailCapture";
 import { SurveyQuestionnaireHandIn } from "./SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn";
 import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions/SurveyQuestionnaireQuestions";
 
@@ -17,6 +18,7 @@ export const SURVEY_PHASE_CONTENT: Partial<
   "category-select": SurveyQuestionnaireCategorySelect,
   questions: SurveyQuestionnaireQuestions,
   demographics: SurveyQuestionnaireDemographics,
+  "email-capture": SurveyQuestionnaireEmailCapture,
   "results-calculation": SurveyQuestionnaireHandIn, // stand-in until survey-results-calculation
 };
 

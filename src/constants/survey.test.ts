@@ -1,10 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   ADULT_AGE,
   DEMOGRAPHICS_FIELD_IDS,
   DEMOGRAPHICS_VALUES,
+  EMAIL_CONSENT_WORDING,
+  EMAIL_MAX_LENGTH,
   MAX_TOPICS,
+  RESULT_LINK_TIMEOUT_MS,
   SURVEY_ANSWER_KINDS,
   SURVEY_PHASES,
   SURVEY_SCALE_ANSWER_KINDS,
@@ -13,7 +16,22 @@ import {
   SURVEY_SESSION_VERSION,
 } from "./survey";
 
+// The address of the endpoint is a value of the build, read when the module
+// loads: the module is loaded again for the build a test stands in for.
+const loadConstants = async (
+  resultsEmailUrl?: string,
+): Promise<typeof import("./survey")> => {
+  vi.resetModules();
+  vi.stubEnv("VITE_RESULTS_EMAIL_URL", resultsEmailUrl);
+
+  return import("./survey");
+};
+
 describe("the constants of the survey session", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   describe("SURVEY_PHASES", () => {
     it("holds the seven phases in their fixed order", () => {
       expect(SURVEY_PHASES).toEqual([
@@ -111,13 +129,57 @@ describe("the constants of the survey session", () => {
       expect(ADULT_AGE).toBe(18);
     });
 
-    it("has the e-mail phase switched off", () => {
-      expect(SURVEY_SESSION_CONFIG).toEqual({ isEmailSendingSetUp: false });
+    it("has the e-mail phase as its only switch", () => {
+      expect(Object.keys(SURVEY_SESSION_CONFIG)).toEqual([
+        "isEmailSendingSetUp",
+      ]);
     });
 
     it("names the stored record and its version", () => {
       expect(SURVEY_SESSION_STORAGE_KEY).toBe("mypolitics:survey-session");
       expect(SURVEY_SESSION_VERSION).toBe(1);
+    });
+  });
+  describe("the e-mail phase", () => {
+    it.each([
+      ["not set", undefined],
+      ["empty", ""],
+      ["only space", "   "],
+      ["not a web address", "link.mypolitics.test/send"],
+      ["an http address", "http://link.mypolitics.test/send"],
+    ])("is off when VITE_RESULTS_EMAIL_URL is %s", async (_, value) => {
+      const constants = await loadConstants(value);
+
+      expect(constants.RESULT_LINK_URL).toBeUndefined();
+      expect(constants.SURVEY_SESSION_CONFIG).toEqual({
+        isEmailSendingSetUp: false,
+      });
+    });
+
+    it.each([
+      ["an https address", "https://link.mypolitics.test/send"],
+      [
+        "an https address with space around it",
+        "  https://link.mypolitics.test/send\n",
+      ],
+    ])("is on when VITE_RESULTS_EMAIL_URL is %s, and keeps the address trimmed", async (_, value) => {
+      const constants = await loadConstants(value);
+
+      expect(constants.RESULT_LINK_URL).toBe(
+        "https://link.mypolitics.test/send",
+      );
+      expect(constants.SURVEY_SESSION_CONFIG).toEqual({
+        isEmailSendingSetUp: true,
+      });
+    });
+
+    it("gives the request for the link ten seconds", () => {
+      expect(RESULT_LINK_TIMEOUT_MS).toBe(10_000);
+    });
+
+    it("names the consent text and limits an address to 254 characters", () => {
+      expect(EMAIL_CONSENT_WORDING).toBe("marketing-v1");
+      expect(EMAIL_MAX_LENGTH).toBe(254);
     });
   });
 });

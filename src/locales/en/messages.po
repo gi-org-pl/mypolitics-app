@@ -192,6 +192,10 @@ msgstr "9 min"
 msgid "90 min"
 msgstr "90 min"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:36
+msgid "Adres e-mail"
+msgstr "E-mail address"
+
 #: src/constants/home.ts:77
 msgid "Algorytm jest jawny"
 msgstr "The algorithm is open"
@@ -218,6 +222,10 @@ msgstr "Are you sure you want to start the quiz {quizName} over? Your answers wi
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:44
+msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "We care about your privacy: your personal data (including your e-mail address) will never be linked to data about your views."
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
@@ -446,10 +454,15 @@ msgstr "Show axes"
 msgid "Pokaż wszystkie"
 msgstr "Show all"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:41
+msgid "Polityka prywatności."
+msgstr "Privacy policy."
+
 #: src/constants/home.ts:260
 msgid "Polskie Lata 90."
 msgstr "Poland in the 1990s"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
 #: src/components/survey/SurveyPhaseActions/SurveyPhaseActions.tsx:48
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireQuestions/SurveyQuestionnaireAnswers/SurveyQuestionnaireAnswers.tsx:46
 msgid "Pomiń"
@@ -479,11 +492,11 @@ msgstr "Learn what shapes your orientation"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:32
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
 msgid "Prawie gotowe"
 msgstr "Almost ready"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:31
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
 msgid "Prawie koniec!"
 msgstr "Almost done!"
 
@@ -591,6 +604,10 @@ msgstr "Meaning?"
 msgid "Tryb porównania"
 msgstr "Comparison mode"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:37
+msgid "twoj@mail.com"
+msgstr "your@mail.com"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:9
 msgid "Twoja tożsamość"
 msgstr "Your identity"
@@ -635,7 +652,11 @@ msgstr "Village"
 msgid "Wolę nie podawać"
 msgstr "I prefer not to say"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:42
+msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
+msgstr "Enter a full e-mail address, for example your@mail.com."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
 msgid "Wróć"
 msgstr "Go back"
 
@@ -671,6 +692,18 @@ msgstr "Elections 2023"
 msgid "Wykształcenie"
 msgstr "Education"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:30
+msgid "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+msgstr "I agree to the processing of my personal data for the purpose of sending me marketing content by the Generacja Innowacja Foundation."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:41
+msgid "Wyślemy na Twój e-mail link do wyników, dzięki czemu łatwo do nich wrócisz."
+msgstr "We will e-mail you a link to your results, so you can easily come back to them."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
+msgid "Wyślij i zobacz wyniki"
+msgstr "Send and see results"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:31
 msgid "Wyższe"
 msgstr "Higher"
@@ -690,6 +723,10 @@ msgstr "Instead of politics, let's argue about music!"
 #: src/components/shared/Header/Header.tsx:37
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:38
+msgid "Zapisz swoje wyniki!"
+msgstr "Save your results!"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:29
 msgid "Zasadnicze zawodowe"
