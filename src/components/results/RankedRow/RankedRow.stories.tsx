@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { RankedRow } from "./RankedRow";
 
@@ -17,15 +17,17 @@ const iconUrl = toDataUrl(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><path d="M1 1h10v10H1zM1 1l10 10M11 1L1 11" fill="none" stroke="#004554" stroke-width="1.2"/></svg>',
 );
 
-const orientation: AxisOrientation = {
+const orientation: Orientation = {
   id: "a",
+  type: "ideology",
   name: "Orientation A",
   imageUrl: createImageUrl("#dcdfe3"),
   color: "#d5213d",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: createImageUrl("#004554"),
   color: "#004554",

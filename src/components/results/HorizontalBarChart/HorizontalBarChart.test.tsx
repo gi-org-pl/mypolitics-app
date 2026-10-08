@@ -2,7 +2,7 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import type { RankedEntry } from "../RankedRow/RankedRow.types";
 import { HorizontalBarChart } from "./HorizontalBarChart";
@@ -16,9 +16,14 @@ const entry = (
   value?: number,
   badge?: RankedEntry["badge"],
 ): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
   badge,
+});
+
+const hidden = (name: string, value?: number): RankedEntry => ({
+  orientation: createOrientation(name.toLowerCase(), name, { isHidden: true }),
+  value,
 });
 
 const ENTRIES: RankedEntry[] = [
@@ -43,7 +48,7 @@ const CATEGORIES: RankedCategory[] = [
   { name: "Światopogląd", entries: [entry("Delta", 75), entry("Alfa", 10)] },
 ];
 
-const FRIEND = { id: "ania", name: "Ania" };
+const FRIEND = createOrientation("ania", "Ania", { type: "person" });
 
 const renderChart = (props: Partial<HorizontalBarChartProps> = {}) =>
   renderWithI18n(<HorizontalBarChart title="Kandydaci" {...props} />);
@@ -488,7 +493,7 @@ describe("<HorizontalBarChart />", () => {
 
   describe("given a comparison", () => {
     const comparison = {
-      party: FRIEND,
+      orientation: FRIEND,
       values: { alfa: 30, gamma: 80, zulu: 50 },
     };
 
@@ -534,7 +539,7 @@ describe("<HorizontalBarChart />", () => {
     it("passes the value to a category leader and to the opened ranking", () => {
       renderChart({
         categories: CATEGORIES,
-        comparison: { party: FRIEND, values: { beta: 20, gamma: 45 } },
+        comparison: { orientation: FRIEND, values: { beta: 20, gamma: 45 } },
       });
 
       expect(
@@ -545,6 +550,73 @@ describe("<HorizontalBarChart />", () => {
 
       expect(
         screen.getByRole("img", { name: "Gamma: 60%, porównanie z Ania: 45%" }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a hidden orientation in a flat list", () => {
+    it("does not draw its row and does not count it against the fold", () => {
+      renderChart({
+        entries: [
+          entry("Delta", 40),
+          hidden("Alfa", 90),
+          entry("Beta", 70),
+          entry("Gamma", 55),
+        ],
+      });
+
+      expect(getNames()).toEqual(["Beta", "Gamma", "Delta"]);
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a category whose best entry is hidden", () => {
+    const categories: RankedCategory[] = [
+      {
+        name: "Gospodarka",
+        entries: [entry("Alfa", 20), hidden("Beta", 65), entry("Gamma", 60)],
+      },
+    ];
+
+    it("leads the category with the best entry that is shown", () => {
+      renderChart({ categories });
+
+      expect(
+        screen.getByRole("heading", { level: 3, name: "Gospodarka — Gamma" }),
+      ).toBeInTheDocument();
+
+      press("Pokaż kategorię: Gospodarka");
+
+      expect(getNames()).toEqual(["Gospodarka — Gamma", "Alfa"]);
+    });
+  });
+
+  describe("given only hidden orientations", () => {
+    it("draws the empty state", () => {
+      renderChart({ entries: [hidden("Alfa", 90), hidden("Beta", 70)] });
+
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Kandydaci" }),
+      ).toBeInTheDocument();
+      expect(screen.queryByRole("list")).not.toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a comparison value for a hidden orientation", () => {
+    it("ignores it", () => {
+      renderChart({
+        entries: [entry("Alfa", 90), hidden("Beta", 70), entry("Gamma", 55)],
+        comparison: { orientation: FRIEND, values: { alfa: 30, beta: 20 } },
+      });
+
+      expect(getNames()).toEqual(["Alfa", "Gamma"]);
+      expect(
+        screen.getAllByTestId("universal-axis-comparison-image"),
+      ).toHaveLength(1);
+      expect(
+        screen.getByRole("img", { name: "Alfa: 90%, porównanie z Ania: 30%" }),
       ).toBeInTheDocument();
     });
   });

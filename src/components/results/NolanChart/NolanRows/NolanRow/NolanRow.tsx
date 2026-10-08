@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { AxisRow } from "../../../AxisRow/AxisRow";
 import type {
@@ -15,7 +15,7 @@ interface NolanRowProps {
   coordinate?: number;
   lean?: NolanPoleSide;
   color?: string;
-  otherParty?: AxisOrientation;
+  otherOrientation?: Orientation;
   otherValues?: NolanAxisValues;
 }
 
@@ -24,7 +24,7 @@ export const NolanRow = ({
   coordinate,
   lean,
   color,
-  otherParty,
+  otherOrientation,
   otherValues,
 }: NolanRowProps) => (
   <div className="border-t border-gi-ash p-4">
@@ -33,7 +33,7 @@ export const NolanRow = ({
       leadName={getPoleName(axis, lean, coordinate)}
       start={getRowEntry(axis.start, lean === "start" ? color : undefined)}
       end={getRowEntry(axis.end, lean === "end" ? color : undefined)}
-      comparison={getRowComparison(otherParty, otherValues)}
+      comparison={getRowComparison(otherOrientation, otherValues)}
     />
   </div>
 );

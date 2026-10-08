@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { MultiAxisChart } from "./MultiAxisChart";
 import type { AxisGroup, AxisPair } from "./MultiAxisChart.types";
@@ -36,8 +36,9 @@ const createAxis = (
     name: string,
     color: string,
     offset: number,
-  ): AxisOrientation => ({
+  ): Orientation => ({
     id: `${id}-${side}`,
+    type: "ideology",
     name,
     imageUrl: imageUrl ?? ICONS[(index + offset) % ICONS.length],
     color,
@@ -251,8 +252,9 @@ const ecology: AxisGroup = {
 
 const EXAMPLE_GROUPS = [worldview, economy, system, foreignPolicy, ecology];
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: createIconUrl(
     '<rect width="32" height="32" fill="#004554"/><circle cx="16" cy="12" r="6" fill="white"/><path d="M4 32a12 12 0 0 1 24 0Z" fill="white"/>',
@@ -261,7 +263,7 @@ const friend: AxisOrientation = {
 };
 
 const COMPARISON = {
-  party: friend,
+  orientation: friend,
   values: {
     worldview: 35,
     force: 80,

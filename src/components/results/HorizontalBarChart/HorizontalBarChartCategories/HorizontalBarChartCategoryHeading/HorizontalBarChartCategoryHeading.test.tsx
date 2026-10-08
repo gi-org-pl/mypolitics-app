@@ -1,18 +1,18 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../../RankedRow/RankedRow.types";
 import { HorizontalBarChartCategoryHeading } from "./HorizontalBarChartCategoryHeading";
 
 const LEADER: RankedEntry = {
-  orientation: { id: "beta", name: "Beta" },
+  orientation: { id: "beta", type: "ideology", name: "Beta" },
   value: 65,
   badge: { text: "Oficjalne" },
 };
 const COMPARISON = {
-  party: { id: "ania", name: "Ania" },
+  orientation: createOrientation("ania", "Ania", { type: "person" }),
   values: { beta: 20 },
 };
 

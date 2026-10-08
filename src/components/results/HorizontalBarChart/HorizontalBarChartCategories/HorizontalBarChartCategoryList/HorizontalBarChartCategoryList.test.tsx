@@ -1,6 +1,6 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../../RankedRow/RankedRow.types";
@@ -8,7 +8,7 @@ import type { CategoryItem } from "../HorizontalBarChartCategories.types";
 import { HorizontalBarChartCategoryList } from "./HorizontalBarChartCategoryList";
 
 const entry = (name: string, value?: number): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
 });
 
@@ -176,7 +176,7 @@ describe("<HorizontalBarChartCategoryList />", () => {
         <HorizontalBarChartCategoryList
           categories={CATEGORIES}
           comparison={{
-            party: { id: "ania", name: "Ania" },
+            orientation: { id: "ania", type: "person", name: "Ania" },
             values: { delta: 10 },
           }}
           onOpen={vi.fn()}

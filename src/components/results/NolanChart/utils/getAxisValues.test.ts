@@ -5,8 +5,18 @@ import { getAxisValues } from "./getAxisValues";
 
 const createAxis = (start?: number, end?: number): NolanAxis => ({
   name: "Gospodarka",
-  start: { entry: { orientation: { id: "a", name: "A" }, value: start } },
-  end: { entry: { orientation: { id: "b", name: "B" }, value: end } },
+  start: {
+    entry: {
+      orientation: { id: "a", type: "ideology", name: "A" },
+      value: start,
+    },
+  },
+  end: {
+    entry: {
+      orientation: { id: "b", type: "ideology", name: "B" },
+      value: end,
+    },
+  },
 });
 
 describe("getAxisValues()", () => {

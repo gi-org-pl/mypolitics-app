@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { isAxisEmphasised } from "./isAxisEmphasised";
 
-const orientation: AxisOrientation = { id: "radicalism", name: "Radykalizm" };
+const orientation: Orientation = {
+  id: "radicalism",
+  type: "ideology",
+  name: "Radykalizm",
+};
 
 const entry = (value?: number): AxisEntry => ({ orientation, value });
 

@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { MATCH_BAND_COLORS } from "@/constants/results";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { ArchetypeEntry } from "../Archetype.types";
@@ -15,6 +16,7 @@ const leader = (
 ): ArchetypeEntry => ({
   orientation: {
     id: "alfa",
+    type: "identity",
     name: "Alfa",
     imageUrl: "alfa.png",
     color: OWN_COLOR,
@@ -23,8 +25,8 @@ const leader = (
   match,
 });
 
-const FRIEND = { id: "ania", name: "Ania" };
-const COMPARISON = { party: FRIEND, values: { alfa: 60 } };
+const FRIEND = createOrientation("ania", "Ania", { type: "person" });
+const COMPARISON = { orientation: FRIEND, values: { alfa: 60 } };
 
 const getFillColor = (): string =>
   screen
@@ -116,7 +118,7 @@ describe("<ArchetypeLeader />", () => {
         <ArchetypeLeader
           leader={leader(85)}
           isMatched
-          comparison={{ party: FRIEND, values: { beta: 60 } }}
+          comparison={{ orientation: FRIEND, values: { beta: 60 } }}
         />,
       );
 

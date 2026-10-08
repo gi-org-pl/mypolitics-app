@@ -1,4 +1,5 @@
 import type { OrientationBase, OrientationType } from "@/types/orientation";
+import { isOrientationShown } from "@/utils/results/isOrientationShown";
 
 export const selectOrientations = <T extends OrientationBase>(
   orientations: T[],
@@ -6,6 +7,6 @@ export const selectOrientations = <T extends OrientationBase>(
 ): T[] =>
   orientations.filter(
     (orientation) =>
-      !orientation.isHidden &&
+      isOrientationShown(orientation) &&
       (type === undefined || orientation.type === type),
   );

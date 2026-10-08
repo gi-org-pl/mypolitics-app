@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { NolanChart } from "./NolanChart";
 import type {
@@ -53,6 +53,7 @@ const createAxis = (
     entry: {
       orientation: {
         id: `${name}-start`,
+        type: "ideology",
         name: startName,
         imageUrl: startIcon,
       },
@@ -62,7 +63,12 @@ const createAxis = (
   },
   end: {
     entry: {
-      orientation: { id: `${name}-end`, name: endName, imageUrl: endIcon },
+      orientation: {
+        id: `${name}-end`,
+        type: "ideology",
+        name: endName,
+        imageUrl: endIcon,
+      },
       value: endValue,
     },
     names: endNames,
@@ -131,8 +137,9 @@ const QUADRANTS: NolanChartProps["quadrants"] = {
   },
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Rafał",
   imageUrl: FRIEND_IMAGE,
 };
@@ -203,7 +210,7 @@ export const Comparison: Story = {
   args: {
     ...ExtremeOpen.args,
     comparison: {
-      party: friend,
+      orientation: friend,
       horizontal: { start: 58, end: 42 },
       vertical: { start: 68, end: 32 },
     },
@@ -264,7 +271,7 @@ export const CornerBottomRight: Story = {
 export const ComparisonAtCorner: Story = {
   args: {
     comparison: {
-      party: friend,
+      orientation: friend,
       horizontal: { start: 0, end: 100 },
       vertical: { start: 0, end: 100 },
     },
@@ -274,7 +281,7 @@ export const ComparisonAtCorner: Story = {
 export const ComparisonSamePosition: Story = {
   args: {
     comparison: {
-      party: friend,
+      orientation: friend,
       horizontal: { start: 77, end: 23 },
       vertical: { start: 67, end: 33 },
     },
@@ -284,7 +291,7 @@ export const ComparisonSamePosition: Story = {
 export const ComparisonWithoutPosition: Story = {
   args: {
     comparison: {
-      party: friend,
+      orientation: friend,
       horizontal: { start: 58, end: 42 },
       vertical: {},
     },
@@ -295,7 +302,7 @@ export const ComparisonWithoutPosition: Story = {
 export const ComparisonWithoutImage: Story = {
   args: {
     comparison: {
-      party: { id: "friend", name: "Rafał" },
+      orientation: { id: "friend", type: "person", name: "Rafał" },
       horizontal: { start: 30, end: 70 },
       vertical: { start: 40, end: 60 },
     },

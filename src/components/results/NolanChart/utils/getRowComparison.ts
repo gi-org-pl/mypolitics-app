@@ -1,13 +1,16 @@
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { isNumber } from "@/utils/number/isNumber";
 
 import type { NolanAxisValues } from "../NolanChart.types";
 
 export const getRowComparison = (
-  party?: AxisOrientation,
+  otherOrientation?: Orientation,
   values?: NolanAxisValues,
 ): AxisEntry | undefined => {
   const value = values?.start;
 
-  return party && isNumber(value) ? { orientation: party, value } : undefined;
+  return otherOrientation && isNumber(value)
+    ? { orientation: otherOrientation, value }
+    : undefined;
 };

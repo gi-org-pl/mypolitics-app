@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { getPillHolder } from "./getPillHolder";
 
-const friend: AxisOrientation = { id: "friend", name: "Ania" };
+const friend: Orientation = { id: "friend", type: "person", name: "Ania" };
 
 describe("getPillHolder()", () => {
-  describe("given a party", () => {
+  describe("given the other side", () => {
     it.each([
       "taker",
       "both",
@@ -17,7 +17,7 @@ describe("getPillHolder()", () => {
     });
   });
 
-  describe("given no party", () => {
+  describe("given no other side", () => {
     it.each([
       "taker",
       "both",

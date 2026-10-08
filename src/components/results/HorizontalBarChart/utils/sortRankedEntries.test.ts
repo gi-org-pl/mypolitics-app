@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
 import { sortRankedEntries } from "./sortRankedEntries";
 
 const entry = (id: string, value?: number): RankedEntry => ({
-  orientation: { id, name: id },
+  orientation: createOrientation(id, id),
+  value,
+});
+
+const hidden = (id: string, value?: number): RankedEntry => ({
+  orientation: createOrientation(id, id, { isHidden: true }),
   value,
 });
 
@@ -67,6 +74,29 @@ describe("sortRankedEntries()", () => {
         ]),
       ),
     ).toEqual(["b", "c", "a", "d"]);
+  });
+
+  describe("given a hidden orientation", () => {
+    it("leaves it out of the ranking", () => {
+      expect(
+        ids(sortRankedEntries([entry("a", 20), hidden("b", 90), entry("c")])),
+      ).toEqual(["a", "c"]);
+      expect(sortRankedEntries([hidden("a", 20), hidden("b")])).toEqual([]);
+    });
+
+    it("keeps the order of the others", () => {
+      expect(
+        ids(
+          sortRankedEntries([
+            entry("a", 50),
+            hidden("b", 70),
+            entry("c", 70),
+            hidden("d", 50),
+            entry("e", 50),
+          ]),
+        ),
+      ).toEqual(["c", "a", "e"]);
+    });
   });
 
   it("does not mutate the input", () => {

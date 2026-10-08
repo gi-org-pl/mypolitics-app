@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { ArchetypeEntry } from "../Archetype.types";
 import { getArchetypeRanking } from "./getArchetypeRanking";
 
 const archetype = (id: string, match?: number): ArchetypeEntry => ({
-  orientation: { id, name: id },
+  orientation: createOrientation(id, id),
+  match,
+});
+
+const hidden = (id: string, match?: number): ArchetypeEntry => ({
+  orientation: createOrientation(id, id, { isHidden: true }),
   match,
 });
 
@@ -86,12 +93,48 @@ describe("getArchetypeRanking()", () => {
 
   it("keeps the descriptions of every archetype", () => {
     const { leader } = getArchetypeRanking([
-      { ...archetype("a", 80), shortDescription: "s", fullDescription: "f" },
+      {
+        orientation: createOrientation("a", "a", {
+          description: "s",
+          fullDescription: "f",
+        }),
+        match: 80,
+      },
     ]);
 
-    expect(leader).toMatchObject({
-      shortDescription: "s",
+    expect(leader?.orientation).toMatchObject({
+      description: "s",
       fullDescription: "f",
+    });
+  });
+
+  describe("given a hidden archetype", () => {
+    it("leads with the best archetype that is shown", () => {
+      const { leader } = getArchetypeRanking([
+        archetype("a", 20),
+        hidden("b", 90),
+        archetype("c", 55),
+      ]);
+
+      expect(leader?.orientation.id).toBe("c");
+    });
+
+    it("leaves the hidden one out of the rest", () => {
+      const { rest } = getArchetypeRanking([
+        archetype("a", 20),
+        hidden("b", 40),
+        archetype("c", 55),
+        archetype("d", 30),
+      ]);
+
+      expect(ids(rest)).toEqual(["d", "a"]);
+    });
+
+    it("returns no leader when every archetype is hidden", () => {
+      expect(getArchetypeRanking([hidden("a", 80), hidden("b", 60)])).toEqual({
+        leader: null,
+        rest: [],
+      });
     });
   });
 

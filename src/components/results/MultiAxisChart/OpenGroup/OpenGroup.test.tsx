@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { createAxisPair } from "@/utils/vitest/createAxisPair";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import type { AxisGroup } from "../MultiAxisChart.types";
@@ -16,7 +16,7 @@ const worldview: AxisGroup = {
   ],
 };
 
-const friend: AxisOrientation = { id: "friend", name: "Ania" };
+const friend: Orientation = { id: "friend", type: "person", name: "Ania" };
 
 const renderGroup = (
   props: Partial<Parameters<typeof OpenGroup>[0]> = {},
@@ -98,7 +98,10 @@ describe("<OpenGroup />", () => {
 
     it("passes each comparison value to its bar", () => {
       renderGroup({
-        comparison: { party: friend, values: { worldview: 90, faith: 20 } },
+        comparison: {
+          orientation: friend,
+          values: { worldview: 90, faith: 20 },
+        },
       });
 
       expect(getBarLabels()).toEqual([

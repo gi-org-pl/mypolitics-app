@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { ArchetypeEntry } from "../../../Archetype.types";
 import { PREVIEW_IMAGES } from "../ArchetypeRankingPreview.constants";
 import { getPreviewImages } from "./getPreviewImages";
 
 const archetype = (id: string, imageUrl?: string): ArchetypeEntry => ({
-  orientation: { id, name: id, imageUrl },
+  orientation: createOrientation(id, id, { imageUrl }),
 });
 
 describe("getPreviewImages()", () => {

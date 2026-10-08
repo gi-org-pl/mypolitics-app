@@ -203,7 +203,7 @@ describe("readQuizOrientations()", () => {
 
   describe("given the live shapes", () => {
     it("reads an identity of the identity quiz", () => {
-      const [ideology, party, identity] = readQuizOrientations(
+      const [ideology, linked, identity] = readQuizOrientations(
         identityQuizOrientations,
         official,
       );
@@ -230,9 +230,9 @@ describe("readQuizOrientations()", () => {
         slogan: "Pracownicy wszystkich narodów łączcie się!",
         isOfficial: false,
         isHidden: false,
-        linkedOrientationIds: [party.id],
+        linkedOrientationIds: [linked.id],
       });
-      expect(party).toEqual({
+      expect(linked).toEqual({
         id: "fa5274b9-3b9f-4d54-a07f-fe96bb65b2a9",
         type: "party",
         name: "Razem",
@@ -260,12 +260,12 @@ describe("readQuizOrientations()", () => {
     });
 
     it("reads a candidate of the presidential quiz", () => {
-      const [candidate, hiddenCandidate] = readQuizOrientations(
+      const [shown, hidden] = readQuizOrientations(
         presidentialQuizOrientations,
         official,
       );
 
-      expect(candidate).toEqual({
+      expect(shown).toEqual({
         id: "565946a2-6622-4fb6-8eee-196408544e9a",
         type: "party",
         name: "Artur Bartoszewicz",
@@ -280,7 +280,7 @@ describe("readQuizOrientations()", () => {
         isHidden: false,
         linkedOrientationIds: [],
       });
-      expect(hiddenCandidate).toMatchObject({
+      expect(hidden).toMatchObject({
         id: "538434a9-dfed-4680-be7d-01eadfcb27fe",
         type: "party",
         name: "Krzysztof Stanowski",

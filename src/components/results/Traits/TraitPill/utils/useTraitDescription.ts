@@ -7,10 +7,10 @@ import type { TraitHolder } from "../../Traits.types";
 export const useTraitDescription = (
   trait: string,
   holder: TraitHolder,
-  partyName?: string,
+  otherName?: string,
 ): string | undefined => {
   const { t } = useLingui();
-  const name = toSingleLine(partyName);
+  const name = toSingleLine(otherName);
 
   if (holder === "taker") return undefined;
 

@@ -6,7 +6,9 @@ import { getCategoryItems } from "./getCategoryItems";
 const category = (name?: string, id?: string): RankedCategory => ({
   id,
   name,
-  entries: [{ orientation: { id: "a", name: "Alfa" }, value: 40 }],
+  entries: [
+    { orientation: { id: "a", type: "ideology", name: "Alfa" }, value: 40 },
+  ],
 });
 
 const keys = (categories: RankedCategory[]): string[] =>

@@ -1,7 +1,8 @@
-import type { AxisEntry, AxisOrientation } from "@/types/axis";
+import type { AxisEntry } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 export interface SingleAxisChartProps {
-  orientation: AxisOrientation;
+  orientation: Orientation;
   value?: number;
   marker?: number | false;
   comparison?: AxisEntry;

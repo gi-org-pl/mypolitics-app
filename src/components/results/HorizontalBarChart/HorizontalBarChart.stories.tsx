@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
-import type { AxisOrientation } from "@/types/axis";
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { RankedBadge, RankedEntry } from "../RankedRow/RankedRow.types";
 import { HorizontalBarChart } from "./HorizontalBarChart";
 import type { RankedCategory } from "./HorizontalBarChart.types";
@@ -51,23 +52,13 @@ const COLORS = [
   "#3f6fb5",
 ];
 
-const orientations: AxisOrientation[] = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-].map((letter, index) => ({
-  id: letter.toLowerCase(),
-  name: `Orientation ${letter}`,
-  imageUrl: placeholderImageUrl,
-  color: COLORS[index],
-}));
-
-const [a, b, c, d, e, f, g, h] = orientations;
+const [a, b, c, d, e, f, g, h] = ["A", "B", "C", "D", "E", "F", "G", "H"].map(
+  (letter, index) =>
+    createOrientation(letter.toLowerCase(), `Orientation ${letter}`, {
+      imageUrl: placeholderImageUrl,
+      color: COLORS[index],
+    }),
+);
 
 const entries: RankedEntry[] = [
   { orientation: a, value: 100, badge: placeholderBadge },
@@ -118,31 +109,33 @@ const categories: RankedCategory[] = [
   },
 ];
 
-const createCandidate = (
-  id: string,
-  name: string,
-  color: string,
-): AxisOrientation => ({
-  id,
-  name,
-  color,
-  imageUrl: createPortraitUrl(color),
-});
-
-const trzaskowski = createCandidate(
-  "trzaskowski",
-  "Rafał Trzaskowski",
-  COLORS[0],
+const [
+  trzaskowski,
+  zandberg,
+  biejat,
+  holownia,
+  mentzen,
+  jakubiak,
+  nawrocki,
+  braun,
+] = [
+  ["trzaskowski", "Rafał Trzaskowski"],
+  ["zandberg", "Adrian Zandberg"],
+  ["biejat", "Magdalena Biejat"],
+  ["holownia", "Szymon Hołownia"],
+  ["mentzen", "Sławomir Mentzen"],
+  ["jakubiak", "Marek Jakubiak"],
+  ["nawrocki", "Karol Nawrocki"],
+  ["braun", "Grzegorz Braun"],
+].map(([id, name], index) =>
+  createOrientation(id, name, {
+    type: "party",
+    color: COLORS[index],
+    imageUrl: createPortraitUrl(COLORS[index]),
+  }),
 );
-const zandberg = createCandidate("zandberg", "Adrian Zandberg", COLORS[1]);
-const biejat = createCandidate("biejat", "Magdalena Biejat", COLORS[2]);
-const holownia = createCandidate("holownia", "Szymon Hołownia", COLORS[3]);
-const mentzen = createCandidate("mentzen", "Sławomir Mentzen", COLORS[4]);
-const jakubiak = createCandidate("jakubiak", "Marek Jakubiak", COLORS[5]);
-const nawrocki = createCandidate("nawrocki", "Karol Nawrocki", COLORS[6]);
-const braun = createCandidate("braun", "Grzegorz Braun", COLORS[7]);
 
-const candidates: RankedEntry[] = [
+const orientations: RankedEntry[] = [
   { orientation: trzaskowski, value: 100, badge: verifiedBadge },
   { orientation: zandberg, value: 90 },
   { orientation: biejat, value: 80, badge: verifiedBadge },
@@ -153,7 +146,7 @@ const candidates: RankedEntry[] = [
   { orientation: braun, value: 1 },
 ];
 
-const candidateCategories: RankedCategory[] = [
+const orientationCategories: RankedCategory[] = [
   {
     name: "Światopogląd",
     entries: [
@@ -190,7 +183,11 @@ const candidateCategories: RankedCategory[] = [
   },
 ];
 
-const friend = createCandidate("friend", "Ania", "#004554");
+const friend = createOrientation("friend", "Ania", {
+  type: "person",
+  color: "#004554",
+  imageUrl: createPortraitUrl("#004554"),
+});
 
 const LONG_NAME =
   "Socjaldemokratyczny liberalizm instytucjonalny o bardzo długiej autorskiej nazwie";
@@ -238,32 +235,32 @@ export const CategoryOpen: Story = {
   play: press("Pokaż kategorię: Category A"),
 };
 
-export const Candidates: Story = {
-  args: { title: "Kandydaci", entries: candidates },
+export const Ranking: Story = {
+  args: { title: "Kandydaci", entries: orientations },
 };
 
-export const CandidatesComparison: Story = {
+export const RankingComparison: Story = {
   args: {
     title: "Kandydaci",
-    entries: candidates,
+    entries: orientations,
     comparison: {
-      party: friend,
+      orientation: friend,
       values: { zandberg: 62, biejat: 86, unknown: 40 },
     },
   },
 };
 
-export const CandidatesOpen: Story = {
-  args: { title: "Kandydaci", entries: candidates },
+export const RankingOpen: Story = {
+  args: { title: "Kandydaci", entries: orientations },
   play: press("Pokaż wszystkie"),
 };
 
-export const CandidatesGrouped: Story = {
-  args: { title: "Kandydaci", categories: candidateCategories },
+export const RankingGrouped: Story = {
+  args: { title: "Kandydaci", categories: orientationCategories },
 };
 
-export const CandidatesCategoryOpen: Story = {
-  args: { title: "Kandydaci", categories: candidateCategories },
+export const RankingCategoryOpen: Story = {
+  args: { title: "Kandydaci", categories: orientationCategories },
   play: press("Pokaż kategorię: Światopogląd"),
 };
 

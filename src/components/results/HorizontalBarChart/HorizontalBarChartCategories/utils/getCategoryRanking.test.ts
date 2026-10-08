@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import type { RankedEntry } from "../../../RankedRow/RankedRow.types";
 import type { RankedCategory } from "../../HorizontalBarChart.types";
 import { getCategoryRanking } from "./getCategoryRanking";
 
 const entry = (id: string, value?: number): RankedEntry => ({
-  orientation: { id, name: id },
+  orientation: createOrientation(id, id),
   value,
 });
 

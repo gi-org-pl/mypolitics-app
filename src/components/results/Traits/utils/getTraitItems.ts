@@ -21,7 +21,7 @@ export const getTraitItems = ({
   comparison,
 }: TraitItemsInput): TraitItem[] => {
   const takerIds = toIdSet(earnedIds);
-  const theirIds = toIdSet(comparison?.party ? comparison.earnedIds : []);
+  const theirIds = toIdSet(comparison?.orientation ? comparison.earnedIds : []);
   const drawnIds = new Set<string>();
   const items: TraitItem[] = [];
 
@@ -34,13 +34,7 @@ export const getTraitItems = ({
     if (!name || !holder || drawnIds.has(trait.id)) continue;
 
     drawnIds.add(trait.id);
-    items.push({
-      id: trait.id,
-      name,
-      imageUrl: trait.imageUrl,
-      color: trait.color,
-      holder,
-    });
+    items.push({ orientation: { ...trait, name }, holder });
   }
 
   return items;

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 
 import { Archetype } from "./Archetype";
 import type { ArchetypeEntry } from "./Archetype.types";
@@ -22,8 +23,9 @@ const createArchetype = (
   id: string,
   name: string,
   color: string,
-): AxisOrientation => ({
+): Orientation => ({
   id,
+  type: "identity",
   name,
   color,
   imageUrl: createPortraitUrl(color),
@@ -60,10 +62,12 @@ const national = createArchetype(
 const patriot = createArchetype("patriot", "Suwerenny patriota", "#0a1128");
 
 const leader: ArchetypeEntry = {
-  orientation: green,
+  orientation: {
+    ...green,
+    description: SHORT_DESCRIPTION,
+    fullDescription: FULL_DESCRIPTION,
+  },
   match: 80,
-  shortDescription: SHORT_DESCRIPTION,
-  fullDescription: FULL_DESCRIPTION,
 };
 
 const others: ArchetypeEntry[] = [
@@ -81,19 +85,19 @@ const placeholders: ArchetypeEntry[] = [
   {
     orientation: {
       id: "a",
+      type: "identity",
       name: "Orientation Name",
       imageUrl: placeholderImageUrl,
+      description: "Short description",
+      fullDescription: "Full description",
     },
     match: 80,
-    shortDescription: "Short description",
-    fullDescription: "Full description",
   },
   ...["b", "c", "d", "e"].map((id, index) => ({
-    orientation: {
-      id,
-      name: "Orientation Name",
+    orientation: createOrientation(id, "Orientation Name", {
+      type: "identity",
       imageUrl: placeholderImageUrl,
-    },
+    }),
     match: 70 - index * 15,
   })),
 ];
@@ -101,7 +105,7 @@ const placeholders: ArchetypeEntry[] = [
 const friend = createArchetype("friend", "Ania", "#004554");
 
 const comparison = {
-  party: friend,
+  orientation: friend,
   values: { green: 55, citizen: 86, patriot: 64, unknown: 40 },
 };
 
@@ -159,7 +163,13 @@ export const NoDescription: Story = {
 
 export const OnlyFullDescription: Story = {
   args: {
-    archetypes: [{ ...leader, shortDescription: undefined }, ...others],
+    archetypes: [
+      {
+        ...leader,
+        orientation: { ...leader.orientation, description: undefined },
+      },
+      ...others,
+    ],
   },
 };
 
@@ -195,8 +205,11 @@ export const MarkupInDescription: Story = {
     archetypes: [
       {
         ...leader,
-        shortDescription:
-          '<b>Pogrubienie</b>, [odnośnik](https://example.com) i <script>alert("x")</script> są pokazane tak, jak je napisano.\n\nDrugi akapit **bez** interpretacji.',
+        orientation: {
+          ...leader.orientation,
+          description:
+            '<b>Pogrubienie</b>, [odnośnik](https://example.com) i <script>alert("x")</script> są pokazane tak, jak je napisano.\n\nDrugi akapit **bez** interpretacji.',
+        },
       },
       ...others,
     ],

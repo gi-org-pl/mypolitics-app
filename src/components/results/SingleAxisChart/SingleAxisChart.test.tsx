@@ -1,20 +1,22 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { SingleAxisChart } from "./SingleAxisChart";
 
-const radicalism: AxisOrientation = {
+const radicalism: Orientation = {
   id: "radicalism",
+  type: "ideology",
   name: "Radykalizm",
   imageUrl: "https://example.com/radicalism.svg",
   color: "#924747",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
   color: "#004554",
@@ -319,7 +321,7 @@ describe("<SingleAxisChart />", () => {
     it.each([
       "",
       "   ",
-      undefined as unknown as string,
+      undefined,
     ])("renders the chip with the image alone for %j", (name) => {
       renderWithI18n(
         <SingleAxisChart orientation={{ ...radicalism, name }} value={69} />,

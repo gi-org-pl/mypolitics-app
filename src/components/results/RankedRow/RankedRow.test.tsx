@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { RankedRow } from "./RankedRow";
@@ -11,12 +11,10 @@ const ICON_URL = "https://example.org/verified.svg";
 const LONG_NAME =
   "Socjaldemokratyczny liberalizm instytucjonalny o bardzo długiej autorskiej nazwie";
 
-const orientation = {
-  id: "liberalism",
-  name: "Liberalizm",
+const orientation = createOrientation("liberalism", "Liberalizm", {
   imageUrl: IMAGE_URL,
   color: "#d5213d",
-};
+});
 
 const renderRow = (
   entry: Partial<RankedEntry> = {},
@@ -129,7 +127,12 @@ describe("<RankedRow />", () => {
   it("passes a comparison to the bar", () => {
     renderRow(
       {},
-      { comparison: { orientation: { id: "ania", name: "Ania" }, value: 40 } },
+      {
+        comparison: {
+          orientation: { id: "ania", type: "person", name: "Ania" },
+          value: 40,
+        },
+      },
     );
 
     expect(
@@ -183,6 +186,18 @@ describe("<RankedRow />", () => {
 
     expect(screen.getByTestId("ranked-row-name")).toBeEmptyDOMElement();
     expect(screen.getByTestId("universal-axis-fill-start")).toBeInTheDocument();
+  });
+
+  describe("given an orientation without a name", () => {
+    it("draws the bar under an empty name", () => {
+      renderRow({ orientation: { ...orientation, name: undefined } });
+
+      expect(screen.getByTestId("ranked-row-name")).toBeEmptyDOMElement();
+      expect(
+        screen.getByTestId("universal-axis-fill-start"),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAccessibleName(": 80%");
+    });
   });
 
   it("renders an empty track for an entry without an orientation", () => {

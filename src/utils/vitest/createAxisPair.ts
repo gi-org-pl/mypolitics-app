@@ -1,5 +1,7 @@
 import type { ResultEntry } from "@/types/results";
 
+import { createOrientation } from "./createOrientation";
+
 export const createAxisPair = (
   id: string,
   startName: string,
@@ -9,21 +11,17 @@ export const createAxisPair = (
 ): { id: string; start: ResultEntry; end: ResultEntry } => ({
   id,
   start: {
-    orientation: {
-      id: `${id}-start`,
-      name: startName,
+    orientation: createOrientation(`${id}-start`, startName, {
       imageUrl: `https://example.com/${id}-start.svg`,
       color: "#9b59b6",
-    },
+    }),
     value: startValue,
   },
   end: {
-    orientation: {
-      id: `${id}-end`,
-      name: endName,
+    orientation: createOrientation(`${id}-end`, endName, {
       imageUrl: `https://example.com/${id}-end.svg`,
       color: "#1abc9c",
-    },
+    }),
     value: endValue,
   },
 });

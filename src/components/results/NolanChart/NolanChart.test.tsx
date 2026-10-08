@@ -35,6 +35,7 @@ const createAxis = (
     entry: {
       orientation: {
         id: `${name}-start`,
+        type: "ideology",
         name: `${name} start`,
         imageUrl: `https://example.com/${name}-start.svg`,
         color: "#111111",
@@ -47,6 +48,7 @@ const createAxis = (
     entry: {
       orientation: {
         id: `${name}-end`,
+        type: "ideology",
         name: `${name} end`,
         imageUrl: `https://example.com/${name}-end.svg`,
         color: "#222222",
@@ -77,8 +79,9 @@ const quadrants: NolanChartProps["quadrants"] = {
 };
 
 const friend: NolanComparison = {
-  party: {
+  orientation: {
     id: "friend",
+    type: "person",
     name: "Rafał",
     imageUrl: "https://example.com/friend.png",
   },
@@ -379,7 +382,7 @@ describe("<NolanChart />", () => {
   });
 
   describe("given a comparison", () => {
-    it("renders the other party at their position, on a hatched disc", () => {
+    it("renders the other side at their position, on a hatched disc", () => {
       renderChart(EXTREME, { comparison: friend });
 
       const disc = screen.getByTestId("nolan-chart-comparison");
@@ -394,7 +397,7 @@ describe("<NolanChart />", () => {
       ).toHaveAttribute("src", "https://example.com/friend.png");
     });
 
-    it("never fills the other party quadrant", () => {
+    it("never fills the other side quadrant", () => {
       renderChart(CENTRE, {
         comparison: {
           ...friend,
@@ -406,7 +409,7 @@ describe("<NolanChart />", () => {
       expect(getFilledQuadrants()).toEqual([]);
     });
 
-    it("moves the other party inward at a corner", () => {
+    it("moves the other side inward at a corner", () => {
       renderChart(MODERATE, {
         comparison: {
           ...friend,
@@ -425,7 +428,7 @@ describe("<NolanChart />", () => {
       );
     });
 
-    it("draws the other party on top of the taker at the same position", () => {
+    it("draws the other side on top of the taker at the same position", () => {
       renderChart(MODERATE, {
         comparison: {
           ...friend,
@@ -442,7 +445,7 @@ describe("<NolanChart />", () => {
       ).toBeTruthy();
     });
 
-    it("renders no second marker when the other party has no position", () => {
+    it("renders no second marker when the other side has no position", () => {
       renderChart(MODERATE, {
         comparison: { ...friend, vertical: { start: 68 } },
       });
@@ -455,9 +458,12 @@ describe("<NolanChart />", () => {
       );
     });
 
-    it("renders a neutral placeholder when the other party has no image", () => {
+    it("renders a neutral placeholder when the other side has no image", () => {
       renderChart(MODERATE, {
-        comparison: { ...friend, party: { id: "friend", name: "Rafał" } },
+        comparison: {
+          ...friend,
+          orientation: { id: "friend", type: "person", name: "Rafał" },
+        },
       });
 
       const image = screen.getByTestId("nolan-chart-comparison-image");
@@ -466,11 +472,11 @@ describe("<NolanChart />", () => {
       expect(image).toHaveClass("bg-gi-dark-gray");
     });
 
-    it("applies a safe colour of the other party behind the image", () => {
+    it("applies a safe colour of the other side behind the image", () => {
       renderChart(MODERATE, {
         comparison: {
           ...friend,
-          party: { ...friend.party, color: "#123456" },
+          orientation: { ...friend.orientation, color: "#123456" },
         },
       });
 
@@ -494,7 +500,7 @@ describe("<NolanChart />", () => {
       ).toBeInTheDocument();
     });
 
-    it("passes no comparison to a row the other party has no value for", () => {
+    it("passes no comparison to a row the other side has no value for", () => {
       renderChart(EXTREME, {
         comparison: { ...friend, vertical: { end: 32 } },
       });
@@ -510,7 +516,7 @@ describe("<NolanChart />", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("includes the other party quadrant in the map description", () => {
+    it("includes the other side quadrant in the map description", () => {
       renderChart(EXTREME, {
         comparison: {
           ...friend,
@@ -524,15 +530,18 @@ describe("<NolanChart />", () => {
       );
     });
 
-    it("describes the other party at the centre by the centre name", () => {
+    it("describes the other side at the centre by the centre name", () => {
       renderChart(EXTREME, { comparison: friend });
 
       expect(getMapDescription()).toContain("Rafał: Centrum");
     });
 
-    it("leaves the other party out of the description without a name", () => {
+    it("leaves the other side out of the description without a name", () => {
       renderChart(EXTREME, {
-        comparison: { ...friend, party: { id: "friend", name: " " } },
+        comparison: {
+          ...friend,
+          orientation: { id: "friend", type: "person", name: " " },
+        },
       });
 
       expect(getMapDescription()).toBe(

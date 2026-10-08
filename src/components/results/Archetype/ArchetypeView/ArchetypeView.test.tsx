@@ -11,8 +11,11 @@ const CONTENT: ArchetypeContent = {
   shortDescription: "Krótki opis.",
   fullDescription: "Pełny opis.",
   ranking: [
-    { orientation: { id: "beta", name: "Beta" }, match: 70 },
-    { orientation: { id: "gamma", name: "Gamma" }, match: 40 },
+    { orientation: { id: "beta", type: "ideology", name: "Beta" }, match: 70 },
+    {
+      orientation: { id: "gamma", type: "ideology", name: "Gamma" },
+      match: 40,
+    },
   ],
   hasDescription: true,
   hasRanking: true,
@@ -76,7 +79,7 @@ describe("<ArchetypeView />", () => {
           openView="ranking"
           content={CONTENT}
           comparison={{
-            party: { id: "ania", name: "Ania" },
+            orientation: { id: "ania", type: "person", name: "Ania" },
             values: { gamma: 90 },
           }}
         />,

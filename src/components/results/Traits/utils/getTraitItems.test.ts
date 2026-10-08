@@ -1,35 +1,45 @@
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import type { TraitsComparison } from "../Traits.types";
 import { getTraitItems } from "./getTraitItems";
 
-const anarchism: AxisOrientation = {
+const anarchism: Orientation = {
   id: "anarchism",
+  type: "ideology",
   name: "Anarchizm",
   imageUrl: "https://example.com/anarchism.svg",
   color: "#192430",
 };
-const proChoice: AxisOrientation = {
+const proChoice: Orientation = {
   id: "pro-choice",
+  type: "ideology",
   name: "Pro-choice",
   color: "#851c22",
 };
-const proEuro: AxisOrientation = { id: "pro-euro", name: "Pro-Euro" };
-const monarchism: AxisOrientation = { id: "monarchism", name: "Monarchizm" };
+const proEuro: Orientation = {
+  id: "pro-euro",
+  type: "ideology",
+  name: "Pro-Euro",
+};
+const monarchism: Orientation = {
+  id: "monarchism",
+  type: "ideology",
+  name: "Monarchizm",
+};
 
 const traits = [proChoice, proEuro, anarchism, monarchism];
 
-const friend: AxisOrientation = { id: "friend", name: "Ania" };
+const friend: Orientation = { id: "friend", type: "person", name: "Ania" };
 
 const compareWith = (earnedIds: string[]): TraitsComparison => ({
-  party: friend,
+  orientation: friend,
   earnedIds,
 });
 
 const getIds = (items: ReturnType<typeof getTraitItems>) =>
-  items.map((item) => item.id);
+  items.map((item) => item.orientation.id);
 
 describe("getTraitItems()", () => {
   describe("given no comparison", () => {
@@ -40,14 +50,9 @@ describe("getTraitItems()", () => {
       });
 
       expect(items).toEqual([
-        { ...proChoice, imageUrl: undefined, holder: "taker" },
-        { ...anarchism, holder: "taker" },
-        {
-          ...monarchism,
-          imageUrl: undefined,
-          color: undefined,
-          holder: "taker",
-        },
+        { orientation: proChoice, holder: "taker" },
+        { orientation: anarchism, holder: "taker" },
+        { orientation: monarchism, holder: "taker" },
       ]);
     });
 
@@ -64,7 +69,7 @@ describe("getTraitItems()", () => {
       const items = getTraitItems({
         traits: [
           { ...proChoice, name: "   " },
-          { ...proEuro, name: undefined as unknown as string },
+          { ...proEuro, name: undefined },
           anarchism,
         ],
         earnedIds: ["pro-choice", "pro-euro", "anarchism"],
@@ -79,7 +84,7 @@ describe("getTraitItems()", () => {
         earnedIds: ["anarchism", "pro-choice"],
       });
 
-      expect(items.map((item) => item.name)).toEqual([
+      expect(items.map((item) => item.orientation.name)).toEqual([
         "Anarchizm",
         "Pro-choice",
       ]);
@@ -91,7 +96,7 @@ describe("getTraitItems()", () => {
         earnedIds: ["anarchism"],
       });
 
-      expect(items[0].name).toBe("Anarchizm teraz");
+      expect(items[0].orientation.name).toBe("Anarchizm teraz");
     });
 
     it("returns nothing when nothing was earned", () => {
@@ -101,13 +106,13 @@ describe("getTraitItems()", () => {
     it("returns nothing for input that is not a list", () => {
       expect(
         getTraitItems({
-          traits: undefined as unknown as AxisOrientation[],
+          traits: undefined as unknown as Orientation[],
           earnedIds: undefined as unknown as string[],
         }),
       ).toEqual([]);
       expect(
         getTraitItems({
-          traits: [null as unknown as AxisOrientation, anarchism],
+          traits: [null as unknown as Orientation, anarchism],
           earnedIds: "anarchism" as unknown as string[],
         }),
       ).toEqual([]);
@@ -133,21 +138,21 @@ describe("getTraitItems()", () => {
         comparison: compareWith(["pro-choice"]),
       });
 
-      expect(items.find((item) => item.id === "anarchism")?.holder).toBe(
-        "taker",
-      );
+      expect(
+        items.find((item) => item.orientation.id === "anarchism")?.holder,
+      ).toBe("taker");
     });
 
-    it("marks a trait only the other party earned as theirs", () => {
+    it("marks a trait only the other side earned as theirs", () => {
       const items = getTraitItems({
         traits,
         earnedIds: ["anarchism"],
         comparison: compareWith(["pro-euro"]),
       });
 
-      expect(items.find((item) => item.id === "pro-euro")?.holder).toBe(
-        "other",
-      );
+      expect(
+        items.find((item) => item.orientation.id === "pro-euro")?.holder,
+      ).toBe("other");
     });
 
     it("drops a trait neither earned", () => {
@@ -168,7 +173,9 @@ describe("getTraitItems()", () => {
         comparison: compareWith(["pro-euro", "pro-choice", "anarchism"]),
       });
 
-      expect(items.map(({ id, holder }) => [id, holder])).toEqual([
+      expect(
+        items.map(({ orientation, holder }) => [orientation.id, holder]),
+      ).toEqual([
         ["pro-choice", "other"],
         ["pro-euro", "other"],
         ["anarchism", "both"],
@@ -183,7 +190,9 @@ describe("getTraitItems()", () => {
         comparison: compareWith(["pro-euro", "monarchism"]),
       });
 
-      expect(items.map(({ id, holder }) => [id, holder])).toEqual([
+      expect(
+        items.map(({ orientation, holder }) => [orientation.id, holder]),
+      ).toEqual([
         ["pro-euro", "other"],
         ["monarchism", "other"],
       ]);
@@ -193,12 +202,12 @@ describe("getTraitItems()", () => {
       const items = getTraitItems({
         traits,
         earnedIds: ["anarchism"],
-        comparison: { party: friend } as TraitsComparison,
+        comparison: { orientation: friend } as TraitsComparison,
       });
 
-      expect(items.map(({ id, holder }) => [id, holder])).toEqual([
-        ["anarchism", "taker"],
-      ]);
+      expect(
+        items.map(({ orientation, holder }) => [orientation.id, holder]),
+      ).toEqual([["anarchism", "taker"]]);
     });
 
     it("ignores an id of theirs that no trait has", () => {
@@ -211,7 +220,7 @@ describe("getTraitItems()", () => {
       expect(items).toEqual([]);
     });
 
-    it("ignores a comparison without a party", () => {
+    it("ignores a comparison without an orientation", () => {
       const items = getTraitItems({
         traits,
         earnedIds: ["anarchism"],
@@ -220,9 +229,9 @@ describe("getTraitItems()", () => {
         } as TraitsComparison,
       });
 
-      expect(items.map(({ id, holder }) => [id, holder])).toEqual([
-        ["anarchism", "taker"],
-      ]);
+      expect(
+        items.map(({ orientation, holder }) => [orientation.id, holder]),
+      ).toEqual([["anarchism", "taker"]]);
     });
   });
 });

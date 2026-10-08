@@ -12,6 +12,7 @@ const axis: NolanAxis = {
     entry: {
       orientation: {
         id: "left",
+        type: "ideology",
         name: "Lewica",
         imageUrl: "https://example.com/left.svg",
         color: "#111111",
@@ -24,6 +25,7 @@ const axis: NolanAxis = {
     entry: {
       orientation: {
         id: "right",
+        type: "ideology",
         name: "Prawica",
         imageUrl: "https://example.com/right.svg",
         color: "#222222",
@@ -104,12 +106,12 @@ describe("<NolanRow />", () => {
     ).not.toBeInTheDocument();
   });
 
-  describe("given the other party", () => {
+  describe("given the other side", () => {
     it("carries the comparison at their value for the start pole", () => {
       renderWithI18n(
         <NolanRow
           axis={axis}
-          otherParty={{ id: "friend", name: "Rafał" }}
+          otherOrientation={{ id: "friend", type: "person", name: "Rafał" }}
           otherValues={{ start: 58, end: 42 }}
         />,
       );
@@ -123,7 +125,7 @@ describe("<NolanRow />", () => {
       renderWithI18n(
         <NolanRow
           axis={axis}
-          otherParty={{ id: "friend", name: "Rafał" }}
+          otherOrientation={{ id: "friend", type: "person", name: "Rafał" }}
           otherValues={{ end: 42 }}
         />,
       );

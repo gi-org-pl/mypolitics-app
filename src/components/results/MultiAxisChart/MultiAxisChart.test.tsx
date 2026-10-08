@@ -3,7 +3,8 @@ import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { MultiAxisChart } from "./MultiAxisChart";
@@ -12,13 +13,6 @@ import type {
   AxisPair,
   MultiAxisChartProps,
 } from "./MultiAxisChart.types";
-
-const createOrientation = (id: string, name: string): AxisOrientation => ({
-  id,
-  name,
-  imageUrl: `https://example.com/${id}.svg`,
-  color: "#9b59b6",
-});
 
 const createAxis = (
   id: string,
@@ -29,11 +23,17 @@ const createAxis = (
 ): AxisPair => ({
   id,
   start: {
-    orientation: createOrientation(`${id}-start`, startName),
+    orientation: createOrientation(`${id}-start`, startName, {
+      imageUrl: `https://example.com/${id}-start.svg`,
+      color: "#9b59b6",
+    }),
     value: startValue,
   },
   end: {
-    orientation: createOrientation(`${id}-end`, endName),
+    orientation: createOrientation(`${id}-end`, endName, {
+      imageUrl: `https://example.com/${id}-end.svg`,
+      color: "#9b59b6",
+    }),
     value: endValue,
   },
 });
@@ -60,8 +60,9 @@ const foreignPolicy: AxisGroup = {
   axes: [createAxis("foreign", "Globalizm", "Suwerenizm", 50, 50)],
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
 };
@@ -501,7 +502,7 @@ describe("<MultiAxisChart />", () => {
 
   describe("given a comparison", () => {
     const comparison = {
-      party: friend,
+      orientation: friend,
       values: { worldview: 90, force: 20, missing: 10 },
     };
 
@@ -531,10 +532,10 @@ describe("<MultiAxisChart />", () => {
       ).toHaveLength(1);
     });
 
-    it("ignores values that are not numbers and a comparison without a party", () => {
+    it("ignores values that are not numbers and a comparison without an orientation", () => {
       renderChart({
         comparison: {
-          party: friend,
+          orientation: friend,
           values: { worldview: "90" } as unknown as Record<string, number>,
         },
       });

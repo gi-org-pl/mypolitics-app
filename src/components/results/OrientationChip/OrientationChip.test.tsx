@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { createOrientation } from "@/utils/vitest/createOrientation";
+
 import { OrientationChip } from "./OrientationChip";
 
 const IMAGE_URL = "https://example.com/radicalism.svg";
@@ -179,6 +181,30 @@ describe("<OrientationChip />", () => {
       );
 
       expect(container).toBeEmptyDOMElement();
+    });
+  });
+
+  describe("given an orientation without a name", () => {
+    it("shows the image alone", () => {
+      const { name, imageUrl, color } = createOrientation(
+        "radicalism",
+        undefined,
+        {
+          imageUrl: IMAGE_URL,
+          color: "#47924c",
+        },
+      );
+
+      render(<OrientationChip name={name} imageUrl={imageUrl} color={color} />);
+
+      const chip = screen.getByTestId("orientation-chip");
+
+      expect(chip).toHaveTextContent("");
+      expect(chip.querySelector("span")).toBeNull();
+      expect(screen.getByTestId("orientation-chip-image")).toHaveAttribute(
+        "src",
+        IMAGE_URL,
+      );
     });
   });
 

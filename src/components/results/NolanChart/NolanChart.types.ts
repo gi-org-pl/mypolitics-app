@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import type { ResultEntry } from "@/types/results";
 
 export type NolanLevel = "centre" | "moderate" | "extreme";
@@ -45,7 +45,7 @@ export interface NolanAxisValues {
 }
 
 export interface NolanComparison {
-  party: AxisOrientation;
+  orientation: Orientation;
   horizontal: NolanAxisValues;
   vertical: NolanAxisValues;
 }

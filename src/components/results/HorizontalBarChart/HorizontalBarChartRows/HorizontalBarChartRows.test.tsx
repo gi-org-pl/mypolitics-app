@@ -1,13 +1,13 @@
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
 import { HorizontalBarChartRows } from "./HorizontalBarChartRows";
 
 const entry = (name: string, value?: number): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
 });
 
@@ -59,7 +59,7 @@ describe("<HorizontalBarChartRows />", () => {
           <HorizontalBarChartRows
             ranking={RANKING}
             comparison={{
-              party: { id: "ania", name: "Ania" },
+              orientation: { id: "ania", type: "person", name: "Ania" },
               values: { beta: 30, zulu: 50 },
             }}
           />

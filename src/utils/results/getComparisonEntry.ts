@@ -6,11 +6,13 @@ export const getComparisonEntry = (
   comparison?: RankedComparison,
   orientationId?: string,
 ): AxisEntry | undefined => {
-  if (!comparison?.party || !comparison.values) return undefined;
+  if (!comparison?.orientation || !comparison.values) return undefined;
   if (typeof orientationId !== "string") return undefined;
   if (!Object.hasOwn(comparison.values, orientationId)) return undefined;
 
   const value = comparison.values[orientationId];
 
-  return isNumber(value) ? { orientation: comparison.party, value } : undefined;
+  return isNumber(value)
+    ? { orientation: comparison.orientation, value }
+    : undefined;
 };

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { DoubleAxisChart } from "./DoubleAxisChart";
 
@@ -28,36 +28,41 @@ const STARS_ICON = Array.from({ length: 12 }, (_, index) => {
 
 const CROSSED_STARS_ICON = `${STARS_ICON}<circle cx="16" cy="16" r="8.5" fill="none" stroke="white" stroke-width="1.5"/><path d="M10 10l12 12" stroke="white" stroke-width="1.5"/>`;
 
-const orientationA: AxisOrientation = {
+const orientationA: Orientation = {
   id: "orientation-a",
+  type: "ideology",
   name: "Orientation A",
   imageUrl: createIconUrl(PLACEHOLDER_ICON),
   color: "#59b6a6",
 };
 
-const orientationB: AxisOrientation = {
+const orientationB: Orientation = {
   id: "orientation-b",
+  type: "ideology",
   name: "Orientation B",
   imageUrl: createIconUrl(PLACEHOLDER_ICON),
   color: "#bc831a",
 };
 
-const euroscepticism: AxisOrientation = {
+const euroscepticism: Orientation = {
   id: "euroscepticism",
+  type: "ideology",
   name: "Eurosceptycyzm",
   imageUrl: createIconUrl(CROSSED_STARS_ICON),
   color: "#b57459",
 };
 
-const federalism: AxisOrientation = {
+const federalism: Orientation = {
   id: "federalism",
+  type: "ideology",
   name: "Federacjonizm",
   imageUrl: createIconUrl(STARS_ICON),
   color: "#1976be",
 };
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: createAvatarUrl("#004554"),
   color: "#004554",

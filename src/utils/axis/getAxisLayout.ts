@@ -56,7 +56,7 @@ const getSideLayout = (
   const value = getEntryValue(entry);
 
   return {
-    name: entry.orientation.name,
+    name: entry.orientation.name ?? "",
     imageUrl: entry.orientation.imageUrl || undefined,
     color: getSafeColor(entry.orientation.color),
     hasValue: hasEntryValue(entry),
@@ -118,7 +118,7 @@ const getComparisonLayout = (
   const position = !start && end ? MAX_AXIS_VALUE - value : value;
 
   return {
-    name: comparison.orientation.name,
+    name: comparison.orientation.name ?? "",
     imageUrl: comparison.orientation.imageUrl || undefined,
     color: getSafeColor(comparison.orientation.color),
     value,

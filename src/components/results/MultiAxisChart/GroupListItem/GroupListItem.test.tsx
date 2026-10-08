@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { createAxisPair } from "@/utils/vitest/createAxisPair";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import type { AxisGroup } from "../MultiAxisChart.types";
@@ -20,7 +20,7 @@ const foreignPolicy: AxisGroup = {
   axes: [createAxisPair("foreign", "Globalizm", "Suwerenizm", 50, 50)],
 };
 
-const friend: AxisOrientation = { id: "friend", name: "Ania" };
+const friend: Orientation = { id: "friend", type: "person", name: "Ania" };
 
 const renderItem = (
   group: AxisGroup,
@@ -68,7 +68,10 @@ describe("<GroupListItem />", () => {
 
     it("passes the comparison value of the headline axis to the bar", () => {
       renderItem(worldview, {
-        comparison: { party: friend, values: { worldview: 90, force: 20 } },
+        comparison: {
+          orientation: friend,
+          values: { worldview: 90, force: 20 },
+        },
       });
 
       expect(getBar().getAttribute("aria-label")).toContain(

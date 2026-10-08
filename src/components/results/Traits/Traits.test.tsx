@@ -1,31 +1,35 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { Traits } from "./Traits";
 
-const proChoice: AxisOrientation = {
+const proChoice: Orientation = {
   id: "pro-choice",
+  type: "ideology",
   name: "Pro-choice",
   imageUrl: "https://example.com/pro-choice.svg",
   color: "#851c22",
 };
-const proEuro: AxisOrientation = {
+const proEuro: Orientation = {
   id: "pro-euro",
+  type: "ideology",
   name: "Pro-Euro",
   imageUrl: "https://example.com/pro-euro.svg",
   color: "#b69d59",
 };
-const anarchism: AxisOrientation = {
+const anarchism: Orientation = {
   id: "anarchism",
+  type: "ideology",
   name: "Anarchizm",
   imageUrl: "https://example.com/anarchism.svg",
   color: "#192430",
 };
-const monarchism: AxisOrientation = {
+const monarchism: Orientation = {
   id: "monarchism",
+  type: "ideology",
   name: "Monarchizm",
   imageUrl: "https://example.com/monarchism.svg",
   color: "#9b51e0",
@@ -33,8 +37,9 @@ const monarchism: AxisOrientation = {
 
 const traits = [proChoice, proEuro, anarchism, monarchism];
 
-const friend: AxisOrientation = {
+const friend: Orientation = {
   id: "friend",
+  type: "person",
   name: "Ania",
   imageUrl: "https://example.com/ania.png",
 };
@@ -127,17 +132,34 @@ describe("<Traits />", () => {
     });
   });
 
+  describe("given an orientation without a name", () => {
+    it("does not draw the trait", () => {
+      renderWithI18n(
+        <Traits
+          traits={[{ ...proEuro, name: undefined }, anarchism]}
+          earnedIds={["pro-euro", "anarchism"]}
+        />,
+      );
+
+      expect(screen.getAllByTestId("trait-pill")).toHaveLength(1);
+      expect(getPill("Anarchizm")).toBeInTheDocument();
+    });
+  });
+
   describe("given a comparison", () => {
-    const renderComparison = (party: AxisOrientation = friend) =>
+    const renderComparison = (otherOrientation: Orientation = friend) =>
       renderWithI18n(
         <Traits
           traits={traits}
           earnedIds={["pro-choice", "anarchism"]}
-          comparison={{ party, earnedIds: ["pro-choice", "pro-euro"] }}
+          comparison={{
+            orientation: otherOrientation,
+            earnedIds: ["pro-choice", "pro-euro"],
+          }}
         />,
       );
 
-    it("renders a shared trait solid, with the other party avatar", () => {
+    it("renders a shared trait solid, with the other side avatar", () => {
       renderComparison();
 
       expect(getBody("Pro-choice")).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
@@ -147,7 +169,7 @@ describe("<Traits />", () => {
       );
     });
 
-    it("renders a trait only the other party earned hatched, with their avatar", () => {
+    it("renders a trait only the other side earned hatched, with their avatar", () => {
       renderComparison();
 
       expect(getBody("Pro-Euro")).toHaveClass(HATCH_LIGHT_CLASS_NAME);
@@ -171,7 +193,7 @@ describe("<Traits />", () => {
       expect(getPill("Anarchizm")).toHaveTextContent(/^Anarchizm$/);
     });
 
-    it("renders a placeholder when the other party has no avatar", () => {
+    it("renders a placeholder when the other side has no avatar", () => {
       renderComparison({ ...friend, imageUrl: undefined });
 
       const avatar = queryAvatar("Pro-choice");
@@ -191,12 +213,12 @@ describe("<Traits />", () => {
       expect(screen.queryByText("Monarchizm")).not.toBeInTheDocument();
     });
 
-    it("renders the taker pills without an avatar when the other party earned nothing", () => {
+    it("renders the taker pills without an avatar when the other side earned nothing", () => {
       renderWithI18n(
         <Traits
           traits={traits}
           earnedIds={["anarchism"]}
-          comparison={{ party: friend, earnedIds: [] }}
+          comparison={{ orientation: friend, earnedIds: [] }}
         />,
       );
 
@@ -213,12 +235,12 @@ describe("<Traits />", () => {
       expect(screen.queryByRole("list")).not.toBeInTheDocument();
     });
 
-    it("renders the empty line when neither party earned any", () => {
+    it("renders the empty line when neither side earned any", () => {
       renderWithI18n(
         <Traits
           traits={traits}
           earnedIds={[]}
-          comparison={{ party: friend, earnedIds: [] }}
+          comparison={{ orientation: friend, earnedIds: [] }}
         />,
       );
 
@@ -231,12 +253,15 @@ describe("<Traits />", () => {
       expect(screen.getByText(EMPTY_LINE)).toBeVisible();
     });
 
-    it("renders the other party pills hatched when only they earned traits", () => {
+    it("renders the other side pills hatched when only they earned traits", () => {
       renderWithI18n(
         <Traits
           traits={traits}
           earnedIds={[]}
-          comparison={{ party: friend, earnedIds: ["pro-euro", "monarchism"] }}
+          comparison={{
+            orientation: friend,
+            earnedIds: ["pro-euro", "monarchism"],
+          }}
         />,
       );
 

@@ -2,6 +2,7 @@ import { screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { MATCH_BAND_COLORS } from "@/constants/results";
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { ArchetypeEntry } from "../../Archetype.types";
@@ -10,7 +11,9 @@ import { ArchetypeRanking } from "./ArchetypeRanking";
 const OWN_COLOR = "#123456";
 
 const archetype = (name: string, match?: number): ArchetypeEntry => ({
-  orientation: { id: name.toLowerCase(), name, color: OWN_COLOR },
+  orientation: createOrientation(name.toLowerCase(), name, {
+    color: OWN_COLOR,
+  }),
   match,
 });
 
@@ -74,7 +77,7 @@ describe("<ArchetypeRanking />", () => {
         <ArchetypeRanking
           ranking={RANKING}
           comparison={{
-            party: { id: "ania", name: "Ania" },
+            orientation: { id: "ania", type: "person", name: "Ania" },
             values: { gamma: 90, unknown: 10 },
           }}
         />,

@@ -4,19 +4,21 @@ import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 import { useDoubleAxisTitle } from "./useDoubleAxisTitle";
 
-const euroscepticism: AxisOrientation = {
+const euroscepticism: Orientation = {
   id: "euroscepticism",
+  type: "ideology",
   name: "Eurosceptycyzm",
   imageUrl: "https://example.com/euroscepticism.svg",
   color: "#b57459",
 };
 
-const federalism: AxisOrientation = {
+const federalism: Orientation = {
   id: "federalism",
+  type: "ideology",
   name: "Federacjonizm",
   imageUrl: "https://example.com/federalism.svg",
   color: "#1976be",
@@ -29,8 +31,8 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 const getTitle = (
   startValue?: number,
   endValue?: number,
-  start: AxisOrientation = euroscepticism,
-  end: AxisOrientation = federalism,
+  start: Orientation = euroscepticism,
+  end: Orientation = federalism,
 ) =>
   renderHook(
     () =>
@@ -83,7 +85,7 @@ describe("useDoubleAxisTitle()", () => {
     it.each([
       "",
       "   ",
-      undefined as unknown as string,
+      undefined,
     ])("returns a chip with the image alone for %j", (name) => {
       const title = getTitle(69, 31, { ...euroscepticism, name });
 

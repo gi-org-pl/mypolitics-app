@@ -1,7 +1,7 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
 import { MAP_CLIP_CLASS_NAME } from "../../NolanChart.constants";
@@ -9,13 +9,16 @@ import type { NolanPosition } from "../../NolanChart.types";
 import { getColorStyle } from "../../utils/getColorStyle";
 import { getPositionStyle } from "../../utils/getPositionStyle";
 
-interface PartyMarkerProps {
-  party?: AxisOrientation;
+interface OrientationMarkerProps {
+  orientation?: Orientation;
   position: NolanPosition;
 }
 
-export const PartyMarker = ({ party, position }: PartyMarkerProps) => {
-  const color = getSafeColor(party?.color);
+export const OrientationMarker = ({
+  orientation,
+  position,
+}: OrientationMarkerProps) => {
+  const color = getSafeColor(orientation?.color);
   const imageClassName = `size-6 rounded-full border-2 border-gi-primary ${color ? "bg-(--nolan-color)" : "bg-gi-dark-gray"}`;
   const imageStyle = getColorStyle(color);
 
@@ -26,10 +29,10 @@ export const PartyMarker = ({ party, position }: PartyMarkerProps) => {
         className={`absolute top-[clamp(14px,var(--nolan-y),calc(100%-14px))] left-[clamp(14px,var(--nolan-x),calc(100%-14px))] flex size-14 -translate-1/2 items-center justify-center rounded-full ${HATCH_CLASS_NAME}`}
         style={getPositionStyle(position)}
       >
-        {party?.imageUrl ? (
+        {orientation?.imageUrl ? (
           <Avatar
             size="small"
-            src={party.imageUrl}
+            src={orientation.imageUrl}
             dataTestId="nolan-chart-comparison-image"
             className={imageClassName}
             style={imageStyle}

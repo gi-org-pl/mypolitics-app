@@ -2,7 +2,7 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
@@ -10,7 +10,7 @@ import type { RankedCategory } from "../HorizontalBarChart.types";
 import { HorizontalBarChartCategories } from "./HorizontalBarChartCategories";
 
 const entry = (name: string, value?: number): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
 });
 

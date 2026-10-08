@@ -1,7 +1,7 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-
+import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import type { RankedEntry } from "../../../RankedRow/RankedRow.types";
@@ -9,7 +9,7 @@ import type { CategoryItem } from "../HorizontalBarChartCategories.types";
 import { HorizontalBarChartOpenCategory } from "./HorizontalBarChartOpenCategory";
 
 const entry = (name: string, value?: number): RankedEntry => ({
-  orientation: { id: name.toLowerCase(), name },
+  orientation: createOrientation(name.toLowerCase(), name),
   value,
 });
 
@@ -32,7 +32,7 @@ const CATEGORY = item("economy", "Gospodarka", [
   entry("Alfa", 20),
 ]);
 const COMPARISON = {
-  party: { id: "ania", name: "Ania" },
+  orientation: createOrientation("ania", "Ania", { type: "person" }),
   values: { beta: 20, gamma: 45 },
 };
 

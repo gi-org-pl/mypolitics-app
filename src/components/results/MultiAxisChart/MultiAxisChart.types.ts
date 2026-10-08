@@ -1,4 +1,4 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 import type { ResultEntry } from "@/types/results";
 
 export interface AxisPair {
@@ -13,7 +13,7 @@ export interface AxisGroup {
 }
 
 export interface AxisComparison {
-  party: AxisOrientation;
+  orientation: Orientation;
   values: Record<string, number>;
 }
 

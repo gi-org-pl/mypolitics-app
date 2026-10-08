@@ -11,8 +11,22 @@ const CONTENT: ArchetypeContent = {
   shortDescription: "Krótki opis.",
   fullDescription: "Pełny opis.",
   ranking: [
-    { orientation: { id: "beta", name: "Beta", imageUrl: "beta.png" } },
-    { orientation: { id: "gamma", name: "Gamma", imageUrl: "gamma.png" } },
+    {
+      orientation: {
+        id: "beta",
+        type: "ideology",
+        name: "Beta",
+        imageUrl: "beta.png",
+      },
+    },
+    {
+      orientation: {
+        id: "gamma",
+        type: "ideology",
+        name: "Gamma",
+        imageUrl: "gamma.png",
+      },
+    },
   ],
   hasDescription: true,
   hasRanking: true,

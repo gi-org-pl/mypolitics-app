@@ -1,13 +1,13 @@
-import type { AxisOrientation } from "@/types/axis";
+import type { Orientation } from "@/types/orientation";
 
 export interface TraitsComparison {
-  party: AxisOrientation;
+  orientation: Orientation;
   earnedIds: string[];
 }
 
 export interface TraitsProps {
   title?: string;
-  traits: AxisOrientation[];
+  traits: Orientation[];
   earnedIds: string[];
   comparison?: TraitsComparison;
   onStatsClick?: () => void;
@@ -17,9 +17,6 @@ export interface TraitsProps {
 export type TraitHolder = "taker" | "both" | "other";
 
 export interface TraitItem {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  color?: string;
+  orientation: Orientation;
   holder: TraitHolder;
 }
