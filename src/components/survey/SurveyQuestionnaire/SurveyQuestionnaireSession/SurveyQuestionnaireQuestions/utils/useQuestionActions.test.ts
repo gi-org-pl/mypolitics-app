@@ -1,9 +1,11 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { CheckpointAggregates } from "@/types/checkpoint";
 import type { Survey, SurveySession } from "@/types/survey";
 import { getSessionCheckpoint } from "@/utils/checkpoint/getSessionCheckpoint";
 import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { loadCheckpointAggregates } from "@/utils/survey/loadCheckpointAggregates";
 import { useSurveySession } from "@/utils/survey/useSurveySession";
 import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
@@ -16,6 +18,13 @@ vi.mock("../../../SurveyQuestionnaire.constants", () => ({
   CHECKPOINT_CARDS: {},
 }));
 vi.mock("@/utils/checkpoint/getSessionCheckpoint", { spy: true });
+// No source of answer counts is set, so the real loader gives nothing. The
+// cases of the counts hand it some.
+vi.mock("@/utils/survey/loadCheckpointAggregates", { spy: true });
+
+const COUNTS: CheckpointAggregates = {
+  q5: { resultsCounted: 1000, chosen: { "q5-a1": 80, "q5-a2": 620 } },
+};
 
 const StubCard = () => null;
 
@@ -64,6 +73,7 @@ describe("useQuestionActions()", () => {
 
   afterEach(() => {
     CHECKPOINT_CARDS.halfway = undefined;
+    CHECKPOINT_CARDS.stats = undefined;
     vi.restoreAllMocks();
     vi.clearAllMocks();
     sessionStorage.clear();
@@ -175,6 +185,7 @@ describe("useQuestionActions()", () => {
             ]),
           }),
           ["halfway"],
+          undefined,
         );
         expect(
           vi.mocked(getSessionCheckpoint).mock.calls[0][1].entries,
@@ -216,6 +227,7 @@ describe("useQuestionActions()", () => {
           survey,
           expect.objectContaining({ id: result.current.session.id }),
           ["halfway"],
+          undefined,
         );
         expect(result.current.session.phase).toBe("checkpoints");
       });
@@ -265,6 +277,7 @@ describe("useQuestionActions()", () => {
           expect.anything(),
           expect.anything(),
           [],
+          undefined,
         );
         expect(result.current.session.phase).toBe("questions");
         expect(result.current.session.checkpointRecord.cardsShown).toEqual([]);
@@ -278,6 +291,127 @@ describe("useQuestionActions()", () => {
 
         expect(result.current.session.phase).toBe("questions");
         expect(result.current.session.checkpointRecord.cardsShown).toEqual([]);
+      });
+    });
+  });
+
+  describe("answer counts", () => {
+    describe("when a question is answered and the counts have arrived", () => {
+      it("passes them to getSessionCheckpoint", async () => {
+        vi.mocked(loadCheckpointAggregates).mockResolvedValueOnce(COUNTS);
+
+        const { result, survey } = renderNineQuestions(3);
+
+        await act(async () => undefined);
+        act(() => result.current.actions.answer("q4-a1"));
+
+        expect(loadCheckpointAggregates).toHaveBeenCalledWith(survey.id);
+        expect(getSessionCheckpoint).toHaveBeenCalledTimes(1);
+        expect(vi.mocked(getSessionCheckpoint).mock.calls[0][3]).toBe(COUNTS);
+      });
+
+      it("passes them when a question is skipped too", async () => {
+        vi.mocked(loadCheckpointAggregates).mockResolvedValueOnce(COUNTS);
+
+        const { result } = renderNineQuestions(3);
+
+        await act(async () => undefined);
+        act(() => result.current.actions.skip());
+
+        expect(vi.mocked(getSessionCheckpoint).mock.calls[0][3]).toBe(COUNTS);
+      });
+
+      it("shows the stats card the engine picks from them", async () => {
+        vi.mocked(loadCheckpointAggregates).mockResolvedValueOnce(COUNTS);
+
+        const { result } = renderNineQuestions(4);
+
+        CHECKPOINT_CARDS.stats = StubCard;
+        await act(async () => undefined);
+        act(() => result.current.actions.answer("q5-a1"));
+
+        expect(result.current.session.phase).toBe("checkpoints");
+        expect(result.current.session.checkpointRecord.cardsShown).toEqual([
+          {
+            card: {
+              type: "stats",
+              boundary: 5,
+              line: { pool: "stats-for", index: expect.any(Number) },
+              questionId: "q5",
+              thesis: "Stwierdzenie q5.",
+              side: "for",
+              counts: { for: 80, against: 620, noAnswer: 300 },
+              percent: 8,
+            },
+          },
+        ]);
+      });
+    });
+
+    describe("when a question is answered before the counts arrived", () => {
+      it("passes nothing and does not wait", () => {
+        let arrive: (counts: CheckpointAggregates) => void = () => undefined;
+
+        vi.mocked(loadCheckpointAggregates).mockReturnValueOnce(
+          new Promise((resolve) => {
+            arrive = resolve;
+          }),
+        );
+
+        const { result } = renderNineQuestions(4);
+
+        CHECKPOINT_CARDS.stats = StubCard;
+        act(() => result.current.actions.answer("q5-a1"));
+
+        expect(getSessionCheckpoint).toHaveBeenCalledTimes(1);
+        expect(
+          vi.mocked(getSessionCheckpoint).mock.calls[0][3],
+        ).toBeUndefined();
+        expect(result.current.session.entries).toHaveLength(5);
+        expect(result.current.session.phase).toBe("questions");
+
+        arrive(COUNTS);
+      });
+    });
+
+    describe("when the counts arrive late", () => {
+      it("uses them from the next done question on", async () => {
+        let arrive: (counts: CheckpointAggregates) => void = () => undefined;
+
+        vi.mocked(loadCheckpointAggregates).mockReturnValueOnce(
+          new Promise((resolve) => {
+            arrive = resolve;
+          }),
+        );
+
+        const { result } = renderNineQuestions(3);
+
+        act(() => result.current.actions.answer("q4-a1"));
+        await act(async () => arrive(COUNTS));
+        act(() => result.current.actions.answer("q5-a1"));
+
+        expect(
+          vi
+            .mocked(getSessionCheckpoint)
+            .mock.calls.map(([, , , aggregates]) => aggregates),
+        ).toEqual([undefined, COUNTS]);
+      });
+    });
+
+    describe("when the source gives nothing", () => {
+      it("passes nothing, and the questions go on", async () => {
+        vi.mocked(loadCheckpointAggregates).mockResolvedValueOnce(undefined);
+
+        const { result } = renderNineQuestions(3);
+
+        await act(async () => undefined);
+        act(() => result.current.actions.answer("q4-a1"));
+
+        expect(
+          vi.mocked(getSessionCheckpoint).mock.calls[0][3],
+        ).toBeUndefined();
+        expect(result.current.session.entries).toHaveLength(4);
+        expect(result.current.session.phase).toBe("questions");
       });
     });
   });

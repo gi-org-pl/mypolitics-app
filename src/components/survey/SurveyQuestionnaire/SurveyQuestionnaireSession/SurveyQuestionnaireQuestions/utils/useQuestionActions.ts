@@ -11,6 +11,7 @@ import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import type { QuestionActions } from "../SurveyQuestionnaireQuestions.types";
+import { useCheckpointAggregates } from "./useCheckpointAggregates";
 import { useQuestionTimer } from "./useQuestionTimer";
 
 // Answer and skip: the one place a done question is handled. Each passes the
@@ -28,6 +29,10 @@ import { useQuestionTimer } from "./useQuestionTimer";
 // as a shown card, which moves the session to the Checkpoints phase; with
 // nothing back the next question is shown exactly as if checkpoints did not
 // exist. Nobody is asked on the way back.
+//
+// The engine is handed the answer counts of the quiz as they are at that
+// moment: nothing while they have not arrived, or when there is no source. A
+// question never waits for them.
 export const useQuestionActions = (
   survey: Survey,
   { session, answer, skip, showCheckpoint }: SurveySessionApi,
@@ -37,6 +42,8 @@ export const useQuestionActions = (
     survey,
     getCurrentQuestion(survey, session)?.id,
   );
+
+  const getAggregates = useCheckpointAggregates(survey.id);
 
   useEffect(() => {
     isOnScreen.current = true;
@@ -61,6 +68,7 @@ export const useQuestionActions = (
         survey,
         fitSession(survey, sessionAfter, SURVEY_SESSION_CONFIG),
         getEnabledCheckpointTypes(CHECKPOINT_CARDS),
+        getAggregates(),
       );
 
       if (card) {
@@ -76,5 +84,5 @@ export const useQuestionActions = (
       },
       skip: () => finishQuestion(() => skip(getSeconds())),
     };
-  }, [survey, answer, skip, showCheckpoint, getSeconds]);
+  }, [survey, answer, skip, showCheckpoint, getSeconds, getAggregates]);
 };
