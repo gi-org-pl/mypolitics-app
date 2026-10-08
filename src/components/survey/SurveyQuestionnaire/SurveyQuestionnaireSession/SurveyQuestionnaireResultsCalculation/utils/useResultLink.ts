@@ -22,7 +22,9 @@ import { getResultLinkInput } from "./getResultLinkInput";
 // moment the request is made, which keeps that true through a retry and a
 // remount: the request holds the only copy until it has answered. It is not
 // cancelled when the phase is left - it may already have reached the
-// endpoint - and its outcome is then simply not heard.
+// endpoint - and its outcome is then simply not heard. The call keeps the
+// request alive through a reload of the page too; the page that comes back
+// holds no address, asks for nothing and cannot tell how the request ended.
 export const useResultLink = (
   { session, setEmail }: Pick<SurveySessionApi, "session" | "setEmail">,
   handIn: HandInState,
