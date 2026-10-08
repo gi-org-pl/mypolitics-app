@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
-import { getNolanPosition } from "../utils/getNolanPosition";
+import type { NolanPosition } from "@/types/results";
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
+
+import type { NolanQuadrants } from "../NolanChart.types";
 import { NolanMap } from "./NolanMap";
 
 const quadrants: NolanQuadrants = {

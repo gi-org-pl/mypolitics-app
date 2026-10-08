@@ -1,6 +1,7 @@
+import type { NolanPoleSide } from "@/types/results";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
-import type { NolanAxis, NolanPoleSide } from "../NolanChart.types";
+import type { NolanAxis } from "../NolanChart.types";
 import { getAxisLevel } from "./getAxisLevel";
 
 export const getPoleName = (

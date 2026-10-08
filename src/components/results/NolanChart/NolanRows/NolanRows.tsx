@@ -1,8 +1,6 @@
-import type {
-  NolanAxis,
-  NolanComparison,
-  NolanPosition,
-} from "../NolanChart.types";
+import type { NolanPosition } from "@/types/results";
+
+import type { NolanAxis, NolanComparison } from "../NolanChart.types";
 import { NolanRow } from "./NolanRow/NolanRow";
 
 interface NolanRowsProps {

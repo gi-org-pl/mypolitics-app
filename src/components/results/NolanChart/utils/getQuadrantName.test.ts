@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
+
 import type { NolanQuadrants } from "../NolanChart.types";
-import { getNolanPosition } from "./getNolanPosition";
 import { getQuadrantName } from "./getQuadrantName";
 
 const CENTRE = getNolanPosition({ start: 50, end: 50 }, { start: 50, end: 50 });
