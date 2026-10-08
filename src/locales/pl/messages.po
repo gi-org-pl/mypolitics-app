@@ -53,6 +53,10 @@ msgstr "{label} (otwiera się w nowej karcie)"
 msgid "{name} jest blisko Ciebie"
 msgstr "{name} jest blisko Ciebie"
 
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsDescription.ts:26
+msgid "{name}: {percent}%"
+msgstr "{name}: {percent}%"
+
 #: src/components/results/NolanChart/utils/useMapDescription.ts:53
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
@@ -87,11 +91,11 @@ msgstr "{title}:"
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:18
 msgid "{trait} - tylko {name}"
 msgstr "{trait} - tylko {name}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:19
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - wspólna z: {name}"
 
@@ -255,13 +259,17 @@ msgstr "Bez pudła"
 msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:12
+msgid "Brak odpowiedzi"
+msgstr "Brak odpowiedzi"
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
-#: src/components/results/Traits/Traits.tsx:37
+#: src/components/results/Traits/Traits.tsx:39
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 
@@ -464,6 +472,14 @@ msgstr "Kobieta"
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:24
 msgid "Kolorujemy wykresy"
 msgstr "Kolorujemy wykresy"
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:29
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:28
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
 
 #: src/constants/checkpoint.ts:310
 msgctxt "checkpoint-nolan-path-full"
@@ -836,6 +852,10 @@ msgstr "Proszę, proszę"
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
+
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:11
+msgid "Przeciw"
+msgstr "Przeciw"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:18
 msgid "Przeliczamy jeszcze raz"
@@ -1232,6 +1252,10 @@ msgstr "Wyszło inaczej, niż się spodziewasz."
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:31
 msgid "Wyższe"
 msgstr "Wyższe"
+
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:10
+msgid "Za"
+msgstr "Za"
 
 #: src/components/survey/SurveyControls/SurveyControls.tsx:59
 msgid "Zacznij od nowa"

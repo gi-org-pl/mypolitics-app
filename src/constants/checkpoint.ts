@@ -574,3 +574,8 @@ export const CHECKPOINT_POOLS: CheckpointPools = {
     },
   ],
 };
+
+// The answer counts of the stats chart: how long ago they may have been
+// computed, at most, to be used. It stands below the pools so that their
+// lines keep their places in the catalogs.
+export const ANSWER_COUNTS_MAX_AGE_HOURS = 24;

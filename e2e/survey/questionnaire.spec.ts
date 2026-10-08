@@ -27,6 +27,10 @@ import {
   CHECKPOINT_QUESTIONS,
   checkpointSurveyFixture,
 } from "./survey-checkpoint.fixture";
+import {
+  COMPASS_QUESTIONS,
+  compassSurveyFixture,
+} from "./survey-compass.fixture";
 
 const HOME_PATH = "/";
 const QUIZ_PATH = "/quizzes/mypolitics";
@@ -1049,6 +1053,71 @@ test.describe("Feature: Questionnaire - a quiz with axes", () => {
         page.getByText(SIXTH_QUESTION.text, { exact: true }),
       ).toBeVisible();
       await expect(getCard(page)).toHaveCount(0);
+    });
+  });
+});
+
+test.describe("Feature: Questionnaire checkpoints - Nolan chart path", () => {
+  // The path card needs ten done questions: the boundary after the tenth.
+  const boundary = 10;
+  const eleventhQuestion = COMPASS_QUESTIONS[boundary];
+
+  test.beforeEach(async ({ page }) => {
+    await mockSurveyApi(page, compassSurveyFixture);
+  });
+
+  test("Scenario: The compass path card appears in a quiz with a compass", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the twenty-question compass quiz", async () => {
+      await openPage(page, QUIZ_PATH);
+      await expectQuestion(page, COMPASS_QUESTIONS[0]);
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+
+    await test.step('When they answer the first question "Zdecydowanie za"', async () => {
+      await answer(page, COMPASS_QUESTIONS[0], "Zdecydowanie za");
+    });
+
+    await test.step('And they answer the next nine questions "Zdecydowanie przeciw"', async () => {
+      await answerQuestions(
+        page,
+        COMPASS_QUESTIONS.slice(1),
+        boundary - 1,
+        "Zdecydowanie przeciw",
+      );
+    });
+
+    await test.step('Then a region named "Checkpoint" is shown in place of the question', async () => {
+      await expect(getCheckpoint(page)).toBeVisible();
+      await expect(getAnswers(page, eleventhQuestion)).toHaveCount(0);
+      await expect(
+        page.getByText(eleventhQuestion.text, { exact: true }),
+      ).toHaveCount(0);
+    });
+
+    await test.step("And it holds an image whose description says the route passed through 2 of 4 quadrants", async () => {
+      await expect(
+        getCheckpoint(page).getByRole("img", {
+          name: /trasa przeszła przez 2 z 4 ćwiartek/,
+        }),
+      ).toBeVisible();
+      await expect(getCheckpoint(page).getByRole("img")).toHaveCount(1);
+    });
+
+    await test.step('And its text says "2 ćwiartki kompasu"', async () => {
+      await expect(getCheckpoint(page).getByRole("paragraph")).toContainText(
+        "2 ćwiartki kompasu",
+      );
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the eleventh question", async () => {
+      await expectQuestion(page, eleventhQuestion);
+      await expect(getCheckpoint(page)).toHaveCount(0);
     });
   });
 });
