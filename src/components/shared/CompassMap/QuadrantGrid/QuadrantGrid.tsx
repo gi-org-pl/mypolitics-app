@@ -1,14 +1,14 @@
 import type { NolanQuadrantKey } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
 
-import { MAP_CLIP_CLASS_NAME, QUADRANT_KEYS } from "../../NolanChart.constants";
-import type { NolanQuadrants } from "../../NolanChart.types";
-import { getColorStyle } from "../../utils/getColorStyle";
+import { MAP_CLIP_CLASS_NAME, QUADRANT_KEYS } from "../CompassMap.constants";
+import type { CompassMapQuadrants } from "../CompassMap.types";
 
 const DIVIDER_CLASS_NAME = "absolute bg-gi-dark-ash";
 
 interface QuadrantGridProps {
-  quadrants?: Partial<NolanQuadrants>;
+  quadrants?: CompassMapQuadrants;
   filledQuadrant?: NolanQuadrantKey | null;
 }
 
@@ -32,7 +32,7 @@ export const QuadrantGrid = ({
             data-testid={`nolan-chart-quadrant-${key}`}
             data-filled={isFilled}
             className={isFilled ? fillClassName : tintClassName}
-            style={getColorStyle(color)}
+            style={getNolanColorStyle(color)}
           />
         );
       })}
