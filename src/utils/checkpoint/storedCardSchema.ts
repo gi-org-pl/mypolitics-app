@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { MAX_AXIS_VALUE, MIN_AXIS_VALUE } from "@/constants/axis";
 import {
   HALFWAY_MAX_MINUTES,
   MIDPOINT_SHARE,
@@ -12,9 +13,26 @@ import {
   WHOLE_PERCENT,
 } from "@/constants/checkpoint";
 import { PARTIAL_MATCH_FROM } from "@/constants/results";
+import type { NolanLevel, NolanQuadrantKey } from "@/types/results";
+
+// A coordinate of the compass runs from -1 to 1.
+const COMPASS_EDGE = 1;
+const NOLAN_LEVELS = [
+  "centre",
+  "moderate",
+  "extreme",
+] as const satisfies readonly NolanLevel[];
+const NOLAN_QUADRANTS = [
+  "topLeft",
+  "topRight",
+  "bottomLeft",
+  "bottomRight",
+] as const satisfies readonly NolanQuadrantKey[];
 
 const countSchema = z.number().int().min(0);
-const sideSchema = z.enum(["start", "end"]);
+// The value of an orientation, and the closeness of an archetype: 0 to 100.
+const valueSchema = z.number().min(MIN_AXIS_VALUE).max(MAX_AXIS_VALUE);
+const coordinateSchema = z.number().min(-COMPASS_EDGE).max(COMPASS_EDGE);
 
 // An orientation is taken as one when it has an identifier. Its shape has one
 // definition in the app, and it is not written a second time here.
@@ -22,30 +40,26 @@ const orientationSchema = z.object({ id: z.string() });
 
 const entrySchema = z.object({
   orientation: orientationSchema,
-  value: z.number(),
+  value: valueSchema,
 });
 
 const trailSchema = z
   .array(
     z.object({
-      x: z.number(),
-      y: z.number(),
-      level: z.string(),
-      quadrant: z.string(),
-      done: z.number().int(),
+      x: coordinateSchema,
+      y: coordinateSchema,
+      level: z.enum(NOLAN_LEVELS),
+      quadrant: z.enum(NOLAN_QUADRANTS),
+      done: countSchema,
     }),
   )
   .min(1);
 
 // What every card carries.
 const base = {
-  boundary: z.number().int(),
-  line: z.object({ pool: z.string(), index: z.number().int() }),
+  boundary: countSchema,
+  line: z.object({ pool: z.string(), index: countSchema }),
 };
-
-const axis = { ...base, axisId: z.string() };
-
-const pair = { start: entrySchema, end: entrySchema, leadingSide: sideSchema };
 
 const nolanPath = {
   ...base,
@@ -53,12 +67,26 @@ const nolanPath = {
   trail: trailSchema,
 };
 
+// The two sides of an axis, the higher one leading.
+const pairSchema = z
+  .object({
+    ...base,
+    axisId: z.string(),
+    start: entrySchema,
+    end: entrySchema,
+    leadingSide: z.enum(["start", "end"]),
+  })
+  .refine(({ start, end, leadingSide }) =>
+    leadingSide === "start" ? start.value > end.value : end.value > start.value,
+  );
+
 // A card as the store of the tab wrote it: one of the seven types, with every
 // value its variant has, each of the kind and in the range the card type
 // gives it. The position puzzle has three different rows and the leader is
 // one of them; a Nolan path has a trail to stand on, and counts four
-// quadrants exactly when it is the full one. Whether the card can be put
-// into words is not checked here.
+// quadrants exactly when it is the full one; on an axis with two sides the
+// higher one leads. Whether the card can be put into words is not checked
+// here.
 export const storedCardSchema = z.union([
   z.object({
     ...base,
@@ -83,7 +111,7 @@ export const storedCardSchema = z.union([
       ...base,
       type: z.literal("position-puzzle"),
       leader: orientationSchema,
-      closeness: z.number().min(PARTIAL_MATCH_FROM),
+      closeness: valueSchema.min(PARTIAL_MATCH_FROM),
       options: z
         .array(orientationSchema)
         .length(POSITION_PUZZLE_DISTRACTORS + 1),
@@ -110,18 +138,19 @@ export const storedCardSchema = z.union([
     isSecondPath: z.boolean(),
   }),
   z.object({
-    ...axis,
+    ...base,
     type: z.literal("axis-closeness"),
+    axisId: z.string(),
     variant: z.literal("single"),
     entry: entrySchema,
   }),
-  z.object({
-    ...axis,
-    ...pair,
-    type: z.literal("axis-closeness"),
-    variant: z.literal("double"),
-  }),
-  z.object({ ...axis, ...pair, type: z.literal("axis-puzzle") }),
+  pairSchema.and(
+    z.object({
+      type: z.literal("axis-closeness"),
+      variant: z.literal("double"),
+    }),
+  ),
+  pairSchema.and(z.object({ type: z.literal("axis-puzzle") })),
   z.object({
     ...base,
     type: z.literal("halfway"),

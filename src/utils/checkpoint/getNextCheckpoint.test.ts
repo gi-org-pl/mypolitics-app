@@ -118,7 +118,12 @@ const replay = ({
       enabledTypes,
     });
 
-    if (card) currentRecord = afterShowing(currentRecord, card);
+    if (card) {
+      currentRecord = afterShowing(currentRecord, card);
+
+      // The card came back from storage as it was handed over.
+      expect(currentRecord.cardsShown.at(-1)?.card).toEqual(card);
+    }
   }
 
   return currentRecord;

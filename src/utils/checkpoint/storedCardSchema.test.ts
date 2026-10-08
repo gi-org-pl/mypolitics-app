@@ -116,6 +116,11 @@ describe("storedCardSchema", () => {
     expect(passesWith(positionPuzzleCard, { closeness: 50 })).toBe(true);
   });
 
+  it("refuses a position puzzle with a closeness above 100", () => {
+    expect(passesWith(positionPuzzleCard, { closeness: 100 })).toBe(true);
+    expect(passesWith(positionPuzzleCard, { closeness: 100.5 })).toBe(false);
+  });
+
   it("refuses a Nolan path card without a trail of positions to stand on", () => {
     expect(passesWith(partialPathCard, { trail: undefined })).toBe(false);
     expect(passesWith(partialPathCard, { trail: "trail" })).toBe(false);
@@ -129,6 +134,35 @@ describe("storedCardSchema", () => {
     expect(
       passesWith(fullPathCard, { trail: fullPathCard.trail.slice(0, 1) }),
     ).toBe(true);
+  });
+
+  it("refuses a Nolan path card with a position that is not one of the compass", () => {
+    const [point] = fullPathCard.trail;
+    const passesWithPoint = (fields: Record<string, unknown>): boolean =>
+      passesWith(fullPathCard, { trail: [{ ...point, ...fields }] });
+
+    expect(passesWithPoint({})).toBe(true);
+    expect(passesWithPoint({ x: -1, y: 1 })).toBe(true);
+    expect(passesWithPoint({ x: 1.2 })).toBe(false);
+    expect(passesWithPoint({ y: -1.01 })).toBe(false);
+    expect(passesWithPoint({ level: "far" })).toBe(false);
+    expect(passesWithPoint({ level: undefined })).toBe(false);
+    expect(passesWithPoint({ quadrant: "middle" })).toBe(false);
+    expect(passesWithPoint({ done: 2.5 })).toBe(false);
+    expect(passesWithPoint({ done: -1 })).toBe(false);
+
+    for (const level of ["centre", "moderate", "extreme"]) {
+      expect(passesWithPoint({ level })).toBe(true);
+    }
+
+    for (const quadrant of [
+      "topLeft",
+      "topRight",
+      "bottomLeft",
+      "bottomRight",
+    ]) {
+      expect(passesWithPoint({ quadrant })).toBe(true);
+    }
   });
 
   it("refuses a Nolan path card whose count does not fit its version", () => {
@@ -170,6 +204,47 @@ describe("storedCardSchema", () => {
       passesWith(axisPuzzleCard, {
         end: { orientation: withoutId, value: 30 },
       }),
+    ).toBe(false);
+  });
+
+  it("refuses an axis card with a value that is not one, or led by the lower side", () => {
+    const { orientation } = singleClosenessCard.entry;
+    const { start, end } = doubleClosenessCard;
+
+    expect(
+      passesWith(singleClosenessCard, { entry: { orientation, value: 100 } }),
+    ).toBe(true);
+    expect(
+      passesWith(singleClosenessCard, { entry: { orientation, value: 100.5 } }),
+    ).toBe(false);
+    expect(
+      passesWith(singleClosenessCard, { entry: { orientation, value: -1 } }),
+    ).toBe(false);
+    expect(
+      passesWith(doubleClosenessCard, { end: { ...end, value: 140 } }),
+    ).toBe(false);
+    // The start is at 20 and the end at 60: the end leads.
+    expect(passesWith(doubleClosenessCard, { leadingSide: "end" })).toBe(true);
+    expect(passesWith(doubleClosenessCard, { leadingSide: "start" })).toBe(
+      false,
+    );
+    expect(
+      passesWith(doubleClosenessCard, { start: { ...start, value: 60 } }),
+    ).toBe(false);
+    expect(passesWith(axisPuzzleCard, { leadingSide: "end" })).toBe(false);
+    expect(
+      passesWith(axisPuzzleCard, {
+        leadingSide: "end",
+        start: axisPuzzleCard.end,
+        end: axisPuzzleCard.start,
+      }),
+    ).toBe(true);
+  });
+
+  it("refuses a card with a boundary or a place in its pool below zero", () => {
+    expect(passesWith(halfwayCard, { boundary: -1 })).toBe(false);
+    expect(
+      passesWith(halfwayCard, { line: { pool: "halfway", index: -1 } }),
     ).toBe(false);
   });
 
