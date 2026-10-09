@@ -48,7 +48,7 @@ describe("getProgress()", () => {
   });
 
   describe("when anything else happens", () => {
-    it("does not change with topics, a card or a closing phase", () => {
+    it("does not change with picked categories, a card or a closing phase", () => {
       const picking = setSessionCategories(survey, createSession(survey), [
         "economy",
       ]);

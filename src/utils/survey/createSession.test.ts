@@ -18,8 +18,8 @@ describe("createSession()", () => {
         id: session.id,
         surveyId: "survey",
         entries: [],
-        topicIds: [],
-        areTopicsConfirmed: false,
+        prioritizedCategoryIds: [],
+        areCategoriesConfirmed: false,
         phase: "category-select",
         areCheckpointsOff: false,
         demographics: {},
@@ -34,7 +34,7 @@ describe("createSession()", () => {
       const session = createSession(createSurvey({ categories: [] }));
 
       expect(session.phase).toBe("questions");
-      expect(session.areTopicsConfirmed).toBe(false);
+      expect(session.areCategoriesConfirmed).toBe(false);
     });
 
     it("gives two sessions two identifiers", () => {

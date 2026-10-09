@@ -16,8 +16,8 @@ export const buildResultInput = (
   return {
     surveyId: survey.id,
     sessionId: session.id,
-    prioritizedCategories: session.areTopicsConfirmed
-      ? [...session.topicIds]
+    prioritizedCategories: session.areCategoriesConfirmed
+      ? [...session.prioritizedCategoryIds]
       : [],
     ...(demographics ? { demographics } : {}),
     // The first entry of a question wins, and a skip has no answer to send.

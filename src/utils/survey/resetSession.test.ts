@@ -21,7 +21,7 @@ import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 
-// A session with something in every part: topics, an answer, a time sample, a
+// A session with something in every part: categories, an answer, a time sample, a
 // card, demographics and an e-mail.
 const createFullSession = (survey: Survey): SurveySession => {
   const confirmed = confirmSessionCategories(
@@ -81,7 +81,7 @@ describe("resetSession()", () => {
       expect(session.entries).toEqual([]);
     });
 
-    it("clears entries, topics, demographics, the e-mail and the checkpoint record", () => {
+    it("clears entries, categories, demographics, the e-mail and the checkpoint record", () => {
       const before = createFullSession(survey);
       const session = resetSession(survey, before);
 
@@ -90,8 +90,8 @@ describe("resetSession()", () => {
         id: session.id,
         surveyId: "survey",
         entries: [],
-        topicIds: [],
-        areTopicsConfirmed: false,
+        prioritizedCategoryIds: [],
+        areCategoriesConfirmed: false,
         phase: "category-select",
         areCheckpointsOff: false,
         demographics: {},

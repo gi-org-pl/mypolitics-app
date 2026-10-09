@@ -10,7 +10,7 @@ describe("skipSessionCategories()", () => {
   const survey = createSurvey();
 
   describe("when the session is on category select", () => {
-    it("empties the topics on skip and moves to questions", () => {
+    it("empties the picked categories on skip and moves to questions", () => {
       const picked = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
@@ -18,18 +18,18 @@ describe("skipSessionCategories()", () => {
 
       expect(session).toEqual({
         ...picked,
-        topicIds: [],
-        areTopicsConfirmed: true,
+        prioritizedCategoryIds: [],
+        areCategoriesConfirmed: true,
         phase: "questions",
       });
     });
 
-    it("works with no topic picked", () => {
+    it("works with no category picked", () => {
       const session = skipSessionCategories(survey, createSession(survey));
 
       expect(session.phase).toBe("questions");
-      expect(session.areTopicsConfirmed).toBe(true);
-      expect(session.topicIds).toEqual([]);
+      expect(session.areCategoriesConfirmed).toBe(true);
+      expect(session.prioritizedCategoryIds).toEqual([]);
     });
   });
 

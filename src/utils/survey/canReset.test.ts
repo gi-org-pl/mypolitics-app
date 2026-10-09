@@ -16,7 +16,7 @@ describe("canReset()", () => {
   const onDemographics = createStartedSession(survey, 5);
 
   describe("given a session on category select", () => {
-    it("cannot reset on category select, even with topics picked", () => {
+    it("cannot reset on category select, even with categories picked", () => {
       const session = createSession(survey);
 
       expect(canReset(session)).toBe(false);
@@ -34,7 +34,7 @@ describe("canReset()", () => {
       expect(canReset(createStartedSession(survey))).toBe(false);
     });
 
-    it("can reset on the first question after topics were confirmed", () => {
+    it("can reset on the first question after categories were confirmed", () => {
       const session = confirmSessionCategories(
         survey,
         setSessionCategories(survey, createSession(survey), ["economy"]),
@@ -49,11 +49,11 @@ describe("canReset()", () => {
       expect(canReset(createStartedSession(survey, 4))).toBe(true);
     });
 
-    it("does not count topics that were never confirmed", () => {
+    it("does not count categories that were never confirmed", () => {
       const session: SurveySession = {
         ...createStartedSession(survey),
-        topicIds: ["economy"],
-        areTopicsConfirmed: false,
+        prioritizedCategoryIds: ["economy"],
+        areCategoriesConfirmed: false,
       };
 
       expect(canReset(session)).toBe(false);

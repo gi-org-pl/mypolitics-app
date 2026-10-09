@@ -26,10 +26,10 @@ describe("setSessionCategories()", () => {
         "unknown",
       ]);
 
-      expect(session.topicIds).toEqual(["c", "a"]);
+      expect(session.prioritizedCategoryIds).toEqual(["c", "a"]);
     });
 
-    it("cuts the topics to the limit", () => {
+    it("cuts the categories to the limit", () => {
       const session = setSessionCategories(survey, createSession(survey), [
         "a",
         "b",
@@ -37,19 +37,21 @@ describe("setSessionCategories()", () => {
         "d",
       ]);
 
-      expect(session.topicIds).toEqual(["a", "b", "c"]);
+      expect(session.prioritizedCategoryIds).toEqual(["a", "b", "c"]);
     });
 
-    it("replaces the topics that were picked, so that a topic can be dropped", () => {
+    it("replaces the categories that were picked, so that a category can be dropped", () => {
       const picked = setSessionCategories(survey, createSession(survey), [
         "a",
         "b",
       ]);
 
-      expect(setSessionCategories(survey, picked, ["b"]).topicIds).toEqual([
-        "b",
-      ]);
-      expect(setSessionCategories(survey, picked, []).topicIds).toEqual([]);
+      expect(
+        setSessionCategories(survey, picked, ["b"]).prioritizedCategoryIds,
+      ).toEqual(["b"]);
+      expect(
+        setSessionCategories(survey, picked, []).prioritizedCategoryIds,
+      ).toEqual([]);
     });
 
     it("confirms nothing and stays on category select", () => {
@@ -57,7 +59,7 @@ describe("setSessionCategories()", () => {
         "a",
       ]);
 
-      expect(session.areTopicsConfirmed).toBe(false);
+      expect(session.areCategoriesConfirmed).toBe(false);
       expect(session.phase).toBe("category-select");
     });
   });

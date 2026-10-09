@@ -69,7 +69,7 @@ describe("getSurveySessionStore()", () => {
         [
           "areCheckpointsOff",
           "areDemographicsGiven",
-          "areTopicsConfirmed",
+          "areCategoriesConfirmed",
           "checkpointRecord",
           "demographics",
           "email",
@@ -78,7 +78,7 @@ describe("getSurveySessionStore()", () => {
           "phase",
           "resultState",
           "surveyId",
-          "topicIds",
+          "prioritizedCategoryIds",
         ].sort(),
       );
     });
@@ -139,14 +139,14 @@ describe("getSurveySessionStore()", () => {
         [
           "areCheckpointsOff",
           "areDemographicsGiven",
-          "areTopicsConfirmed",
+          "areCategoriesConfirmed",
           "checkpointRecord",
           "demographics",
           "entries",
           "id",
           "phase",
           "surveyId",
-          "topicIds",
+          "prioritizedCategoryIds",
         ].sort(),
       );
       expect(text).not.toContain("jan@example.com");

@@ -28,7 +28,7 @@ export const SURVEY_PHASES: readonly SurveyPhase[] = [
   "short-results",
 ];
 
-export const MAX_TOPICS = 3;
+export const MAX_CATEGORIES = 3;
 export const ADULT_AGE = 18;
 
 // The kinds in the order their answers are drawn: the scale, then the rest.

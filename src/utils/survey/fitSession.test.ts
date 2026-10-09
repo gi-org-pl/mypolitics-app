@@ -63,7 +63,7 @@ describe("fitSession()", () => {
   describe("given a session that fits the quiz", () => {
     it.each([
       ["a new session", createSession(survey)],
-      ["category select with a topic picked", picking],
+      ["category select with a category picked", picking],
       ["the questions", midway],
       ["a card", onCard],
       ["demographics", onDemographics],
@@ -181,7 +181,7 @@ describe("fitSession()", () => {
   });
 
   describe("given a quiz that was read again with other categories", () => {
-    it("drops a topic that is no longer a visible category", () => {
+    it("drops a picked category that is no longer visible", () => {
       const withFive = createSurvey({
         categories: ["a", "b", "c", "d", "e"].map((id) =>
           createSurveyCategory(id),
@@ -202,8 +202,8 @@ describe("fitSession()", () => {
       );
       const session = fitSession(unnamed, confirmed, EMAIL_OFF);
 
-      expect(session.topicIds).toEqual(["a", "c"]);
-      expect(session.areTopicsConfirmed).toBe(true);
+      expect(session.prioritizedCategoryIds).toEqual(["a", "c"]);
+      expect(session.areCategoriesConfirmed).toBe(true);
       expect(session.phase).toBe("questions");
     });
 
@@ -214,7 +214,7 @@ describe("fitSession()", () => {
       const session = fitSession(withOne, picking, EMAIL_OFF);
 
       expect(session.phase).toBe("questions");
-      expect(session.topicIds).toEqual([]);
+      expect(session.prioritizedCategoryIds).toEqual([]);
     });
   });
 
@@ -222,7 +222,7 @@ describe("fitSession()", () => {
     const unchecked: UnfittedSurveySession = {
       ...midway,
       entries: [midway.entries[0], undefined, { questionId: "q3" }],
-      topicIds: ["ecology", 7, null, "gone", "ecology"],
+      prioritizedCategoryIds: ["ecology", 7, null, "gone", "ecology"],
       phase: undefined,
       demographics: { ...COMPLETE, age: 42, region: "mazowieckie" },
       areDemographicsGiven: true,
@@ -243,10 +243,10 @@ describe("fitSession()", () => {
       ]);
     });
 
-    it("keeps the topics that are visible categories, once each", () => {
-      expect(fitSession(survey, unchecked, EMAIL_OFF).topicIds).toEqual([
-        "ecology",
-      ]);
+    it("keeps the picked categories that are visible, once each", () => {
+      expect(
+        fitSession(survey, unchecked, EMAIL_OFF).prioritizedCategoryIds,
+      ).toEqual(["ecology"]);
     });
 
     it("keeps the demographic values of the lists, and takes back given when one is missing", () => {
@@ -290,15 +290,15 @@ describe("fitSession()", () => {
       expect(session.areDemographicsGiven).toBe(true);
     });
 
-    it("does not leave the topics confirmed on category select", () => {
+    it("does not leave the categories confirmed on category select", () => {
       const session = fitSession(
         survey,
-        { ...picking, areTopicsConfirmed: true },
+        { ...picking, areCategoriesConfirmed: true },
         EMAIL_OFF,
       );
 
       expect(session.phase).toBe("category-select");
-      expect(session.areTopicsConfirmed).toBe(false);
+      expect(session.areCategoriesConfirmed).toBe(false);
     });
   });
 });

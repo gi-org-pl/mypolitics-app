@@ -113,14 +113,14 @@ describe("buildResultInput()", () => {
     });
   });
 
-  describe("given topics", () => {
+  describe("given picked categories", () => {
     const withFiveCategories = createSurvey({
       categories: ["a", "b", "c", "d", "e"].map((id) =>
         createSurveyCategory(id),
       ),
     });
 
-    it("sends confirmed topics, and an empty list when there are none", () => {
+    it("sends confirmed categories, and an empty list when there are none", () => {
       const confirmed = confirmSessionCategories(
         withFiveCategories,
         setSessionCategories(
@@ -139,7 +139,7 @@ describe("buildResultInput()", () => {
       ).toEqual([]);
     });
 
-    it("sends no topics that were picked and never confirmed", () => {
+    it("sends no categories that were picked and never confirmed", () => {
       const picked = setSessionCategories(
         withFiveCategories,
         createSession(withFiveCategories),
@@ -159,7 +159,7 @@ describe("buildResultInput()", () => {
 
       expect(
         buildResultInput(survey, confirmed).prioritizedCategories,
-      ).not.toBe(confirmed.topicIds);
+      ).not.toBe(confirmed.prioritizedCategoryIds);
     });
   });
 

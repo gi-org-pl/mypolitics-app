@@ -6,7 +6,7 @@ import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 import { getFirstPhase } from "./getFirstPhase";
 
 describe("getFirstPhase()", () => {
-  describe("given a quiz with topics to pick", () => {
+  describe("given a quiz with categories to pick", () => {
     it("is category-select for a quiz with two visible categories", () => {
       expect(getFirstPhase(createSurvey())).toBe("category-select");
     });

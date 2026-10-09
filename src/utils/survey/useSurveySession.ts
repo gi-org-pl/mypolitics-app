@@ -46,9 +46,13 @@ export const useSurveySession = (survey: Survey): SurveySessionApi => {
   );
   const actions = useMemo<SurveySessionActions>(
     () => ({
-      setTopics: bindSessionAction(store, survey, setSessionCategories),
-      confirmTopics: bindSessionAction(store, survey, confirmSessionCategories),
-      skipTopics: bindSessionAction(store, survey, skipSessionCategories),
+      setCategories: bindSessionAction(store, survey, setSessionCategories),
+      confirmCategories: bindSessionAction(
+        store,
+        survey,
+        confirmSessionCategories,
+      ),
+      skipCategories: bindSessionAction(store, survey, skipSessionCategories),
       answer: bindSessionAction(store, survey, answerQuestion),
       skip: bindSessionAction(store, survey, skipQuestion),
       back: bindSessionAction(store, survey, stepBack),

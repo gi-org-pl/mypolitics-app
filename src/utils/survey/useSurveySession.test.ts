@@ -53,12 +53,14 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.setTopics(["ecology"]));
-      expect(result.current.session.topicIds).toEqual(["ecology"]);
+      act(() => result.current.setCategories(["ecology"]));
+      expect(result.current.session.prioritizedCategoryIds).toEqual([
+        "ecology",
+      ]);
 
-      act(() => result.current.confirmTopics());
+      act(() => result.current.confirmCategories());
       expect(result.current.session.phase).toBe("questions");
-      expect(result.current.session.areTopicsConfirmed).toBe(true);
+      expect(result.current.session.areCategoriesConfirmed).toBe(true);
 
       act(() => result.current.answer("q1-agree", 4));
       expect(result.current.session.entries).toEqual([
@@ -114,9 +116,9 @@ describe("useSurveySession()", () => {
       expect(result.current.session.entries).toEqual([]);
       expect(result.current.session.areCheckpointsOff).toBe(true);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       expect(result.current.session.phase).toBe("questions");
-      expect(result.current.session.topicIds).toEqual([]);
+      expect(result.current.session.prioritizedCategoryIds).toEqual([]);
     });
 
     it("applies the actions of the e-mail card once sending is set up", () => {
@@ -131,7 +133,7 @@ describe("useSurveySession()", () => {
       ).mockReturnValue(true);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.skip();
         result.current.skip();
         result.current.skip();
@@ -171,7 +173,7 @@ describe("useSurveySession()", () => {
       ).mockReturnValue(true);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.skip();
         result.current.skip();
         result.current.skip();
@@ -191,7 +193,7 @@ describe("useSurveySession()", () => {
 
       expect(readRecord(survey)).toBeNull();
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       expect(JSON.parse(readRecord(survey) ?? "{}").state.phase).toBe(
         "questions",
       );
@@ -212,7 +214,7 @@ describe("useSurveySession()", () => {
       circular.self = circular;
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.answer("q1-agree");
       });
 
@@ -242,7 +244,7 @@ describe("useSurveySession()", () => {
       const { result } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.answer("q1-agree");
       });
 
@@ -262,8 +264,8 @@ describe("useSurveySession()", () => {
       const { result } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
-        result.current.skipTopics();
+        result.current.skipCategories();
+        result.current.skipCategories();
         result.current.answer("q1-agree");
         result.current.answer("q1-agree");
       });
@@ -296,7 +298,7 @@ describe("useSurveySession()", () => {
       const { result } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.answer("q1-agree");
         result.current.showCheckpoint("card");
       });
@@ -312,7 +314,7 @@ describe("useSurveySession()", () => {
       const { result } = renderSession(survey);
       const { session, ...actions } = result.current;
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
 
       const { session: nextSession, ...nextActions } = result.current;
 
@@ -340,7 +342,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       expect(readRecord(survey)).not.toBeNull();
 
       act(() => result.current.leave());
@@ -355,8 +357,8 @@ describe("useSurveySession()", () => {
       const { result } = renderSession(survey);
       const { result: otherResult } = renderSession(other);
 
-      act(() => result.current.skipTopics());
-      act(() => otherResult.current.skipTopics());
+      act(() => result.current.skipCategories());
+      act(() => otherResult.current.skipCategories());
       act(() => result.current.leave());
 
       expect(readRecord(survey)).toBeNull();
@@ -367,7 +369,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.answer("q1-agree"));
 
       const session = result.current.session;
@@ -382,10 +384,10 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.leave());
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.answer("unknown");
         result.current.closeCheckpoint();
         result.current.setResultState(SurveyResultState.Calculated);
@@ -398,7 +400,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.leave());
       act(() => result.current.answer("q1-agree"));
 
@@ -422,7 +424,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.answer("q1-agree", 3));
       act(() => result.current.showCheckpoint("card"));
 
@@ -434,8 +436,8 @@ describe("useSurveySession()", () => {
         id: result.current.session.id,
         surveyId: survey.id,
         entries: [],
-        topicIds: [],
-        areTopicsConfirmed: false,
+        prioritizedCategoryIds: [],
+        areCategoriesConfirmed: false,
         phase: "category-select",
         areCheckpointsOff: false,
         demographics: {},
@@ -475,7 +477,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.leave());
       act(() => result.current.startOver());
 
@@ -491,7 +493,7 @@ describe("useSurveySession()", () => {
       const survey = createQuiz();
       const { result, rerender } = renderSession(survey);
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.answer("q1-agree"));
 
       const session = result.current.session;
@@ -524,7 +526,7 @@ describe("useSurveySession()", () => {
         ],
       });
 
-      act(() => result.current.skipTopics());
+      act(() => result.current.skipCategories());
       act(() => result.current.answer("q1-agree"));
       act(() => result.current.answer("q2-gas"));
       expect(result.current.session.entries).toHaveLength(1);
@@ -551,7 +553,7 @@ describe("useSurveySession()", () => {
       const { result, rerender } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.answer("q1-agree", 3);
         result.current.skip(4);
         result.current.skip(5);
@@ -576,7 +578,7 @@ describe("useSurveySession()", () => {
       const { result, rerender } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.skip();
         result.current.skip();
         result.current.skip();
@@ -599,7 +601,7 @@ describe("useSurveySession()", () => {
       const { result, rerender } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.skip();
         result.current.skip();
         result.current.skip();
@@ -620,7 +622,7 @@ describe("useSurveySession()", () => {
       const { result, rerender } = renderSession(survey);
 
       act(() => {
-        result.current.skipTopics();
+        result.current.skipCategories();
         result.current.skip();
         result.current.skip();
         result.current.skip();

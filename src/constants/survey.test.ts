@@ -4,7 +4,7 @@ import {
   ADULT_AGE,
   DEMOGRAPHICS_FIELD_IDS,
   DEMOGRAPHICS_VALUES,
-  MAX_TOPICS,
+  MAX_CATEGORIES,
   SURVEY_ANSWER_KINDS,
   SURVEY_PHASES,
   SURVEY_SCALE_ANSWER_KINDS,
@@ -106,8 +106,8 @@ describe("the constants of the survey session", () => {
   });
 
   describe("the settings of a session", () => {
-    it("allows three topics and draws the line of adulthood at 18", () => {
-      expect(MAX_TOPICS).toBe(3);
+    it("allows three categories and draws the line of adulthood at 18", () => {
+      expect(MAX_CATEGORIES).toBe(3);
       expect(ADULT_AGE).toBe(18);
     });
 

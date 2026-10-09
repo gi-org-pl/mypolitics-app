@@ -29,8 +29,11 @@ export const fitSession = (
     id: session.id,
     surveyId: survey.id,
     entries,
-    topicIds: getValidCategoryIds(survey, session.topicIds),
-    areTopicsConfirmed: session.areTopicsConfirmed,
+    prioritizedCategoryIds: getValidCategoryIds(
+      survey,
+      session.prioritizedCategoryIds,
+    ),
+    areCategoriesConfirmed: session.areCategoriesConfirmed,
     phase: "questions",
     areCheckpointsOff: session.areCheckpointsOff,
     demographics,
@@ -63,7 +66,7 @@ export const fitSession = (
   return {
     ...fittedSession,
     phase,
-    areTopicsConfirmed:
-      session.areTopicsConfirmed && phase !== "category-select",
+    areCategoriesConfirmed:
+      session.areCategoriesConfirmed && phase !== "category-select",
   };
 };

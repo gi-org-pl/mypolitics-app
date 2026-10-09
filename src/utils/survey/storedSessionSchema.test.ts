@@ -8,8 +8,8 @@ const STATE = {
   id: "0b9f5a1e-6c1d-4f3a-9a52-3f0f2f6f8d11",
   surveyId: "survey",
   entries: [{ questionId: "q1", answerId: "q1-agree" }, { questionId: "q2" }],
-  topicIds: ["economy"],
-  areTopicsConfirmed: true,
+  prioritizedCategoryIds: ["economy"],
+  areCategoriesConfirmed: true,
   phase: "questions",
   areCheckpointsOff: false,
   demographics: { age: "30" },
@@ -79,10 +79,10 @@ describe("storedSessionSchema", () => {
       ["surveyId", undefined],
       ["entries", undefined],
       ["entries", { 0: { questionId: "q1" } }],
-      ["topicIds", "economy"],
-      ["topicIds", null],
-      ["areTopicsConfirmed", "yes"],
-      ["areTopicsConfirmed", undefined],
+      ["prioritizedCategoryIds", "economy"],
+      ["prioritizedCategoryIds", null],
+      ["areCategoriesConfirmed", "yes"],
+      ["areCategoriesConfirmed", undefined],
       ["areCheckpointsOff", 0],
       ["demographics", null],
       ["demographics", "female"],
@@ -218,15 +218,15 @@ describe("storedSessionSchema", () => {
     });
   });
 
-  describe("given topics and demographics", () => {
+  describe("given picked categories and demographics", () => {
     it("leaves their content to be checked against the quiz and the lists", () => {
       const { data } = parse({
         ...STATE,
-        topicIds: ["economy", 7, null],
+        prioritizedCategoryIds: ["economy", 7, null],
         demographics: { age: 30, region: "mazowieckie" },
       });
 
-      expect(data?.state.topicIds).toEqual(["economy", 7, null]);
+      expect(data?.state.prioritizedCategoryIds).toEqual(["economy", 7, null]);
       expect(data?.state.demographics).toEqual({
         age: 30,
         region: "mazowieckie",

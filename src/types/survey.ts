@@ -185,8 +185,8 @@ export interface SurveySession {
   id: string; // random UUID v4: the session, the seed of every seeded draw, and the result identifier
   surveyId: string;
   entries: SurveyAnswerEntry[]; // one per done question: always the first questions of the quiz, in order, no gap
-  topicIds: string[]; // prioritised categories, in the order picked
-  areTopicsConfirmed: boolean;
+  prioritizedCategoryIds: string[]; // the categories picked in category select, in the order picked
+  areCategoriesConfirmed: boolean;
   phase: SurveyPhase;
   areCheckpointsOff: boolean;
   demographics: DemographicsValues;
@@ -205,10 +205,14 @@ export type StoredSurveySession = Omit<SurveySession, "email" | "resultState">;
 export interface UnfittedSurveySession
   extends Omit<
     SurveySession,
-    "entries" | "topicIds" | "phase" | "demographics" | "checkpointRecord"
+    | "entries"
+    | "prioritizedCategoryIds"
+    | "phase"
+    | "demographics"
+    | "checkpointRecord"
   > {
   entries: readonly (SurveyAnswerEntry | undefined)[]; // `undefined` = an entry that could not be read
-  topicIds: readonly unknown[];
+  prioritizedCategoryIds: readonly unknown[];
   phase?: SurveyPhase;
   demographics: Record<string, unknown>;
   checkpointRecord: {
@@ -230,9 +234,9 @@ export type SurveyVisibleCategory = SurveyCategory & { name: string };
 
 export interface SurveySessionApi {
   session: SurveySession;
-  setTopics: (topicIds: string[]) => void;
-  confirmTopics: () => void; // "Idziemy dalej"
-  skipTopics: () => void; // "Pomiń" on category select
+  setCategories: (prioritizedCategoryIds: string[]) => void;
+  confirmCategories: () => void; // "Idziemy dalej"
+  skipCategories: () => void; // "Pomiń" on category select
   answer: (answerId: string, seconds?: number) => void;
   skip: (seconds?: number) => void; // "Pomiń" under a question
   back: () => void;

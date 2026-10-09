@@ -10,8 +10,8 @@ import { setSessionCategories } from "./setSessionCategories";
 describe("confirmSessionCategories()", () => {
   const survey = createSurvey();
 
-  describe("when a topic is picked on category select", () => {
-    it("confirms the topics and moves to questions", () => {
+  describe("when a category is picked on category select", () => {
+    it("confirms the categories and moves to questions", () => {
       const picked = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
@@ -19,10 +19,10 @@ describe("confirmSessionCategories()", () => {
 
       expect(session).toEqual({
         ...picked,
-        areTopicsConfirmed: true,
+        areCategoriesConfirmed: true,
         phase: "questions",
       });
-      expect(session.topicIds).toEqual(["ecology"]);
+      expect(session.prioritizedCategoryIds).toEqual(["ecology"]);
     });
 
     it("changes nothing when it is called again", () => {
@@ -35,8 +35,8 @@ describe("confirmSessionCategories()", () => {
     });
   });
 
-  describe("when no topic is picked", () => {
-    it("does not confirm with no topic picked", () => {
+  describe("when no category is picked", () => {
+    it("does not confirm with no category picked", () => {
       const session = createSession(survey);
 
       expect(confirmSessionCategories(survey, session)).toBe(session);

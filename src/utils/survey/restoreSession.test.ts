@@ -92,7 +92,7 @@ describe("restoreSession()", () => {
       const records = [
         toStored(midway, { id: "session-1" }),
         toStored(midway, { entries: "q1" }),
-        toStored(midway, { topicIds: null }),
+        toStored(midway, { prioritizedCategoryIds: null }),
         toStored(midway, { areCheckpointsOff: "no" }),
         toStored(midway, { demographics: null }),
       ];
@@ -120,7 +120,7 @@ describe("restoreSession()", () => {
       expect(session.phase).toBe("questions");
     });
 
-    it("restores a session on category select with the topics that were picked", () => {
+    it("restores a session on category select with the categories that were picked", () => {
       const picking = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
@@ -246,8 +246,8 @@ describe("restoreSession()", () => {
     });
   });
 
-  describe("given topics that do not fit the quiz as read now", () => {
-    it("drops a topic that is not a visible category, and topics over the limit", () => {
+  describe("given picked categories that do not fit the quiz as read now", () => {
+    it("drops a picked category that is not visible, and categories over the limit", () => {
       const withFiveCategories = createSurvey({
         categories: [
           ...["a", "b", "c", "d", "e"].map((id) => createSurveyCategory(id)),
@@ -255,11 +255,12 @@ describe("restoreSession()", () => {
         ],
       });
       const stored = toStored(createStartedSession(withFiveCategories, 1), {
-        topicIds: ["a", "hidden", "gone", "b", 7, "c", "d"],
+        prioritizedCategoryIds: ["a", "hidden", "gone", "b", 7, "c", "d"],
       });
 
       expect(
-        restoreSession(withFiveCategories, stored, EMAIL_OFF).topicIds,
+        restoreSession(withFiveCategories, stored, EMAIL_OFF)
+          .prioritizedCategoryIds,
       ).toEqual(["a", "b", "c"]);
     });
   });
@@ -418,7 +419,7 @@ describe("restoreSession()", () => {
       const session = restoreSession(withoutCategorySelect, stored, EMAIL_OFF);
 
       expect(session.phase).toBe("questions");
-      expect(session.topicIds).toEqual([]);
+      expect(session.prioritizedCategoryIds).toEqual([]);
     });
 
     it("repairs a card phase with no card on record, or with checkpoints off", () => {
@@ -490,14 +491,14 @@ describe("restoreSession()", () => {
       expect(session.id).toBe(calculating.id);
     });
 
-    it("does not leave the topics confirmed on category select", () => {
+    it("does not leave the categories confirmed on category select", () => {
       const stored = toStored(createSession(survey), {
-        areTopicsConfirmed: true,
+        areCategoriesConfirmed: true,
       });
       const session = restoreSession(survey, stored, EMAIL_OFF);
 
       expect(session.phase).toBe("category-select");
-      expect(session.areTopicsConfirmed).toBe(false);
+      expect(session.areCategoriesConfirmed).toBe(false);
     });
   });
 
@@ -530,7 +531,7 @@ describe("restoreSession()", () => {
     it("never throws on a record whose every part is of the wrong kind", () => {
       const stored = toStored(midway, {
         entries: [null, 7, "q1", [], {}],
-        topicIds: [null, 7, {}, []],
+        prioritizedCategoryIds: [null, 7, {}, []],
         phase: 7,
         demographics: { age: {}, gender: [], residenceAreaSize: 7 },
         checkpointRecord: { cardsShown: [null], timeSamples: [null, 7, {}] },
@@ -540,7 +541,7 @@ describe("restoreSession()", () => {
       expect(session).toEqual({
         ...createSession(survey),
         id: midway.id,
-        areTopicsConfirmed: true,
+        areCategoriesConfirmed: true,
         phase: "questions",
         checkpointRecord: { cardsShown: [null], timeSamples: [] },
       });
