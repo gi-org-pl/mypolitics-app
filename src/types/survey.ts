@@ -53,10 +53,21 @@ export interface Survey {
   questions: SurveyQuestion[]; // in the API's order, at least one
 }
 
+// How reading a quiz ended. An enum - see ApiFailureKind in types/api.ts
+// for why it is a constant with a type of the same name.
+export const SurveyLoadStatus = {
+  Ready: "ready",
+  NotFound: "not-found", // no such quiz, or no question of it can be asked
+  Failed: "failed", // no reply, a refusal, or a reply that is not a quiz
+} as const;
+
+export type SurveyLoadStatus =
+  (typeof SurveyLoadStatus)[keyof typeof SurveyLoadStatus];
+
 export type SurveyLoadResult =
-  | { status: "ready"; survey: Survey }
-  | { status: "not-found" }
-  | { status: "failed" };
+  | { status: typeof SurveyLoadStatus.Ready; survey: Survey }
+  | { status: typeof SurveyLoadStatus.NotFound }
+  | { status: typeof SurveyLoadStatus.Failed };
 
 export type ResidenceAreaSize =
   | "village"
@@ -91,10 +102,15 @@ export interface ResultInput {
   answers: ResultInputAnswer[];
 }
 
+// How handing the answers in ended. An enum, like SurveyLoadStatus.
+export const CreateResultOutcome = {
+  Stored: "stored", // created, or a result with this identifier already exists
+  Refused: "refused", // any other reply of the API
+  Unreachable: "unreachable", // no connection, or no reply in time
+} as const;
+
 export type CreateResultOutcome =
-  | "stored" // created, or a result with this identifier already exists
-  | "refused" // any other reply of the API
-  | "unreachable"; // no connection, or no reply in time
+  (typeof CreateResultOutcome)[keyof typeof CreateResultOutcome];
 
 export interface SurveyResult {
   id: string; // the identifier the result was asked for by

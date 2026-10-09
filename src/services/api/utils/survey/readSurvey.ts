@@ -5,7 +5,7 @@ import {
   surveyResponseSchema,
 } from "@/services/api/schemas/survey";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
-import type { SurveyLoadResult } from "@/types/survey";
+import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { uniqueBy } from "@/utils/array/uniqueBy";
 import { parseItems } from "@/utils/zod/parseItems";
 import { trimmedTextSchema } from "@/utils/zod/trimmedTextSchema";
@@ -22,7 +22,7 @@ export const readSurvey = (
 ): SurveyLoadResult => {
   const { success, data } = surveyResponseSchema.safeParse(response);
 
-  if (!success) return { status: "failed" };
+  if (!success) return { status: SurveyLoadStatus.Failed };
 
   const isOfficial = data.type === OFFICIAL_SURVEY_TYPE;
   const orientations = readQuizOrientations(data.orientations, {
@@ -52,10 +52,10 @@ export const readSurvey = (
     ({ id }) => id,
   );
 
-  if (questions.length === 0) return { status: "not-found" };
+  if (questions.length === 0) return { status: SurveyLoadStatus.NotFound };
 
   return {
-    status: "ready",
+    status: SurveyLoadStatus.Ready,
     survey: {
       id: surveyId,
       name: data.title,
