@@ -30,14 +30,28 @@ import { skipSessionCategories } from "./skipSessionCategories";
 import { stepBack } from "./stepBack";
 import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 
-// The session of a quiz and its actions, bound to the quiz as it was handed
-// in. The store is found by the quiz identifier, so the same quiz read again
-// in another language keeps its session. The session handed out is the one of
-// the store as it fits the quiz as read now: when a reading has other
-// questions than the one before, the entries that no longer fit are left out,
-// by the rules of a restore. The actions stay the same functions for as long
-// as the quiz object does.
+// The React side of the session's Zustand store.
+//
+// The session of a quiz lives in a Zustand store - `getSurveySessionStore`:
+// one vanilla store per quiz identifier, with the `persist` middleware writing
+// every change to the storage of the tab. Nothing of the session is kept in
+// React state or in a context. This hook subscribes a component to that store
+// and hands out the session with its actions.
+//
+// The actions are not kept in the store. Each is a pure function
+// `(survey, session, ...arguments) => session` in a file of its own, and
+// `bindSessionAction` applies it to what the store holds at that moment and
+// writes the result back. An action needs the quiz as it is read now, and the
+// store outlives a reading: the same quiz read again in another language
+// keeps its session. So the store holds, and stores, the session and nothing
+// else, and the actions are bound here, to the quiz the hook was handed.
+//
+// The session handed out is the one of the store as it fits the quiz as read
+// now: when a reading has other questions than the one before, the entries
+// that no longer fit are left out, by the rules of a restore. The actions stay
+// the same functions for as long as the quiz object does.
 export const useSurveySession = (survey: Survey): SurveySessionApi => {
+  // The Zustand store of this quiz, and a subscription to the whole session.
   const store = getSurveySessionStore(survey);
   const storedSession = useStore(store);
   const session = useMemo(
