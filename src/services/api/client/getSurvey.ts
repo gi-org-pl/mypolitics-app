@@ -4,8 +4,8 @@ import { isRefusal } from "@/services/api/utils/error/isRefusal";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
-import type { ApiRequestOptions } from "@/types/api";
-import type { SurveyLoadResult } from "@/types/survey";
+import { ApiFailureKind, type ApiRequestOptions } from "@/types/api";
+import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 
 import { apiClient } from "./apiClient";
 
@@ -32,8 +32,9 @@ export const getSurvey = async (
   } catch (error) {
     const failure = toApiFailure(error);
 
-    return failure.kind === "http" && failure.status === HttpStatusCode.NotFound
-      ? { status: "not-found" }
-      : { status: "failed" };
+    return failure.kind === ApiFailureKind.Http &&
+      failure.status === HttpStatusCode.NotFound
+      ? { status: SurveyLoadStatus.NotFound }
+      : { status: SurveyLoadStatus.Failed };
   }
 };

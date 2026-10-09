@@ -3,6 +3,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
+import { SurveyLoadStatus } from "@/types/survey";
 import { createApiError } from "@/utils/vitest/createApiError";
 import { createApiReply } from "@/utils/vitest/createApiReply";
 
@@ -108,7 +109,7 @@ describe("getSurvey()", () => {
 
       expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID));
       expect(result).toMatchObject({
-        status: "ready",
+        status: SurveyLoadStatus.Ready,
         survey: {
           id: SURVEY_ID,
           name: "myPolitics Quiz Tożsamościowy",
@@ -180,7 +181,9 @@ describe("getSurvey()", () => {
     it("resolves failed when the second request is refused too", async () => {
       adapter.mockImplementation(createApiReply(400));
 
-      expect(await getSurvey(SURVEY_ID, "en")).toEqual({ status: "failed" });
+      expect(await getSurvey(SURVEY_ID, "en")).toEqual({
+        status: SurveyLoadStatus.Failed,
+      });
       expect(adapter).toHaveBeenCalledTimes(2);
     });
 
@@ -189,7 +192,9 @@ describe("getSurvey()", () => {
         .mockImplementationOnce(createApiReply(400))
         .mockImplementationOnce(createApiReply(404));
 
-      expect(await getSurvey(SURVEY_ID, "en")).toEqual({ status: "not-found" });
+      expect(await getSurvey(SURVEY_ID, "en")).toEqual({
+        status: SurveyLoadStatus.NotFound,
+      });
       expect(adapter).toHaveBeenCalledTimes(2);
     });
 
@@ -202,7 +207,9 @@ describe("getSurvey()", () => {
         .mockImplementationOnce(createApiReply(400))
         .mockImplementationOnce(reply);
 
-      expect(await getSurvey(SURVEY_ID, "en")).toEqual({ status: "failed" });
+      expect(await getSurvey(SURVEY_ID, "en")).toEqual({
+        status: SurveyLoadStatus.Failed,
+      });
       expect(adapter).toHaveBeenCalledTimes(2);
     });
 
@@ -230,7 +237,9 @@ describe("getSurvey()", () => {
         createApiReply(404, { message: "Survey with given ID not found." }),
       );
 
-      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({ status: "not-found" });
+      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({
+        status: SurveyLoadStatus.NotFound,
+      });
     });
 
     it("does not ask again", async () => {
@@ -253,7 +262,9 @@ describe("getSurvey()", () => {
     it.each(replies)("resolves failed for %s", async (_, reply) => {
       adapter.mockImplementation(reply);
 
-      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({ status: "failed" });
+      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({
+        status: SurveyLoadStatus.Failed,
+      });
     });
 
     it.each(replies)("does not ask again after %s", async (_, reply) => {
@@ -278,7 +289,9 @@ describe("getSurvey()", () => {
     ])("resolves failed for %j", async (data) => {
       adapter.mockImplementationOnce(createApiReply(200, data));
 
-      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({ status: "failed" });
+      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({
+        status: SurveyLoadStatus.Failed,
+      });
       expect(adapter).toHaveBeenCalledTimes(1);
     });
   });
@@ -292,7 +305,9 @@ describe("getSurvey()", () => {
         }),
       );
 
-      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({ status: "not-found" });
+      expect(await getSurvey(SURVEY_ID, "pl")).toEqual({
+        status: SurveyLoadStatus.NotFound,
+      });
       expect(adapter).toHaveBeenCalledTimes(1);
     });
   });
@@ -309,13 +324,13 @@ describe("getSurvey()", () => {
 
       await expect(
         getSurvey(SURVEY_ID, "pl", { signal: controller.signal }),
-      ).resolves.toEqual({ status: "failed" });
+      ).resolves.toEqual({ status: SurveyLoadStatus.Failed });
     });
 
     it("resolves failed without a request when it was cancelled before", async () => {
       await expect(
         getSurvey(SURVEY_ID, "pl", { signal: AbortSignal.abort() }),
-      ).resolves.toEqual({ status: "failed" });
+      ).resolves.toEqual({ status: SurveyLoadStatus.Failed });
       expect(adapter).not.toHaveBeenCalled();
     });
 
@@ -330,7 +345,7 @@ describe("getSurvey()", () => {
 
       await expect(
         getSurvey(SURVEY_ID, "en", { signal: controller.signal }),
-      ).resolves.toEqual({ status: "failed" });
+      ).resolves.toEqual({ status: SurveyLoadStatus.Failed });
       expect(adapter).toHaveBeenCalledTimes(1);
     });
   });
@@ -340,7 +355,7 @@ describe("getSurvey()", () => {
       adapter.mockRejectedValueOnce(new TypeError("Unexpected"));
 
       await expect(getSurvey(SURVEY_ID, "pl")).resolves.toEqual({
-        status: "failed",
+        status: SurveyLoadStatus.Failed,
       });
     });
   });

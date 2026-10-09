@@ -15,6 +15,7 @@ import {
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
+import { ApiFailureKind } from "@/types/api";
 import { createApiError } from "@/utils/vitest/createApiError";
 import { createApiReply } from "@/utils/vitest/createApiReply";
 
@@ -110,17 +111,17 @@ describe("apiClient", () => {
           { sessionId: "3f0c2a52" },
           { adapter: createApiReply(422, { message: "Invalid" }) },
         ),
-      ).rejects.toStrictEqual({ kind: "http", status: 422 });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Http, status: 422 });
       await expect(
         apiClient.get("/v1/survey/a", {
           adapter: createApiError(AxiosError.ERR_NETWORK),
         }),
-      ).rejects.toStrictEqual({ kind: "network" });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Network });
       await expect(
         apiClient.get("/v1/survey/a", {
           adapter: createApiError(AxiosError.ETIMEDOUT),
         }),
-      ).rejects.toStrictEqual({ kind: "timeout" });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Timeout });
     });
 
     it("sends nothing when the signal was aborted before the request, and rejects with what reads as aborted", async () => {
@@ -131,7 +132,9 @@ describe("apiClient", () => {
         .catch((reason: unknown) => reason);
 
       expect(adapter).not.toHaveBeenCalled();
-      expect(toApiFailure(error)).toStrictEqual({ kind: "aborted" });
+      expect(toApiFailure(error)).toStrictEqual({
+        kind: ApiFailureKind.Aborted,
+      });
     });
   });
 
@@ -176,13 +179,13 @@ describe("apiClient", () => {
     it("rejects a reply with a status outside 2xx as http with that status", async () => {
       await expect(
         apiClient.get("/missing", { baseURL }),
-      ).rejects.toStrictEqual({ kind: "http", status: 404 });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Http, status: 404 });
     });
 
     it("rejects a request with no reply in time as timeout", async () => {
       await expect(
         apiClient.get("/silent", { baseURL, timeout: 50 }),
-      ).rejects.toStrictEqual({ kind: "timeout" });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Timeout });
     });
 
     it("rejects a request with no connection as network", async () => {
@@ -193,7 +196,7 @@ describe("apiClient", () => {
 
       await expect(
         apiClient.get("/found", { baseURL: closedUrl }),
-      ).rejects.toStrictEqual({ kind: "network" });
+      ).rejects.toStrictEqual({ kind: ApiFailureKind.Network });
     });
 
     it("rejects a request cancelled on its way as aborted", async () => {
@@ -205,7 +208,9 @@ describe("apiClient", () => {
 
       controller.abort();
 
-      await expect(request).rejects.toStrictEqual({ kind: "aborted" });
+      await expect(request).rejects.toStrictEqual({
+        kind: ApiFailureKind.Aborted,
+      });
     });
   });
 });
