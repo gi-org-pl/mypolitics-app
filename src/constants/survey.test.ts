@@ -9,10 +9,16 @@ import {
   SURVEY_ANSWER_KINDS,
   SURVEY_PHASES,
   SURVEY_SCALE_ANSWER_KINDS,
+  SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE,
   SURVEY_SESSION_CONFIG,
   SURVEY_SESSION_STORAGE_KEY,
   SURVEY_SESSION_VERSION,
 } from "./survey";
+
+// The languages the app is in: one catalogue each, in src/locales.
+const APP_LANGUAGES = Object.keys(import.meta.glob("../locales/*/messages.po"))
+  .map((path) => path.split("/").at(-2) ?? "")
+  .sort();
 
 describe("the constants of the survey session", () => {
   describe("SURVEY_PHASES", () => {
@@ -94,7 +100,7 @@ describe("the constants of the survey session", () => {
       ]);
     });
 
-    it("reads six texts as steps of the scale", () => {
+    it("reads the Polish and the English wordings as steps of the scale", () => {
       expect([...SURVEY_SCALE_ANSWER_KINDS]).toEqual([
         ["zdecydowanie za", "strongly-agree"],
         ["częściowo za", "agree"],
@@ -102,7 +108,41 @@ describe("the constants of the survey session", () => {
         ["częściowo przeciw", "disagree"],
         ["przeciw", "disagree"],
         ["zdecydowanie przeciw", "strongly-disagree"],
+        ["strongly agree", "strongly-agree"],
+        ["agree", "agree"],
+        ["disagree", "disagree"],
+        ["strongly disagree", "strongly-disagree"],
       ]);
+    });
+
+    it("has a wording for each of the four steps in every language the app is in", () => {
+      expect(APP_LANGUAGES).toContain("pl");
+
+      for (const language of APP_LANGUAGES) {
+        const kinds = SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE[language];
+
+        expect(new Set(kinds?.values()), language).toEqual(
+          new Set(["strongly-agree", "agree", "disagree", "strongly-disagree"]),
+        );
+      }
+    });
+
+    it("has no table for a language the app is not in", () => {
+      expect(Object.keys(SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE).sort()).toEqual(
+        APP_LANGUAGES,
+      );
+    });
+
+    it("keeps every wording trimmed, in lower case and for one step only", () => {
+      const wordings = Object.values(
+        SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE,
+      ).flatMap((kinds) => [...kinds.keys()]);
+
+      expect(new Set(wordings).size).toBe(wordings.length);
+
+      for (const wording of wordings) {
+        expect(wording).toBe(wording.trim().toLowerCase());
+      }
     });
   });
 

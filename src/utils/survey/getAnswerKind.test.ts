@@ -19,13 +19,35 @@ const getKind = (
 
 describe("getAnswerKind()", () => {
   describe("given a scale question", () => {
-    it("reads the six known texts as their steps", () => {
+    it("reads the six Polish wordings as their steps", () => {
       expect(getKind("Zdecydowanie za")).toBe("strongly-agree");
       expect(getKind("Częściowo za")).toBe("agree");
       expect(getKind("Za")).toBe("agree");
       expect(getKind("Częściowo przeciw")).toBe("disagree");
       expect(getKind("Przeciw")).toBe("disagree");
       expect(getKind("Zdecydowanie przeciw")).toBe("strongly-disagree");
+    });
+
+    it("reads the four English wordings as their steps", () => {
+      expect(getKind("Strongly agree")).toBe("strongly-agree");
+      expect(getKind("Agree")).toBe("agree");
+      expect(getKind("Disagree")).toBe("disagree");
+      expect(getKind("Strongly disagree")).toBe("strongly-disagree");
+    });
+
+    it("reads a wording of one language next to a wording of another", () => {
+      const question = createSurveyQuestion("q1", [
+        "Zdecydowanie za",
+        "Agree",
+        "Przeciw",
+        "Strongly disagree",
+      ]);
+
+      expect(
+        question.possibleAnswers.map((answer) =>
+          getAnswerKind(question, answer),
+        ),
+      ).toEqual(["strongly-agree", "agree", "disagree", "strongly-disagree"]);
     });
 
     it("ignores letter case and space around the text", () => {
@@ -35,11 +57,21 @@ describe("getAnswerKind()", () => {
       expect(getKind("CZĘŚCIOWO PRZECIW")).toBe("disagree");
       expect(getKind("\tprzeciw ")).toBe("disagree");
       expect(getKind(" Zdecydowanie Przeciw ")).toBe("strongly-disagree");
+      expect(getKind("AGREE")).toBe("agree");
+      expect(getKind(" strongly DISAGREE\n")).toBe("strongly-disagree");
+    });
+
+    it("reads a wording of a language the app is not in as custom", () => {
+      expect(getKind("Stimme voll zu")).toBe("custom");
+      expect(getKind("Stimme zu")).toBe("custom");
+      expect(getKind("D'accord")).toBe("custom");
+      expect(getKind("Категорично за")).toBe("custom");
     });
 
     it("reads any other text as custom", () => {
       expect(getKind("Raczej za")).toBe("custom");
-      expect(getKind("Agree")).toBe("custom");
+      expect(getKind("Somewhat agree")).toBe("custom");
+      expect(getKind("I agree")).toBe("custom");
       expect(getKind("Nie mam zdania")).toBe("custom");
       expect(getKind("Zdecydowanie")).toBe("custom");
       expect(getKind("Za tak")).toBe("custom");
@@ -60,6 +92,8 @@ describe("getAnswerKind()", () => {
       expect(getKind("Przeciw", "one-of-many")).toBe("custom");
       expect(getKind("Zdecydowanie za", "one-of-many")).toBe("custom");
       expect(getKind("Z atomu", "one-of-many")).toBe("custom");
+      expect(getKind("Agree", "one-of-many")).toBe("custom");
+      expect(getKind("Strongly disagree", "one-of-many")).toBe("custom");
       expect(getKind("Za", "other")).toBe("custom");
       expect(getKind("Zdecydowanie przeciw", "other")).toBe("custom");
     });

@@ -75,7 +75,7 @@ describe("getAnswersToDraw()", () => {
       ]);
     });
 
-    it("keeps the API order when no text is recognised", () => {
+    it("orders a scale question written in English the same way", () => {
       const question = createSurveyQuestion("q1", [
         "Strongly disagree",
         "Agree",
@@ -86,10 +86,28 @@ describe("getAnswersToDraw()", () => {
       expect(
         getAnswersToDraw(question).map(({ label, kind }) => [label, kind]),
       ).toEqual([
-        ["Strongly disagree", "custom"],
-        ["Agree", "custom"],
-        ["Disagree", "custom"],
-        ["Strongly agree", "custom"],
+        ["Strongly agree", "strongly-agree"],
+        ["Agree", "agree"],
+        ["Disagree", "disagree"],
+        ["Strongly disagree", "strongly-disagree"],
+      ]);
+    });
+
+    it("keeps the API order when no text is recognised", () => {
+      const question = createSurveyQuestion("q1", [
+        "Stimme gar nicht zu",
+        "Stimme zu",
+        "Stimme nicht zu",
+        "Stimme voll zu",
+      ]);
+
+      expect(
+        getAnswersToDraw(question).map(({ label, kind }) => [label, kind]),
+      ).toEqual([
+        ["Stimme gar nicht zu", "custom"],
+        ["Stimme zu", "custom"],
+        ["Stimme nicht zu", "custom"],
+        ["Stimme voll zu", "custom"],
       ]);
     });
   });

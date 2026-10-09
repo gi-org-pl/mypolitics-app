@@ -44,18 +44,48 @@ export const SURVEY_ANSWER_KINDS: readonly SurveyAnswerKind[] = [
   "custom",
 ];
 
-// The API has no field for the step of the scale, so it is read from the text
-// of a possible answer, trimmed and in lower case. The table is closed: it
-// does not grow with other wordings or other languages.
-export const SURVEY_SCALE_ANSWER_KINDS: ReadonlyMap<string, SurveyAnswerKind> =
-  new Map([
+// The API has no field for the step of the scale. A possible answer is an
+// identifier, a text, a weight and orientations, and neither its place among
+// the answers nor its weight tells the steps apart. So the step is read from
+// the text, trimmed and in lower case: one table of wordings per language the
+// app is in. A new language of the app needs its table here, and a test fails
+// until it has one.
+export const SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE: Record<
+  string,
+  ReadonlyMap<string, SurveyAnswerKind>
+> = {
+  // Every wording of a scale question in the quizzes of the API.
+  pl: new Map([
     ["zdecydowanie za", "strongly-agree"],
     ["częściowo za", "agree"],
     ["za", "agree"],
     ["częściowo przeciw", "disagree"],
     ["przeciw", "disagree"],
     ["zdecydowanie przeciw", "strongly-disagree"],
-  ]);
+  ]),
+  // "Agree" and "Disagree" are in quizzes of the API. No quiz is in English
+  // yet, so the strong steps are the names the scale has in English.
+  en: new Map([
+    ["strongly agree", "strongly-agree"],
+    ["agree", "agree"],
+    ["disagree", "disagree"],
+    ["strongly disagree", "strongly-disagree"],
+  ]),
+};
+
+// Every wording of every language. The language a quiz was asked for is not
+// looked at: an author writes the answers in the words they choose, and
+// quizzes in Polish have answers in English.
+//
+// A wording that is not here makes its answer a custom one: it is drawn with
+// its own text, can be picked and is handed in like any other - it only loses
+// the look and the place of its step.
+export const SURVEY_SCALE_ANSWER_KINDS: ReadonlyMap<string, SurveyAnswerKind> =
+  new Map(
+    Object.values(SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE).flatMap((kinds) => [
+      ...kinds,
+    ]),
+  );
 
 export const DEMOGRAPHICS_FIELD_IDS: readonly DemographicsFieldId[] = [
   "age",
