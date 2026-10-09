@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { QUIZ_SURVEY_IDS } from "@/constants/survey";
 
-import { getSurveyId } from "./getSurveyId";
+import { getSurveyId } from "./getProjectId";
 
 describe("getSurveyId()", () => {
   describe("given a slug of the map", () => {
