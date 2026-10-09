@@ -1,6 +1,6 @@
 import type { Survey, SurveyPhase } from "@/types/survey";
 
-import { getTopicLimit } from "./getTopicLimit";
+import { getCategoryLimit } from "./getCategoryLimit";
 
 export const getFirstPhase = (survey: Survey): SurveyPhase =>
-  getTopicLimit(survey) > 0 ? "category-select" : "questions";
+  getCategoryLimit(survey) > 0 ? "category-select" : "questions";

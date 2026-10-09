@@ -8,8 +8,8 @@ import { uniqueBy } from "@/utils/array/uniqueBy";
 
 import { getFittingEntries } from "./getFittingEntries";
 import { getFittingPhase } from "./getFittingPhase";
+import { getValidCategoryIds } from "./getValidCategoryIds";
 import { getValidDemographics } from "./getValidDemographics";
-import { getValidTopics } from "./getValidTopics";
 import { toResultDemographics } from "./toResultDemographics";
 
 // Fits a session to the quiz as read now, part by part: what storage held, or
@@ -29,7 +29,7 @@ export const fitSession = (
     id: session.id,
     surveyId: survey.id,
     entries,
-    topicIds: getValidTopics(survey, session.topicIds),
+    topicIds: getValidCategoryIds(survey, session.topicIds),
     areTopicsConfirmed: session.areTopicsConfirmed,
     phase: "questions",
     areCheckpointsOff: session.areCheckpointsOff,

@@ -1,11 +1,11 @@
 import type { Survey } from "@/types/survey";
 
-import { getTopicLimit } from "./getTopicLimit";
+import { getCategoryLimit } from "./getCategoryLimit";
 import { getVisibleCategories } from "./getVisibleCategories";
 
 // The identifiers that are visible categories of the quiz, each once, in the
 // order given, cut to the limit.
-export const getValidTopics = (
+export const getValidCategoryIds = (
   survey: Survey,
   topicIds: readonly unknown[],
 ): string[] => {
@@ -16,5 +16,5 @@ export const getValidTopics = (
       (topicId): topicId is string =>
         typeof topicId === "string" && visibleIds.has(topicId),
     )
-    .slice(0, getTopicLimit(survey));
+    .slice(0, getCategoryLimit(survey));
 };

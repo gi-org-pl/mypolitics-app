@@ -1,6 +1,6 @@
 import type { SurveySessionAction } from "@/types/survey";
 
-import { getValidTopics } from "./getValidTopics";
+import { getValidCategoryIds } from "./getValidCategoryIds";
 
 // A topic is picked or dropped. Nothing is confirmed yet.
 export const setSessionTopics: SurveySessionAction<[topicIds: string[]]> = (
@@ -9,5 +9,5 @@ export const setSessionTopics: SurveySessionAction<[topicIds: string[]]> = (
   topicIds,
 ) =>
   session.phase === "category-select"
-    ? { ...session, topicIds: getValidTopics(survey, topicIds) }
+    ? { ...session, topicIds: getValidCategoryIds(survey, topicIds) }
     : session;
