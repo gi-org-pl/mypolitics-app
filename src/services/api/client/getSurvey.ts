@@ -1,10 +1,9 @@
-import { HttpStatusCode } from "axios";
-
+import { isNotFound } from "@/services/api/utils/error/isNotFound";
 import { isRefusal } from "@/services/api/utils/error/isRefusal";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
-import { ApiFailureKind, type ApiRequestOptions } from "@/types/api";
+import type { ApiRequestOptions } from "@/types/api";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 
 import { apiClient } from "./apiClient";
@@ -30,10 +29,7 @@ export const getSurvey = async (
 
     return readSurvey(data, surveyId);
   } catch (error) {
-    const failure = toApiFailure(error);
-
-    return failure.kind === ApiFailureKind.Http &&
-      failure.status === HttpStatusCode.NotFound
+    return isNotFound(toApiFailure(error))
       ? { status: SurveyLoadStatus.NotFound }
       : { status: SurveyLoadStatus.Failed };
   }
