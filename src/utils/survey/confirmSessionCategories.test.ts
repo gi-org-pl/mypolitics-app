@@ -3,19 +3,19 @@ import { describe, expect, it } from "vitest";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
-import { setSessionTopics } from "./setSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
 
-describe("confirmSessionTopics()", () => {
+describe("confirmSessionCategories()", () => {
   const survey = createSurvey();
 
   describe("when a topic is picked on category select", () => {
     it("confirms the topics and moves to questions", () => {
-      const picked = setSessionTopics(survey, createSession(survey), [
+      const picked = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
-      const session = confirmSessionTopics(survey, picked);
+      const session = confirmSessionCategories(survey, picked);
 
       expect(session).toEqual({
         ...picked,
@@ -26,12 +26,12 @@ describe("confirmSessionTopics()", () => {
     });
 
     it("changes nothing when it is called again", () => {
-      const confirmed = confirmSessionTopics(
+      const confirmed = confirmSessionCategories(
         survey,
-        setSessionTopics(survey, createSession(survey), ["ecology"]),
+        setSessionCategories(survey, createSession(survey), ["ecology"]),
       );
 
-      expect(confirmSessionTopics(survey, confirmed)).toBe(confirmed);
+      expect(confirmSessionCategories(survey, confirmed)).toBe(confirmed);
     });
   });
 
@@ -39,7 +39,7 @@ describe("confirmSessionTopics()", () => {
     it("does not confirm with no topic picked", () => {
       const session = createSession(survey);
 
-      expect(confirmSessionTopics(survey, session)).toBe(session);
+      expect(confirmSessionCategories(survey, session)).toBe(session);
     });
   });
 
@@ -47,7 +47,7 @@ describe("confirmSessionTopics()", () => {
     it("changes nothing outside category select", () => {
       const session = createStartedSession(survey, 2);
 
-      expect(confirmSessionTopics(survey, session)).toBe(session);
+      expect(confirmSessionCategories(survey, session)).toBe(session);
     });
   });
 });

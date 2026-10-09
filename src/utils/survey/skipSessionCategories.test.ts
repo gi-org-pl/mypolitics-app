@@ -3,18 +3,18 @@ import { describe, expect, it } from "vitest";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { createSession } from "./createSession";
-import { setSessionTopics } from "./setSessionTopics";
-import { skipSessionTopics } from "./skipSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
+import { skipSessionCategories } from "./skipSessionCategories";
 
-describe("skipSessionTopics()", () => {
+describe("skipSessionCategories()", () => {
   const survey = createSurvey();
 
   describe("when the session is on category select", () => {
     it("empties the topics on skip and moves to questions", () => {
-      const picked = setSessionTopics(survey, createSession(survey), [
+      const picked = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
-      const session = skipSessionTopics(survey, picked);
+      const session = skipSessionCategories(survey, picked);
 
       expect(session).toEqual({
         ...picked,
@@ -25,7 +25,7 @@ describe("skipSessionTopics()", () => {
     });
 
     it("works with no topic picked", () => {
-      const session = skipSessionTopics(survey, createSession(survey));
+      const session = skipSessionCategories(survey, createSession(survey));
 
       expect(session.phase).toBe("questions");
       expect(session.areTopicsConfirmed).toBe(true);
@@ -35,9 +35,9 @@ describe("skipSessionTopics()", () => {
 
   describe("when the session is anywhere else", () => {
     it("changes nothing outside category select", () => {
-      const skipped = skipSessionTopics(survey, createSession(survey));
+      const skipped = skipSessionCategories(survey, createSession(survey));
 
-      expect(skipSessionTopics(survey, skipped)).toBe(skipped);
+      expect(skipSessionCategories(survey, skipped)).toBe(skipped);
     });
   });
 });

@@ -12,7 +12,7 @@ import { createSurvey } from "@/utils/vitest/createSurvey";
 import { answerQuestion } from "./answerQuestion";
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
-import { skipSessionTopics } from "./skipSessionTopics";
+import { skipSessionCategories } from "./skipSessionCategories";
 
 // The stores live as long as the module does, so every test takes a quiz of
 // its own.
@@ -97,7 +97,7 @@ describe("getSurveySessionStore()", () => {
     it("writes every change to sessionStorage under the key of the quiz", () => {
       const survey = createQuiz();
       const store = getSurveySessionStore(survey);
-      const started = skipSessionTopics(survey, store.getState());
+      const started = skipSessionCategories(survey, store.getState());
       const answered = answerQuestion(survey, started, "q1-agree", 4);
       const { email, resultState, ...storedState } = answered;
 

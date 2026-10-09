@@ -5,10 +5,10 @@ import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { canReset } from "./canReset";
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
-import { setSessionTopics } from "./setSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 
 describe("canReset()", () => {
@@ -20,7 +20,7 @@ describe("canReset()", () => {
       const session = createSession(survey);
 
       expect(canReset(session)).toBe(false);
-      expect(canReset(setSessionTopics(survey, session, ["economy"]))).toBe(
+      expect(canReset(setSessionCategories(survey, session, ["economy"]))).toBe(
         false,
       );
     });
@@ -35,9 +35,9 @@ describe("canReset()", () => {
     });
 
     it("can reset on the first question after topics were confirmed", () => {
-      const session = confirmSessionTopics(
+      const session = confirmSessionCategories(
         survey,
-        setSessionTopics(survey, createSession(survey), ["economy"]),
+        setSessionCategories(survey, createSession(survey), ["economy"]),
       );
 
       expect(session.entries).toEqual([]);

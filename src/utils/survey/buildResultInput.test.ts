@@ -7,13 +7,13 @@ import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { answerQuestion } from "./answerQuestion";
 import { buildResultInput } from "./buildResultInput";
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { leaveSessionEmailCapture } from "./leaveSessionEmailCapture";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
-import { setSessionTopics } from "./setSessionTopics";
 import { skipQuestion } from "./skipQuestion";
 
 const EMAIL_ON = { isEmailSendingSetUp: true };
@@ -121,9 +121,9 @@ describe("buildResultInput()", () => {
     });
 
     it("sends confirmed topics, and an empty list when there are none", () => {
-      const confirmed = confirmSessionTopics(
+      const confirmed = confirmSessionCategories(
         withFiveCategories,
-        setSessionTopics(
+        setSessionCategories(
           withFiveCategories,
           createSession(withFiveCategories),
           ["c", "a"],
@@ -140,7 +140,7 @@ describe("buildResultInput()", () => {
     });
 
     it("sends no topics that were picked and never confirmed", () => {
-      const picked = setSessionTopics(
+      const picked = setSessionCategories(
         withFiveCategories,
         createSession(withFiveCategories),
         ["c", "a"],
@@ -152,9 +152,9 @@ describe("buildResultInput()", () => {
     });
 
     it("hands over a list of its own", () => {
-      const confirmed = confirmSessionTopics(
+      const confirmed = confirmSessionCategories(
         survey,
-        setSessionTopics(survey, createSession(survey), ["economy"]),
+        setSessionCategories(survey, createSession(survey), ["economy"]),
       );
 
       expect(

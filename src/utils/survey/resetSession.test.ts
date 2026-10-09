@@ -10,13 +10,13 @@ import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { answerQuestion } from "./answerQuestion";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { resetSession } from "./resetSession";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
-import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
@@ -24,9 +24,9 @@ import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 // A session with something in every part: topics, an answer, a time sample, a
 // card, demographics and an e-mail.
 const createFullSession = (survey: Survey): SurveySession => {
-  const confirmed = confirmSessionTopics(
+  const confirmed = confirmSessionCategories(
     survey,
-    setSessionTopics(survey, createSession(survey), ["economy"]),
+    setSessionCategories(survey, createSession(survey), ["economy"]),
   );
   const afterCard = closeSessionCheckpoint(
     survey,
@@ -130,9 +130,11 @@ describe("resetSession()", () => {
 
   describe("when the session cannot be reset", () => {
     it("changes nothing on category select, on the first question or while the hand-in runs", () => {
-      const onCategorySelect = setSessionTopics(survey, createSession(survey), [
-        "economy",
-      ]);
+      const onCategorySelect = setSessionCategories(
+        survey,
+        createSession(survey),
+        ["economy"],
+      );
       const onFirstQuestion = createStartedSession(survey);
       const calculating = leaveSessionDemographics(
         survey,

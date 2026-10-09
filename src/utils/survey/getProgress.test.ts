@@ -10,7 +10,7 @@ import { getProgress } from "./getProgress";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { leaveSessionEmailCapture } from "./leaveSessionEmailCapture";
 import { resetSession } from "./resetSession";
-import { setSessionTopics } from "./setSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 import { stepBack } from "./stepBack";
@@ -49,7 +49,7 @@ describe("getProgress()", () => {
 
   describe("when anything else happens", () => {
     it("does not change with topics, a card or a closing phase", () => {
-      const picking = setSessionTopics(survey, createSession(survey), [
+      const picking = setSessionCategories(survey, createSession(survey), [
         "economy",
       ]);
       const onCard = showSessionCheckpoint(

@@ -8,9 +8,9 @@ import { answerQuestion } from "./answerQuestion";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
-import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 import { stepBack } from "./stepBack";
@@ -22,9 +22,11 @@ describe("stepBack()", () => {
 
   describe("when there is nothing to step back to", () => {
     it("cannot step back on category select, on the first question, on a card or in results calculation", () => {
-      const onCategorySelect = setSessionTopics(survey, createSession(survey), [
-        "economy",
-      ]);
+      const onCategorySelect = setSessionCategories(
+        survey,
+        createSession(survey),
+        ["economy"],
+      );
       const onFirstQuestion = createStartedSession(survey);
       const onCard = showSessionCheckpoint(
         survey,

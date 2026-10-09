@@ -11,14 +11,14 @@ import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { answerQuestion } from "./answerQuestion";
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
 import { fitSession } from "./fitSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { leaveSessionEmailCapture } from "./leaveSessionEmailCapture";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
-import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 
@@ -34,12 +34,14 @@ const COMPLETE: DemographicsValues = {
 
 describe("fitSession()", () => {
   const survey = createSurvey();
-  const picking = setSessionTopics(survey, createSession(survey), ["ecology"]);
+  const picking = setSessionCategories(survey, createSession(survey), [
+    "ecology",
+  ]);
   const midway = skipQuestion(
     survey,
     answerQuestion(
       survey,
-      confirmSessionTopics(survey, picking),
+      confirmSessionCategories(survey, picking),
       "q1-agree",
       3,
     ),
@@ -190,9 +192,13 @@ describe("fitSession()", () => {
           category.id === "b" ? { ...category, name: undefined } : category,
         ),
       });
-      const confirmed = confirmSessionTopics(
+      const confirmed = confirmSessionCategories(
         withFive,
-        setSessionTopics(withFive, createSession(withFive), ["a", "b", "c"]),
+        setSessionCategories(withFive, createSession(withFive), [
+          "a",
+          "b",
+          "c",
+        ]),
       );
       const session = fitSession(unnamed, confirmed, EMAIL_OFF);
 

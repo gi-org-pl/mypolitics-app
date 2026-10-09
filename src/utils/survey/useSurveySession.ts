@@ -12,7 +12,7 @@ import { getSafeSessionStorage } from "@/utils/storage/getSafeSessionStorage";
 import { answerQuestion } from "./answerQuestion";
 import { bindSessionAction } from "./bindSessionAction";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
-import { confirmSessionTopics } from "./confirmSessionTopics";
+import { confirmSessionCategories } from "./confirmSessionCategories";
 import { createSession } from "./createSession";
 import { fitSession } from "./fitSession";
 import { getSessionStorageKey } from "./getSessionStorageKey";
@@ -20,13 +20,13 @@ import { getSurveySessionStore } from "./getSurveySessionStore";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { leaveSessionEmailCapture } from "./leaveSessionEmailCapture";
 import { resetSession } from "./resetSession";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
 import { setSessionResultState } from "./setSessionResultState";
-import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
-import { skipSessionTopics } from "./skipSessionTopics";
+import { skipSessionCategories } from "./skipSessionCategories";
 import { stepBack } from "./stepBack";
 import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 
@@ -46,9 +46,9 @@ export const useSurveySession = (survey: Survey): SurveySessionApi => {
   );
   const actions = useMemo<SurveySessionActions>(
     () => ({
-      setTopics: bindSessionAction(store, survey, setSessionTopics),
-      confirmTopics: bindSessionAction(store, survey, confirmSessionTopics),
-      skipTopics: bindSessionAction(store, survey, skipSessionTopics),
+      setTopics: bindSessionAction(store, survey, setSessionCategories),
+      confirmTopics: bindSessionAction(store, survey, confirmSessionCategories),
+      skipTopics: bindSessionAction(store, survey, skipSessionCategories),
       answer: bindSessionAction(store, survey, answerQuestion),
       skip: bindSessionAction(store, survey, skipQuestion),
       back: bindSessionAction(store, survey, stepBack),

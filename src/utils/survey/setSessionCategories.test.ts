@@ -5,7 +5,7 @@ import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { createSession } from "./createSession";
-import { setSessionTopics } from "./setSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
 
 // Five visible categories and a hidden one: the limit is three.
 const survey = createSurvey({
@@ -15,10 +15,10 @@ const survey = createSurvey({
   ],
 });
 
-describe("setSessionTopics()", () => {
+describe("setSessionCategories()", () => {
   describe("when the session is on category select", () => {
     it("keeps visible categories, once each, in the order given", () => {
-      const session = setSessionTopics(survey, createSession(survey), [
+      const session = setSessionCategories(survey, createSession(survey), [
         "c",
         "hidden",
         "a",
@@ -30,7 +30,7 @@ describe("setSessionTopics()", () => {
     });
 
     it("cuts the topics to the limit", () => {
-      const session = setSessionTopics(survey, createSession(survey), [
+      const session = setSessionCategories(survey, createSession(survey), [
         "a",
         "b",
         "c",
@@ -41,17 +41,21 @@ describe("setSessionTopics()", () => {
     });
 
     it("replaces the topics that were picked, so that a topic can be dropped", () => {
-      const picked = setSessionTopics(survey, createSession(survey), [
+      const picked = setSessionCategories(survey, createSession(survey), [
         "a",
         "b",
       ]);
 
-      expect(setSessionTopics(survey, picked, ["b"]).topicIds).toEqual(["b"]);
-      expect(setSessionTopics(survey, picked, []).topicIds).toEqual([]);
+      expect(setSessionCategories(survey, picked, ["b"]).topicIds).toEqual([
+        "b",
+      ]);
+      expect(setSessionCategories(survey, picked, []).topicIds).toEqual([]);
     });
 
     it("confirms nothing and stays on category select", () => {
-      const session = setSessionTopics(survey, createSession(survey), ["a"]);
+      const session = setSessionCategories(survey, createSession(survey), [
+        "a",
+      ]);
 
       expect(session.areTopicsConfirmed).toBe(false);
       expect(session.phase).toBe("category-select");
@@ -63,8 +67,10 @@ describe("setSessionTopics()", () => {
       const onQuestions = createStartedSession(survey, 1);
       const onDemographics = createStartedSession(survey, 5);
 
-      expect(setSessionTopics(survey, onQuestions, ["a"])).toBe(onQuestions);
-      expect(setSessionTopics(survey, onDemographics, ["a"])).toBe(
+      expect(setSessionCategories(survey, onQuestions, ["a"])).toBe(
+        onQuestions,
+      );
+      expect(setSessionCategories(survey, onDemographics, ["a"])).toBe(
         onDemographics,
       );
     });

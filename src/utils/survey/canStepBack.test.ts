@@ -7,7 +7,7 @@ import { createSurvey } from "@/utils/vitest/createSurvey";
 import { canStepBack } from "./canStepBack";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
-import { setSessionTopics } from "./setSessionTopics";
+import { setSessionCategories } from "./setSessionCategories";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 
 const RESULT_STATES: SurveyResultState[] = [
@@ -41,9 +41,11 @@ describe("canStepBack()", () => {
 
   describe("given a phase with nothing to go back to", () => {
     it("cannot step back on category select, on the first question, on a card or in results calculation", () => {
-      const onCategorySelect = setSessionTopics(survey, createSession(survey), [
-        "economy",
-      ]);
+      const onCategorySelect = setSessionCategories(
+        survey,
+        createSession(survey),
+        ["economy"],
+      );
       const onCard = showSessionCheckpoint(
         survey,
         createStartedSession(survey, 2),

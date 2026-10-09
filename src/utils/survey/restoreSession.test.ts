@@ -14,9 +14,9 @@ import { answerQuestion } from "./answerQuestion";
 import { createSession } from "./createSession";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { restoreSession } from "./restoreSession";
+import { setSessionCategories } from "./setSessionCategories";
 import { setSessionDemographics } from "./setSessionDemographics";
 import { setSessionEmail } from "./setSessionEmail";
-import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { skipQuestion } from "./skipQuestion";
 
@@ -121,7 +121,7 @@ describe("restoreSession()", () => {
     });
 
     it("restores a session on category select with the topics that were picked", () => {
-      const picking = setSessionTopics(survey, createSession(survey), [
+      const picking = setSessionCategories(survey, createSession(survey), [
         "ecology",
       ]);
 
@@ -413,7 +413,7 @@ describe("restoreSession()", () => {
         categories: [createSurveyCategory("economy")],
       });
       const stored = toStored(
-        setSessionTopics(survey, createSession(survey), ["economy"]),
+        setSessionCategories(survey, createSession(survey), ["economy"]),
       );
       const session = restoreSession(withoutCategorySelect, stored, EMAIL_OFF);
 
