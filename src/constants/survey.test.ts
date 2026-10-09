@@ -15,11 +15,6 @@ import {
   SURVEY_SESSION_VERSION,
 } from "./survey";
 
-// The languages the app is in: one catalogue each, in src/locales.
-const APP_LANGUAGES = Object.keys(import.meta.glob("../locales/*/messages.po"))
-  .map((path) => path.split("/").at(-2) ?? "")
-  .sort();
-
 describe("the constants of the survey session", () => {
   describe("SURVEY_PHASES", () => {
     it("holds the seven phases in their fixed order", () => {
@@ -90,6 +85,13 @@ describe("the constants of the survey session", () => {
   });
 
   describe("the kinds of an answer", () => {
+    // The languages the app is in: one catalogue each, in src/locales.
+    const APP_LANGUAGES = Object.keys(
+      import.meta.glob("../locales/*/messages.po"),
+    )
+      .map((path) => path.split("/").at(-2) ?? "")
+      .sort();
+
     it("draws the scale first, from full agreement to full disagreement", () => {
       expect(SURVEY_ANSWER_KINDS).toEqual([
         "strongly-agree",
