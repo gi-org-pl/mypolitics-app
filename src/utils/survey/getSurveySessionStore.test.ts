@@ -1,7 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_VERSION } from "@/constants/survey";
-import type { Survey, SurveySession } from "@/types/survey";
+import {
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -122,7 +126,7 @@ describe("getSurveySessionStore()", () => {
           ...createStartedSession(survey, 5),
           phase: "results-calculation",
           email: { address: "jan@example.com", hasConsent: true },
-          resultState: "failed",
+          resultState: SurveyResultState.Failed,
         },
         true,
       );
@@ -147,7 +151,7 @@ describe("getSurveySessionStore()", () => {
       );
       expect(text).not.toContain("jan@example.com");
       expect(text).not.toContain("hasConsent");
-      expect(text).not.toContain("failed");
+      expect(text).not.toContain(SurveyResultState.Failed);
     });
 
     it("never writes to the storage shared between tabs, nor to a cookie", () => {
@@ -188,7 +192,7 @@ describe("getSurveySessionStore()", () => {
 
       expect(session.phase).toBe("results-calculation");
       expect(session.email).toBeNull();
-      expect(session.resultState).toBe("not-sent");
+      expect(session.resultState).toBe(SurveyResultState.NotSent);
     });
 
     it("starts a new session when the record is not JSON", () => {

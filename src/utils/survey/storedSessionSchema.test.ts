@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { SurveyResultState } from "@/types/survey";
+
 import { storedSessionSchema } from "./storedSessionSchema";
 
 const STATE = {
@@ -34,7 +36,7 @@ describe("storedSessionSchema", () => {
       const { data } = parse({
         ...STATE,
         email: { address: "jan@example.com", hasConsent: true },
-        resultState: "failed",
+        resultState: SurveyResultState.Failed,
       });
 
       expect(data?.state).not.toHaveProperty("email");

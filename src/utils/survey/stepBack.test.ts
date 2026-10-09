@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SurveySession } from "@/types/survey";
+import { SurveyResultState, type SurveySession } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -37,7 +37,10 @@ describe("stepBack()", () => {
         false,
         { isEmailSendingSetUp: false },
       );
-      const failed: SurveySession = { ...calculating, resultState: "failed" };
+      const failed: SurveySession = {
+        ...calculating,
+        resultState: SurveyResultState.Failed,
+      };
       const onShortResults: SurveySession = {
         ...calculating,
         phase: "short-results",

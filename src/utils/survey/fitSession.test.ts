@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import type {
-  DemographicsValues,
-  SurveySession,
-  UnfittedSurveySession,
+import {
+  type DemographicsValues,
+  SurveyResultState,
+  type SurveySession,
+  type UnfittedSurveySession,
 } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
@@ -54,7 +55,7 @@ describe("fitSession()", () => {
   );
   const calculating: SurveySession = {
     ...leaveSessionEmailCapture(survey, onEmail, true),
-    resultState: "created",
+    resultState: SurveyResultState.Created,
   };
 
   describe("given a session that fits the quiz", () => {
@@ -78,7 +79,7 @@ describe("fitSession()", () => {
         address: "jan@example.com",
         hasConsent: true,
       });
-      expect(session.resultState).toBe("created");
+      expect(session.resultState).toBe(SurveyResultState.Created);
     });
 
     it("leaves the session it was handed as it was", () => {

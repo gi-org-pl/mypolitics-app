@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import type { DemographicsValues, SurveySession } from "@/types/survey";
+import {
+  type DemographicsValues,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -170,15 +174,15 @@ describe("leaveSessionDemographics()", () => {
     it("sets the result state to not-sent on entering results calculation", () => {
       const stale: SurveySession = {
         ...withValues(COMPLETE),
-        resultState: "failed",
+        resultState: SurveyResultState.Failed,
       };
 
       expect(
         leaveSessionDemographics(survey, stale, true, EMAIL_OFF).resultState,
-      ).toBe("not-sent");
+      ).toBe(SurveyResultState.NotSent);
       expect(
         leaveSessionDemographics(survey, stale, false, EMAIL_OFF).resultState,
-      ).toBe("not-sent");
+      ).toBe(SurveyResultState.NotSent);
     });
   });
 

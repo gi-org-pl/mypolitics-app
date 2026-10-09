@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-
+import { SurveyResultState } from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { createSession } from "./createSession";
@@ -26,7 +26,7 @@ describe("createSession()", () => {
         areDemographicsGiven: false,
         checkpointRecord: { cardsShown: [], timeSamples: [] },
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 

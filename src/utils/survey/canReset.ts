@@ -1,4 +1,4 @@
-import type { SurveySession } from "@/types/survey";
+import { SurveyResultState, type SurveySession } from "@/types/survey";
 
 export const canReset = (session: SurveySession): boolean => {
   switch (session.phase) {
@@ -13,7 +13,7 @@ export const canReset = (session: SurveySession): boolean => {
     case "email-capture":
       return true;
     case "results-calculation":
-      return session.resultState === "failed";
+      return session.resultState === SurveyResultState.Failed;
     default:
       return false;
   }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SurveyResultState, SurveySession } from "@/types/survey";
+import { SurveyResultState, type SurveySession } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -11,11 +11,11 @@ import { setSessionTopics } from "./setSessionTopics";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 
 const RESULT_STATES: SurveyResultState[] = [
-  "not-sent",
-  "sending",
-  "created",
-  "calculated",
-  "failed",
+  SurveyResultState.NotSent,
+  SurveyResultState.Sending,
+  SurveyResultState.Created,
+  SurveyResultState.Calculated,
+  SurveyResultState.Failed,
 ];
 
 describe("canStepBack()", () => {

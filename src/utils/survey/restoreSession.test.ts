@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { SURVEY_SESSION_VERSION } from "@/constants/survey";
-import type { DemographicsValues, SurveySession } from "@/types/survey";
+import {
+  type DemographicsValues,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
@@ -145,12 +149,12 @@ describe("restoreSession()", () => {
       const failed: SurveySession = {
         ...done,
         phase: "results-calculation",
-        resultState: "failed",
+        resultState: SurveyResultState.Failed,
       };
       const tampered = {
         ...(toStored(failed) as { state: object }).state,
         email: { address: "jan@example.com", hasConsent: true },
-        resultState: "failed",
+        resultState: SurveyResultState.Failed,
       };
 
       expect(restoreSession(survey, toStored(onEmail), EMAIL_ON).email).toBe(
@@ -158,14 +162,18 @@ describe("restoreSession()", () => {
       );
       expect(
         restoreSession(survey, toStored(failed), EMAIL_ON).resultState,
-      ).toBe("not-sent");
+      ).toBe(SurveyResultState.NotSent);
       expect(
         restoreSession(
           survey,
           { state: tampered, version: SURVEY_SESSION_VERSION },
           EMAIL_ON,
         ),
-      ).toEqual({ ...failed, email: null, resultState: "not-sent" });
+      ).toEqual({
+        ...failed,
+        email: null,
+        resultState: SurveyResultState.NotSent,
+      });
     });
 
     it("keeps the checkpoint opt-out", () => {
@@ -516,7 +524,7 @@ describe("restoreSession()", () => {
       expect(session.phase).toBe("category-select");
       expect(session.entries).toEqual([]);
       expect(session.email).toBeNull();
-      expect(session.resultState).toBe("not-sent");
+      expect(session.resultState).toBe(SurveyResultState.NotSent);
     });
 
     it("never throws on a record whose every part is of the wrong kind", () => {

@@ -1,4 +1,8 @@
-import type { Survey, SurveySession } from "@/types/survey";
+import {
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 
 import { getFirstPhase } from "./getFirstPhase";
 
@@ -17,5 +21,5 @@ export const createSession = (
   areDemographicsGiven: false,
   checkpointRecord: { cardsShown: [], timeSamples: [] },
   email: null,
-  resultState: "not-sent",
+  resultState: SurveyResultState.NotSent,
 });

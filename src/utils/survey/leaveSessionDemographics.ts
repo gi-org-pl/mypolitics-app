@@ -1,8 +1,9 @@
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
-import type {
-  SurveySession,
-  SurveySessionAction,
-  SurveySessionConfig,
+import {
+  SurveyResultState,
+  type SurveySession,
+  type SurveySessionAction,
+  type SurveySessionConfig,
 } from "@/types/survey";
 
 import { isPhaseInSession } from "./isPhaseInSession";
@@ -32,6 +33,6 @@ export const leaveSessionDemographics: SurveySessionAction<
         ...leftSession,
         phase: "results-calculation",
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       };
 };

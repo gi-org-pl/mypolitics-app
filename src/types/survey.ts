@@ -159,12 +159,17 @@ export interface SurveyEmail {
   hasConsent: boolean;
 }
 
+// How far the hand-in got, and how it ended. An enum, like SurveyLoadStatus.
+export const SurveyResultState = {
+  NotSent: "not-sent",
+  Sending: "sending",
+  Created: "created",
+  Calculated: "calculated",
+  Failed: "failed",
+} as const;
+
 export type SurveyResultState =
-  | "not-sent"
-  | "sending"
-  | "created"
-  | "calculated"
-  | "failed";
+  (typeof SurveyResultState)[keyof typeof SurveyResultState];
 
 export interface SurveyTimeSample {
   questionId: string;

@@ -2,7 +2,11 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
-import type { DemographicsValues, Survey } from "@/types/survey";
+import {
+  type DemographicsValues,
+  type Survey,
+  SurveyResultState,
+} from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { getSessionStorageKey } from "./getSessionStorageKey";
@@ -99,8 +103,8 @@ describe("useSurveySession()", () => {
       expect(result.current.session.phase).toBe("results-calculation");
       expect(result.current.session.areDemographicsGiven).toBe(true);
 
-      act(() => result.current.setResultState("failed"));
-      expect(result.current.session.resultState).toBe("failed");
+      act(() => result.current.setResultState(SurveyResultState.Failed));
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
 
       const failedId = result.current.session.id;
 
@@ -384,7 +388,7 @@ describe("useSurveySession()", () => {
         result.current.skipTopics();
         result.current.answer("unknown");
         result.current.closeCheckpoint();
-        result.current.setResultState("calculated");
+        result.current.setResultState(SurveyResultState.Calculated);
       });
 
       expect(readRecord(survey)).toBeNull();
@@ -438,7 +442,7 @@ describe("useSurveySession()", () => {
         areDemographicsGiven: false,
         checkpointRecord: { cardsShown: [], timeSamples: [] },
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
       expect(result.current.session.id).not.toBe(oldId);
     });

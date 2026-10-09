@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SurveyResultState, SurveySession } from "@/types/survey";
+import { SurveyResultState, type SurveySession } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -80,11 +80,11 @@ describe("canReset()", () => {
   describe("given a session in results calculation", () => {
     it("can reset in results calculation only when it has failed", () => {
       const states: [SurveyResultState, boolean][] = [
-        ["not-sent", false],
-        ["sending", false],
-        ["created", false],
-        ["calculated", false],
-        ["failed", true],
+        [SurveyResultState.NotSent, false],
+        [SurveyResultState.Sending, false],
+        [SurveyResultState.Created, false],
+        [SurveyResultState.Calculated, false],
+        [SurveyResultState.Failed, true],
       ];
 
       for (const [resultState, expected] of states) {
@@ -108,7 +108,7 @@ describe("canReset()", () => {
         canReset({
           ...onDemographics,
           phase: "short-results",
-          resultState: "failed",
+          resultState: SurveyResultState.Failed,
         }),
       ).toBe(false);
     });

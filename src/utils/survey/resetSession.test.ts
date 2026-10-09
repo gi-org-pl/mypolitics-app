@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import type { Survey, SurveySession } from "@/types/survey";
+import {
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -94,7 +98,7 @@ describe("resetSession()", () => {
         areDemographicsGiven: false,
         checkpointRecord: { cardsShown: [], timeSamples: [] },
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 
@@ -114,12 +118,12 @@ describe("resetSession()", () => {
       const failed: SurveySession = {
         ...createStartedSession(survey, 5),
         phase: "results-calculation",
-        resultState: "failed",
+        resultState: SurveyResultState.Failed,
       };
       const session = resetSession(survey, failed);
 
       expect(session.id).not.toBe(failed.id);
-      expect(session.resultState).toBe("not-sent");
+      expect(session.resultState).toBe(SurveyResultState.NotSent);
       expect(session.phase).toBe("category-select");
     });
   });

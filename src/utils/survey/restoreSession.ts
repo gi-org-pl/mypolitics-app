@@ -1,7 +1,8 @@
-import type {
-  Survey,
-  SurveySession,
-  SurveySessionConfig,
+import {
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+  type SurveySessionConfig,
 } from "@/types/survey";
 
 import { createSession } from "./createSession";
@@ -25,7 +26,7 @@ export const restoreSession = (
 
   return fitSession(
     survey,
-    { ...data.state, email: null, resultState: "not-sent" },
+    { ...data.state, email: null, resultState: SurveyResultState.NotSent },
     config,
   );
 };
