@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { SurveyResultState } from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
+import { buildResultInput } from "./buildResultInput";
+import { canReset } from "./canReset";
 import { createSession } from "./createSession";
+import { getCurrentQuestion } from "./getCurrentQuestion";
+import { getProgress } from "./getProgress";
+import { skipSessionCategories } from "./skipSessionCategories";
 
 const UUID_V4 =
   /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/;
 
 describe("createSession()", () => {
+  const survey = createSurvey();
+
   describe("given a quiz", () => {
     it("starts in the first phase with a new UUID and nothing recorded", () => {
       const survey = createSurvey();
@@ -35,6 +43,40 @@ describe("createSession()", () => {
 
       expect(session.phase).toBe("questions");
       expect(session.areCategoriesConfirmed).toBe(false);
+    });
+
+    it("starts on the questions when the quiz has one visible category", () => {
+      const withOne = createSurvey({
+        categories: [
+          createSurveyCategory("only"),
+          createSurveyCategory("hidden", { isHidden: true }),
+        ],
+      });
+      const session = createSession(withOne);
+
+      expect(session.phase).toBe("questions");
+      expect(session.prioritizedCategoryIds).toEqual([]);
+    });
+
+    it("starts such a quiz as a skipped category select leaves any other", () => {
+      const withOne = createSurvey({
+        categories: [createSurveyCategory("only")],
+      });
+      const started = createSession(withOne);
+      const skipped = skipSessionCategories(survey, createSession(survey));
+
+      expect(started.phase).toBe(skipped.phase);
+      expect(started.prioritizedCategoryIds).toEqual(
+        skipped.prioritizedCategoryIds,
+      );
+      expect(getCurrentQuestion(withOne, started)).toBe(withOne.questions[0]);
+      expect(getProgress(withOne, started)).toEqual(
+        getProgress(survey, skipped),
+      );
+      expect(canReset(started)).toBe(canReset(skipped));
+      expect(buildResultInput(withOne, started).prioritizedCategories).toEqual(
+        buildResultInput(survey, skipped).prioritizedCategories,
+      );
     });
 
     it("gives two sessions two identifiers", () => {

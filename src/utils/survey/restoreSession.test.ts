@@ -422,6 +422,54 @@ describe("restoreSession()", () => {
       expect(session.prioritizedCategoryIds).toEqual([]);
     });
 
+    it("never sits on category select in a quiz with one visible category, or none", () => {
+      const stored = toStored(
+        setSessionCategories(survey, createSession(survey), ["economy"]),
+      );
+      const withOne = createSurvey({
+        categories: [
+          createSurveyCategory("economy"),
+          createSurveyCategory("hidden", { isHidden: true }),
+        ],
+      });
+      const withNone = createSurvey({ categories: [] });
+
+      for (const quiz of [withOne, withNone]) {
+        const session = restoreSession(quiz, stored, EMAIL_OFF);
+
+        expect(session.phase).toBe("questions");
+        expect(session.prioritizedCategoryIds).toEqual([]);
+        expect(session.areCategoriesConfirmed).toBe(false);
+        expect(session.entries).toEqual([]);
+      }
+    });
+
+    it("cuts the picked categories to half of the visible ones, when the quiz has fewer now", () => {
+      const withSeven = createSurvey({
+        categories: ["a", "b", "c", "d", "e", "f", "g"].map((id) =>
+          createSurveyCategory(id),
+        ),
+      });
+      const withThree = createSurvey({
+        categories: ["a", "b", "c"].map((id) => createSurveyCategory(id)),
+      });
+      const stored = toStored(
+        setSessionCategories(withSeven, createSession(withSeven), [
+          "c",
+          "b",
+          "a",
+          "g",
+        ]),
+      );
+
+      expect(
+        restoreSession(withSeven, stored, EMAIL_OFF).prioritizedCategoryIds,
+      ).toEqual(["c", "b", "a", "g"]);
+      expect(
+        restoreSession(withThree, stored, EMAIL_OFF).prioritizedCategoryIds,
+      ).toEqual(["c", "b"]);
+    });
+
     it("repairs a card phase with no card on record, or with checkpoints off", () => {
       const onCard = showSessionCheckpoint(survey, midway, "card");
 

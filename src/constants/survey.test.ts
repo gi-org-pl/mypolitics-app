@@ -4,7 +4,8 @@ import {
   ADULT_AGE,
   DEMOGRAPHICS_FIELD_IDS,
   DEMOGRAPHICS_VALUES,
-  MAX_CATEGORIES,
+  MAX_CATEGORIES_RATIO,
+  MIN_CATEGORIES_FOR_SELECT,
   SURVEY_ANSWER_KINDS,
   SURVEY_PHASES,
   SURVEY_SCALE_ANSWER_KINDS,
@@ -106,8 +107,12 @@ describe("the constants of the survey session", () => {
   });
 
   describe("the settings of a session", () => {
-    it("allows three categories and draws the line of adulthood at 18", () => {
-      expect(MAX_CATEGORIES).toBe(3);
+    it("lets half of the visible categories be picked, in a quiz with at least two", () => {
+      expect(MAX_CATEGORIES_RATIO).toBe(0.5);
+      expect(MIN_CATEGORIES_FOR_SELECT).toBe(2);
+    });
+
+    it("draws the line of adulthood at 18", () => {
       expect(ADULT_AGE).toBe(18);
     });
 

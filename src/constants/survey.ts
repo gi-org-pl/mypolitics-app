@@ -28,7 +28,11 @@ export const SURVEY_PHASES: readonly SurveyPhase[] = [
   "short-results",
 ];
 
-export const MAX_CATEGORIES = 3;
+// Category select: the share of the visible categories of a quiz that may be
+// picked, and the fewest visible categories the select is shown for.
+export const MAX_CATEGORIES_RATIO = 0.5;
+export const MIN_CATEGORIES_FOR_SELECT = 2;
+
 export const ADULT_AGE = 18;
 
 // The kinds in the order their answers are drawn: the scale, then the rest.

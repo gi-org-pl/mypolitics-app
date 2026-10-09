@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { SurveyResultState, type SurveySession } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { answerQuestion } from "./answerQuestion";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
@@ -76,6 +77,20 @@ describe("stepBack()", () => {
       ]);
       expect(session.phase).toBe("questions");
       expect(session).toEqual(first);
+    });
+
+    it("leads back to the first question and no further, with or without category select", () => {
+      const withOne = createSurvey({
+        categories: [createSurveyCategory("only")],
+      });
+
+      for (const quiz of [survey, withOne]) {
+        const onFirstQuestion = stepBack(quiz, createStartedSession(quiz, 1));
+
+        expect(onFirstQuestion.phase).toBe("questions");
+        expect(onFirstQuestion.entries).toEqual([]);
+        expect(stepBack(quiz, onFirstQuestion)).toBe(onFirstQuestion);
+      }
     });
 
     it("removes a skip the same way", () => {

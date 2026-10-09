@@ -8,6 +8,7 @@ import {
   SurveyResultState,
 } from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
@@ -485,6 +486,77 @@ describe("useSurveySession()", () => {
       expect(JSON.parse(readRecord(survey) ?? "{}").state.id).toBe(
         result.current.session.id,
       );
+    });
+  });
+
+  describe("when the quiz has one visible category, or none", () => {
+    const createQuizWithout = (categoryIds: string[]): Survey =>
+      createSurvey({
+        id: crypto.randomUUID(),
+        categories: categoryIds.map((id) => createSurveyCategory(id)),
+      });
+
+    it.each([
+      ["one", ["economy"]],
+      ["no", []],
+    ])("starts on the first question of a quiz with %s visible category", (_count, categoryIds) => {
+      const { result } = renderSession(createQuizWithout(categoryIds));
+
+      expect(result.current.session.phase).toBe("questions");
+      expect(result.current.session.entries).toEqual([]);
+    });
+
+    it("has nothing to pick, confirm or skip", () => {
+      const { result } = renderSession(createQuizWithout(["economy"]));
+      const { session } = result.current;
+
+      act(() => {
+        result.current.setCategories(["economy"]);
+        result.current.confirmCategories();
+        result.current.skipCategories();
+      });
+
+      expect(result.current.session).toBe(session);
+    });
+
+    it("comes back to the first question on a reset and on starting over", () => {
+      const { result } = renderSession(createQuizWithout(["economy"]));
+
+      act(() => result.current.answer("q1-agree"));
+      act(() => result.current.reset());
+
+      expect(result.current.session.phase).toBe("questions");
+      expect(result.current.session.entries).toEqual([]);
+
+      act(() => result.current.answer("q1-agree"));
+      act(() => result.current.startOver());
+
+      expect(result.current.session.phase).toBe("questions");
+      expect(result.current.session.entries).toEqual([]);
+    });
+
+    it("leaves category select when the quiz is read again with a single category", () => {
+      const survey = createQuiz();
+      const { result, rerender } = renderSession(survey);
+
+      act(() => result.current.setCategories(["economy"]));
+      expect(result.current.session.phase).toBe("category-select");
+
+      rerender({
+        quiz: createSurvey({
+          id: survey.id,
+          categories: [createSurveyCategory("economy")],
+        }),
+      });
+
+      expect(result.current.session.phase).toBe("questions");
+      expect(result.current.session.prioritizedCategoryIds).toEqual([]);
+
+      act(() => result.current.answer("q1-agree"));
+
+      expect(result.current.session.entries).toEqual([
+        { questionId: "q1", answerId: "q1-agree" },
+      ]);
     });
   });
 

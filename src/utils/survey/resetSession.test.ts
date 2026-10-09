@@ -7,6 +7,7 @@ import {
 } from "@/types/survey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 
 import { answerQuestion } from "./answerQuestion";
 import { closeSessionCheckpoint } from "./closeSessionCheckpoint";
@@ -79,6 +80,17 @@ describe("resetSession()", () => {
 
       expect(session.phase).toBe("questions");
       expect(session.entries).toEqual([]);
+    });
+
+    it("starts on the first question of a quiz with one visible category", () => {
+      const withOne = createSurvey({
+        categories: [createSurveyCategory("only")],
+      });
+      const session = resetSession(withOne, createStartedSession(withOne, 2));
+
+      expect(session.phase).toBe("questions");
+      expect(session.entries).toEqual([]);
+      expect(session.prioritizedCategoryIds).toEqual([]);
     });
 
     it("clears entries, categories, demographics, the e-mail and the checkpoint record", () => {
