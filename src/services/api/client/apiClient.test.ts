@@ -70,6 +70,13 @@ describe("apiClient", () => {
       ).toBe("https://api.example.test/api");
     });
 
+    it("uses it without the space around it", async () => {
+      expect(
+        (await loadApiClient("  https://api.example.test/api  ")).defaults
+          .baseURL,
+      ).toBe("https://api.example.test/api");
+    });
+
     it("sends a request to it", async () => {
       const client = await loadApiClient("https://api.example.test/api");
       const adapter = vi.fn<AxiosAdapter>(createApiReply(200));
