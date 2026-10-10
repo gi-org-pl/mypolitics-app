@@ -137,6 +137,14 @@ export const ComparisonSmallValue: Story = {
   },
 };
 
+export const ComparisonValueAtTheFitThreshold: Story = {
+  args: {
+    start: { orientation: socialism, value: 16 },
+    comparison: { orientation: friend, value: 60 },
+    marker: false,
+  },
+};
+
 export const ComparisonFromEnd: Story = {
   args: {
     end: { orientation: conservatism, value: 60 },

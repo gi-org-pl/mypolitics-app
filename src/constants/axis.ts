@@ -13,3 +13,9 @@ export const DOUBLE_SIDED_FIT_THRESHOLD = 20;
 // viewport), with a few pixels to spare.
 export const ONE_SIDED_COMPARISON_CLEARANCE = 26;
 export const DOUBLE_SIDED_COMPARISON_CLEARANCE = 28;
+
+// With a comparison ahead the band starts where the fill ends, so a one-sided
+// number has to fit its fill on the narrowest bar as well. At the usual
+// threshold it is about a pixel wider than the fill there, which nobody sees
+// on the white track and which the hatching would cover.
+export const ONE_SIDED_COMPARISON_FIT_THRESHOLD = 17;

@@ -5,6 +5,7 @@ import {
   DOUBLE_SIDED_COMPARISON_CLEARANCE,
   DOUBLE_SIDED_FIT_THRESHOLD,
   ONE_SIDED_COMPARISON_CLEARANCE,
+  ONE_SIDED_COMPARISON_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
 } from "@/constants/axis";
 import type { AxisEntry } from "@/types/axis";
@@ -428,6 +429,43 @@ describe("getAxisLayout()", () => {
       });
     });
 
+    describe("when the value fits its fill only without a comparison", () => {
+      it("shows no value, because the band starts at the end of a fill the number is wider than", () => {
+        expect(ONE_SIDED_COMPARISON_FIT_THRESHOLD).toBeGreaterThan(
+          ONE_SIDED_FIT_THRESHOLD,
+        );
+        expect(getPlacement(ONE_SIDED_FIT_THRESHOLD, 60)).toBe("hidden");
+        expect(getPlacement(ONE_SIDED_FIT_THRESHOLD + 0.5, 60)).toBe("hidden");
+        expect(getPlacement(ONE_SIDED_COMPARISON_FIT_THRESHOLD - 0.1, 60)).toBe(
+          "hidden",
+        );
+      });
+
+      it("keeps the value from the fit threshold of a bar with a comparison on", () => {
+        expect(getPlacement(ONE_SIDED_COMPARISON_FIT_THRESHOLD, 60)).toBe(
+          "inside",
+        );
+        expect(getPlacement(ONE_SIDED_COMPARISON_FIT_THRESHOLD + 0.1, 60)).toBe(
+          "inside",
+        );
+      });
+
+      it("still needs the other party to be clear of the number", () => {
+        expect(
+          getPlacement(
+            ONE_SIDED_COMPARISON_FIT_THRESHOLD,
+            ONE_SIDED_COMPARISON_CLEARANCE,
+          ),
+        ).toBe("inside");
+        expect(
+          getPlacement(
+            ONE_SIDED_COMPARISON_FIT_THRESHOLD,
+            ONE_SIDED_COMPARISON_CLEARANCE - 0.1,
+          ),
+        ).toBe("hidden");
+      });
+    });
+
     describe("when the comparison has no value", () => {
       it("places the value by the usual rules", () => {
         const layout = getAxisLayout({
@@ -437,6 +475,40 @@ describe("getAxisLayout()", () => {
 
         expect(layout.start?.valuePlacement).toBe("outside");
       });
+
+      it("keeps a value at the usual fit threshold inside the fill", () => {
+        const layout = getAxisLayout({
+          start: entryA(ONE_SIDED_FIT_THRESHOLD),
+          comparison: { orientation: friend },
+        });
+
+        expect(layout.start?.valuePlacement).toBe("inside");
+      });
+    });
+  });
+
+  describe("given a one-sided bar without a comparison", () => {
+    const getExpectedPlacement = (value: number) => {
+      if (value <= 0) return "hidden";
+
+      return value >= ONE_SIDED_FIT_THRESHOLD ? "inside" : "outside";
+    };
+    const values = Array.from({ length: 1001 }, (_, index) => index / 10);
+
+    it("places every value from 0 to 100 as it did before the comparison rule, for a start entry", () => {
+      for (const value of values) {
+        expect(
+          getAxisLayout({ start: entryA(value) }).start?.valuePlacement,
+        ).toBe(getExpectedPlacement(value));
+      }
+    });
+
+    it("does the same for an end entry alone", () => {
+      for (const value of values) {
+        expect(getAxisLayout({ end: entryB(value) }).end?.valuePlacement).toBe(
+          getExpectedPlacement(value),
+        );
+      }
     });
   });
 
@@ -456,6 +528,16 @@ describe("getAxisLayout()", () => {
 
     it("shows no value below the fit threshold", () => {
       expect(getPlacement(5, 60)).toBe("hidden");
+    });
+
+    it("shows no value below the fit threshold of a bar with a comparison", () => {
+      expect(getPlacement(ONE_SIDED_FIT_THRESHOLD, 60)).toBe("hidden");
+      expect(getPlacement(ONE_SIDED_COMPARISON_FIT_THRESHOLD - 0.1, 60)).toBe(
+        "hidden",
+      );
+      expect(getPlacement(ONE_SIDED_COMPARISON_FIT_THRESHOLD, 60)).toBe(
+        "inside",
+      );
     });
   });
 
@@ -512,6 +594,19 @@ describe("getAxisLayout()", () => {
 
     it("still hides a side below its fit threshold", () => {
       expect(getPlacements(88, 12, 50)).toEqual(["inside", "hidden"]);
+    });
+
+    it("keeps a side exactly at its usual fit threshold", () => {
+      const rest = 100 - DOUBLE_SIDED_FIT_THRESHOLD;
+
+      expect(getPlacements(DOUBLE_SIDED_FIT_THRESHOLD, rest, 50)).toEqual([
+        "inside",
+        "inside",
+      ]);
+      expect(getPlacements(rest, DOUBLE_SIDED_FIT_THRESHOLD, 50)).toEqual([
+        "inside",
+        "inside",
+      ]);
     });
 
     it("shows no value on either side when the track is hatched whole", () => {

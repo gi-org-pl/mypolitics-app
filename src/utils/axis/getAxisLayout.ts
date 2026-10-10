@@ -5,6 +5,7 @@ import {
   MAX_AXIS_VALUE,
   MIN_AXIS_VALUE,
   ONE_SIDED_COMPARISON_CLEARANCE,
+  ONE_SIDED_COMPARISON_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
 } from "@/constants/axis";
 import type {
@@ -51,7 +52,8 @@ const getOwnValuePlacement = (
 // `comparisonDistance` is how far the other party is drawn from the cap this
 // side's number sits at, as a share of the track; null without a comparison.
 // Next to a comparison a number stays only inside its fill, and only when the
-// band and the other party's image cannot reach it.
+// band and the other party's image cannot reach it - on a one-sided bar that
+// takes a fill a little wider than the usual threshold.
 const getValuePlacement = (
   mode: AxisMode,
   width: number,
@@ -62,12 +64,16 @@ const getValuePlacement = (
   if (comparisonDistance === null) return placement;
   if (placement !== "inside") return "hidden";
 
-  const clearance =
-    mode === "double-sided"
-      ? DOUBLE_SIDED_COMPARISON_CLEARANCE
-      : ONE_SIDED_COMPARISON_CLEARANCE;
+  if (mode === "double-sided") {
+    return comparisonDistance >= DOUBLE_SIDED_COMPARISON_CLEARANCE
+      ? "inside"
+      : "hidden";
+  }
 
-  return comparisonDistance >= clearance ? "inside" : "hidden";
+  return width >= ONE_SIDED_COMPARISON_FIT_THRESHOLD &&
+    comparisonDistance >= ONE_SIDED_COMPARISON_CLEARANCE
+    ? "inside"
+    : "hidden";
 };
 
 const getSideLayout = (

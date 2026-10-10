@@ -376,6 +376,27 @@ describe("<UniversalAxis />", () => {
       );
     });
 
+    it("writes no value that fits its fill only without a comparison, and keeps it in the description", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(16)} comparison={friendEntry(60)} />,
+      );
+
+      expect(screen.queryByText("16%")).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: 16%, porównanie z Ania: 60%",
+      );
+    });
+
+    it("writes the value from the fit threshold of a bar with a comparison on", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(17)} comparison={friendEntry(60)} />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "17%",
+      );
+    });
+
     it("writes each side's value on a double-sided bar unless the other party is close to its cap", () => {
       const { unmount } = renderWithI18n(
         <UniversalAxis
