@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { SurveyDemographics } from "@/components/survey/SurveyDemographics/SurveyDemographics";
 import { SurveyPhaseActions } from "@/components/survey/SurveyPhaseActions/SurveyPhaseActions";
 import type { SurveyPhaseContentProps } from "@/types/survey";
-import { toResultDemographics } from "@/utils/survey/toResultDemographics";
+import { toResultDemographics } from "@/utils/survey/demographics/toResultDemographics";
 
 import { useDemographicsOptions } from "./utils/useDemographicsOptions";
 

@@ -1,8 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-
 import { createResult } from "@/services/api/client/createResult";
-import type { CreateResultOutcome, ResultInput } from "@/types/survey";
-
+import { CreateResultOutcome, type ResultInput } from "@/types/survey";
 import { CREATE_RESULT_TIMEOUT_MS } from "../SurveyQuestionnaireResultsCalculation.constants";
 import { sendHandIn } from "./sendHandIn";
 
@@ -26,9 +24,11 @@ describe("sendHandIn()", () => {
     it("sends the hand-in once, with a time limit of 10 seconds", async () => {
       const { signal } = new AbortController();
 
-      createResultMock.mockResolvedValue("stored");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
 
-      await expect(sendHandIn(INPUT, signal)).resolves.toBe("stored");
+      await expect(sendHandIn(INPUT, signal)).resolves.toBe(
+        CreateResultOutcome.Stored,
+      );
       expect(CREATE_RESULT_TIMEOUT_MS).toBe(10_000);
       expect(createResultMock).toHaveBeenCalledTimes(1);
       expect(createResultMock).toHaveBeenCalledWith(INPUT, {
@@ -43,10 +43,12 @@ describe("sendHandIn()", () => {
       const { signal } = new AbortController();
 
       createResultMock
-        .mockResolvedValueOnce("unreachable")
-        .mockResolvedValueOnce("stored");
+        .mockResolvedValueOnce(CreateResultOutcome.Unreachable)
+        .mockResolvedValueOnce(CreateResultOutcome.Stored);
 
-      await expect(sendHandIn(INPUT, signal)).resolves.toBe("stored");
+      await expect(sendHandIn(INPUT, signal)).resolves.toBe(
+        CreateResultOutcome.Stored,
+      );
       expect(createResultMock).toHaveBeenCalledTimes(2);
       expect(createResultMock.mock.calls[1]).toEqual(
         createResultMock.mock.calls[0],
@@ -55,11 +57,11 @@ describe("sendHandIn()", () => {
     });
 
     it.each([
-      "unreachable",
-      "refused",
+      CreateResultOutcome.Unreachable,
+      CreateResultOutcome.Refused,
     ] satisfies CreateResultOutcome[])("ends with what the second try got, and tries no third time: %s", async (outcome) => {
       createResultMock
-        .mockResolvedValueOnce("unreachable")
+        .mockResolvedValueOnce(CreateResultOutcome.Unreachable)
         .mockResolvedValueOnce(outcome);
 
       await expect(
@@ -71,11 +73,11 @@ describe("sendHandIn()", () => {
 
   describe("given a refused hand-in", () => {
     it("ends refused with no second try", async () => {
-      createResultMock.mockResolvedValue("refused");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Refused);
 
       await expect(
         sendHandIn(INPUT, new AbortController().signal),
-      ).resolves.toBe("refused");
+      ).resolves.toBe(CreateResultOutcome.Refused);
       expect(createResultMock).toHaveBeenCalledTimes(1);
     });
   });
@@ -88,11 +90,11 @@ describe("sendHandIn()", () => {
       createResultMock.mockImplementationOnce(async () => {
         controller.abort();
 
-        return "unreachable";
+        return CreateResultOutcome.Unreachable;
       });
 
       await expect(sendHandIn(INPUT, controller.signal)).resolves.toBe(
-        "unreachable",
+        CreateResultOutcome.Unreachable,
       );
       expect(createResultMock).toHaveBeenCalledTimes(1);
     });

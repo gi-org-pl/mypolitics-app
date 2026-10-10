@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-
-import { answerQuestion } from "@/utils/survey/answerQuestion";
-import { createSession } from "@/utils/survey/createSession";
-import { setSessionDemographics } from "@/utils/survey/setSessionDemographics";
-import { setSessionTopics } from "@/utils/survey/setSessionTopics";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { SurveyResultState } from "@/types/survey";
+import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
+import { setSessionDemographics } from "@/utils/survey/demographics/setSessionDemographics";
+import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
+import { createSession } from "@/utils/survey/session/createSession";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getContentKey } from "./getContentKey";
 
@@ -13,11 +13,11 @@ const survey = createSurvey();
 
 describe("getContentKey()", () => {
   describe("given the same content", () => {
-    it("stays the same when a topic is picked", () => {
+    it("stays the same when a category is picked", () => {
       const session = createSession(survey);
 
       expect(
-        getContentKey(setSessionTopics(survey, session, ["economy"])),
+        getContentKey(setSessionCategories(survey, session, ["economy"])),
       ).toBe(getContentKey(session));
     });
 
@@ -32,9 +32,9 @@ describe("getContentKey()", () => {
     it("stays the same when the result state changes", () => {
       const session = createStartedSession(survey, 1);
 
-      expect(getContentKey({ ...session, resultState: "failed" })).toBe(
-        getContentKey(session),
-      );
+      expect(
+        getContentKey({ ...session, resultState: SurveyResultState.Failed }),
+      ).toBe(getContentKey(session));
     });
   });
 
