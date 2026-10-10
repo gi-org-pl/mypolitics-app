@@ -8,6 +8,12 @@ const SURVEY_ADDRESS = "**/v1/survey/**";
 const RESULT_ADDRESS = "**/v1/result";
 const RESULTS_PAGE_ADDRESS = "https://mypolitics.pl/results/**";
 
+// Where the build the tests run against sends the request for the result
+// link: `playwright.config.ts` gives it to the build. The `.test` domain is
+// reserved, so no live address is ever behind it.
+export const RESULT_LINK_ADDRESS =
+  "https://link.mypolitics.test/v1/result-link";
+
 // The app and the API live at different addresses, so the browser asks
 // before it posts and reads the reply only when the API allows it.
 const CORS_HEADERS = {
@@ -20,14 +26,16 @@ export interface SurveyApiMock {
   projectRequests: string[]; // the addresses the project of the quiz was asked for at
   results: unknown[]; // the bodies of the results that were created, oldest first
   surveyRequests: string[]; // the addresses the quiz was asked for at
+  linkRequests: unknown[]; // the bodies of the requests for the result link, oldest first
   setReachable: (isReachable: boolean) => void; // false: the API does not answer
 }
 
 const allowRequest = (route: Route) =>
   route.fulfill({ status: 204, headers: CORS_HEADERS });
 
-// Stands in for the API and for the results page: no test ever reaches a
-// live address. The quiz is the fixture, a result is created with 201, the
+// Stands in for the API, for the endpoint that sends the result link and for
+// the results page: no test ever reaches a live address. The quiz is the
+// fixture, a result is created with 201, a link is accepted with 202, the
 // results page is a stub, and every other request to the API is aborted.
 // Routes registered later are asked first, so the catch-all comes first.
 export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
@@ -36,6 +44,7 @@ export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
     projectRequests: [],
     results: [],
     surveyRequests: [],
+    linkRequests: [],
     setReachable: (isReachable) => {
       isApiReachable = isReachable;
     },
@@ -85,6 +94,17 @@ export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
       json: {},
       headers: CORS_HEADERS,
     });
+  });
+
+  await page.route(RESULT_LINK_ADDRESS, (route) => {
+    const request = route.request();
+
+    if (request.method() === "OPTIONS") return allowRequest(route);
+    if (request.method() !== "POST") return route.abort();
+
+    mock.linkRequests.push(request.postDataJSON());
+
+    return route.fulfill({ status: 202, headers: CORS_HEADERS });
   });
 
   await page.route(RESULTS_PAGE_ADDRESS, (route) =>

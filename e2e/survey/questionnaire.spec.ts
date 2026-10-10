@@ -19,6 +19,9 @@ const FEATURED_QUIZ = "myPolitics";
 const CATEGORIES_PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
 const NOT_FOUND_HEADING = /To jest błąd 404/;
 const LOAD_ERROR_HEADING = "Nie udało się wczytać quizu";
+const EMAIL_HEADING = "Zapisz swoje wyniki!";
+const SEND_LABEL = "Wyślij i zobacz wyniki";
+const ADDRESS = "biuro@mypolitics.pl";
 const [FIRST_QUESTION, SECOND_QUESTION, THIRD_QUESTION, FOURTH_QUESTION] =
   QUESTIONS;
 
@@ -97,6 +100,51 @@ const expectDemographics = async (page: Page) => {
   await expect(
     page.getByRole("heading", { name: "Twoja tożsamość" }),
   ).toBeVisible();
+};
+
+// The e-mail card: the build the tests run against has the address of the
+// endpoint, so the card follows demographics.
+const expectEmailCard = async (page: Page) => {
+  await expect(
+    page.getByRole("heading", { name: EMAIL_HEADING }),
+  ).toBeVisible();
+};
+
+const getEmailField = (page: Page) =>
+  page.getByRole("main").getByRole("textbox", { name: "Adres e-mail" });
+
+// Puts a text in the e-mail field, or empties it. The press on the field comes
+// first, as a taker's would: it lands only once the screen takes input again
+// after the content changed, and a key pressed before that would be ignored.
+const typeAddress = async (page: Page, address: string) => {
+  await getEmailField(page).click();
+  await getEmailField(page).fill(address);
+};
+
+const getConsentBox = (page: Page) =>
+  page.getByRole("main").getByRole("checkbox", { name: /^Wyrażam zgodę/ });
+
+const answerEveryQuestion = async (page: Page) => {
+  await openQuiz(page);
+  await getButton(page, "Pomiń").click();
+  await answer(page, FIRST_QUESTION, "Zdecydowanie za");
+  await answer(page, SECOND_QUESTION, "Ze źródeł odnawialnych");
+  await answer(page, THIRD_QUESTION, "Zdecydowanie przeciw");
+  await answer(page, FOURTH_QUESTION, "Częściowo przeciw");
+  await expectDemographics(page);
+};
+
+const chooseAllFields = async (page: Page, age: string) => {
+  await chooseOption(page, "Wiek", age);
+  await chooseOption(page, "Płeć", "Wolę nie podawać");
+  await expect(getButton(page, "Zobacz wyniki")).toBeDisabled();
+  await chooseOption(
+    page,
+    "Wielkość miejsca zamieszkania",
+    "Miasto od 50 do 200 tys. mieszkańców",
+  );
+  await chooseOption(page, "Wykształcenie", "Wyższe");
+  await expect(getButton(page, "Zobacz wyniki")).toBeEnabled();
 };
 
 const expectResultsPage = async (page: Page, sessionId: string) => {
@@ -201,6 +249,45 @@ test.describe("Feature: Questionnaire", () => {
       await getButton(page, "Pomiń").click();
     });
 
+    await test.step('Then they see the e-mail card under "Prawie koniec!", with a full progress bar and the button "Pomiń"', async () => {
+      await expectEmailCard(page);
+      await expect(
+        page.getByRole("main").getByText("Prawie koniec!").first(),
+      ).toBeVisible();
+      await expect(getProgressBar(page)).toHaveAttribute(
+        "aria-valuenow",
+        "100",
+      );
+      await expect(getEmailField(page)).toHaveValue("");
+      await expect(getEmailField(page)).not.toBeFocused();
+      await expect(getConsentBox(page)).not.toBeChecked();
+      await expect(getButton(page, "Pomiń")).toBeEnabled();
+      await expect(getButton(page, SEND_LABEL)).toHaveCount(0);
+      expect(api.results).toHaveLength(0);
+    });
+
+    await test.step("When they type a valid address", async () => {
+      await typeAddress(page, ADDRESS);
+    });
+
+    await test.step('Then the button reads "Wyślij i zobacz wyniki"', async () => {
+      await expect(getButton(page, SEND_LABEL)).toBeEnabled();
+      await expect(getButton(page, "Pomiń")).toHaveCount(0);
+    });
+
+    await test.step("When they clear the field", async () => {
+      await typeAddress(page, "");
+    });
+
+    await test.step('Then the button reads "Pomiń" again', async () => {
+      await expect(getButton(page, "Pomiń")).toBeEnabled();
+      await expect(getButton(page, SEND_LABEL)).toHaveCount(0);
+    });
+
+    await test.step('When they press "Pomiń"', async () => {
+      await getButton(page, "Pomiń").click();
+    });
+
     await test.step("Then one result is created with the picked category, the two answers and no demographics", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
@@ -223,37 +310,37 @@ test.describe("Feature: Questionnaire", () => {
 
   test("Scenario: A taker gives demographics", async ({ page }) => {
     await test.step("Given a user opened the quiz, skipped the categories and answered every question", async () => {
-      await openQuiz(page);
-      await getButton(page, "Pomiń").click();
-      await answer(page, FIRST_QUESTION, "Zdecydowanie za");
-      await answer(page, SECOND_QUESTION, "Ze źródeł odnawialnych");
-      await answer(page, THIRD_QUESTION, "Zdecydowanie przeciw");
-      await answer(page, FOURTH_QUESTION, "Częściowo przeciw");
-      await expectDemographics(page);
+      await answerEveryQuestion(page);
     });
 
     await test.step('Then "Zobacz wyniki" is off', async () => {
       await expect(getButton(page, "Zobacz wyniki")).toBeDisabled();
     });
 
-    await test.step("When they pick all four fields", async () => {
-      await chooseOption(page, "Wiek", "34");
-      await chooseOption(page, "Płeć", "Wolę nie podawać");
-      await expect(getButton(page, "Zobacz wyniki")).toBeDisabled();
-      await chooseOption(
-        page,
-        "Wielkość miejsca zamieszkania",
-        "Miasto od 50 do 200 tys. mieszkańców",
-      );
-      await chooseOption(page, "Wykształcenie", "Wyższe");
-      await expect(getButton(page, "Zobacz wyniki")).toBeEnabled();
+    await test.step("When they pick all four fields, with an age of 18 or more", async () => {
+      await chooseAllFields(page, "34");
     });
 
     await test.step('And they press "Zobacz wyniki"', async () => {
       await getButton(page, "Zobacz wyniki").click();
     });
 
-    await test.step("Then the result is created with the four values, the age as a number", async () => {
+    await test.step("Then they see the e-mail card", async () => {
+      await expectEmailCard(page);
+      await expect(getButton(page, "Pomiń")).toBeEnabled();
+      expect(api.results).toHaveLength(0);
+    });
+
+    await test.step('When they type a valid address and press "Wyślij i zobacz wyniki"', async () => {
+      await typeAddress(page, ADDRESS);
+      await expect(getButton(page, SEND_LABEL)).toBeEnabled();
+      // The card only collects: nothing was asked of the endpoint while it
+      // was on screen.
+      expect(api.linkRequests).toHaveLength(0);
+      await getButton(page, SEND_LABEL).click();
+    });
+
+    await test.step("Then the result is created with the four values, the age as a number, and without the address", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,
@@ -272,7 +359,85 @@ test.describe("Feature: Questionnaire", () => {
           { questionId: "q4", answerId: "q4-a3" },
         ],
       });
+      expect(JSON.stringify(api.results[0])).not.toContain("biuro");
       await expectResultsPage(page, getSessionId(api.results[0]));
+      await expect(page).not.toHaveURL(/biuro/);
+    });
+  });
+
+  test("Scenario: A taker under 18 is not asked for an address", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the quiz, skipped the categories and answered every question", async () => {
+      await answerEveryQuestion(page);
+    });
+
+    await test.step("When they pick all four fields, with an age under 18", async () => {
+      await chooseAllFields(page, "17");
+    });
+
+    await test.step('And they press "Zobacz wyniki"', async () => {
+      await getButton(page, "Zobacz wyniki").click();
+    });
+
+    await test.step("Then they do not see the e-mail card", async () => {
+      await expect.poll(() => api.results).toHaveLength(1);
+      await expect(
+        page.getByRole("heading", { name: EMAIL_HEADING }),
+      ).toHaveCount(0);
+    });
+
+    await test.step("And the result is created with the four values", async () => {
+      expect(api.results[0]).toMatchObject({
+        surveyId: SURVEY_ID,
+        demographics: {
+          gender: "prefer_not_to_share",
+          age: 17,
+          residenceAreaSize: "city_below_200k",
+          education: "higher",
+        },
+      });
+      await expectResultsPage(page, getSessionId(api.results[0]));
+      expect(api.results).toHaveLength(1);
+      expect(api.linkRequests).toHaveLength(0);
+    });
+  });
+
+  test("Scenario: Going back keeps what was typed", async ({ page }) => {
+    await test.step("Given a user is on the e-mail card with an address typed and the consent ticked", async () => {
+      await answerEveryQuestion(page);
+      await getButton(page, "Pomiń").click();
+      await expectEmailCard(page);
+      await typeAddress(page, ADDRESS);
+      await getConsentBox(page).click();
+      await expect(getConsentBox(page)).toBeChecked();
+      await expect(getButton(page, SEND_LABEL)).toBeEnabled();
+    });
+
+    await test.step("When they press back", async () => {
+      await getButton(page, "Wróć").click();
+    });
+
+    await test.step("Then they see the demographics card", async () => {
+      await expectDemographics(page);
+      await expect(
+        page.getByRole("heading", { name: EMAIL_HEADING }),
+      ).toHaveCount(0);
+      await expect(getProgressBar(page)).toHaveCount(0);
+    });
+
+    await test.step("When they go forward again", async () => {
+      await getButton(page, "Pomiń").click();
+    });
+
+    await test.step("Then the field holds the same address and the box is ticked", async () => {
+      await expectEmailCard(page);
+      await expect(getEmailField(page)).toHaveValue(ADDRESS);
+      await expect(getConsentBox(page)).toBeChecked();
+      await expect(getButton(page, SEND_LABEL)).toBeEnabled();
+      await expect(page).toHaveURL(QUIZ_PATH);
+      expect(api.results).toHaveLength(0);
+      expect(api.linkRequests).toHaveLength(0);
     });
   });
 
