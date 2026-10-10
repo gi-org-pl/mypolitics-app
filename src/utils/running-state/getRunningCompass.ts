@@ -25,7 +25,7 @@ import { getSideTotal } from "./getSideTotal";
 export const getRunningCompass = (
   survey: Pick<Survey, "orientations" | "categories" | "axes">,
   doneQuestions: readonly DoneQuestion[],
-  topicIds: readonly string[],
+  prioritizedCategoryIds: readonly string[],
 ): RunningCompass | null => {
   const axes = getCompassAxes(survey);
 
@@ -44,7 +44,11 @@ export const getRunningCompass = (
   for (const [index, doneQuestion] of doneQuestions.entries()) {
     const scores = getQuestionScores(
       doneQuestion,
-      getQuestionMultiplier(doneQuestion.question, survey.categories, topicIds),
+      getQuestionMultiplier(
+        doneQuestion.question,
+        survey.categories,
+        prioritizedCategoryIds,
+      ),
       orientationIds,
     );
 

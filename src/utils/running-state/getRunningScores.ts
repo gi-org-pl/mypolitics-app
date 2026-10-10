@@ -17,7 +17,7 @@ import { getScoreValue } from "./getScoreValue";
 export const getRunningScores = (
   survey: Pick<Survey, "orientations" | "categories">,
   doneQuestions: readonly DoneQuestion[],
-  topicIds: readonly string[],
+  prioritizedCategoryIds: readonly string[],
 ): Record<string, RunningScore> => {
   const orientationIds = getOrientationIds(survey);
   const totals = new Map<string, ScoreTotal>();
@@ -25,7 +25,11 @@ export const getRunningScores = (
   for (const doneQuestion of doneQuestions) {
     const added = getQuestionScores(
       doneQuestion,
-      getQuestionMultiplier(doneQuestion.question, survey.categories, topicIds),
+      getQuestionMultiplier(
+        doneQuestion.question,
+        survey.categories,
+        prioritizedCategoryIds,
+      ),
       orientationIds,
     );
 

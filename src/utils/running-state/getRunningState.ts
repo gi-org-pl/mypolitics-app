@@ -24,9 +24,13 @@ export const getRunningState = (
 ): RunningState | null => {
   if (survey.questions.length === 0) return null;
 
-  const { entries, topicIds, checkpointRecord } = session;
+  const { entries, prioritizedCategoryIds, checkpointRecord } = session;
   const doneQuestions = getDoneQuestions(survey, entries);
-  const scores = getRunningScores(survey, doneQuestions, topicIds);
+  const scores = getRunningScores(
+    survey,
+    doneQuestions,
+    prioritizedCategoryIds,
+  );
 
   return {
     progress: getRunningProgress(survey, doneQuestions),
@@ -39,6 +43,6 @@ export const getRunningState = (
     axes: getRunningAxes(survey, doneQuestions, scores),
     archetypes: getRunningArchetypes(survey, scores),
     unlockedTraits: getUnlockedTraits(survey, doneQuestions, sources?.traitIds),
-    compass: getRunningCompass(survey, doneQuestions, topicIds),
+    compass: getRunningCompass(survey, doneQuestions, prioritizedCategoryIds),
   };
 };

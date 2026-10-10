@@ -8,18 +8,18 @@ import {
   calculatorCases,
   toCalculatorQuiz,
   workedAnswerIds,
+  workedPrioritizedCategoryIds,
   workedQuiz,
-  workedTopicIds,
 } from "./getRunningState.fixtures";
 
 const getScores = (
   answerIds: (string | undefined)[],
-  topicIds: string[] = [],
+  prioritizedCategoryIds: string[] = [],
 ) =>
   getRunningScores(
     workedQuiz,
     createDoneQuestions(workedQuiz, answerIds),
-    topicIds,
+    prioritizedCategoryIds,
   );
 
 describe("getRunningScores()", () => {
@@ -85,7 +85,7 @@ describe("getRunningScores()", () => {
   });
 
   describe("given the three done questions of the spec", () => {
-    const scores = getScores(workedAnswerIds, workedTopicIds);
+    const scores = getScores(workedAnswerIds, workedPrioritizedCategoryIds);
 
     it("gives X 4.75 of 5.75 with a value of 4.75 / 5.75 x 100", () => {
       expect(scores.x).toEqual({
@@ -141,7 +141,10 @@ describe("getRunningScores()", () => {
   });
 
   it("never rounds a value", () => {
-    const { value } = getScores(["q1-a2", "q2-a1"], workedTopicIds).x;
+    const { value } = getScores(
+      ["q1-a2", "q2-a1"],
+      workedPrioritizedCategoryIds,
+    ).x;
 
     expect(value).toBe((4.75 / 5.75) * 100);
     expect(value).not.toBe(Math.round(value ?? 0));
@@ -157,7 +160,7 @@ describe("getRunningScores()", () => {
     ]);
   });
 
-  it("leaves a topic the quiz does not have without effect", () => {
+  it("leaves a prioritised category the quiz does not have without effect", () => {
     expect(getScores(workedAnswerIds, ["ghost"])).toEqual(
       getScores(workedAnswerIds),
     );

@@ -10,7 +10,7 @@ describe("getQuestionMultiplier()", () => {
     createSurveyCategory("economy", { weight: 2 }),
   ];
 
-  describe("given a question whose category is in topicIds", () => {
+  describe("given a question whose category is in prioritizedCategoryIds", () => {
     it("returns the weight of the category", () => {
       expect(
         getQuestionMultiplier({ categoryId: "views" }, categories, ["views"]),
@@ -58,7 +58,7 @@ describe("getQuestionMultiplier()", () => {
     });
   });
 
-  describe("given a topic the quiz does not have", () => {
+  describe("given a prioritised category the quiz does not have", () => {
     it("ignores it", () => {
       expect(
         getQuestionMultiplier({ categoryId: "views" }, categories, ["ghost"]),

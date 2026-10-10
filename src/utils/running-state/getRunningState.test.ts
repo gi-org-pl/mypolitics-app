@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import type { RunningState, RunningStateSession } from "@/types/checkpoint";
 import type { Survey, SurveyQuestion, SurveySession } from "@/types/survey";
-import { answerQuestion } from "@/utils/survey/answerQuestion";
-import { skipQuestion } from "@/utils/survey/skipQuestion";
-import { stepBack } from "@/utils/survey/stepBack";
+import { stepBack } from "@/utils/survey/phases/stepBack";
+import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
+import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { createScoredQuestion } from "@/utils/vitest/createScoredQuestion";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
@@ -16,8 +16,8 @@ import { getFedOrientationIds } from "./getFedOrientationIds";
 import { getRunningState } from "./getRunningState";
 import {
   workedAnswerIds,
+  workedPrioritizedCategoryIds,
   workedQuiz,
-  workedTopicIds,
 } from "./getRunningState.fixtures";
 import { identityQuiz } from "./identityQuiz.fixtures";
 
@@ -25,7 +25,7 @@ const toSession = (
   session: Partial<RunningStateSession> = {},
 ): RunningStateSession => ({
   entries: [],
-  topicIds: [],
+  prioritizedCategoryIds: [],
   checkpointRecord: { cardsShown: [], timeSamples: [] },
   ...session,
 });
@@ -35,7 +35,7 @@ const workedSession = toSession({
     questionId: id,
     answerId: workedAnswerIds[index],
   })),
-  topicIds: workedTopicIds,
+  prioritizedCategoryIds: workedPrioritizedCategoryIds,
 });
 
 const SECONDS_PER_QUESTION = 8;
@@ -117,7 +117,7 @@ describe("getRunningState()", () => {
     it("reads the prioritised categories of the session", () => {
       const plain = getRunningState(workedQuiz, {
         ...workedSession,
-        topicIds: [],
+        prioritizedCategoryIds: [],
       });
 
       expect(plain?.scores.x).toMatchObject({ points: 4, maximum: 5 });
@@ -242,7 +242,7 @@ describe("getRunningState()", () => {
         { questionId: "q3", answerId: "q1-a1" },
         { questionId: "q1", answerId: "q1-a1" },
       ],
-      topicIds: ["views", "ghost", "economy"],
+      prioritizedCategoryIds: ["views", "ghost", "economy"],
       checkpointRecord: {
         cardsShown: [],
         timeSamples: [

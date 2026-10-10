@@ -9,11 +9,14 @@ const NO_MULTIPLIER = 1;
 export const getQuestionMultiplier = (
   question: Pick<SurveyQuestion, "categoryId">,
   categories: readonly SurveyCategory[],
-  topicIds: readonly string[],
+  prioritizedCategoryIds: readonly string[],
 ): number => {
   const { categoryId } = question;
 
-  if (categoryId === undefined || !topicIds.includes(categoryId)) {
+  if (
+    categoryId === undefined ||
+    !prioritizedCategoryIds.includes(categoryId)
+  ) {
     return NO_MULTIPLIER;
   }
 
