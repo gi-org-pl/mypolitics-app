@@ -638,6 +638,37 @@ describe("getNextCheckpoint()", () => {
         ),
       ).toMatchObject({ type: "axis-closeness", axisId: "pair" });
     });
+
+    it("leaves an axis open when the stored card about it is below the lean an axis card needs", () => {
+      const state = createState(40, 60, { axes: [pair] });
+      const { start } = doubleClosenessCard;
+      const getCardAfter = (card: CheckpointCard): CheckpointCard | null =>
+        getNextCheckpoint(
+          createEngineInput({
+            state,
+            record: afterShowing(createRecord(), card),
+            enabledTypes: ["axis-puzzle"],
+          }),
+        );
+
+      // 45 against 60 is a lean the engine hands over: the axis had its card,
+      // so it gets no puzzle.
+      expect(
+        getCardAfter({
+          ...doubleClosenessCard,
+          axisId: "pair",
+          start: { ...start, value: 45 },
+        }),
+      ).toBeNull();
+      // 50 against 60 is not: the stored card is dropped and the axis is open.
+      expect(
+        getCardAfter({
+          ...doubleClosenessCard,
+          axisId: "pair",
+          start: { ...start, value: 50 },
+        }),
+      ).toMatchObject({ type: "axis-puzzle", axisId: "pair" });
+    });
   });
 
   describe("given the same input twice", () => {
@@ -901,6 +932,86 @@ describe("getNextCheckpoint()", () => {
       ]);
 
       for (const card of cards) {
+        expect(
+          afterShowing(createRecord(), card as CheckpointCard).cardsShown,
+        ).toEqual([{ card }]);
+      }
+    });
+  });
+
+  describe("given a card at the very threshold of its trigger", () => {
+    // Each state is the least its type asks for: the first boundary of the
+    // pacing, a sample of 100 with the taker's side at 10%, a closeness of 50
+    // and 5 points ahead, the tenth boundary, a value of 70, a lean of 15.
+    const first = createState(5, 9);
+    const inputs: [CheckpointType, CheckpointEngineInput][] = [
+      [
+        "stats",
+        createEngineInput({
+          survey: createSurvey(),
+          entries: [{ questionId: "q1", answerId: "q1-disagree" }],
+          state: first,
+          aggregates: {
+            q1: {
+              resultsCounted: 100,
+              chosen: { "q1-strongly-agree": 90, "q1-disagree": 10 },
+            },
+          },
+        }),
+      ],
+      [
+        "new-trait",
+        createEngineInput({
+          state: {
+            ...first,
+            unlockedTraits: [createOrientation("trait", "Cecha")],
+          },
+        }),
+      ],
+      [
+        "position-puzzle",
+        createEngineInput({
+          state: { ...first, archetypes: createArchetypes([50, 45, 40]) },
+        }),
+      ],
+      [
+        "nolan-path",
+        createEngineInput({
+          state: createState(10, 60, {
+            compass: createCompass(["topLeft", "bottomRight"]),
+          }),
+        }),
+      ],
+      [
+        "axis-closeness",
+        createEngineInput({
+          state: { ...first, axes: [createSingleAxis("scale", 70)] },
+        }),
+      ],
+      [
+        "axis-closeness",
+        createEngineInput({
+          state: { ...first, axes: [createTwoSidedAxis("edge", 20, 35)] },
+        }),
+      ],
+      [
+        "axis-puzzle",
+        createEngineInput({
+          state: { ...first, axes: [createTwoSidedAxis("edge", 35, 20)] },
+          enabledTypes: ["axis-puzzle"],
+        }),
+      ],
+      ["halfway", createEngineInput({ state: first })],
+    ];
+
+    it("comes back from the storage of the tab as it was handed over", () => {
+      for (const [type, input] of inputs) {
+        const card = getNextCheckpoint(input);
+
+        expect(card).toMatchObject({
+          type,
+          boundary: input.state?.progress.done,
+        });
         expect(
           afterShowing(createRecord(), card as CheckpointCard).cardsShown,
         ).toEqual([{ card }]);
