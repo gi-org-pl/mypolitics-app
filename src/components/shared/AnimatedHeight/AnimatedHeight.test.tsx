@@ -41,17 +41,18 @@ describe("<AnimatedHeight />", () => {
   });
 
   describe("when the height of the content changes", () => {
-    const animate = vi.fn(() => ({ cancel: vi.fn(), onfinish: null }));
-    let now: number;
+    const animate = vi.fn(() => ({
+      cancel: vi.fn(),
+      onfinish: null,
+      ready: new Promise<void>(() => undefined),
+    }));
 
     beforeEach(() => {
-      now = 0;
       HTMLElement.prototype.animate = animate as never;
       vi.stubGlobal(
         "matchMedia",
         vi.fn(() => ({ matches: false })),
       );
-      vi.spyOn(performance, "now").mockImplementation(() => now);
     });
 
     afterEach(() => {
@@ -73,7 +74,6 @@ describe("<AnimatedHeight />", () => {
       expect(observer.observers[0].elements).toEqual([getContent()]);
 
       observer.resize(136);
-      now = 5000;
       observer.resize(169);
 
       expect(animate.mock.contexts[0]).toBe(getBox());
@@ -96,7 +96,6 @@ describe("<AnimatedHeight />", () => {
       expect(getBox()).not.toHaveAttribute("data-animating");
 
       observer.resize(136);
-      now = 5000;
       observer.resize(169);
 
       expect(getBox()).toHaveAttribute("data-animating", "true");
@@ -115,7 +114,6 @@ describe("<AnimatedHeight />", () => {
       );
 
       observer.resize(40);
-      now = 5000;
       observer.resize(20);
 
       expect(animate).toHaveBeenCalledWith(
