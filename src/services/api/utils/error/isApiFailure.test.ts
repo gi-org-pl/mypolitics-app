@@ -1,15 +1,17 @@
 import { describe, expect, it } from "vitest";
 
+import { ApiFailureKind } from "@/types/api";
+
 import { isApiFailure } from "./isApiFailure";
 
 describe("isApiFailure()", () => {
   describe("given a failure of the API", () => {
     it.each([
-      [{ kind: "http", status: 404 }],
-      [{ kind: "http", status: 500 }],
-      [{ kind: "network" }],
-      [{ kind: "timeout" }],
-      [{ kind: "aborted" }],
+      [{ kind: ApiFailureKind.Http, status: 404 }],
+      [{ kind: ApiFailureKind.Http, status: 500 }],
+      [{ kind: ApiFailureKind.Network }],
+      [{ kind: ApiFailureKind.Timeout }],
+      [{ kind: ApiFailureKind.Aborted }],
     ])("returns true for %j", (value) => {
       expect(isApiFailure(value)).toBe(true);
     });
@@ -19,12 +21,12 @@ describe("isApiFailure()", () => {
     it.each([
       [undefined],
       [null],
-      ["network"],
+      [ApiFailureKind.Network],
       [404],
       [[]],
       [{}],
-      [{ kind: "http" }],
-      [{ kind: "http", status: "404" }],
+      [{ kind: ApiFailureKind.Http }],
+      [{ kind: ApiFailureKind.Http, status: "404" }],
       [{ kind: "unknown" }],
       [{ status: 404 }],
       [new Error("network")],

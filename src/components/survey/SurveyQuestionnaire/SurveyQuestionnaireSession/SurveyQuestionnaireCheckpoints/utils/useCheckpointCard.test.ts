@@ -6,14 +6,14 @@ import {
   axisPuzzleCard,
   halfwayCard,
   newTraitCard,
-} from "@/utils/checkpoint/getNextCheckpoint.fixtures";
-import { closeSessionCheckpoint } from "@/utils/survey/closeSessionCheckpoint";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { setSessionCheckpointRecord } from "@/utils/survey/setSessionCheckpointRecord";
-import { turnSessionCheckpointsOff } from "@/utils/survey/turnSessionCheckpointsOff";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+} from "@/utils/checkpoint/engine/getNextCheckpoint.fixtures";
+import { closeSessionCheckpoint } from "@/utils/survey/checkpoints/closeSessionCheckpoint";
+import { setSessionCheckpointRecord } from "@/utils/survey/checkpoints/setSessionCheckpointRecord";
+import { turnSessionCheckpointsOff } from "@/utils/survey/checkpoints/turnSessionCheckpointsOff";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import { useCheckpointCard } from "./useCheckpointCard";
@@ -21,9 +21,9 @@ import { useCheckpointCard } from "./useCheckpointCard";
 vi.mock("../../../SurveyQuestionnaire.constants", () => ({
   CHECKPOINT_CARDS: {},
 }));
-vi.mock("@/utils/survey/closeSessionCheckpoint", { spy: true });
-vi.mock("@/utils/survey/turnSessionCheckpointsOff", { spy: true });
-vi.mock("@/utils/survey/setSessionCheckpointRecord", { spy: true });
+vi.mock("@/utils/survey/checkpoints/closeSessionCheckpoint", { spy: true });
+vi.mock("@/utils/survey/checkpoints/turnSessionCheckpointsOff", { spy: true });
+vi.mock("@/utils/survey/checkpoints/setSessionCheckpointRecord", { spy: true });
 
 const StubCard = () => null;
 
