@@ -3,6 +3,7 @@ import { I18nProvider } from "@lingui/react";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { AXIS_LINE_BACKGROUND_CLASS_NAME } from "@/constants/axis";
 import type { Orientation } from "@/types/orientation";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -323,7 +324,7 @@ describe("<MultiAxisChart />", () => {
       expect(marker).toHaveClass(
         "left-[clamp(0px,calc(var(--axis-position)-0.5px),calc(100%-1px))]",
         "w-px",
-        "bg-gi-primary/30",
+        AXIS_LINE_BACKGROUND_CLASS_NAME,
       );
       expect(marker.parentElement).toHaveClass(
         "inset-x-5",

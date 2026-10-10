@@ -261,3 +261,23 @@ export const OutOfRangeValues: Story = {
     comparison: { orientation: friend, value: -20 },
   },
 };
+
+export const MarkerOnFill: Story = {
+  args: {
+    start: { orientation: socialism, value: 80 },
+  },
+};
+
+export const LabelsWithDescendersAndAccents: Story = {
+  args: {
+    start: {
+      orientation: { ...liberalism, name: "Progresywizm" },
+      value: 69,
+    },
+    end: {
+      orientation: { ...conservatism, name: "Źródła tradycji" },
+      value: 31,
+    },
+    showLabels: true,
+  },
+};
