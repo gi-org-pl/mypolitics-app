@@ -4,7 +4,7 @@ import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHal
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
 import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
-import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
+import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
 import { CHECKPOINT_CARDS } from "./SurveyQuestionnaire.constants";
 

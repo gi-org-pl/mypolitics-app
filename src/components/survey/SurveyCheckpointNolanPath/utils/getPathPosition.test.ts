@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { CompassPoint } from "@/types/checkpoint";
-import { createCompassTrail } from "@/utils/vitest/createCompassTrail";
+import { createCompassTrail } from "@/utils/vitest/survey/createCompassTrail";
 
 import { getPathPosition } from "./getPathPosition";
 

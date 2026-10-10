@@ -7,8 +7,8 @@ import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { DEFAULT_COMPASS_QUADRANTS } from "@/constants/results";
 import { messages as enMessages } from "@/locales/en/messages";
 import type { CompassPoint, NolanPathCheckpointCard } from "@/types/checkpoint";
-import { createCompassTrail } from "@/utils/vitest/createCompassTrail";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createCompassTrail } from "@/utils/vitest/survey/createCompassTrail";
 
 import { SurveyCheckpointNolanPath } from "./SurveyCheckpointNolanPath";
 

@@ -248,4 +248,46 @@ describe("<SurveyEmailCaptureField />", () => {
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });
+
+  describe("given a hint that comes and goes", () => {
+    it("keeps the field and the hint in one box that moves its height, so what is under it does not jump", () => {
+      renderField("biuro@mypolitics");
+
+      const group = screen.getByRole("group");
+      const box = group.firstElementChild;
+
+      expect(group.children).toHaveLength(1);
+      expect(box).toHaveClass("data-[animating=true]:overflow-y-clip");
+      expect(box).toContainElement(getField());
+
+      pressEnter();
+
+      expect(box).toContainElement(screen.getByRole("alert"));
+
+      type("biuro@mypolitics.pl");
+
+      expect(group.firstElementChild).toBe(box);
+      expect(box).toContainElement(getField());
+    });
+
+    it("leaves room for the focus outline in that box, and takes no more room than the field alone", () => {
+      renderField();
+
+      const group = screen.getByRole("group");
+      const room =
+        group.firstElementChild?.firstElementChild?.firstElementChild;
+
+      expect(room).toHaveClass("py-1");
+      expect(group).toHaveClass("-my-1", "w-full");
+    });
+
+    it("lets the hint take its place in one step: only the colours of the field move by themselves", () => {
+      renderField();
+
+      const field = getField().closest(".rounded-2xl");
+
+      expect(field).toHaveClass("transition-colors");
+      expect(field).not.toHaveClass("transition-all");
+    });
+  });
 });

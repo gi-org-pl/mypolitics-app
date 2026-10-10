@@ -3,7 +3,7 @@ import { fn } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import type { NolanPathCheckpointCard } from "@/types/checkpoint";
-import { createCompassTrail } from "@/utils/vitest/createCompassTrail";
+import { createCompassTrail } from "@/utils/vitest/survey/createCompassTrail";
 
 import { SurveyCheckpointNolanPath } from "./SurveyCheckpointNolanPath";
 

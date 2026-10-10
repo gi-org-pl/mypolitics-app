@@ -6,6 +6,10 @@
 //   q2  ecology  one of many                  q4  hidden   scale
 
 export const SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
+
+// The project the app keeps for the slug of the quiz. The mocked API names
+// the survey above as its latest.
+export const PROJECT_ID = "5ab50822-e95e-4c7c-a1d6-14aceb68f108";
 export const QUIZ_NAME = "Quiz próbny";
 
 export const CATEGORY_IDS = {
