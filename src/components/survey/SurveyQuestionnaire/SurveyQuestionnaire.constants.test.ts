@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-
+import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
@@ -12,5 +12,11 @@ describe("CHECKPOINT_CARDS", () => {
 
   it('makes "halfway" one of the enabled types', () => {
     expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("halfway");
+  });
+
+  it('holds SurveyCheckpointAxisCloseness under "axis-closeness"', () => {
+    expect(CHECKPOINT_CARDS["axis-closeness"]).toBe(
+      SurveyCheckpointAxisCloseness,
+    );
   });
 });
