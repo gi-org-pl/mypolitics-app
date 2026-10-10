@@ -105,6 +105,26 @@ export const Tie: Story = {
   },
 };
 
+export const TieMissingName: Story = {
+  args: {
+    start: { orientation: { ...euroscepticism, name: undefined }, value: 50 },
+    end: { orientation: federalism, value: 50 },
+  },
+};
+
+export const TieUnevenNames: Story = {
+  args: {
+    start: { orientation: { ...euroscepticism, name: "Wyjście" }, value: 50 },
+    end: {
+      orientation: {
+        ...federalism,
+        name: "Federacjonizm z bardzo długą nazwą autorską, która nie mieści się w tytule",
+      },
+      value: 50,
+    },
+  },
+};
+
 export const NarrowLead: Story = {
   args: {
     start: { orientation: euroscepticism, value: 51 },

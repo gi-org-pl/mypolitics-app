@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { createOrientation } from "@/utils/vitest/createOrientation";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { OrientationChip } from "./OrientationChip";
 
@@ -219,6 +220,104 @@ describe("<OrientationChip />", () => {
         "w-full",
         "min-w-0",
       );
+    });
+  });
+
+  describe("given a second name", () => {
+    it("names both, each in its own box, the name first", () => {
+      renderWithI18n(
+        <OrientationChip
+          name="Liberalizm"
+          secondName="Konserwatyzm"
+          look="neutral"
+        />,
+      );
+
+      const pair = screen.getByTestId("orientation-chip-name-pair");
+
+      expect(screen.getByTestId("orientation-chip")).toContainElement(pair);
+      expect(pair.textContent).toBe("Liberalizm / Konserwatyzm");
+      expect(screen.getByText("Liberalizm")).toHaveClass("truncate");
+      expect(screen.getByText("Konserwatyzm")).toHaveClass("truncate");
+    });
+
+    it("writes the second name on a single line", () => {
+      renderWithI18n(
+        <OrientationChip name="Liberalizm" secondName={" Konser\nwatyzm  "} />,
+      );
+
+      expect(screen.getByText("Konser watyzm")).toBeInTheDocument();
+    });
+
+    it.each([
+      undefined,
+      "",
+      "   ",
+    ])("renders the name alone for a second name of %j", (secondName) => {
+      render(<OrientationChip name="Liberalizm" secondName={secondName} />);
+
+      expect(screen.getByTestId("orientation-chip").textContent).toBe(
+        "Liberalizm",
+      );
+      expect(
+        screen.queryByTestId("orientation-chip-name-pair"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("does not show the second name without a name", () => {
+      const { container } = render(
+        <OrientationChip secondName="Konserwatyzm" look="neutral" />,
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+  });
+
+  describe("given a short name", () => {
+    it("renders it next to the name, to be shown on a narrow chip", () => {
+      render(<OrientationChip name="Radykalizm" shortName="Rad." />);
+
+      const chip = screen.getByTestId("orientation-chip");
+      const shortName = screen.getByTestId("orientation-chip-short-name");
+
+      expect(chip).toContainElement(shortName);
+      expect(shortName).toHaveTextContent(/^Rad\.$/);
+      expect(shortName).toHaveAttribute("aria-hidden", "true");
+      expect(screen.getByText("Radykalizm")).toHaveClass(
+        "@max-[240px]:sr-only",
+      );
+    });
+
+    it("writes the short name on a single line", () => {
+      render(<OrientationChip name="Radykalizm" shortName={"  Ra\ndyk. "} />);
+
+      expect(
+        screen.getByTestId("orientation-chip-short-name").textContent,
+      ).toBe("Ra dyk.");
+    });
+
+    it.each([
+      undefined,
+      "",
+      "   ",
+    ])("renders the name alone for a short name of %j", (shortName) => {
+      render(<OrientationChip name="Radykalizm" shortName={shortName} />);
+
+      expect(screen.getByTestId("orientation-chip").textContent).toBe(
+        "Radykalizm",
+      );
+      expect(
+        screen.queryByTestId("orientation-chip-short-name"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("does not show the short name without a name", () => {
+      render(<OrientationChip imageUrl={IMAGE_URL} shortName="Rad." />);
+
+      expect(screen.getByTestId("orientation-chip")).toHaveTextContent("");
+      expect(
+        screen.queryByTestId("orientation-chip-short-name"),
+      ).not.toBeInTheDocument();
     });
   });
 
