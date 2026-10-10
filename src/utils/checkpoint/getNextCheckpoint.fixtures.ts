@@ -19,10 +19,10 @@ import type {
   StatsCheckpointCard,
 } from "@/types/checkpoint";
 import type { NolanQuadrantKey, ResultEntry } from "@/types/results";
-import { getQuadrantsVisited } from "@/utils/running-state/getQuadrantsVisited";
-import { toRunningAxis } from "@/utils/running-state/toRunningAxis";
+import { toRunningAxis } from "@/utils/running-state/axes/toRunningAxis";
+import { getQuadrantsVisited } from "@/utils/running-state/compass/getQuadrantsVisited";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 export const SEED = "0b9f3c1e-5a7d-4e2b-9c41-7f6a2d8e1b35";
 

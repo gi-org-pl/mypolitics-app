@@ -4,7 +4,7 @@ import type {
   SurveyPossibleAnswer,
   SurveyQuestion,
 } from "@/types/survey";
-import { getAnswerKind } from "@/utils/survey/getAnswerKind";
+import { getAnswerKind } from "@/utils/survey/questions/getAnswerKind";
 
 const SIDE_BY_KIND: Record<
   SurveyAnswerKind,

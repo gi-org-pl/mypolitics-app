@@ -5,7 +5,7 @@ import type {
   CheckpointTriggerInput,
 } from "@/types/checkpoint";
 import type { SurveyAnswerEntry } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import {
   createRecord,

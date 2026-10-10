@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
+import { createSurveyQuestion } from "@/utils/vitest/survey/createSurveyQuestion";
 
 import { getQuestionCounts } from "./getQuestionCounts";
 

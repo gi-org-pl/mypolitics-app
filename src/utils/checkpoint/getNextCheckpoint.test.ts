@@ -14,7 +14,7 @@ import type { SurveyAnswerEntry, SurveyTimeSample } from "@/types/survey";
 import { getRunningState } from "@/utils/running-state/getRunningState";
 import { identityQuiz } from "@/utils/running-state/identityQuiz.fixtures";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { drawCheckpointLine } from "./drawCheckpointLine";
 import { getNextCheckpoint } from "./getNextCheckpoint";
@@ -71,7 +71,7 @@ const getState = (
       key,
       getRunningState(identityQuiz, {
         entries,
-        topicIds: [],
+        prioritizedCategoryIds: [],
         checkpointRecord: { cardsShown: [], timeSamples },
       }),
     );
