@@ -1,8 +1,6 @@
+import type { DemographicsFieldId, DemographicsValues } from "@/types/survey";
+
 import { DEMOGRAPHICS_FIELDS } from "../SurveyDemographics.constants";
-import type {
-  DemographicsFieldId,
-  DemographicsValues,
-} from "../SurveyDemographics.types";
 
 export const getNextValues = (
   values: DemographicsValues,

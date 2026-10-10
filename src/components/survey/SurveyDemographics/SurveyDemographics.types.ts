@@ -1,17 +1,11 @@
 import type { MessageDescriptor } from "@lingui/core";
 
-export type DemographicsFieldId =
-  | "age"
-  | "gender"
-  | "residenceAreaSize"
-  | "education";
+import type { DemographicsFieldId, DemographicsValues } from "@/types/survey";
 
 export interface DemographicsOption {
   value: string;
   label: string;
 }
-
-export type DemographicsValues = Partial<Record<DemographicsFieldId, string>>;
 
 export type DemographicsFieldWidth = "half" | "full";
 
