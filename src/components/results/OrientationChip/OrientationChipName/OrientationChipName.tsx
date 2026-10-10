@@ -3,13 +3,8 @@ import {
   NAME_SWITCH_CLASS_NAME,
   SHORT_NAME_SWITCH_CLASS_NAME,
 } from "../OrientationChip.constants";
+import type { OrientationChipNameProps } from "./OrientationChipName.types";
 import { OrientationChipNamePair } from "./OrientationChipNamePair/OrientationChipNamePair";
-
-interface OrientationChipNameProps {
-  name: string;
-  secondName?: string;
-  shortName?: string;
-}
 
 export const OrientationChipName = ({
   name,

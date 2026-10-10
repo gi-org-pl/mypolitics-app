@@ -1,10 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 
-interface OrientationChipNamePairProps {
-  start: string;
-  end: string;
-  className: string;
-}
+import type { OrientationChipNamePairProps } from "./OrientationChipNamePair.types";
 
 export const OrientationChipNamePair = ({
   start,

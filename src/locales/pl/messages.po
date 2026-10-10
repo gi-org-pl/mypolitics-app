@@ -41,7 +41,7 @@ msgstr "{name}: brak wyniku"
 
 #: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:48
 #: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
-#: src/components/results/OrientationChip/OrientationChipName/OrientationChipNamePair/OrientationChipNamePair.tsx:22
+#: src/components/results/OrientationChip/OrientationChipName/OrientationChipNamePair/OrientationChipNamePair.tsx:18
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
 
