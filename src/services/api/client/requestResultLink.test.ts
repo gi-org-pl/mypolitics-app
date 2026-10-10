@@ -2,7 +2,7 @@ import { type AxiosAdapter, AxiosError } from "axios";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RESULT_LINK_TIMEOUT_MS } from "@/constants/survey";
-import type { ResultLinkInput } from "@/types/survey";
+import { type ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
 import { createApiError } from "@/utils/vitest/createApiError";
 import { createApiReply } from "@/utils/vitest/createApiReply";
 
@@ -151,7 +151,7 @@ describe("requestResultLink()", () => {
     it("resolves accepted on 202", async () => {
       adapter.mockImplementationOnce(createApiReply(202));
 
-      expect(await requestResultLink(input)).toBe("accepted");
+      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Accepted);
     });
 
     it("resolves invalid on 400 and limited on 429", async () => {
@@ -159,8 +159,8 @@ describe("requestResultLink()", () => {
         .mockImplementationOnce(createApiReply(400))
         .mockImplementationOnce(createApiReply(429));
 
-      expect(await requestResultLink(input)).toBe("invalid");
-      expect(await requestResultLink(input)).toBe("limited");
+      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Invalid);
+      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Limited);
     });
 
     it.each([
@@ -168,15 +168,17 @@ describe("requestResultLink()", () => {
     ])("resolves unavailable on 503 and on any other status, 200 and 204 included: %i", async (status) => {
       adapter.mockImplementationOnce(createApiReply(status));
 
-      expect(await requestResultLink(input)).toBe("unavailable");
+      expect(await requestResultLink(input)).toBe(
+        ResultLinkOutcome.Unavailable,
+      );
     });
 
     it.each([
-      [202, { outcome: "invalid" }, "accepted"],
-      [202, "<html></html>", "accepted"],
-      [400, { outcome: "accepted" }, "invalid"],
-      [429, null, "limited"],
-      [200, { outcome: "accepted" }, "unavailable"],
+      [202, { outcome: "invalid" }, ResultLinkOutcome.Accepted],
+      [202, "<html></html>", ResultLinkOutcome.Accepted],
+      [400, { outcome: "accepted" }, ResultLinkOutcome.Invalid],
+      [429, null, ResultLinkOutcome.Limited],
+      [200, { outcome: "accepted" }, ResultLinkOutcome.Unavailable],
     ])("reads the status and never the body: %i %j", async (status, data, outcome) => {
       adapter.mockImplementationOnce(createApiReply(status, data));
 
@@ -196,29 +198,35 @@ describe("requestResultLink()", () => {
           return createApiReply(202)(config);
         });
 
-      await expect(requestResultLink(input)).resolves.toBe("unavailable");
+      await expect(requestResultLink(input)).resolves.toBe(
+        ResultLinkOutcome.Unavailable,
+      );
       await expect(
         requestResultLink(input, { signal: controller.signal }),
-      ).resolves.toBe("unavailable");
+      ).resolves.toBe(ResultLinkOutcome.Unavailable);
     });
 
     it("resolves unavailable without a request when it was cancelled before", async () => {
       await expect(
         requestResultLink(input, { signal: AbortSignal.abort() }),
-      ).resolves.toBe("unavailable");
+      ).resolves.toBe(ResultLinkOutcome.Unavailable);
       expect(adapter).not.toHaveBeenCalled();
     });
 
     it("resolves unavailable with no reply in time", async () => {
       adapter.mockImplementationOnce(createApiError(AxiosError.ETIMEDOUT));
 
-      await expect(requestResultLink(input)).resolves.toBe("unavailable");
+      await expect(requestResultLink(input)).resolves.toBe(
+        ResultLinkOutcome.Unavailable,
+      );
     });
 
     it("resolves unavailable when the request throws something unexpected", async () => {
       adapter.mockRejectedValueOnce(new TypeError("Unexpected"));
 
-      await expect(requestResultLink(input)).resolves.toBe("unavailable");
+      await expect(requestResultLink(input)).resolves.toBe(
+        ResultLinkOutcome.Unavailable,
+      );
     });
   });
 
@@ -244,7 +252,7 @@ describe("requestResultLink()", () => {
       build.resultLinkUrl = undefined;
 
       await expect(requestResultLink(inputWithConsent)).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
       expect(adapter).not.toHaveBeenCalled();
     });

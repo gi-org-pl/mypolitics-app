@@ -7,8 +7,8 @@ import {
 } from "@/constants/survey";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
-import type { ApiRequestOptions } from "@/types/api";
-import type { ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
+import { ApiFailureKind, type ApiRequestOptions } from "@/types/api";
+import { type ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
 import { isNumber } from "@/utils/number/isNumber";
 
 import { apiClient } from "./apiClient";
@@ -21,7 +21,7 @@ export const requestResultLink = async (
   input: ResultLinkInput,
   options?: ApiRequestOptions,
 ): Promise<ResultLinkOutcome> => {
-  if (RESULT_LINK_URL === undefined) return "unavailable";
+  if (RESULT_LINK_URL === undefined) return ResultLinkOutcome.Unavailable;
 
   try {
     // The address of the endpoint is absolute, so it takes the place of the
@@ -46,16 +46,20 @@ export const requestResultLink = async (
       }),
     );
 
-    return status === HttpStatusCode.Accepted ? "accepted" : "unavailable";
+    return status === HttpStatusCode.Accepted
+      ? ResultLinkOutcome.Accepted
+      : ResultLinkOutcome.Unavailable;
   } catch (error) {
     const failure = toApiFailure(error);
 
-    if (failure.kind !== "http") return "unavailable";
+    if (failure.kind !== ApiFailureKind.Http)
+      return ResultLinkOutcome.Unavailable;
 
-    if (failure.status === HttpStatusCode.BadRequest) return "invalid";
+    if (failure.status === HttpStatusCode.BadRequest)
+      return ResultLinkOutcome.Invalid;
 
     return failure.status === HttpStatusCode.TooManyRequests
-      ? "limited"
-      : "unavailable";
+      ? ResultLinkOutcome.Limited
+      : ResultLinkOutcome.Unavailable;
   }
 };

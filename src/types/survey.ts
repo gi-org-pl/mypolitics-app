@@ -136,11 +136,16 @@ export interface ResultLinkInput {
   language: ResultLinkLanguage;
 }
 
+// How the request for the result link ended.
+export const ResultLinkOutcome = {
+  Accepted: "accepted", // 202
+  Invalid: "invalid", // 400
+  Limited: "limited", // 429
+  Unavailable: "unavailable", // 503, any other reply, no connection, no reply in time, no endpoint configured
+} as const;
+
 export type ResultLinkOutcome =
-  | "accepted" // 202
-  | "invalid" // 400
-  | "limited" // 429
-  | "unavailable"; // 503, any other reply, no connection, no reply in time, no endpoint configured
+  (typeof ResultLinkOutcome)[keyof typeof ResultLinkOutcome];
 
 export type SurveyPhase =
   | "category-select"

@@ -3,7 +3,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { apiClient } from "@/services/api/client/apiClient";
-import type { Survey, SurveyEmail, SurveySession } from "@/types/survey";
+import {
+  type Survey,
+  type SurveyEmail,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
@@ -175,7 +180,7 @@ describe("<SurveyQuestionnaireEmailCapture />", () => {
       expect(getSession()).toMatchObject({
         phase: "results-calculation",
         email: { address: "Biuro@myPolitics.pl", hasConsent: true },
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 
@@ -237,7 +242,7 @@ describe("<SurveyQuestionnaireEmailCapture />", () => {
       expect(getSession()).toMatchObject({
         phase: "results-calculation",
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 
