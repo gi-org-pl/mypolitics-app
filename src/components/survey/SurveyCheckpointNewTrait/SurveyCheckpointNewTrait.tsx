@@ -3,7 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { TraitPill } from "@/components/shared/TraitPill/TraitPill";
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import type { CheckpointCardProps } from "@/types/checkpoint";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
 
 // The new trait card: the trait the taker's answers have earned for good, on
 // the pill the result will show it on, and the line the engine drew, which

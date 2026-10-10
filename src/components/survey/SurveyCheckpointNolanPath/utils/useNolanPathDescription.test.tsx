@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { messages as enMessages } from "@/locales/en/messages";
 import type { NolanPathCheckpointCard } from "@/types/checkpoint";
-import { createCompassTrail } from "@/utils/vitest/createCompassTrail";
+import { createCompassTrail } from "@/utils/vitest/survey/createCompassTrail";
 
 import { useNolanPathDescription } from "./useNolanPathDescription";
 

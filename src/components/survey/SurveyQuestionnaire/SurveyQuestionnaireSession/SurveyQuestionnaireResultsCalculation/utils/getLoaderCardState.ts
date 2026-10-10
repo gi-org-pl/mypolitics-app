@@ -1,6 +1,6 @@
 import type { SurveyResultsCalculationState } from "@/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.types";
 
-import type {
+import {
   HandInState,
   ResultLinkState,
 } from "../SurveyQuestionnaireResultsCalculation.types";
@@ -13,11 +13,11 @@ export const getLoaderCardState = (run: {
   link: ResultLinkState;
   isReadyToLeave: boolean;
 }): SurveyResultsCalculationState => {
-  if (run.handIn === "not-saved") return "failed-not-saved";
+  if (run.handIn === HandInState.NotSaved) return "failed-not-saved";
 
-  if (run.handIn === "not-ready") return "failed-not-ready";
+  if (run.handIn === HandInState.NotReady) return "failed-not-ready";
 
-  return run.isReadyToLeave && run.link === "not-sent"
+  return run.isReadyToLeave && run.link === ResultLinkState.NotSent
     ? "link-not-sent"
     : "running";
 };

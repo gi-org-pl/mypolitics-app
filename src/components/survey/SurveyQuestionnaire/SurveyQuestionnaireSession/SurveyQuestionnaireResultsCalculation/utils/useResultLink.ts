@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
-import type { SurveySessionApi } from "@/types/survey";
+import { ResultLinkOutcome, type SurveySessionApi } from "@/types/survey";
 import { isOneOf } from "@/utils/array/isOneOf";
 
 import { STORED_HAND_IN_STATES } from "../SurveyQuestionnaireResultsCalculation.constants";
-import type {
-  HandInState,
+import {
+  type HandInState,
   ResultLinkState,
 } from "../SurveyQuestionnaireResultsCalculation.types";
 import { getResultLinkInput } from "./getResultLinkInput";
@@ -30,14 +30,14 @@ export const useResultLink = (
   handIn: HandInState,
 ): ResultLinkState => {
   const { i18n } = useLingui();
-  const [link, setLink] = useState<ResultLinkState>("none");
+  const [link, setLink] = useState<ResultLinkState>(ResultLinkState.None);
   const isStored = isOneOf(STORED_HAND_IN_STATES, handIn);
 
   useEffect(() => {
     const input = getResultLinkInput(session, i18n.locale);
 
     if (
-      link !== "none" ||
+      link !== ResultLinkState.None ||
       !isStored ||
       input === undefined ||
       !SURVEY_SESSION_CONFIG.isEmailSendingSetUp
@@ -45,10 +45,14 @@ export const useResultLink = (
       return;
     }
 
-    setLink("pending");
+    setLink(ResultLinkState.Pending);
     setEmail(null);
     requestResultLink(input).then((outcome) =>
-      setLink(outcome === "accepted" ? "accepted" : "not-sent"),
+      setLink(
+        outcome === ResultLinkOutcome.Accepted
+          ? ResultLinkState.Accepted
+          : ResultLinkState.NotSent,
+      ),
     );
   }, [link, isStored, session, i18n, setEmail]);
 

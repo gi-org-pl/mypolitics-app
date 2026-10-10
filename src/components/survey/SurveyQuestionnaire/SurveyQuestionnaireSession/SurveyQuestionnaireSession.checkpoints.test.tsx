@@ -5,11 +5,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import type { CheckpointCardProps } from "@/types/checkpoint";
 import type { Survey, SurveySession } from "@/types/survey";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 
 import { CHECKPOINT_CARDS } from "../SurveyQuestionnaire.constants";
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";

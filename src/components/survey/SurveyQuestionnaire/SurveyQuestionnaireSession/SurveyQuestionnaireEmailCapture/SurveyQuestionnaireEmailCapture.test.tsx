@@ -3,11 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { apiClient } from "@/services/api/client/apiClient";
-import type { Survey, SurveyEmail, SurveySession } from "@/types/survey";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import {
+  type Survey,
+  type SurveyEmail,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { SurveyQuestionnaireEmailCapture } from "./SurveyQuestionnaireEmailCapture";
 
@@ -175,7 +180,7 @@ describe("<SurveyQuestionnaireEmailCapture />", () => {
       expect(getSession()).toMatchObject({
         phase: "results-calculation",
         email: { address: "Biuro@myPolitics.pl", hasConsent: true },
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 
@@ -237,7 +242,7 @@ describe("<SurveyQuestionnaireEmailCapture />", () => {
       expect(getSession()).toMatchObject({
         phase: "results-calculation",
         email: null,
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
     });
 

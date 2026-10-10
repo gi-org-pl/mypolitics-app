@@ -2,11 +2,11 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { NewTraitCheckpointCard } from "@/types/checkpoint";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";

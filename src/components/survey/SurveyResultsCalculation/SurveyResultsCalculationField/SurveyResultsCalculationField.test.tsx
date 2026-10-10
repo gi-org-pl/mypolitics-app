@@ -21,6 +21,16 @@ describe("<SurveyResultsCalculationField />", () => {
       expect(screen.getByText("Prostujemy osie")).toBeVisible();
     });
 
+    it("keeps it in a box that moves its height, so a stack that outgrows the field does not make what is under it jump", () => {
+      renderField(true);
+
+      const box = screen.getByText("Prostujemy osie").parentElement
+        ?.parentElement as HTMLElement;
+
+      expect(box).toHaveClass("data-[animating=true]:overflow-y-clip");
+      expect(box.parentElement).toHaveClass("min-h-106.25");
+    });
+
     it("hides the rings from assistive technology", () => {
       const { container } = renderField(true);
 
