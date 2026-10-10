@@ -569,77 +569,82 @@ describe("getAxisLayout()", () => {
 });
 
 describe("getAxisLayout() - showValues", () => {
-  it("hides the value of every side when showValues is false", () => {
-    expect(
-      getAxisLayout({ start: entryA(64), showValues: false }).start
-        ?.valuePlacement,
-    ).toBe("hidden");
-    expect(
-      getAxisLayout({ start: entryA(5), showValues: false }).start
-        ?.valuePlacement,
-    ).toBe("hidden");
-    expect(
-      getAxisLayout({ end: entryB(64), showValues: false }).end?.valuePlacement,
-    ).toBe("hidden");
+  describe("given showValues is false", () => {
+    it("hides the value of every side", () => {
+      expect(
+        getAxisLayout({ start: entryA(64), showValues: false }).start
+          ?.valuePlacement,
+      ).toBe("hidden");
+      expect(
+        getAxisLayout({ start: entryA(5), showValues: false }).start
+          ?.valuePlacement,
+      ).toBe("hidden");
+      expect(
+        getAxisLayout({ end: entryB(64), showValues: false }).end
+          ?.valuePlacement,
+      ).toBe("hidden");
 
-    const doubleSided = getAxisLayout({
-      start: entryA(69),
-      end: entryB(31),
-      showValues: false,
+      const doubleSided = getAxisLayout({
+        start: entryA(69),
+        end: entryB(31),
+        showValues: false,
+      });
+
+      expect(doubleSided.start?.valuePlacement).toBe("hidden");
+      expect(doubleSided.end?.valuePlacement).toBe("hidden");
     });
 
-    expect(doubleSided.start?.valuePlacement).toBe("hidden");
-    expect(doubleSided.end?.valuePlacement).toBe("hidden");
-  });
+    it("leaves widths, marker and comparison unchanged", () => {
+      const input = {
+        start: entryA(140),
+        end: entryB(60),
+        comparison: friendEntry(90),
+        marker: 30,
+      };
+      const shown = getAxisLayout(input);
+      const hidden = getAxisLayout({ ...input, showValues: false });
 
-  it("leaves widths, marker and comparison unchanged", () => {
-    const input = {
-      start: entryA(140),
-      end: entryB(60),
-      comparison: friendEntry(90),
-      marker: 30,
-    };
-    const shown = getAxisLayout(input);
-    const hidden = getAxisLayout({ ...input, showValues: false });
+      // A comparison hides the values by itself, so nothing at all differs.
+      expect(hidden).toEqual(shown);
+      expect(hidden.start?.width).toBe(62.5);
+      expect(hidden.end?.width).toBe(37.5);
+      expect(hidden.marker).toBe(30);
+      expect(hidden.comparison?.band).toEqual({ from: 62.5, to: 90 });
+    });
 
-    // A comparison hides the values by itself, so nothing at all differs.
-    expect(hidden).toEqual(shown);
-    expect(hidden.start?.width).toBe(62.5);
-    expect(hidden.end?.width).toBe(37.5);
-    expect(hidden.marker).toBe(30);
-    expect(hidden.comparison?.band).toEqual({ from: 62.5, to: 90 });
-  });
+    it("changes nothing but the placement of the values", () => {
+      const input = { start: entryA(69), end: entryB(31) };
+      const shown = getAxisLayout(input);
+      const hidden = getAxisLayout({ ...input, showValues: false });
 
-  it("changes nothing but the placement of the values", () => {
-    const input = { start: entryA(69), end: entryB(31) };
-    const shown = getAxisLayout(input);
-    const hidden = getAxisLayout({ ...input, showValues: false });
-
-    expect(shown.start?.valuePlacement).toBe("inside");
-    expect(hidden).toEqual({
-      ...shown,
-      start: { ...shown.start, valuePlacement: "hidden" },
-      end: { ...shown.end, valuePlacement: "hidden" },
+      expect(shown.start?.valuePlacement).toBe("inside");
+      expect(hidden).toEqual({
+        ...shown,
+        start: { ...shown.start, valuePlacement: "hidden" },
+        end: { ...shown.end, valuePlacement: "hidden" },
+      });
     });
   });
 
-  it("places values as before when showValues is true or absent", () => {
-    const oneSided = { start: entryA(ONE_SIDED_FIT_THRESHOLD) };
-    const small = { start: entryA(ONE_SIDED_FIT_THRESHOLD - 1) };
-    const doubleSided = {
-      start: entryA(100 - DOUBLE_SIDED_FIT_THRESHOLD),
-      end: entryB(DOUBLE_SIDED_FIT_THRESHOLD),
-    };
+  describe("given showValues is true or absent", () => {
+    it("places values as before", () => {
+      const oneSided = { start: entryA(ONE_SIDED_FIT_THRESHOLD) };
+      const small = { start: entryA(ONE_SIDED_FIT_THRESHOLD - 1) };
+      const doubleSided = {
+        start: entryA(100 - DOUBLE_SIDED_FIT_THRESHOLD),
+        end: entryB(DOUBLE_SIDED_FIT_THRESHOLD),
+      };
 
-    expect(getAxisLayout(oneSided).start?.valuePlacement).toBe("inside");
-    expect(getAxisLayout(small).start?.valuePlacement).toBe("outside");
-    expect(getAxisLayout(doubleSided).end?.valuePlacement).toBe("inside");
+      expect(getAxisLayout(oneSided).start?.valuePlacement).toBe("inside");
+      expect(getAxisLayout(small).start?.valuePlacement).toBe("outside");
+      expect(getAxisLayout(doubleSided).end?.valuePlacement).toBe("inside");
 
-    for (const input of [oneSided, small, doubleSided]) {
-      expect(getAxisLayout({ ...input, showValues: true })).toEqual(
-        getAxisLayout(input),
-      );
-    }
+      for (const input of [oneSided, small, doubleSided]) {
+        expect(getAxisLayout({ ...input, showValues: true })).toEqual(
+          getAxisLayout(input),
+        );
+      }
+    });
   });
 });
 

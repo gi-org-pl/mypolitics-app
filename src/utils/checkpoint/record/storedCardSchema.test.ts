@@ -258,4 +258,115 @@ describe("storedCardSchema", () => {
     expect(passesWith(halfwayCard, { minutes: 100 })).toBe(false);
     expect(passesWith(halfwayCard, { minutes: 99 })).toBe(true);
   });
+
+  describe("given a card at a threshold of its trigger, and one short of it", () => {
+    it("refuses an axis closeness card about one orientation with a value under 70", () => {
+      const { orientation } = singleClosenessCard.entry;
+
+      expect(
+        passesWith(singleClosenessCard, { entry: { orientation, value: 70 } }),
+      ).toBe(true);
+      expect(
+        passesWith(singleClosenessCard, {
+          entry: { orientation, value: 69.9 },
+        }),
+      ).toBe(false);
+      expect(
+        passesWith(singleClosenessCard, { entry: { orientation, value: 0 } }),
+      ).toBe(false);
+    });
+
+    it("refuses an axis card whose leading side is fewer than 15 points ahead", () => {
+      // The end leads on the closeness card, the start on the puzzle.
+      for (const card of [doubleClosenessCard, axisPuzzleCard]) {
+        const [leading, other] =
+          card.leadingSide === "start"
+            ? (["start", "end"] as const)
+            : (["end", "start"] as const);
+        const passesWithValues = (
+          leadingValue: number,
+          otherValue: number,
+        ): boolean =>
+          passesWith(card, {
+            [leading]: { ...card[leading], value: leadingValue },
+            [other]: { ...card[other], value: otherValue },
+          });
+
+        expect(passesWithValues(60, 45)).toBe(true);
+        expect(passesWithValues(60, 45.01)).toBe(false);
+        expect(passesWithValues(60, 59)).toBe(false);
+        expect(passesWithValues(15, 0)).toBe(true);
+      }
+    });
+
+    it("refuses a card of any type at a boundary before the fifth", () => {
+      for (const card of allCards) {
+        expect(passesWith(card, { boundary: 4 })).toBe(false);
+        expect(passesWith(card, { boundary: 0 })).toBe(false);
+      }
+
+      for (const card of [
+        statsForCard,
+        newTraitCard,
+        positionPuzzleCard,
+        singleClosenessCard,
+        doubleClosenessCard,
+        axisPuzzleCard,
+        halfwayCard,
+      ]) {
+        expect(passesWith(card, { boundary: 5 })).toBe(true);
+      }
+    });
+
+    it("refuses a Nolan path card at a boundary before the tenth", () => {
+      for (const card of [partialPathCard, fullPathCard]) {
+        expect(passesWith(card, { boundary: 10 })).toBe(true);
+        expect(passesWith(card, { boundary: 9 })).toBe(false);
+        expect(passesWith(card, { boundary: 5 })).toBe(false);
+      }
+    });
+
+    it("refuses a stats card with fewer than 100 answers behind it", () => {
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 10, against: 90, noAnswer: 900 },
+        }),
+      ).toBe(true);
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 9, against: 90, noAnswer: 901 },
+        }),
+      ).toBe(false);
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 0, against: 0, noAnswer: 0 },
+        }),
+      ).toBe(false);
+    });
+
+    it("refuses a stats card whose side is the side of more than 10% of the takers", () => {
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 100, against: 800, noAnswer: 100 },
+        }),
+      ).toBe(true);
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 101, against: 800, noAnswer: 99 },
+        }),
+      ).toBe(false);
+      // The counts of the other side: the taker's own side is the common one.
+      expect(
+        passesWith(statsForCard, {
+          counts: { for: 900, against: 80, noAnswer: 20 },
+        }),
+      ).toBe(false);
+      expect(
+        passesWith(statsForCard, {
+          side: "against",
+          counts: { for: 900, against: 80, noAnswer: 20 },
+        }),
+      ).toBe(true);
+    });
+  });
 });

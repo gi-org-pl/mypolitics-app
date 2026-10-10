@@ -64,75 +64,92 @@ const describeCard = (card: AxisClosenessCheckpointCard, i18n?: I18n) =>
   renderDescription(card, i18n).result.current;
 
 describe("useAxisClosenessDescription()", () => {
-  it("names the orientation and says its score is high for the single variant", () => {
-    expect(describeCard(createSingleCard("Radykalizm"))).toBe(
-      "Skala „Radykalizm”: wysoki wynik",
-    );
+  describe("given the single variant", () => {
+    it("names the orientation and says its score is high", () => {
+      expect(describeCard(createSingleCard("Radykalizm"))).toBe(
+        "Skala „Radykalizm”: wysoki wynik",
+      );
+    });
   });
 
-  it("names both sides in the bar's order and the side that is ahead for the double variant", () => {
-    expect(describeCard(createDoubleCard("start"))).toBe(
-      "„Eurosceptycyzm” i „Federacjonizm”: wyższy wynik po stronie „Eurosceptycyzm”",
-    );
-    expect(describeCard(createDoubleCard("end"))).toBe(
-      "„Eurosceptycyzm” i „Federacjonizm”: wyższy wynik po stronie „Federacjonizm”",
-    );
+  describe("given the double variant", () => {
+    it("names both sides in the bar's order and the side that is ahead", () => {
+      expect(describeCard(createDoubleCard("start"))).toBe(
+        "„Eurosceptycyzm” i „Federacjonizm”: wyższy wynik po stronie „Eurosceptycyzm”",
+      );
+      expect(describeCard(createDoubleCard("end"))).toBe(
+        "„Eurosceptycyzm” i „Federacjonizm”: wyższy wynik po stronie „Federacjonizm”",
+      );
+    });
   });
 
-  it("contains no digit and no percent sign", () => {
-    for (const card of [
-      createSingleCard("Radykalizm"),
-      createDoubleCard("start"),
-      createDoubleCard("end"),
-    ]) {
-      expect(describeCard(card)).not.toMatch(/[\d%]/);
-      expect(describeCard(card, createI18n("en"))).not.toMatch(/[\d%]/);
-    }
+  describe("given either variant, in either language", () => {
+    it("contains no digit and no percent sign", () => {
+      for (const card of [
+        createSingleCard("Radykalizm"),
+        createDoubleCard("start"),
+        createDoubleCard("end"),
+      ]) {
+        expect(describeCard(card)).not.toMatch(/[\d%]/);
+        expect(describeCard(card, createI18n("en"))).not.toMatch(/[\d%]/);
+      }
+    });
   });
 
-  it("places a name as written", () => {
-    expect(describeCard(createSingleCard("PAŃSTWO „minimum”"))).toBe(
-      "Skala „PAŃSTWO „minimum””: wysoki wynik",
-    );
-    expect(
-      describeCard(createDoubleCard("end", "religijność", "Świeckość {x}")),
-    ).toBe(
-      "„religijność” i „Świeckość {x}”: wyższy wynik po stronie „Świeckość {x}”",
-    );
+  describe("given a name as a quiz may write it", () => {
+    it("places a name as written", () => {
+      expect(describeCard(createSingleCard("PAŃSTWO „minimum”"))).toBe(
+        "Skala „PAŃSTWO „minimum””: wysoki wynik",
+      );
+      expect(
+        describeCard(createDoubleCard("end", "religijność", "Świeckość {x}")),
+      ).toBe(
+        "„religijność” i „Świeckość {x}”: wyższy wynik po stronie „Świeckość {x}”",
+      );
+    });
+
+    it("puts a name with line breaks or doubled spaces on one line, in full", () => {
+      const longName = `Bardzo  długa \n nazwa ${"orientacji ".repeat(20)}autorskiej`;
+
+      expect(describeCard(createSingleCard(longName))).toBe(
+        `Skala „Bardzo długa nazwa ${"orientacji ".repeat(20)}autorskiej”: wysoki wynik`,
+      );
+    });
   });
 
-  it("puts a name with line breaks or doubled spaces on one line, in full", () => {
-    const longName = `Bardzo  długa \n nazwa ${"orientacji ".repeat(20)}autorskiej`;
-
-    expect(describeCard(createSingleCard(longName))).toBe(
-      `Skala „Bardzo długa nazwa ${"orientacji ".repeat(20)}autorskiej”: wysoki wynik`,
-    );
+  describe("given the app runs in English", () => {
+    it("describes the bar in English", () => {
+      expect(
+        describeCard(createSingleCard("Radykalizm"), createI18n("en")),
+      ).toBe("The “Radykalizm” scale: a high score");
+      expect(describeCard(createDoubleCard("end"), createI18n("en"))).toBe(
+        "“Eurosceptycyzm” and “Federacjonizm”: the higher score is on the “Federacjonizm” side",
+      );
+    });
   });
 
-  it("describes the bar in English when the app runs in English", () => {
-    expect(describeCard(createSingleCard("Radykalizm"), createI18n("en"))).toBe(
-      "The “Radykalizm” scale: a high score",
-    );
-    expect(describeCard(createDoubleCard("end"), createI18n("en"))).toBe(
-      "“Eurosceptycyzm” and “Federacjonizm”: the higher score is on the “Federacjonizm” side",
-    );
+  describe("when the language changes", () => {
+    it("follows the language", () => {
+      const i18n = createI18n();
+      const { result } = renderDescription(
+        createSingleCard("Radykalizm"),
+        i18n,
+      );
+
+      act(() => i18n.activate("en"));
+
+      expect(result.current).toBe("The “Radykalizm” scale: a high score");
+    });
   });
 
-  it("follows the language when it changes", () => {
-    const i18n = createI18n();
-    const { result } = renderDescription(createSingleCard("Radykalizm"), i18n);
+  describe("given a card that cannot be read", () => {
+    it("is blank, without throwing", () => {
+      const broken = {
+        ...createSingleCard("Radykalizm"),
+        entry: undefined,
+      } as unknown as AxisClosenessCheckpointCard;
 
-    act(() => i18n.activate("en"));
-
-    expect(result.current).toBe("The “Radykalizm” scale: a high score");
-  });
-
-  it("is blank, without throwing, for a card that cannot be read", () => {
-    const broken = {
-      ...createSingleCard("Radykalizm"),
-      entry: undefined,
-    } as unknown as AxisClosenessCheckpointCard;
-
-    expect(describeCard(broken)).toBe("");
+      expect(describeCard(broken)).toBe("");
+    });
   });
 });
