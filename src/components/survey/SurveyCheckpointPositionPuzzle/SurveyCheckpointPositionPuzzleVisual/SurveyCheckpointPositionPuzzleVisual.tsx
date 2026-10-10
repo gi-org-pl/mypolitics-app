@@ -1,3 +1,4 @@
+import { AnimatedHeight } from "@/components/shared/AnimatedHeight/AnimatedHeight";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
@@ -14,7 +15,10 @@ import type { SurveyCheckpointPositionPuzzleVisualProps } from "./SurveyCheckpoi
 // technology.
 //
 // The name comes in softly when it replaces the shape, and at once for a
-// taker who prefers reduced motion.
+// taker who prefers reduced motion. A name is taller than the shape, and a
+// long one takes several lines, so the two stand in a box that moves its
+// height: the bar and everything under the panel move with it instead of
+// jumping.
 export const SurveyCheckpointPositionPuzzleVisual = ({
   name,
   entry,
@@ -24,17 +28,19 @@ export const SurveyCheckpointPositionPuzzleVisual = ({
 
   return (
     <div className="flex w-full min-w-0 flex-col items-start gap-2">
-      {shownName === "" ? (
-        <span
-          aria-hidden="true"
-          data-testid="survey-checkpoint-position-puzzle-placeholder"
-          className="h-4 w-39 max-w-full rounded-2xl bg-gi-ash"
-        />
-      ) : (
-        <div className="w-full text-left text-base leading-[1.2] font-bold wrap-break-word text-gi-primary transition-opacity duration-300 motion-reduce:transition-none starting:opacity-0">
-          {shownName}
-        </div>
-      )}
+      <AnimatedHeight>
+        {shownName === "" ? (
+          <span
+            aria-hidden="true"
+            data-testid="survey-checkpoint-position-puzzle-placeholder"
+            className="block h-4 w-39 max-w-full rounded-2xl bg-gi-ash"
+          />
+        ) : (
+          <div className="w-full text-left text-base leading-[1.2] font-bold wrap-break-word text-gi-primary transition-opacity duration-300 motion-reduce:transition-none starting:opacity-0">
+            {shownName}
+          </div>
+        )}
+      </AnimatedHeight>
       <UniversalAxis
         start={entry}
         marker={false}

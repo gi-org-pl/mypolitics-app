@@ -1,4 +1,5 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
+import { useState } from "react";
 import { describe, expect, it } from "vitest";
 
 import type { AxisEntry } from "@/types/axis";
@@ -27,6 +28,25 @@ const LEADER_ENTRY: AxisEntry = {
 
 const getBar = () => screen.getByRole("img", { name: /blisko Ciebie/ });
 
+// The visual as a card changes it in place on a hit: the name takes the place
+// of the placeholder.
+const Reveal = () => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  return (
+    <>
+      <SurveyCheckpointPositionPuzzleVisual
+        name={isRevealed ? NAME : undefined}
+        entry={isRevealed ? LEADER_ENTRY : HIDDEN_ENTRY}
+        description={isRevealed ? `${NAME} jest blisko Ciebie` : HIDDEN}
+      />
+      <button type="button" onClick={() => setIsRevealed(true)}>
+        Odkryj
+      </button>
+    </>
+  );
+};
+
 describe("<SurveyCheckpointPositionPuzzleVisual />", () => {
   describe("given no name", () => {
     it("renders the placeholder, hidden from assistive technology", () => {
@@ -42,7 +62,12 @@ describe("<SurveyCheckpointPositionPuzzleVisual />", () => {
       expect(placeholder).toBeInTheDocument();
       expect(placeholder).toHaveAttribute("aria-hidden", "true");
       expect(placeholder).toBeEmptyDOMElement();
-      expect(placeholder).toHaveClass("h-4", "max-w-full", "bg-gi-ash");
+      expect(placeholder).toHaveClass(
+        "block",
+        "h-4",
+        "max-w-full",
+        "bg-gi-ash",
+      );
       expect(placeholder).not.toHaveAttribute("style");
     });
 
@@ -153,6 +178,39 @@ describe("<SurveyCheckpointPositionPuzzleVisual />", () => {
         "transition-opacity",
         "motion-reduce:transition-none",
       );
+    });
+  });
+
+  describe("when the name replaces the placeholder", () => {
+    it("keeps the two in one box that moves its height, so the bar does not jump", () => {
+      renderWithI18n(<Reveal />);
+
+      const box = screen.getByTestId(PLACEHOLDER).parentElement?.parentElement;
+
+      expect(box).toHaveClass(
+        "w-full",
+        "data-[animating=true]:overflow-y-clip",
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "Odkryj" }));
+
+      expect(screen.queryByTestId(PLACEHOLDER)).not.toBeInTheDocument();
+      expect(screen.getByText(NAME).parentElement?.parentElement).toBe(box);
+    });
+
+    it("leaves the bar outside that box, under it", () => {
+      renderWithI18n(<Reveal />);
+
+      const box = screen.getByTestId(PLACEHOLDER).parentElement?.parentElement;
+
+      expect(box).not.toContainElement(getBar());
+      expect(box?.parentElement).toContainElement(getBar());
+      expect(box?.parentElement).toHaveClass("flex", "flex-col", "gap-2");
+
+      fireEvent.click(screen.getByRole("button", { name: "Odkryj" }));
+
+      expect(box).not.toContainElement(getBar());
+      expect(box?.nextElementSibling).toContainElement(getBar());
     });
   });
 
