@@ -1047,7 +1047,7 @@ test.describe("Feature: Questionnaire - a quiz with axes", () => {
       await expect(
         page.getByRole("group", { name: AXIS_QUESTIONS[0].text }),
       ).toBeVisible();
-      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCategoryGroup(page)).toHaveCount(0);
     });
 
     await test.step('When they answer the first five questions with "Zdecydowanie za"', async () => {
