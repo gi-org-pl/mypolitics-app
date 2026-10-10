@@ -289,6 +289,19 @@ export const EmptyCategory: Story = {
   },
 };
 
+export const SingleEntryCategory: Story = {
+  args: {
+    categories: [
+      {
+        name: "Category A",
+        entries: [{ orientation: b, value: 65, badge: placeholderBadge }],
+      },
+      categories[1],
+      { name: "Category C", entries: [{ orientation: a, value: 0 }] },
+    ],
+  },
+};
+
 export const EqualValues: Story = {
   args: {
     entries: [

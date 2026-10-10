@@ -30,7 +30,7 @@ export const HorizontalBarChartCategoryList = ({
             leader={leader}
             comparison={comparison}
           />
-          {ranking.length > 0 ? (
+          {ranking.length > 1 ? (
             <div className="-mx-4 flex">
               <HorizontalBarChartControl
                 ref={registerControl?.(key)}
