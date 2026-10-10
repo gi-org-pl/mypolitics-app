@@ -453,6 +453,14 @@ msgstr "Woman"
 msgid "Kolorujemy wykresy"
 msgstr "Colouring the charts"
 
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:29
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+msgstr "Compass: the route has passed through {count} of 4 quadrants. Your position is now near the centre."
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:28
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
+msgstr "Compass: the route has passed through {count} of 4 quadrants. Your position is now in the highlighted quadrant."
+
 #: src/constants/checkpoint.ts:310
 msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
