@@ -1,8 +1,6 @@
 import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
-interface PreviewIconProps {
-  imageUrl: string;
-}
+import type { PreviewIconProps } from "./PreviewIcon.types";
 
 // An icon that fails to load is left out, as an orientation without an icon
 // is.
