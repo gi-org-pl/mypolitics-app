@@ -205,6 +205,18 @@ describe("<SurveyQuestionExplanation />", () => {
     });
   });
 
+  describe("while open", () => {
+    it("lets a pointer click pass through the explanation to the button", async () => {
+      const user = renderExplanation();
+
+      await user.click(screen.getByRole("button", { name: PREVIEW }));
+
+      expect(screen.getByRole("paragraph").parentElement).toHaveClass(
+        "pointer-events-none",
+      );
+    });
+  });
+
   describe("when the bar is activated again", () => {
     it("returns to the preview", async () => {
       const user = renderExplanation();

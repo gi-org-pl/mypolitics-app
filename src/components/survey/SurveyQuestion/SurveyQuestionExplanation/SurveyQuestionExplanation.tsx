@@ -60,7 +60,7 @@ export const SurveyQuestionExplanation = ({
         <div
           id={panelId}
           aria-hidden={!isOpen}
-          className={`col-start-1 row-span-2 row-start-1 min-h-0 overflow-hidden rounded-b-2xl transition-[opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
+          className={`pointer-events-none col-start-1 row-span-2 row-start-1 min-h-0 overflow-hidden rounded-b-2xl transition-[opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
             isOpen ? "visible opacity-100" : "invisible opacity-0"
           }`}
         >
