@@ -223,6 +223,10 @@ msgstr "Are you sure you want to start the quiz {quizName} over? Your answers wi
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:26
+msgid "Czytamy programy partii"
+msgstr "Reading the party programmes"
+
 #: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:44
 msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "We care about your privacy: your personal data (including your e-mail address) will never be linked to data about your views."
@@ -238,6 +242,10 @@ msgstr "Join the Discord of the Generacja Innowacja Foundation"
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Your answers in this section let us analyse results in the future, to improve the quiz and to prepare analyses on data.mypolitics.pl."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:21
+msgid "Dzielimy przez zero"
+msgstr "Dividing by zero"
 
 #: src/constants/home.ts:244
 msgid "Eurowyborczy 2024"
@@ -283,6 +291,10 @@ msgstr "What would your views have been thousands of years ago?"
 msgid "Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkowników. <0>Sprawdź jak działa algorytm.</0>"
 msgstr "We are fully transparent and do not hide how we match users. <0>See how the algorithm works.</0>"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:25
+msgid "Jesteśmy za, a nawet przeciw"
+msgstr "We are for, and even against"
+
 #: src/constants/home.ts:263
 msgid "Kiedyś to było... no właśnie, jak?"
 msgstr "Those were the days... but what were they like?"
@@ -291,13 +303,29 @@ msgstr "Those were the days... but what were they like?"
 msgid "Kobieta"
 msgstr "Woman"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:24
+msgid "Kolorujemy wykresy"
+msgstr "Colouring the charts"
+
 #: src/constants/home.ts:296
 msgid "Kraje starożytne"
 msgstr "Ancient states"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:19
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:21
+msgid "Liczenie wyników trwa dłużej niż zwykle. Twoje odpowiedzi są zapisane. Spróbuj ponownie za chwilę."
+msgstr "Calculating your results is taking longer than usual. Your answers are saved. Try again in a moment."
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.tsx:35
 msgid "Liczymy Twoje wyniki"
 msgstr "We are calculating your results"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:19
+msgid "Liczymy, ale się cieszymy"
+msgstr "Counting, but happy about it"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:14
+msgid "Liczymy, nie oceniamy"
+msgstr "Counting, not judging"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:11
 msgid "Mężczyzna"
@@ -358,7 +386,11 @@ msgstr "There are no quizzes of this kind yet."
 msgid "Nie udało się wczytać quizu"
 msgstr "The quiz could not be loaded"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:27
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:25
+msgid "Nie udało się wysłać linku na Twój e-mail. Twoje wyniki są gotowe. Zapisz adres strony z wynikami, żeby móc do nich wrócić."
+msgstr "We could not send the link to your e-mail. Your results are ready. Save the address of the results page to be able to come back to them."
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:17
 msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
 msgstr "Your answers could not be saved. Check your connection and try again."
 
@@ -369,6 +401,10 @@ msgstr "Nobody funds us"
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
 msgstr "About"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:28
+msgid "Obradujemy przy okrągłym stole"
+msgstr "Deliberating at the round table"
 
 #: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:52
 msgid "Odwiedź nasz kanał na YouTube"
@@ -406,6 +442,14 @@ msgstr "Sexual orientation"
 msgid "Otwórz menu nawigacji"
 msgstr "Open navigation menu"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:16
+msgid "Panowie, liczymy głosy"
+msgstr "Gentlemen, we are counting the votes"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculationActions/SurveyResultsCalculationActions.tsx:39
+msgid "Pełne wyniki"
+msgstr "Full results"
+
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
 msgstr "Full description"
@@ -417,6 +461,10 @@ msgstr "The platform is built by volunteers with the support of experts. We have
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:7
 msgid "Płeć"
 msgstr "Gender"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculationActions/SurveyResultsCalculationActions.tsx:31
+msgid "Pobierz"
+msgstr "Download"
 
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:33
 msgid "Podgląd wyników quizu myPolitics"
@@ -504,9 +552,17 @@ msgstr "Almost done!"
 msgid "Preferencje muzyczne"
 msgstr "Music preferences"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:13
+msgid "Prostujemy osie"
+msgstr "Straightening the axes"
+
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
 msgstr "Privacy"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:18
+msgid "Przeliczamy jeszcze raz"
+msgstr "Counting once more"
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
@@ -528,6 +584,10 @@ msgstr "Reset quiz"
 msgid "Rodzaje quizów"
 msgstr "Kinds of quizzes"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:22
+msgid "Rozdajemy 100 milionów"
+msgstr "Handing out 100 million"
+
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
@@ -540,9 +600,17 @@ msgstr "Start"
 msgid "Rozpocznij quiz"
 msgstr "Start the quiz"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:17
+msgid "Rozpoczynamy trzecie czytanie"
+msgstr "Starting the third reading"
+
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Rozwiń"
 msgstr "Expand"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:29
+msgid "Słuchamy wywiadów w telewizji"
+msgstr "Listening to interviews on TV"
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
@@ -560,8 +628,12 @@ msgstr "Check your internet connection and try again."
 msgid "Sprawdź wyjaśnienie"
 msgstr "Check the explanation"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:20
+msgid "Sprawdzamy czy przekraczasz próg"
+msgstr "Checking whether you pass the threshold"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:28
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:38
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:8
 msgid "Spróbuj ponownie"
 msgstr "Try again"
 
@@ -585,6 +657,10 @@ msgstr "Home page"
 #: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:39
 msgid "Stwórz własny"
 msgstr "Create your own"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:15
+msgid "Szukamy Twojej ćwiartki"
+msgstr "Looking for your quadrant"
 
 #. The word that ends the preview of an explanation: the preview is the explanation up to its first whole-word occurrence, e.g. 'Obraza uczuć religijnych to...'.
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:5
@@ -712,6 +788,10 @@ msgstr "Higher"
 msgid "Zacznij od nowa"
 msgstr "Start over"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:23
+msgid "Zaglądamy do teczek"
+msgstr "Looking into the files"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
@@ -732,11 +812,16 @@ msgstr "Save your results!"
 msgid "Zasadnicze zawodowe"
 msgstr "Basic vocational"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:27
+msgid "Zgłaszamy wniosek formalny"
+msgstr "Raising a point of order"
+
 #: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:24
 msgid "Zobacz więcej"
 msgstr "See more"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:27
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:26
 msgid "Zobacz wyniki"
 msgstr "See results"
 

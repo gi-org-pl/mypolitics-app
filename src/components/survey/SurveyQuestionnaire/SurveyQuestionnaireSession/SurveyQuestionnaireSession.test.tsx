@@ -1,12 +1,13 @@
 import { act, fireEvent, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
+import { getResult } from "@/services/api/client/getResult";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
 import {
   CreateResultOutcome,
   type DemographicsValues,
+  ResultLinkOutcome,
   type Survey,
   SurveyResultState,
   type SurveySession,
@@ -24,11 +25,15 @@ import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
 
 vi.mock("@/services/api/client/createResult");
+vi.mock("@/services/api/client/getResult");
 vi.mock("@/services/api/client/requestResultLink");
 vi.mock("@/utils/url/openAddress");
 
 // The acknowledgement of an answer: it reports the press when it has played.
 const ACKNOWLEDGEMENT_MS = 300;
+// The loader: a line every 1.2 seconds, and a stay of five lines.
+const LOADER_LINE_MS = 1200;
+const LOADER_MIN_LINES = 5;
 const FIRST_STATEMENT = "Podatki powinny być niższe.";
 const SECOND_STATEMENT = "Z czego Polska powinna czerpać energię?";
 const PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
@@ -144,6 +149,14 @@ const finishAcknowledgement = () =>
 
 const finishRequests = () => act(async () => undefined);
 
+// The stay of the loader, one line at a time: the next line is timed only
+// once the one before has arrived.
+const finishLoader = async () => {
+  for (let line = 0; line < LOADER_MIN_LINES; line += 1) {
+    await act(() => vi.advanceTimersByTimeAsync(LOADER_LINE_MS));
+  }
+};
+
 const showPageFromMemory = () =>
   act(() => {
     window.dispatchEvent(
@@ -156,6 +169,7 @@ describe("<SurveyQuestionnaireSession />", () => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
     vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
+    vi.mocked(getResult).mockResolvedValue({ id: "", isCalculated: true });
   });
 
   afterEach(() => {
@@ -1012,6 +1026,12 @@ describe("<SurveyQuestionnaireSession />", () => {
       fireEvent.click(getSkipButton());
       await finishRequests();
 
+      // The result is there; the stay of the loader is not over.
+      expect(openAddress).not.toHaveBeenCalled();
+      expect(sessionStorage.getItem(storageKey)).not.toBeNull();
+
+      await finishLoader();
+
       expect(createResult).toHaveBeenCalledTimes(1);
       expect(openAddress).toHaveBeenCalledTimes(1);
       expect(openAddress).toHaveBeenCalledWith(getResultsUrl(getSession().id));
@@ -1023,22 +1043,43 @@ describe("<SurveyQuestionnaireSession />", () => {
       const { getSession } = renderScreen(onQuestion(ALL_DONE));
 
       fireEvent.click(getSkipButton());
-      await finishRequests();
+      await finishLoader();
 
       expect(openAddress).toHaveBeenCalledTimes(1);
       expect(screen.getByText(WAITING)).toBeVisible();
       expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().resultState).toBe(SurveyResultState.Created);
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeDisabled();
     });
   });
 
-  describe("when the hand-in fails", () => {
-    it("turns reset on, and a confirmed reset starts a new session without handing in", async () => {
-      vi.mocked(createResult).mockResolvedValue(
-        CreateResultOutcome.Unreachable,
-      );
+  describe("given a session in results calculation", () => {
+    const inCalculation = (overrides: Partial<SurveySession> = {}) =>
+      onQuestion(ALL_DONE, { phase: "results-calculation", ...overrides });
+
+    it('draws no bar, "Prawie gotowe", back off and reset off while a run is under way', async () => {
+      vi.mocked(getResult).mockResolvedValue({ id: "", isCalculated: false });
+
+      const { getSession } = renderScreen(inCalculation());
+
+      await finishRequests();
+
+      expect(getSession().resultState).toBe(SurveyResultState.Created);
+      expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+      expect(screen.getAllByText("Prawie gotowe")[0]).toBeVisible();
+      expect(getBackButton()).toBeDisabled();
+      expect(getResetButton()).toBeDisabled();
+      expect(screen.getAllByRole("listitem")).toHaveLength(1);
+      expect(screen.getByRole("button", { name: "Pobierz" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Pełne wyniki" }),
+      ).toBeDisabled();
+      expect(openAddress).not.toHaveBeenCalled();
+    });
+
+    it("turns reset on when the run has failed, and starts a new session when it is confirmed", async () => {
+      vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Refused);
 
       const { getSession } = renderScreen(onQuestion(ALL_DONE));
       const { id } = getSession();
@@ -1048,15 +1089,57 @@ describe("<SurveyQuestionnaireSession />", () => {
       finishChange();
 
       expect(screen.getByRole("alert")).toBeInTheDocument();
+      expect(getSession().resultState).toBe(SurveyResultState.Failed);
       expect(getBackButton()).toBeDisabled();
+      expect(getResetButton()).toBeEnabled();
 
       fireEvent.click(getResetButton());
       fireEvent.click(screen.getByRole("button", { name: "Resetuj quiz" }));
 
+      // Nothing of the phase survives: no hand-in for the new session.
       expect(getSession().id).not.toBe(id);
       expect(getSession().phase).toBe("category-select");
+      expect(getSession().resultState).toBe(SurveyResultState.NotSent);
       expect(createResult).toHaveBeenCalledTimes(1);
       expect(openAddress).not.toHaveBeenCalled();
+    });
+
+    it("keeps reset off on the notice", async () => {
+      vi.spyOn(
+        SURVEY_SESSION_CONFIG,
+        "isEmailSendingSetUp",
+        "get",
+      ).mockReturnValue(true);
+      vi.mocked(requestResultLink).mockResolvedValue(
+        ResultLinkOutcome.Unavailable,
+      );
+
+      const { survey, getSession } = renderScreen(
+        inCalculation({
+          email: { address: "biuro@mypolitics.pl", hasConsent: true },
+        }),
+      );
+
+      await finishLoader();
+
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Nie udało się wysłać linku na Twój e-mail.",
+      );
+      expect(getBackButton()).toBeDisabled();
+      expect(getResetButton()).toBeDisabled();
+      expect(openAddress).not.toHaveBeenCalled();
+      expect(
+        sessionStorage.getItem(getSessionStorageKey(survey.id)),
+      ).not.toBeNull();
+
+      fireEvent.click(getResultsButton());
+
+      expect(requestResultLink).toHaveBeenCalledTimes(1);
+      expect(openAddress).toHaveBeenCalledTimes(1);
+      expect(openAddress).toHaveBeenCalledWith(getResultsUrl(getSession().id));
+      expect(
+        sessionStorage.getItem(getSessionStorageKey(survey.id)),
+      ).toBeNull();
     });
   });
 
@@ -1066,7 +1149,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       const { id } = getSession();
 
       fireEvent.click(getSkipButton());
-      await finishRequests();
+      await finishLoader();
 
       expect(openAddress).toHaveBeenCalledTimes(1);
 

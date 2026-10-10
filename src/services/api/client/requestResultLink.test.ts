@@ -1,10 +1,8 @@
-import { type AxiosAdapter, AxiosError } from "axios";
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import type { AxiosAdapter } from "axios";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RESULT_LINK_TIMEOUT_MS } from "@/constants/survey";
 import { type ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { requestResultLink } from "./requestResultLink";
@@ -33,44 +31,131 @@ const input: ResultLinkInput = {
 
 const inputWithConsent: ResultLinkInput = { ...input, marketingConsent: true };
 
-const adapter = vi.fn<AxiosAdapter>();
-const defaultAdapter = apiClient.defaults.adapter;
+// The statuses a reply cannot carry a body with.
+const BODILESS_STATUSES = [204, 205, 304];
 
-const getSentBodies = (): unknown[] =>
-  adapter.mock.calls.map(([{ data }]) => JSON.parse(String(data)) as unknown);
+type Fetch = (request: Request, init?: RequestInit) => Promise<Response>;
+
+// The request goes out through `fetch`, so the test stands in for the
+// browser there: everything Axios does with a reply or a failure is real.
+const fetchMock = vi.fn<Fetch>();
+
+const toBody = (data: unknown): string | null => {
+  if (data === undefined || data === null) return null;
+
+  return typeof data === "string" ? data : JSON.stringify(data);
+};
+
+// The endpoint answers with this status and body.
+const reply =
+  (status: number, data?: unknown): Fetch =>
+  async () =>
+    new Response(BODILESS_STATUSES.includes(status) ? null : toBody(data), {
+      status,
+    });
+
+// There is no connection: `fetch` fails the way a browser makes it fail.
+const failToConnect: Fetch = async () => {
+  throw new TypeError("Failed to fetch");
+};
+
+// The endpoint never answers. Like `fetch`, the request ends only when it is
+// cancelled, with the reason it was cancelled for.
+const neverAnswer: Fetch = (request) =>
+  new Promise((_resolve, reject) => {
+    request.signal.addEventListener("abort", () =>
+      reject(request.signal.reason),
+    );
+  });
+
+// Lets a call end: a reply is read at once, and a request that got none is
+// given up on when its time limit is over.
+const finish = async (
+  call: Promise<ResultLinkOutcome>,
+): Promise<ResultLinkOutcome> => {
+  await vi.advanceTimersByTimeAsync(RESULT_LINK_TIMEOUT_MS);
+
+  return call;
+};
+
+// What a call ended with, or nothing while it goes on.
+const watch = (call: Promise<ResultLinkOutcome>) => {
+  const seen: { outcome?: ResultLinkOutcome } = {};
+
+  call.then((outcome) => {
+    seen.outcome = outcome;
+  });
+
+  return seen;
+};
+
+const getRequests = (): Request[] =>
+  fetchMock.mock.calls.map(([request]) => request);
+
+const getSentBodies = (): Promise<unknown[]> =>
+  Promise.all(getRequests().map((request) => request.clone().json()));
 
 describe("requestResultLink()", () => {
   beforeEach(() => {
+    vi.useFakeTimers();
     build.resultLinkUrl = ENDPOINT;
-    adapter.mockReset();
-    apiClient.defaults.adapter = adapter;
+    fetchMock.mockReset();
+    vi.stubGlobal("fetch", fetchMock);
   });
 
-  afterAll(() => {
-    apiClient.defaults.adapter = defaultAdapter;
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
   });
 
   describe("when called", () => {
     it("posts to the configured address, with nothing added to it", async () => {
-      adapter.mockImplementationOnce(createApiReply(202));
+      fetchMock.mockImplementationOnce(reply(202));
 
-      await requestResultLink(inputWithConsent);
+      await finish(requestResultLink(inputWithConsent));
 
-      const [[config]] = adapter.mock.calls;
+      const [request] = getRequests();
 
-      expect(config).toMatchObject({ method: "post", url: ENDPOINT });
-      expect(config.params).toBeUndefined();
-      expect(apiClient.getUri(config)).toBe(ENDPOINT);
-      expect(config.headers.getContentType()).toBe("application/json");
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(request.method).toBe("POST");
+      expect(request.url).toBe(ENDPOINT);
+      expect(request.headers.get("content-type")).toBe("application/json");
+    });
+
+    it("keeps the request alive, so that a reload or a leave of the page does not end it", async () => {
+      fetchMock.mockImplementationOnce(reply(202));
+
+      await finish(requestResultLink(inputWithConsent));
+
+      const [[request, init]] = fetchMock.mock.calls;
+
+      expect(request.keepalive).toBe(true);
+      expect(init).toEqual({ keepalive: true });
+    });
+
+    it("goes out through fetch, not through the adapter of the client", async () => {
+      const clientAdapter = vi.fn<AxiosAdapter>();
+      const defaultAdapter = apiClient.defaults.adapter;
+
+      apiClient.defaults.adapter = clientAdapter;
+      fetchMock.mockImplementationOnce(reply(202));
+
+      const outcome = await finish(requestResultLink(input));
+
+      apiClient.defaults.adapter = defaultAdapter;
+
+      expect(outcome).toBe(ResultLinkOutcome.Accepted);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(clientAdapter).not.toHaveBeenCalled();
     });
 
     it("sends email, resultId, marketingConsent and language", async () => {
-      adapter.mockImplementation(createApiReply(202));
+      fetchMock.mockImplementation(reply(202));
 
-      await requestResultLink(input);
-      await requestResultLink({ ...input, language: "en" });
+      await finish(requestResultLink(input));
+      await finish(requestResultLink({ ...input, language: "en" }));
 
-      expect(getSentBodies()).toEqual([
+      expect(await getSentBodies()).toEqual([
         {
           email: "biuro@mypolitics.pl",
           resultId: "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11",
@@ -87,48 +172,56 @@ describe("requestResultLink()", () => {
     });
 
     it("trims the address", async () => {
-      adapter.mockImplementationOnce(createApiReply(202));
+      fetchMock.mockImplementationOnce(reply(202));
 
-      await requestResultLink({ ...input, email: "  Biuro@myPolitics.pl\n" });
+      await finish(
+        requestResultLink({ ...input, email: "  Biuro@myPolitics.pl\n" }),
+      );
 
-      expect(getSentBodies()).toEqual([
+      expect(await getSentBodies()).toEqual([
         { ...input, email: "Biuro@myPolitics.pl" },
       ]);
     });
 
     it("adds the consent wording with consent, and leaves the key out without it", async () => {
-      adapter.mockImplementation(createApiReply(202));
+      fetchMock.mockImplementation(reply(202));
 
-      await requestResultLink(inputWithConsent);
-      await requestResultLink(input);
+      await finish(requestResultLink(inputWithConsent));
+      await finish(requestResultLink(input));
 
-      expect(getSentBodies()).toEqual([
+      const bodies = await getSentBodies();
+
+      expect(bodies).toEqual([
         { ...inputWithConsent, consentWording: "marketing-v1" },
         input,
       ]);
-      expect(getSentBodies()[1]).not.toHaveProperty("consentWording");
+      expect(bodies[1]).not.toHaveProperty("consentWording");
     });
 
     it("sends nothing else", async () => {
-      adapter.mockImplementationOnce(createApiReply(202));
+      fetchMock.mockImplementationOnce(reply(202));
 
-      await requestResultLink({
-        ...inputWithConsent,
-        surveyId: "60beb898-a4e4-4160-88c4-07a9931ab499",
-        answers: [{ questionId: "q1", answerId: "q1-a1" }],
-        demographics: { age: 34 },
-        message: "Kliknij tutaj",
-        consentWording: "another-wording",
-      } as ResultLinkInput);
+      await finish(
+        requestResultLink({
+          ...inputWithConsent,
+          surveyId: "60beb898-a4e4-4160-88c4-07a9931ab499",
+          answers: [{ questionId: "q1", answerId: "q1-a1" }],
+          demographics: { age: 34 },
+          message: "Kliknij tutaj",
+          consentWording: "another-wording",
+        } as ResultLinkInput),
+      );
 
-      expect(Object.keys(getSentBodies()[0] as object)).toEqual([
+      const bodies = await getSentBodies();
+
+      expect(Object.keys(bodies[0] as object)).toEqual([
         "email",
         "resultId",
         "marketingConsent",
         "consentWording",
         "language",
       ]);
-      expect(getSentBodies()).toEqual([
+      expect(bodies).toEqual([
         { ...inputWithConsent, consentWording: "marketing-v1" },
       ]);
     });
@@ -136,9 +229,9 @@ describe("requestResultLink()", () => {
     it("does not change the input", async () => {
       const sentInput = { ...inputWithConsent, email: " biuro@mypolitics.pl " };
 
-      adapter.mockImplementationOnce(createApiReply(202));
+      fetchMock.mockImplementationOnce(reply(202));
 
-      await requestResultLink(sentInput);
+      await finish(requestResultLink(sentInput));
 
       expect(sentInput).toEqual({
         ...inputWithConsent,
@@ -149,26 +242,32 @@ describe("requestResultLink()", () => {
 
   describe("given a reply", () => {
     it("resolves accepted on 202", async () => {
-      adapter.mockImplementationOnce(createApiReply(202));
+      fetchMock.mockImplementationOnce(reply(202));
 
-      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Accepted);
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Accepted,
+      );
     });
 
     it("resolves invalid on 400 and limited on 429", async () => {
-      adapter
-        .mockImplementationOnce(createApiReply(400))
-        .mockImplementationOnce(createApiReply(429));
+      fetchMock
+        .mockImplementationOnce(reply(400))
+        .mockImplementationOnce(reply(429));
 
-      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Invalid);
-      expect(await requestResultLink(input)).toBe(ResultLinkOutcome.Limited);
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Invalid,
+      );
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Limited,
+      );
     });
 
     it.each([
       200, 201, 204, 301, 401, 403, 404, 409, 422, 500, 502, 503, 504,
     ])("resolves unavailable on 503 and on any other status, 200 and 204 included: %i", async (status) => {
-      adapter.mockImplementationOnce(createApiReply(status));
+      fetchMock.mockImplementationOnce(reply(status));
 
-      expect(await requestResultLink(input)).toBe(
+      expect(await finish(requestResultLink(input))).toBe(
         ResultLinkOutcome.Unavailable,
       );
     });
@@ -180,70 +279,117 @@ describe("requestResultLink()", () => {
       [429, null, ResultLinkOutcome.Limited],
       [200, { outcome: "accepted" }, ResultLinkOutcome.Unavailable],
     ])("reads the status and never the body: %i %j", async (status, data, outcome) => {
-      adapter.mockImplementationOnce(createApiReply(status, data));
+      fetchMock.mockImplementationOnce(reply(status, data));
 
-      expect(await requestResultLink(input)).toBe(outcome);
+      expect(await finish(requestResultLink(input))).toBe(outcome);
     });
   });
 
   describe("given no reply", () => {
-    it("resolves unavailable with no connection and when cancelled, without throwing", async () => {
-      const controller = new AbortController();
+    it("resolves unavailable with no connection, without throwing", async () => {
+      fetchMock.mockImplementationOnce(failToConnect);
 
-      adapter
-        .mockImplementationOnce(createApiError(AxiosError.ERR_NETWORK))
-        .mockImplementationOnce((config) => {
-          controller.abort();
-
-          return createApiReply(202)(config);
-        });
-
-      await expect(requestResultLink(input)).resolves.toBe(
+      await expect(finish(requestResultLink(input))).resolves.toBe(
         ResultLinkOutcome.Unavailable,
       );
-      await expect(
+    });
+
+    it("resolves unavailable when cancelled, and cancels the request", async () => {
+      const controller = new AbortController();
+
+      fetchMock.mockImplementationOnce(neverAnswer);
+
+      const seen = watch(
         requestResultLink(input, { signal: controller.signal }),
-      ).resolves.toBe(ResultLinkOutcome.Unavailable);
+      );
+
+      await vi.advanceTimersByTimeAsync(0);
+
+      const [request] = getRequests();
+
+      expect(seen.outcome).toBeUndefined();
+      expect(request.signal.aborted).toBe(false);
+
+      controller.abort();
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(request.signal.aborted).toBe(true);
+      expect(seen.outcome).toBe(ResultLinkOutcome.Unavailable);
+      expect(vi.getTimerCount()).toBe(0);
     });
 
     it("resolves unavailable without a request when it was cancelled before", async () => {
       await expect(
-        requestResultLink(input, { signal: AbortSignal.abort() }),
+        finish(requestResultLink(input, { signal: AbortSignal.abort() })),
       ).resolves.toBe(ResultLinkOutcome.Unavailable);
-      expect(adapter).not.toHaveBeenCalled();
+      expect(fetchMock).not.toHaveBeenCalled();
     });
 
-    it("resolves unavailable with no reply in time", async () => {
-      adapter.mockImplementationOnce(createApiError(AxiosError.ETIMEDOUT));
+    it("resolves unavailable with no reply in time, and cancels the request", async () => {
+      fetchMock.mockImplementationOnce(neverAnswer);
 
-      await expect(requestResultLink(input)).resolves.toBe(
+      await expect(finish(requestResultLink(input))).resolves.toBe(
+        ResultLinkOutcome.Unavailable,
+      );
+      expect(getRequests()[0].signal.aborted).toBe(true);
+    });
+
+    it("resolves unavailable when the request throws something unexpected", async () => {
+      fetchMock.mockRejectedValueOnce(new TypeError("Unexpected"));
+
+      await expect(finish(requestResultLink(input))).resolves.toBe(
         ResultLinkOutcome.Unavailable,
       );
     });
 
-    it("resolves unavailable when the request throws something unexpected", async () => {
-      adapter.mockRejectedValueOnce(new TypeError("Unexpected"));
+    it("resolves unavailable when a reply cannot be read", async () => {
+      fetchMock.mockImplementationOnce(async () => {
+        const response = new Response("{}", { status: 202 });
 
-      await expect(requestResultLink(input)).resolves.toBe(
+        vi.spyOn(response, "text").mockRejectedValue(new TypeError("Lost"));
+
+        return response;
+      });
+
+      await expect(finish(requestResultLink(input))).resolves.toBe(
         ResultLinkOutcome.Unavailable,
       );
     });
   });
 
   describe("given a time limit", () => {
-    it("gives up after RESULT_LINK_TIMEOUT_MS, and honours a time limit passed by the caller", async () => {
-      adapter.mockImplementation(createApiReply(202));
+    it.each([
+      ["no options", undefined, RESULT_LINK_TIMEOUT_MS],
+      ["empty options", {}, RESULT_LINK_TIMEOUT_MS],
+      ["no limit", { timeoutMs: undefined }, RESULT_LINK_TIMEOUT_MS],
+      [
+        "a limit that is no number",
+        { timeoutMs: Number.NaN },
+        RESULT_LINK_TIMEOUT_MS,
+      ],
+      ["a limit of the caller", { timeoutMs: 2500 }, 2500],
+    ])("gives up after RESULT_LINK_TIMEOUT_MS, and honours a time limit passed by the caller: %s", async (_, options, limit) => {
+      fetchMock.mockImplementationOnce(neverAnswer);
 
-      await requestResultLink(input);
-      await requestResultLink(input, {});
-      await requestResultLink(input, { timeoutMs: undefined });
-      await requestResultLink(input, { timeoutMs: Number.NaN });
-      await requestResultLink(input, { timeoutMs: 2500 });
+      const seen = watch(requestResultLink(input, options));
+
+      await vi.advanceTimersByTimeAsync(limit - 1);
+
+      expect(seen.outcome).toBeUndefined();
+
+      await vi.advanceTimersByTimeAsync(1);
 
       expect(RESULT_LINK_TIMEOUT_MS).toBe(10_000);
-      expect(adapter.mock.calls.map(([{ timeout }]) => timeout)).toEqual([
-        10_000, 10_000, 10_000, 10_000, 2500,
-      ]);
+      expect(seen.outcome).toBe(ResultLinkOutcome.Unavailable);
+      expect(vi.getTimerCount()).toBe(0);
+    });
+
+    it("leaves no timer running after a reply", async () => {
+      fetchMock.mockImplementationOnce(reply(202));
+
+      await requestResultLink(input);
+
+      expect(vi.getTimerCount()).toBe(0);
     });
   });
 
@@ -251,42 +397,45 @@ describe("requestResultLink()", () => {
     it("makes no request and resolves unavailable when no endpoint is configured", async () => {
       build.resultLinkUrl = undefined;
 
-      await expect(requestResultLink(inputWithConsent)).resolves.toBe(
+      await expect(finish(requestResultLink(inputWithConsent))).resolves.toBe(
         ResultLinkOutcome.Unavailable,
       );
-      expect(adapter).not.toHaveBeenCalled();
+      expect(fetchMock).not.toHaveBeenCalled();
     });
   });
 
   describe("whatever the outcome", () => {
-    const replies: [string, AxiosAdapter][] = [
-      ["202", createApiReply(202)],
-      ["400", createApiReply(400)],
-      ["429", createApiReply(429)],
-      ["503", createApiReply(503)],
-      ["500", createApiReply(500)],
-      ["no connection", createApiError(AxiosError.ERR_NETWORK)],
-      ["no reply in time", createApiError(AxiosError.ETIMEDOUT)],
+    const replies: [string, Fetch][] = [
+      ["202", reply(202)],
+      ["400", reply(400)],
+      ["429", reply(429)],
+      ["503", reply(503)],
+      ["500", reply(500)],
+      ["no connection", failToConnect],
+      ["no reply in time", neverAnswer],
     ];
 
     it.each(
       replies,
-    )("never sends a second request by itself: %s", async (_, reply) => {
-      adapter.mockImplementation(reply);
+    )("never sends a second request by itself: %s", async (_, answer) => {
+      fetchMock.mockImplementation(answer);
 
-      await requestResultLink(inputWithConsent);
+      await finish(requestResultLink(inputWithConsent));
+      await vi.advanceTimersByTimeAsync(RESULT_LINK_TIMEOUT_MS);
 
-      expect(adapter).toHaveBeenCalledTimes(1);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
     });
 
     it("sends a second request when the same input is sent again", async () => {
-      adapter.mockImplementation(createApiReply(202));
+      fetchMock.mockImplementation(reply(202));
 
-      await requestResultLink(inputWithConsent);
-      await requestResultLink(inputWithConsent);
+      await finish(requestResultLink(inputWithConsent));
+      await finish(requestResultLink(inputWithConsent));
 
-      expect(adapter).toHaveBeenCalledTimes(2);
-      expect(adapter.mock.calls[1][0].data).toBe(adapter.mock.calls[0][0].data);
+      const bodies = await getSentBodies();
+
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(bodies[1]).toEqual(bodies[0]);
     });
 
     it("writes nothing to the console", async () => {
@@ -295,16 +444,16 @@ describe("requestResultLink()", () => {
         vi.spyOn(console, method).mockImplementation(() => undefined),
       );
 
-      for (const [, reply] of replies) {
-        adapter.mockImplementationOnce(reply);
+      for (const [, answer] of replies) {
+        fetchMock.mockImplementationOnce(answer);
 
-        await requestResultLink(inputWithConsent);
+        await finish(requestResultLink(inputWithConsent));
       }
 
       build.resultLinkUrl = undefined;
-      await requestResultLink(inputWithConsent);
+      await finish(requestResultLink(inputWithConsent));
 
-      expect(adapter).toHaveBeenCalledTimes(replies.length);
+      expect(fetchMock).toHaveBeenCalledTimes(replies.length);
 
       for (const spy of spies) {
         expect(spy).not.toHaveBeenCalled();
