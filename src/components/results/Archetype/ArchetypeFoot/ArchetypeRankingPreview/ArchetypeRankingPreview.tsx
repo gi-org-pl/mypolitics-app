@@ -4,7 +4,7 @@ import plusIcon from "@/assets/icons/plus.svg";
 import { withKeys } from "@/utils/array/withKeys";
 
 import type { ArchetypeEntry } from "../../Archetype.types";
-import { getPreviewImages } from "./utils/getPreviewImages";
+import { usePreviewImages } from "./utils/usePreviewImages";
 
 interface ArchetypeRankingPreviewProps {
   ranking: ArchetypeEntry[];
@@ -16,7 +16,7 @@ const ITEM_CLASS_NAME =
 export const ArchetypeRankingPreview = ({
   ranking,
 }: ArchetypeRankingPreviewProps) => {
-  const images = getPreviewImages(ranking);
+  const { images, markFailed } = usePreviewImages(ranking);
 
   if (images.length === 0) return null;
 
@@ -33,6 +33,7 @@ export const ArchetypeRankingPreview = ({
           alt=""
           dataTestId="archetype-ranking-preview-image"
           className={ITEM_CLASS_NAME}
+          onErrorCapture={() => markFailed(item)}
         />
       ))}
       {ranking.length > images.length && (

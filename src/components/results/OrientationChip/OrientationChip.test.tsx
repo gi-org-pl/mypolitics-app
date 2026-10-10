@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { createOrientation } from "@/utils/vitest/createOrientation";
@@ -151,6 +151,66 @@ describe("<OrientationChip />", () => {
       expect(
         screen.queryByTestId("orientation-chip-image"),
       ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given an image that fails to load", () => {
+    it("renders the name alone, as without an image", () => {
+      render(
+        <OrientationChip
+          name="Radykalizm"
+          imageUrl={IMAGE_URL}
+          color="#924747"
+        />,
+      );
+
+      fireEvent.error(screen.getByTestId("orientation-chip-image"));
+
+      expect(screen.getByText("Radykalizm")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("orientation-chip-image"),
+      ).not.toBeInTheDocument();
+      expect(screen.getByTestId("orientation-chip").children).toHaveLength(1);
+    });
+
+    it("does so in the quiet look as well", () => {
+      render(
+        <OrientationChip name="Radykalizm" imageUrl={IMAGE_URL} look="quiet" />,
+      );
+
+      fireEvent.error(screen.getByTestId("orientation-chip-image"));
+
+      expect(screen.getByText("Radykalizm")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("orientation-chip-image"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders nothing when there is no name either", () => {
+      const { container } = render(<OrientationChip imageUrl={IMAGE_URL} />);
+
+      fireEvent.error(screen.getByTestId("orientation-chip-image"));
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("draws an image again when the address changes", () => {
+      const { rerender } = render(
+        <OrientationChip name="Radykalizm" imageUrl={IMAGE_URL} />,
+      );
+
+      fireEvent.error(screen.getByTestId("orientation-chip-image"));
+      rerender(
+        <OrientationChip
+          name="Radykalizm"
+          imageUrl="https://example.com/other.svg"
+        />,
+      );
+
+      expect(screen.getByTestId("orientation-chip-image")).toHaveAttribute(
+        "src",
+        "https://example.com/other.svg",
+      );
     });
   });
 

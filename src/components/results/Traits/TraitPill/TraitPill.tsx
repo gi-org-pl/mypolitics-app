@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import type { TraitPillProps } from "./TraitPill.types";
 import { getPillHolder } from "./utils/getPillHolder";
@@ -17,6 +18,7 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
   const isTheirs = holder !== "taker";
   const isHatched = holder === "other";
   const description = useTraitDescription(name, holder, otherOrientation?.name);
+  const { hasFailed, markFailed } = useUrlFailure(orientation.imageUrl);
 
   const safeColor = getSafeColor(orientation.color);
   const isLight = isLightColor(safeColor);
@@ -36,11 +38,12 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
             : undefined
         }
       >
-        {orientation.imageUrl && (
+        {orientation.imageUrl && !hasFailed && (
           <img
             data-testid="trait-pill-image"
             src={orientation.imageUrl}
             alt=""
+            onError={markFailed}
             className={`-mx-2 size-8 shrink-0 object-cover ${isLight ? "brightness-0" : ""}`}
           />
         )}

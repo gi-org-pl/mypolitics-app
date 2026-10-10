@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -84,6 +84,36 @@ describe("<ResultsHeaderRing />", () => {
       expect(
         screen.queryByTestId("results-header-image-placeholder"),
       ).not.toBeInTheDocument();
+    });
+
+    it("draws the dark base only while it draws the image", () => {
+      render(
+        <ResultsHeaderRing confidence={80} band="match" imageUrl={IMAGE_URL} />,
+      );
+
+      expect(screen.getByTestId("results-header-image")).toHaveClass(
+        "bg-gi-dark-ash",
+        "has-[>img]:bg-gi-dark-primary",
+      );
+    });
+
+    it("looks like the placeholder when the image fails to load", () => {
+      render(
+        <ResultsHeaderRing confidence={80} band="match" imageUrl={IMAGE_URL} />,
+      );
+
+      const image = screen.getByTestId("results-header-image");
+
+      fireEvent.error(image.querySelector("img") as HTMLImageElement);
+
+      expect(image.querySelector("img")).toBeNull();
+      expect(image).toHaveClass(
+        "bg-gi-dark-ash",
+        "[&>[aria-hidden=true]]:hidden",
+      );
+      expect(
+        image.querySelectorAll(":scope > [aria-hidden=true]"),
+      ).toHaveLength(image.children.length);
     });
 
     it("draws the ring over the edge of the image", () => {

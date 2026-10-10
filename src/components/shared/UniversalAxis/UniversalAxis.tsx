@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME } from "@/constants/image";
 import type { AxisLayout, AxisSideLayout } from "@/types/axis";
 import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 
@@ -65,7 +66,7 @@ const renderCap = (side: AxisSide, entry: AxisSideLayout) => {
       size="small"
       src={entry.imageUrl}
       dataTestId={`universal-axis-cap-${side}`}
-      className={capClassName}
+      className={`${capClassName} ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME}`}
       style={getColorStyle(entry.color)}
     />
   ) : (
@@ -94,7 +95,7 @@ const renderComparison = (
           size="small"
           src={comparison.imageUrl}
           dataTestId="universal-axis-comparison-image"
-          className={imageClassName}
+          className={`${imageClassName} ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME}`}
           style={imageStyle}
         />
       ) : (
