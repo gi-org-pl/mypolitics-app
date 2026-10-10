@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
-import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
+import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
 import { CHECKPOINT_CARDS } from "./SurveyQuestionnaire.constants";
 

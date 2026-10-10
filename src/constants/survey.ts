@@ -7,13 +7,16 @@ import type {
   SurveyPhase,
   SurveySessionConfig,
 } from "@/types/survey";
-import { getResultLinkUrl } from "@/utils/survey/getResultLinkUrl";
+import { getResultLinkUrl } from "@/utils/survey/email-capture/getResultLinkUrl";
 
 // The API has no slugs, so the map is kept by hand: one entry per quiz that
-// has a survey in this API.
-export const QUIZ_SURVEY_IDS: Record<string, string> = {
-  mypolitics: "60beb898-a4e4-4160-88c4-07a9931ab499",
-  prezydencki2025: "270f6c12-6551-4661-bfcf-52635a703928",
+// has a project in this API, from its slug to the identifier of the project.
+// The slugs are predefined here until the API has them. The survey to read
+// is the one the project names as its latest (`getLatestSurvey`), so a new
+// version of a quiz needs no change here.
+export const QUIZ_PROJECT_IDS: Record<string, string> = {
+  mypolitics: "5ab50822-e95e-4c7c-a1d6-14aceb68f108",
+  prezydencki2025: "69ef6c38-7292-4096-a9ef-a58e682dbfde",
 };
 
 export const RESULTS_URL = "https://mypolitics.pl/results";
@@ -29,7 +32,11 @@ export const SURVEY_PHASES: readonly SurveyPhase[] = [
   "short-results",
 ];
 
-export const MAX_TOPICS = 3;
+// Category select: the share of the visible categories of a quiz that may be
+// picked, and the fewest visible categories the select is shown for.
+export const MAX_CATEGORIES_RATIO = 0.5;
+export const MIN_CATEGORIES_FOR_SELECT = 2;
+
 export const ADULT_AGE = 18;
 
 // The kinds in the order their answers are drawn: the scale, then the rest.
@@ -41,18 +48,48 @@ export const SURVEY_ANSWER_KINDS: readonly SurveyAnswerKind[] = [
   "custom",
 ];
 
-// The API has no field for the step of the scale, so it is read from the text
-// of a possible answer, trimmed and in lower case. The table is closed: it
-// does not grow with other wordings or other languages.
-export const SURVEY_SCALE_ANSWER_KINDS: ReadonlyMap<string, SurveyAnswerKind> =
-  new Map([
+// The API has no field for the step of the scale. A possible answer is an
+// identifier, a text, a weight and orientations, and neither its place among
+// the answers nor its weight tells the steps apart. So the step is read from
+// the text, trimmed and in lower case: one table of wordings per language the
+// app is in. A new language of the app needs its table here, and a test fails
+// until it has one.
+export const SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE: Record<
+  string,
+  ReadonlyMap<string, SurveyAnswerKind>
+> = {
+  // Every wording of a scale question in the quizzes of the API.
+  pl: new Map([
     ["zdecydowanie za", "strongly-agree"],
     ["częściowo za", "agree"],
     ["za", "agree"],
     ["częściowo przeciw", "disagree"],
     ["przeciw", "disagree"],
     ["zdecydowanie przeciw", "strongly-disagree"],
-  ]);
+  ]),
+  // "Agree" and "Disagree" are in quizzes of the API. No quiz is in English
+  // yet, so the strong steps are the names the scale has in English.
+  en: new Map([
+    ["strongly agree", "strongly-agree"],
+    ["agree", "agree"],
+    ["disagree", "disagree"],
+    ["strongly disagree", "strongly-disagree"],
+  ]),
+};
+
+// Every wording of every language. The language a quiz was asked for is not
+// looked at: an author writes the answers in the words they choose, and
+// quizzes in Polish have answers in English.
+//
+// A wording that is not here makes its answer a custom one: it is drawn with
+// its own text, can be picked and is handed in like any other - it only loses
+// the look and the place of its step.
+export const SURVEY_SCALE_ANSWER_KINDS: ReadonlyMap<string, SurveyAnswerKind> =
+  new Map(
+    Object.values(SURVEY_SCALE_ANSWER_KINDS_BY_LANGUAGE).flatMap((kinds) => [
+      ...kinds,
+    ]),
+  );
 
 export const DEMOGRAPHICS_FIELD_IDS: readonly DemographicsFieldId[] = [
   "age",

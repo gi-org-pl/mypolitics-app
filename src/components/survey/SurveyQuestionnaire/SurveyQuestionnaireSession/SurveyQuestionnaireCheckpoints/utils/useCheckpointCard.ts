@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import type { CheckpointOutcome } from "@/types/checkpoint";
 import type { SurveySessionApi } from "@/types/survey";
-import { drawRevealLine } from "@/utils/checkpoint/drawRevealLine";
-import { readCheckpointRecord } from "@/utils/checkpoint/readCheckpointRecord";
-import { readShownCard } from "@/utils/checkpoint/readShownCard";
+import { drawRevealLine } from "@/utils/checkpoint/lines/drawRevealLine";
+import { readCheckpointRecord } from "@/utils/checkpoint/record/readCheckpointRecord";
+import { readShownCard } from "@/utils/checkpoint/record/readShownCard";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import type { CheckpointCardControls } from "../SurveyQuestionnaireCheckpoints.types";
