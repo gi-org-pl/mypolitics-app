@@ -9,6 +9,7 @@ import {
   QUIZ_NAME,
   SURVEY_ID,
 } from "./survey.fixture";
+import { singleCategorySurveyFixture } from "./survey-single-category.fixture";
 
 const HOME_PATH = "/";
 const QUIZ_PATH = "/quizzes/mypolitics";
@@ -362,6 +363,52 @@ test.describe("Feature: Questionnaire", () => {
       await expect(
         page.getByRole("heading", { name: LOAD_ERROR_HEADING }),
       ).toHaveCount(0);
+    });
+  });
+
+  test("Scenario: A quiz with one visible category has no category select", async ({
+    page,
+  }) => {
+    await test.step("Given the quiz has one visible category", async () => {
+      // Routes registered later are asked first: this quiz is sent in place
+      // of the one the mock has, and everything else is left to the mock.
+      await page.route("**/v1/survey/**", (route) =>
+        route.request().method() === "GET"
+          ? route.fulfill({
+              json: singleCategorySurveyFixture,
+              headers: { "access-control-allow-origin": "*" },
+            })
+          : route.fallback(),
+      );
+    });
+
+    await test.step("When a user opens the quiz", async () => {
+      await openPage(page, QUIZ_PATH);
+    });
+
+    await test.step("Then they are on the first question, with nothing to pick, to step back to or to reset", async () => {
+      await expectQuestion(page, FIRST_QUESTION);
+      await expect(page.getByRole("group", { name: /^Wybierz / })).toHaveCount(
+        0,
+      );
+      await expectPill(page, "Gospodarka", 2);
+      await expect(getProgressBar(page)).toHaveAttribute("aria-valuenow", "0");
+      await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+      await expect(getButton(page, "Zacznij od nowa")).toBeDisabled();
+    });
+
+    await test.step("When they answer the first question and press back", async () => {
+      await answer(page, FIRST_QUESTION, "Częściowo za");
+      await expectQuestion(page, SECOND_QUESTION);
+      await getButton(page, "Poprzednie pytanie").click();
+    });
+
+    await test.step("Then they are on the first question again, and back is off", async () => {
+      await expectQuestion(page, FIRST_QUESTION);
+      await expect(getButton(page, "Poprzednie pytanie")).toBeDisabled();
+      await expect(page.getByRole("group", { name: /^Wybierz / })).toHaveCount(
+        0,
+      );
     });
   });
 

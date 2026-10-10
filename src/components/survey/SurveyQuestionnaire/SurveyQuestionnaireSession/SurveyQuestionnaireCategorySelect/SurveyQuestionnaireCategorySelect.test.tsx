@@ -2,6 +2,7 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import type { Survey, SurveySession } from "@/types/survey";
+import { getCategoryLimit } from "@/utils/survey/categories/getCategoryLimit";
 import { createSession } from "@/utils/survey/session/createSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
@@ -31,6 +32,16 @@ const renderPhase = (
   renderPhaseContent(SurveyQuestionnaireCategorySelect, survey, {
     ...createSession(survey),
     ...overrides,
+  });
+
+// A quiz with that many visible categories, named "Kategoria 1" and so on.
+const createQuizOf = (visible: number): Survey =>
+  createQuiz({
+    categories: Array.from({ length: visible }, (_, index) =>
+      createSurveyCategory(`category-${index + 1}`, {
+        name: `Kategoria ${index + 1}`,
+      }),
+    ),
   });
 
 const getRow = (name: string) => screen.getByRole("button", { name });
@@ -141,6 +152,38 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
           "Pomiń",
         ].join(""),
       );
+    });
+  });
+
+  describe("given a quiz with another number of visible categories", () => {
+    it.each([
+      [2, 1],
+      [4, 2],
+      [6, 3],
+      [7, 4],
+      [9, 5],
+    ])("lets %i categories be narrowed down to the limit of the quiz, %i", (visible, limit) => {
+      const survey = createQuizOf(visible);
+      const { getSession } = renderPhase(survey);
+      const group = screen.getByRole("group");
+
+      expect(getCategoryLimit(survey)).toBe(limit);
+      expect(group).toHaveAccessibleName(
+        expect.stringMatching(new RegExp(`^Wybierz ${limit} `)),
+      );
+
+      for (const row of within(group).getAllByRole("button")) {
+        fireEvent.click(row);
+      }
+
+      expect(getSession().prioritizedCategoryIds).toEqual(
+        survey.categories.slice(0, limit).map(({ id }) => id),
+      );
+      expect(
+        within(group)
+          .getAllByRole("button")
+          .filter((row) => (row as HTMLButtonElement).disabled),
+      ).toHaveLength(visible - limit);
     });
   });
 

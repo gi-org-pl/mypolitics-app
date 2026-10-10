@@ -31,6 +31,17 @@ const PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
 const WAITING = "Liczymy Twoje wyniki";
 const ALL_DONE = createSurvey().questions.length;
 
+// Fewer than two visible categories: such a quiz has no category select.
+const ONE_VISIBLE_CATEGORY = [
+  { id: "economy", name: "Gospodarka", weight: 1, isHidden: false },
+  { id: "ecology", name: "Ekologia", weight: 1, isHidden: true },
+  { id: "hidden", name: "Pytania kontrolne", weight: 1, isHidden: true },
+];
+const NO_VISIBLE_CATEGORY = ONE_VISIBLE_CATEGORY.map((category) => ({
+  ...category,
+  isHidden: true,
+}));
+
 const scrollIntoView = vi.fn();
 
 // The stores live as long as the module does, so every test takes a quiz of
@@ -199,6 +210,81 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(
         screen.getByText("Kto powinien płacić za ochronę klimatu?"),
       ).toBeVisible();
+    });
+  });
+
+  describe.each([
+    ["one visible category", ONE_VISIBLE_CATEGORY],
+    ["no visible category", NO_VISIBLE_CATEGORY],
+  ])("given a quiz with %s", (_name, categories) => {
+    const queryCategorySelect = () =>
+      screen.queryByRole("group", { name: /^Wybierz / });
+
+    it("draws no category select: the session starts on the first question", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+
+      expect(getSession().phase).toBe("questions");
+      expect(queryCategorySelect()).not.toBeInTheDocument();
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(
+        screen.getByRole("group", { name: FIRST_STATEMENT }),
+      ).toBeInTheDocument();
+      expect(getBar()).toHaveAttribute("aria-valuenow", "0");
+    });
+
+    it("has nothing to step back to or to reset on the first question", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+      const session = getSession();
+
+      expect(getBackButton()).toBeDisabled();
+      expect(getResetButton()).toBeDisabled();
+
+      fireEvent.click(getBackButton());
+      fireEvent.click(getResetButton());
+
+      expect(getSession()).toBe(session);
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+
+    it("steps back from the second question to the first and no further, never to a select", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+
+      fireEvent.click(getSkipButton());
+      finishChange();
+
+      expect(screen.getByText(SECOND_STATEMENT)).toBeVisible();
+
+      fireEvent.click(getBackButton());
+      finishChange();
+
+      expect(getSession()).toMatchObject({ phase: "questions", entries: [] });
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(queryCategorySelect()).not.toBeInTheDocument();
+      expect(getBackButton()).toBeDisabled();
+    });
+
+    it("comes back to the first question after a confirmed reset", () => {
+      const { getSession } = renderScreen(
+        onQuestion(2),
+        createQuiz({ categories }),
+      );
+
+      fireEvent.click(getResetButton());
+      fireEvent.click(screen.getByRole("button", { name: "Resetuj quiz" }));
+      finishChange();
+
+      expect(getSession()).toMatchObject({ phase: "questions", entries: [] });
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(queryCategorySelect()).not.toBeInTheDocument();
     });
   });
 
