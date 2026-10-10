@@ -1208,7 +1208,7 @@ test.describe("Feature: Questionnaire checkpoints - the single axis puzzle", () 
       await expect(
         page.getByRole("group", { name: AXIS_PUZZLE_QUESTIONS[0].text }),
       ).toBeVisible();
-      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCategoryGroup(page)).toHaveCount(0);
     });
 
     await test.step('When they answer the first five questions "Zdecydowanie za"', async () => {
