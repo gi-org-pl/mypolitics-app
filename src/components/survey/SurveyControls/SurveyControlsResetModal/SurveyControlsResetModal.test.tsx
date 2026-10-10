@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -15,6 +16,21 @@ const renderModal = (props: Partial<SurveyControlsResetModalProps> = {}) =>
       onConfirm={vi.fn()}
       {...props}
     />,
+  );
+
+const ANCESTOR = "transformed-ancestor";
+
+const renderInTransformedAncestor = (onClose = vi.fn()) =>
+  renderWithI18n(
+    <div data-testid={ANCESTOR} style={{ transform: "scale(1)" }}>
+      <button type="button">Outside</button>
+      <SurveyControlsResetModal
+        quizName="Quiz Name"
+        isOpen
+        onClose={onClose}
+        onConfirm={vi.fn()}
+      />
+    </div>,
   );
 
 describe("<SurveyControlsResetModal />", () => {
@@ -160,6 +176,51 @@ describe("<SurveyControlsResetModal />", () => {
 
       const overlay = screen.getByRole("dialog").parentElement;
       fireEvent.click(overlay as HTMLElement);
+
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("given a transformed ancestor", () => {
+    it("renders the overlay in the body, outside that ancestor", () => {
+      renderInTransformedAncestor();
+
+      const dialog = screen.getByRole("dialog", { name: "Rozpocząć od nowa?" });
+
+      expect(dialog.parentElement?.parentElement).toBe(document.body);
+      expect(screen.getByTestId(ANCESTOR)).not.toContainElement(dialog);
+    });
+
+    it("moves focus into the dialog", () => {
+      renderInTransformedAncestor();
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
+
+    it("keeps focus in the dialog on Tab and Shift+Tab", async () => {
+      const user = userEvent.setup();
+      renderInTransformedAncestor();
+
+      await user.tab();
+      expect(
+        screen.getByRole("button", { name: "Resetuj quiz" }),
+      ).toHaveFocus();
+
+      await user.tab();
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+
+      await user.tab({ shift: true });
+      expect(
+        screen.getByRole("button", { name: "Resetuj quiz" }),
+      ).toHaveFocus();
+    });
+
+    it("calls onClose on Escape", async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      renderInTransformedAncestor(onClose);
+
+      await user.keyboard("{Escape}");
 
       expect(onClose).toHaveBeenCalledTimes(1);
     });
