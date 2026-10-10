@@ -1,18 +1,22 @@
 import { i18n } from "@lingui/core";
 import { act, fireEvent, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
-import type { Survey, SurveySession } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  ResultLinkOutcome,
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
-
 import { SURVEY_PHASE_CONTENT } from "../SurveyQuestionnaireSession.constants";
 import { SurveyQuestionnaireResultsCalculation } from "./SurveyQuestionnaireResultsCalculation";
 import {
@@ -101,9 +105,9 @@ const getLines = () =>
 describe("<SurveyQuestionnaireResultsCalculation />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    createResultMock.mockResolvedValue("stored");
+    createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
     getResultMock.mockResolvedValue({ id: "result", isCalculated: true });
-    requestResultLinkMock.mockResolvedValue("accepted");
+    requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Accepted);
   });
 
   afterEach(() => {
@@ -176,15 +180,17 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
       expect(createResultMock.mock.calls[0][0]).toEqual(
         buildResultInput(survey, session),
       );
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
     });
 
     it("starts clean from a result state left by an earlier visit of the phase", async () => {
       createResultMock.mockReturnValue(new Promise(() => undefined));
 
-      const { getSession } = renderPhase({ resultState: "failed" });
+      const { getSession } = renderPhase({
+        resultState: SurveyResultState.Failed,
+      });
 
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
       expect(getLines()).toHaveLength(1);
     });
@@ -228,13 +234,13 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
 
       expect(onLeave).toHaveBeenCalledTimes(1);
       expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().resultState).toBe("calculated");
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
     });
   });
 
   describe("when the hand-in fails", () => {
     it("shows the failure in place of the lines, and starts a new run on retry", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { order, onLeave, getSession } = renderPhase();
 
@@ -242,7 +248,7 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
 
       expect(screen.getByRole("alert")).toHaveTextContent(NOT_SAVED);
       expect(getLines()).toEqual([]);
-      expect(getSession().resultState).toBe("failed");
+      expect(getSession().resultState).toBe(SurveyResultState.Failed);
       expect(
         screen.getByRole("button", { name: "Spróbuj ponownie" }),
       ).toHaveFocus();
@@ -266,7 +272,7 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
         "isEmailSendingSetUp",
         "get",
       ).mockReturnValue(true);
-      requestResultLinkMock.mockResolvedValue("unavailable");
+      requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Unavailable);
 
       const { onLeave, getSession } = renderPhase({
         email: { address: "biuro@mypolitics.pl", hasConsent: true },

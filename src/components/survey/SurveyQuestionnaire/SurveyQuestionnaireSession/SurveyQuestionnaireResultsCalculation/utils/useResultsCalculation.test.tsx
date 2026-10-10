@@ -3,24 +3,24 @@ import { I18nProvider } from "@lingui/react";
 import { act, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
-import type {
+import {
+  CreateResultOutcome,
   ResultLinkOutcome,
-  Survey,
-  SurveyEmail,
-  SurveyResult,
-  SurveySession,
+  type Survey,
+  type SurveyEmail,
+  type SurveyResult,
+  SurveyResultState,
+  type SurveySession,
 } from "@/types/survey";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
-
 import {
   LINE_INTERVAL_MS,
   MAX_LINES,
@@ -129,9 +129,9 @@ describe("useResultsCalculation()", () => {
       "isEmailSendingSetUp",
       "get",
     ).mockReturnValue(true);
-    createResultMock.mockResolvedValue("stored");
+    createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
     getResultMock.mockResolvedValue(toResult(true));
-    requestResultLinkMock.mockResolvedValue("accepted");
+    requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Accepted);
   });
 
   afterEach(() => {
@@ -155,7 +155,7 @@ describe("useResultsCalculation()", () => {
       expect(result.current.state).toBe("running");
       expect(result.current.lines).toEqual([order[0]]);
       expect(createResultMock).toHaveBeenCalledTimes(1);
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
 
       await pass(LINE_INTERVAL_MS * 2);
 
@@ -188,7 +188,7 @@ describe("useResultsCalculation()", () => {
 
       expect(onLeave).toHaveBeenCalledTimes(1);
       expect(result.current.state).toBe("running");
-      expect(getSession().resultState).toBe("calculated");
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
 
       await pass(RESULT_WAIT_MS);
 
@@ -201,7 +201,7 @@ describe("useResultsCalculation()", () => {
 
       await pass(MIN_STAY_MS - 1);
 
-      expect(getSession().resultState).toBe("calculated");
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
       expect(result.current.state).toBe("running");
       expect(result.current.lines).toHaveLength(MIN_LINES);
       expect(onLeave).not.toHaveBeenCalled();
@@ -234,7 +234,7 @@ describe("useResultsCalculation()", () => {
       createResultMock.mockImplementationOnce(
         () =>
           new Promise((resolve) => {
-            finishHandIn = () => resolve("stored");
+            finishHandIn = () => resolve(CreateResultOutcome.Stored);
           }),
       );
 
@@ -270,14 +270,14 @@ describe("useResultsCalculation()", () => {
       expect(result.current.state).toBe("running");
       expect(onLeave).not.toHaveBeenCalled();
 
-      await answer("accepted");
+      await answer(ResultLinkOutcome.Accepted);
 
       expect(onLeave).toHaveBeenCalledTimes(1);
       expect(result.current.state).toBe("running");
     });
 
     it("shows the notice instead of leaving when the link was not sent", async () => {
-      requestResultLinkMock.mockResolvedValue("unavailable");
+      requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Unavailable);
 
       const { result, onLeave, getSession } = renderCalculation(EMAIL);
 
@@ -291,7 +291,7 @@ describe("useResultsCalculation()", () => {
       expect(result.current.state).toBe("link-not-sent");
       expect(onLeave).not.toHaveBeenCalled();
       // The notice turns reset on for nobody: nothing failed.
-      expect(getSession().resultState).toBe("calculated");
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
 
       // It does not time out, and does not leave by itself.
       await pass(RESULT_WAIT_MS * 2);
@@ -302,7 +302,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it('leaves when "Zobacz wyniki" is pressed, once when pressed twice', async () => {
-      requestResultLinkMock.mockResolvedValue("limited");
+      requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Limited);
 
       const { result, onLeave } = renderCalculation(EMAIL);
 
@@ -317,14 +317,14 @@ describe("useResultsCalculation()", () => {
 
   describe("given a run that failed", () => {
     it("shows the failure and does not leave", async () => {
-      createResultMock.mockResolvedValue("refused");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Refused);
 
       const { result, onLeave, getSession } = renderCalculation();
 
       await settle();
 
       expect(result.current.state).toBe("failed-not-saved");
-      expect(getSession().resultState).toBe("failed");
+      expect(getSession().resultState).toBe(SurveyResultState.Failed);
 
       await pass(RESULT_WAIT_MS);
 
@@ -344,7 +344,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it("starts one new run when retry is pressed twice", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, session, getSession } = renderCalculation();
       const order = getLoaderLines(
@@ -368,7 +368,7 @@ describe("useResultsCalculation()", () => {
       expect(createResultMock.mock.calls[1][0]).toBe(
         createResultMock.mock.calls[0][0],
       );
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
     });
 
     it("ignores retry while a run is under way", async () => {
@@ -384,7 +384,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it("leaves as soon as the result is calculated on a run that follows a failure", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, onLeave } = renderCalculation();
 
@@ -401,7 +401,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it("fails again the same way, with no limit on retries", async () => {
-      createResultMock.mockResolvedValue("refused");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Refused);
 
       const { result, onLeave } = renderCalculation();
 
@@ -422,7 +422,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it("shows the notice after a failed run and a retry, when the link was not sent", async () => {
-      requestResultLinkMock.mockResolvedValue("unavailable");
+      requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Unavailable);
       getResultMock.mockResolvedValue(toResult(false));
 
       const { result, onLeave } = renderCalculation(EMAIL);
@@ -448,7 +448,7 @@ describe("useResultsCalculation()", () => {
     });
 
     it("keeps the e-mail for the run that stores the result", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, onLeave, getSession } = renderCalculation(EMAIL);
 
@@ -468,7 +468,7 @@ describe("useResultsCalculation()", () => {
 
   describe("in every run", () => {
     it("never calls leave of the session itself", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, survey, leave, onLeave } = renderCalculation();
       const storageKey = getSessionStorageKey(survey.id);

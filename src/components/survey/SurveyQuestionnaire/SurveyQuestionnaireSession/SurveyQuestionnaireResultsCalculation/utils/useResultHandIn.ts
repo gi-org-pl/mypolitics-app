@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
-import type { SurveyPhaseContentProps } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  type SurveyPhaseContentProps,
+} from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 
 import { RESULT_STATES } from "../SurveyQuestionnaireResultsCalculation.constants";
-import type { HandInState } from "../SurveyQuestionnaireResultsCalculation.types";
+import { HandInState } from "../SurveyQuestionnaireResultsCalculation.types";
 import { sendHandIn } from "./sendHandIn";
 import { waitForResult } from "./waitForResult";
 
@@ -33,7 +36,7 @@ export const useResultHandIn = (
   const [input] = useState(() => buildResultInput(survey, session));
   const [reached, setReached] = useState<ReachedState>({
     run,
-    state: "sending",
+    state: HandInState.Sending,
   });
 
   useEffect(() => {
@@ -50,27 +53,27 @@ export const useResultHandIn = (
 
       if (signal.aborted) return;
 
-      if (outcome !== "stored") {
-        reach("not-saved");
+      if (outcome !== CreateResultOutcome.Stored) {
+        reach(HandInState.NotSaved);
 
         return;
       }
 
-      reach("created");
+      reach(HandInState.Created);
 
       const isCalculated = await waitForResult(input.sessionId, signal);
 
       if (!signal.aborted) {
-        reach(isCalculated ? "calculated" : "not-ready");
+        reach(isCalculated ? HandInState.Calculated : HandInState.NotReady);
       }
     };
 
-    setResultState(RESULT_STATES.sending);
+    setResultState(RESULT_STATES[HandInState.Sending]);
     handIn();
 
     return () => controller.abort();
   }, [input, run, setResultState]);
 
   // A new run is sending from the render that starts it.
-  return reached.run === run ? reached.state : "sending";
+  return reached.run === run ? reached.state : HandInState.Sending;
 };
