@@ -250,6 +250,10 @@ msgctxt "checkpoint-new-trait"
 msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 msgstr "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:63
+msgid "Checkpoint"
+msgstr "Checkpoint"
+
 #: src/constants/checkpoint.ts:255
 msgctxt "checkpoint-nolan-path-partial"
 msgid "Co ja tu robię?"
@@ -276,6 +280,10 @@ msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zosta
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:26
 msgid "Czytamy programy partii"
 msgstr "Czytamy programy partii"
+
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:100
+msgid "Dalej"
+msgstr "Dalej"
 
 #: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:44
 msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
@@ -780,11 +788,11 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:36
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
 
@@ -1127,7 +1135,7 @@ msgstr "Wolę nie podawać"
 msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 msgstr "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:39
 msgid "Wróć"
 msgstr "Wróć"
 
@@ -1167,6 +1175,10 @@ msgstr "Wyborczy 2023"
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:13
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
+
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:111
+msgid "Wyłącz checkpointy"
+msgstr "Wyłącz checkpointy"
 
 #: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:30
 msgid "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."

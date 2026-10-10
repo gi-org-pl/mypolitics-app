@@ -12,6 +12,7 @@ import { confirmSessionCategories } from "@/utils/survey/categories/confirmSessi
 import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
 import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCategories";
 import { closeSessionCheckpoint } from "@/utils/survey/checkpoints/closeSessionCheckpoint";
+import { setSessionCheckpointRecord } from "@/utils/survey/checkpoints/setSessionCheckpointRecord";
 import { showSessionCheckpoint } from "@/utils/survey/checkpoints/showSessionCheckpoint";
 import { turnSessionCheckpointsOff } from "@/utils/survey/checkpoints/turnSessionCheckpointsOff";
 import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
@@ -75,6 +76,11 @@ export const useSurveySession = (survey: Survey): SurveySessionApi => {
         store,
         survey,
         turnSessionCheckpointsOff,
+      ),
+      setCheckpointRecord: bindSessionAction(
+        store,
+        survey,
+        setSessionCheckpointRecord,
       ),
       setDemographics: bindSessionAction(store, survey, setSessionDemographics),
       leaveDemographics: bindSessionAction(
