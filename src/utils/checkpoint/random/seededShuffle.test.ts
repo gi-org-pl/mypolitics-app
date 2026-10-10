@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SEED } from "./getNextCheckpoint.fixtures";
+import { SEED } from "@/utils/checkpoint/engine/getNextCheckpoint.fixtures";
 import { seededShuffle } from "./seededShuffle";
 
 const ITEMS = [0, 1, 2, 3, 4, 5, 6, 7];

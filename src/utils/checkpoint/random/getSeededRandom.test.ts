@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { FALLBACK_SEED } from "@/constants/checkpoint";
 
-import { SEED } from "./getNextCheckpoint.fixtures";
+import { SEED } from "@/utils/checkpoint/engine/getNextCheckpoint.fixtures";
 import { getSeededRandom } from "./getSeededRandom";
 
 describe("getSeededRandom()", () => {
