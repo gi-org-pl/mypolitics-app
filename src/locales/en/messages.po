@@ -197,7 +197,7 @@ msgid "Algorytm jest jawny"
 msgstr "The algorithm is open"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
-#: src/components/results/ResultsHeader/ResultsHeader.tsx:46
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:31
 msgid "Brak dopasowania"
 msgstr "No match"
 

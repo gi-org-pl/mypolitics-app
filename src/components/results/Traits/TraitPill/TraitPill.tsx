@@ -57,7 +57,7 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
           size="small"
           src={otherOrientation?.imageUrl}
           dataTestId="trait-pill-avatar"
-          className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash"
+          className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash has-[>img]:bg-gi-primary"
         />
       )}
     </li>
