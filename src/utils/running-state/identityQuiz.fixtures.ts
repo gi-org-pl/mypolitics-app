@@ -1,5 +1,5 @@
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
-import type { SurveyLoadResult } from "@/types/survey";
+import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 
 // The identity quiz as GET https://api.mypolitics.pl/api/v1/survey/{surveyId}
 // sent it on 2026-10-08, cut down to what the running state reads: the
@@ -1250,6 +1250,6 @@ export const identityQuizResponse = {
 export const identityQuiz = (
   readSurvey(identityQuizResponse, IDENTITY_QUIZ_ID) as Extract<
     SurveyLoadResult,
-    { status: "ready" }
+    { status: typeof SurveyLoadStatus.Ready }
   >
 ).survey;

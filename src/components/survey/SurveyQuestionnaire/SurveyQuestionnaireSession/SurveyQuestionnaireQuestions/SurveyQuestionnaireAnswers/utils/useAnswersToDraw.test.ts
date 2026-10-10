@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { getAnswersToDraw } from "@/utils/survey/getAnswersToDraw";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { getAnswersToDraw } from "@/utils/survey/questions/getAnswersToDraw";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useAnswersToDraw } from "./useAnswersToDraw";
 

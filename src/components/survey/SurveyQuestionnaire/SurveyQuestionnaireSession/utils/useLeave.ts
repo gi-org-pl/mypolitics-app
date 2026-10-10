@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import type { SurveySessionApi } from "@/types/survey";
-import { getResultsUrl } from "@/utils/survey/getResultsUrl";
+import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
 import { openAddress } from "@/utils/url/openAddress";
 
 // `onLeave` of the screen: the stored session is removed, then the results of

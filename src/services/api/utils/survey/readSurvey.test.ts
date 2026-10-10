@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
-import type { Survey } from "@/types/survey";
+import { type Survey, SurveyLoadStatus } from "@/types/survey";
 
 import { readSurvey } from "./readSurvey";
 import {
@@ -31,7 +31,7 @@ const read = (response: Record<string, unknown>): Survey => {
     SURVEY_ID,
   );
 
-  if (result.status !== "ready") {
+  if (result.status !== SurveyLoadStatus.Ready) {
     throw new Error(`The quiz was read as ${result.status}`);
   }
 
@@ -59,7 +59,9 @@ describe("readSurvey()", () => {
       [{ questions: "questions" }],
       [{ message: "Survey with given ID not found.", statusCode: 404 }],
     ])("returns failed for %j", (response) => {
-      expect(readSurvey(response, SURVEY_ID)).toEqual({ status: "failed" });
+      expect(readSurvey(response, SURVEY_ID)).toEqual({
+        status: SurveyLoadStatus.Failed,
+      });
     });
   });
 
@@ -459,7 +461,7 @@ describe("readSurvey()", () => {
 
     it("returns not-found when no question is left", () => {
       expect(readSurvey({ questions: [] }, SURVEY_ID)).toEqual({
-        status: "not-found",
+        status: SurveyLoadStatus.NotFound,
       });
       expect(
         readSurvey(
@@ -475,7 +477,7 @@ describe("readSurvey()", () => {
           },
           SURVEY_ID,
         ),
-      ).toEqual({ status: "not-found" });
+      ).toEqual({ status: SurveyLoadStatus.NotFound });
     });
 
     it("never throws on a malformed question", () => {

@@ -53,12 +53,29 @@ export interface Survey {
   questions: SurveyQuestion[]; // in the API's order, at least one
 }
 
-export type SurveyLoadResult =
-  | { status: "ready"; survey: Survey }
-  | { status: "not-found" }
-  | { status: "failed" };
+// Where reading a quiz stands: on its way, or how it ended. An enum - see
+// ApiFailureKind in types/api.ts for why it is a constant with a type of the
+// same name.
+export const SurveyLoadStatus = {
+  Loading: "loading", // no reply yet; never the status of a result
+  Ready: "ready",
+  NotFound: "not-found", // no such quiz, or no question of it can be asked
+  Failed: "failed", // no reply, a refusal, or a reply that is not a quiz
+} as const;
 
-export type SurveyLoadState = { status: "loading" } | SurveyLoadResult;
+export type SurveyLoadStatus =
+  (typeof SurveyLoadStatus)[keyof typeof SurveyLoadStatus];
+
+export type SurveyLoadResult =
+  | { status: typeof SurveyLoadStatus.Ready; survey: Survey }
+  | { status: typeof SurveyLoadStatus.NotFound }
+  | { status: typeof SurveyLoadStatus.Failed };
+
+// What a screen that reads a quiz is told: the result, or that it is on
+// its way.
+export type SurveyLoadState =
+  | { status: typeof SurveyLoadStatus.Loading }
+  | SurveyLoadResult;
 
 export type ResidenceAreaSize =
   | "village"
@@ -93,10 +110,15 @@ export interface ResultInput {
   answers: ResultInputAnswer[];
 }
 
+// How handing the answers in ended. An enum, like SurveyLoadStatus.
+export const CreateResultOutcome = {
+  Stored: "stored", // created, or a result with this identifier already exists
+  Refused: "refused", // any other reply of the API
+  Unreachable: "unreachable", // no connection, or no reply in time
+} as const;
+
 export type CreateResultOutcome =
-  | "stored" // created, or a result with this identifier already exists
-  | "refused" // any other reply of the API
-  | "unreachable"; // no connection, or no reply in time
+  (typeof CreateResultOutcome)[keyof typeof CreateResultOutcome];
 
 export interface SurveyResult {
   id: string; // the identifier the result was asked for by
@@ -114,11 +136,16 @@ export interface ResultLinkInput {
   language: ResultLinkLanguage;
 }
 
+// How the request for the result link ended.
+export const ResultLinkOutcome = {
+  Accepted: "accepted", // 202
+  Invalid: "invalid", // 400
+  Limited: "limited", // 429
+  Unavailable: "unavailable", // 503, any other reply, no connection, no reply in time, no endpoint configured
+} as const;
+
 export type ResultLinkOutcome =
-  | "accepted" // 202
-  | "invalid" // 400
-  | "limited" // 429
-  | "unavailable"; // 503, any other reply, no connection, no reply in time, no endpoint configured
+  (typeof ResultLinkOutcome)[keyof typeof ResultLinkOutcome];
 
 export type SurveyPhase =
   | "category-select"
@@ -162,12 +189,17 @@ export interface SurveyEmail {
   hasConsent: boolean;
 }
 
+// How far the hand-in got, and how it ended. An enum, like SurveyLoadStatus.
+export const SurveyResultState = {
+  NotSent: "not-sent",
+  Sending: "sending",
+  Created: "created",
+  Calculated: "calculated",
+  Failed: "failed",
+} as const;
+
 export type SurveyResultState =
-  | "not-sent"
-  | "sending"
-  | "created"
-  | "calculated"
-  | "failed";
+  (typeof SurveyResultState)[keyof typeof SurveyResultState];
 
 export interface SurveyTimeSample {
   questionId: string;
@@ -183,8 +215,8 @@ export interface SurveySession {
   id: string; // random UUID v4: the session, the seed of every seeded draw, and the result identifier
   surveyId: string;
   entries: SurveyAnswerEntry[]; // one per done question: always the first questions of the quiz, in order, no gap
-  topicIds: string[]; // prioritised categories, in the order picked
-  areTopicsConfirmed: boolean;
+  prioritizedCategoryIds: string[]; // the categories picked in category select, in the order picked
+  areCategoriesConfirmed: boolean;
   phase: SurveyPhase;
   areCheckpointsOff: boolean;
   demographics: DemographicsValues;
@@ -203,10 +235,14 @@ export type StoredSurveySession = Omit<SurveySession, "email" | "resultState">;
 export interface UnfittedSurveySession
   extends Omit<
     SurveySession,
-    "entries" | "topicIds" | "phase" | "demographics" | "checkpointRecord"
+    | "entries"
+    | "prioritizedCategoryIds"
+    | "phase"
+    | "demographics"
+    | "checkpointRecord"
   > {
   entries: readonly (SurveyAnswerEntry | undefined)[]; // `undefined` = an entry that could not be read
-  topicIds: readonly unknown[];
+  prioritizedCategoryIds: readonly unknown[];
   phase?: SurveyPhase;
   demographics: Record<string, unknown>;
   checkpointRecord: {
@@ -228,9 +264,9 @@ export type SurveyVisibleCategory = SurveyCategory & { name: string };
 
 export interface SurveySessionApi {
   session: SurveySession;
-  setTopics: (topicIds: string[]) => void;
-  confirmTopics: () => void; // "Idziemy dalej"
-  skipTopics: () => void; // "Pomiń" on category select
+  setCategories: (prioritizedCategoryIds: string[]) => void;
+  confirmCategories: () => void; // "Idziemy dalej"
+  skipCategories: () => void; // "Pomiń" on category select
   answer: (answerId: string, seconds?: number) => void;
   skip: (seconds?: number) => void; // "Pomiń" under a question
   back: () => void;

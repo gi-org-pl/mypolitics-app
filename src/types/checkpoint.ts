@@ -19,12 +19,12 @@ import type {
 
 // The part of the session the running state is computed from. A whole `SurveySession` can be passed as it is.
 //   entries                      - the done questions, in order: `answerId` absent = skipped
-//   topicIds                     - the categories the taker prioritised; [] when none
+//   prioritizedCategoryIds       - the categories the taker prioritised; [] when none
 //   checkpointRecord.timeSamples - `SurveyTimeSample[]`: how long each done question was on screen
 // `checkpointRecord.cardsShown` is not read here.
 export type RunningStateSession = Pick<
   SurveySession,
-  "entries" | "topicIds" | "checkpointRecord"
+  "entries" | "prioritizedCategoryIds" | "checkpointRecord"
 >;
 
 // Inputs that have no source today. Each is simply empty until one exists.

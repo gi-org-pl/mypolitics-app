@@ -2,12 +2,12 @@ import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import type { SurveySession } from "@/types/survey";
-import { createSession } from "@/utils/survey/createSession";
-import { setSessionTopics } from "@/utils/survey/setSessionTopics";
-import { skipQuestion } from "@/utils/survey/skipQuestion";
-import { skipSessionTopics } from "@/utils/survey/skipSessionTopics";
-import { stepBack } from "@/utils/survey/stepBack";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
+import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCategories";
+import { stepBack } from "@/utils/survey/phases/stepBack";
+import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
+import { createSession } from "@/utils/survey/session/createSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getContentKey } from "./getContentKey";
 import { useContentChange } from "./useContentChange";
@@ -38,7 +38,7 @@ describe("useContentChange()", () => {
       const { result, rerender } = renderChange(session);
 
       rerender({
-        shownSession: setSessionTopics(survey, session, ["economy"]),
+        shownSession: setSessionCategories(survey, session, ["economy"]),
       });
 
       expect(result.current).toEqual({
@@ -51,7 +51,7 @@ describe("useContentChange()", () => {
   describe("when the content changes", () => {
     it("moves forwards after a step forwards, in the same render", () => {
       const session = createSession(survey);
-      const firstQuestion = skipSessionTopics(survey, session);
+      const firstQuestion = skipSessionCategories(survey, session);
       const { result, rerender } = renderChange(session);
 
       rerender({ shownSession: firstQuestion });
@@ -63,7 +63,7 @@ describe("useContentChange()", () => {
     });
 
     it("moves backwards after a step back", () => {
-      const first = skipSessionTopics(survey, createSession(survey));
+      const first = skipSessionCategories(survey, createSession(survey));
       const second = skipQuestion(survey, first);
       const { result, rerender } = renderChange(first);
 
@@ -77,7 +77,7 @@ describe("useContentChange()", () => {
     });
 
     it("keeps the direction while the new content stays", () => {
-      const first = skipSessionTopics(survey, createSession(survey));
+      const first = skipSessionCategories(survey, createSession(survey));
       const second = skipQuestion(survey, first);
       const { result, rerender } = renderChange(second);
 

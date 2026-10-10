@@ -1,4 +1,4 @@
-import type {
+import {
   HandInState,
   ResultLinkState,
 } from "../SurveyQuestionnaireResultsCalculation.types";
@@ -10,6 +10,6 @@ export const isReadyToLeave = (run: {
   link: ResultLinkState;
   hasStayedLongEnough: boolean;
 }): boolean =>
-  run.handIn === "calculated" &&
-  run.link !== "pending" &&
+  run.handIn === HandInState.Calculated &&
+  run.link !== ResultLinkState.Pending &&
   run.hasStayedLongEnough;
