@@ -9,7 +9,7 @@ import type {
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 
-import { renderWithI18n } from "./renderWithI18n";
+import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 // Renders the content of a phase the way the screen does: with the session of
 // the quiz, read through the hook. The session is put in the store first; the

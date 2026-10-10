@@ -1,8 +1,9 @@
+import type { NolanPosition } from "@/types/results";
+
 import {
   MAP_CLIP_CLASS_NAME,
   MAP_POINT_CLASS_NAME,
 } from "../../NolanChart.constants";
-import type { NolanPosition } from "../../NolanChart.types";
 import { getPositionStyle } from "../../utils/getPositionStyle";
 
 interface TakerDotProps {

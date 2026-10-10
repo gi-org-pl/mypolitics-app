@@ -9,8 +9,8 @@ import {
 } from "@/services/api/utils/project/readProject.fixtures";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import { SurveyLoadStatus } from "@/types/survey";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { getLatestSurvey } from "./getLatestSurvey";

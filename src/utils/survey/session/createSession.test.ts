@@ -4,8 +4,8 @@ import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCate
 import { getCurrentQuestion } from "@/utils/survey/questions/getCurrentQuestion";
 import { getProgress } from "@/utils/survey/questions/getProgress";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 import { canReset } from "./canReset";
 import { createSession } from "./createSession";
 

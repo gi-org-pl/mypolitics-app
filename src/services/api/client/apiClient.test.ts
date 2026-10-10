@@ -16,8 +16,8 @@ import {
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { ApiFailureKind } from "@/types/api";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 

@@ -1,11 +1,12 @@
+import { LEVEL_TOLERANCE } from "@/constants/results";
+import type { NolanLevel } from "@/types/results";
 import { isNumber } from "@/utils/number/isNumber";
 
 import {
   AXIS_EXTREME_COORDINATE,
   AXIS_MODERATE_COORDINATE,
-  LEVEL_TOLERANCE,
 } from "../NolanChart.constants";
-import type { NolanAxisLevel, NolanLevel } from "../NolanChart.types";
+import type { NolanAxisLevel } from "../NolanChart.types";
 
 const getLevel = (distance: number): NolanLevel => {
   if (distance >= AXIS_EXTREME_COORDINATE - LEVEL_TOLERANCE) return "extreme";

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 import { setSessionCategories } from "./setSessionCategories";
 
 // Five visible categories and a hidden one: the limit is three.

@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import type { SurveyPhase, SurveySession } from "@/types/survey";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { getFittingPhase } from "./getFittingPhase";
 
 const EMAIL_ON = { isEmailSendingSetUp: true };

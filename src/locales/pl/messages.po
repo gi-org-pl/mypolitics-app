@@ -27,7 +27,7 @@ msgstr "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wy
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (otwiera się w nowej karcie)"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:52
+#: src/components/results/NolanChart/utils/useMapDescription.ts:53
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
@@ -48,7 +48,7 @@ msgstr "{startName} / {endName}"
 msgid "{title}:"
 msgstr "{title}:"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:40
+#: src/components/results/NolanChart/utils/useMapDescription.ts:41
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
 
@@ -64,7 +64,7 @@ msgstr "{trait} - wspólna z: {name}"
 msgid "{value}% pewności"
 msgstr "{value}% pewności"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:41
+#: src/components/results/NolanChart/utils/useMapDescription.ts:42
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
@@ -206,7 +206,7 @@ msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
-#: src/components/results/NolanChart/utils/useNolanTitle.ts:20
+#: src/components/results/NolanChart/utils/useNolanTitle.ts:17
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
 msgid "Brak wyniku"
 msgstr "Brak wyniku"

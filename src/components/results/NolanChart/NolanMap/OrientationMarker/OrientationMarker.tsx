@@ -2,10 +2,10 @@ import { Avatar } from "@gi-org-pl/athena";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import type { Orientation } from "@/types/orientation";
+import type { NolanPosition } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
 import { MAP_CLIP_CLASS_NAME } from "../../NolanChart.constants";
-import type { NolanPosition } from "../../NolanChart.types";
 import { getColorStyle } from "../../utils/getColorStyle";
 import { getPositionStyle } from "../../utils/getPositionStyle";
 

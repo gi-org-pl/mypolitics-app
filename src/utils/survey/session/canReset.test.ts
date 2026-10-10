@@ -5,8 +5,8 @@ import { confirmSessionCategories } from "@/utils/survey/categories/confirmSessi
 import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
 import { showSessionCheckpoint } from "@/utils/survey/checkpoints/showSessionCheckpoint";
 import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { canReset } from "./canReset";
 import { createSession } from "./createSession";
 

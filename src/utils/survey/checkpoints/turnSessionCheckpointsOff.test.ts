@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
 import { turnSessionCheckpointsOff } from "./turnSessionCheckpointsOff";
 

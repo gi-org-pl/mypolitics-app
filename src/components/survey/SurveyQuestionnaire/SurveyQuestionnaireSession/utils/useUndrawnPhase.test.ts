@@ -5,8 +5,8 @@ import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import type { Survey, SurveyPhase, SurveySession } from "@/types/survey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useUndrawnPhase } from "./useUndrawnPhase";
 

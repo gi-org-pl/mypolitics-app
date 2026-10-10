@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyQuestion } from "@/utils/vitest/survey/createSurveyQuestion";
 
 import { getAnswersToDraw } from "./getAnswersToDraw";
 

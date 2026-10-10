@@ -7,8 +7,8 @@ import { leaveSessionEmailCapture } from "@/utils/survey/email-capture/leaveSess
 import { stepBack } from "@/utils/survey/phases/stepBack";
 import { createSession } from "@/utils/survey/session/createSession";
 import { resetSession } from "@/utils/survey/session/resetSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { answerQuestion } from "./answerQuestion";
 import { getProgress } from "./getProgress";
 import { skipQuestion } from "./skipQuestion";

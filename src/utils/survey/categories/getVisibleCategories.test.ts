@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 
 import { getVisibleCategories } from "./getVisibleCategories";
 

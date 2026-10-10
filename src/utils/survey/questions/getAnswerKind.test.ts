@@ -4,7 +4,7 @@ import type {
   SurveyAnswerKind,
   SurveyQuestionAnswerType,
 } from "@/types/survey";
-import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
+import { createSurveyQuestion } from "@/utils/vitest/survey/createSurveyQuestion";
 
 import { getAnswerKind } from "./getAnswerKind";
 

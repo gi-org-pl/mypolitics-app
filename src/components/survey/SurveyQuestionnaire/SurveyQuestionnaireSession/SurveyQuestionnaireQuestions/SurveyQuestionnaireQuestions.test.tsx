@@ -4,9 +4,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Survey } from "@/types/survey";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions";
 

@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  AXIS_EXTREME_COORDINATE,
-  AXIS_MODERATE_COORDINATE,
-  MAP_EXTREME_RADIUS,
-  MAP_MODERATE_RADIUS,
-} from "../NolanChart.constants";
+import { MAP_EXTREME_RADIUS, MAP_MODERATE_RADIUS } from "@/constants/results";
+
 import { getNolanPosition } from "./getNolanPosition";
 
 const pair = (start?: number, end?: number) => ({ start, end });
@@ -17,8 +13,6 @@ describe("thresholds", () => {
   it("are the ones the spec names", () => {
     expect(MAP_MODERATE_RADIUS).toBeCloseTo(0.4714, 4);
     expect(MAP_EXTREME_RADIUS).toBe(1);
-    expect(AXIS_MODERATE_COORDINATE).toBeCloseTo(0.3333, 4);
-    expect(AXIS_EXTREME_COORDINATE).toBe(1);
   });
 });
 

@@ -4,8 +4,9 @@ import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
+
 import type { NolanQuadrants } from "../NolanChart.types";
-import { getNolanPosition } from "./getNolanPosition";
 import {
   type MapDescriptionInput,
   useMapDescription,
