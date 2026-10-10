@@ -24,15 +24,36 @@ const toDegrees = (token = ""): number => {
 const toLinear = (channel: number): number =>
   channel <= 0.040_45 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 
-const getRgbLuminance = (red: number, green: number, blue: number): number =>
-  0.2126 * toLinear(clamp(red, 0, 1)) +
-  0.7152 * toLinear(clamp(green, 0, 1)) +
-  0.0722 * toLinear(clamp(blue, 0, 1));
+const toChannel = (linear: number): number =>
+  linear <= 0.003_130_8 ? linear * 12.92 : 1.055 * linear ** (1 / 2.4) - 0.055;
+
+// A browser lays a translucent colour over the surface channel by channel, in
+// sRGB, and what is seen has the luminance of that mix - so white is mixed in
+// before a channel is made linear, not after.
+const toLinearOverWhite = (channel: number, alpha: number): number =>
+  toLinear(clamp(channel, 0, 1) * alpha + (1 - alpha));
+
+const getRgbLuminance = (
+  red: number,
+  green: number,
+  blue: number,
+  alpha: number,
+): number =>
+  0.2126 * toLinearOverWhite(red, alpha) +
+  0.7152 * toLinearOverWhite(green, alpha) +
+  0.0722 * toLinearOverWhite(blue, alpha);
+
+// lab(), lch(), oklab() and oklch() are read for their lightness alone, so
+// they have no channels to mix: a translucent one is taken as the grey of the
+// same luminance.
+const getGrayLuminance = (luminance: number, alpha: number): number =>
+  alpha < 1 ? toLinearOverWhite(toChannel(luminance), alpha) : luminance;
 
 const getHslLuminance = (
   hue: number,
   saturation: number,
   lightness: number,
+  alpha: number,
 ): number => {
   const chroma = saturation * Math.min(lightness, 1 - lightness);
   const getChannel = (offset: number): number => {
@@ -43,20 +64,21 @@ const getHslLuminance = (
     );
   };
 
-  return getRgbLuminance(getChannel(0), getChannel(8), getChannel(4));
+  return getRgbLuminance(getChannel(0), getChannel(8), getChannel(4), alpha);
 };
 
 const getHwbLuminance = (
   hue: number,
   whiteness: number,
   blackness: number,
+  alpha: number,
 ): number => {
   const total = whiteness + blackness;
 
   if (total >= 1) {
     const gray = whiteness / total;
 
-    return getRgbLuminance(gray, gray, gray);
+    return getRgbLuminance(gray, gray, gray, alpha);
   }
 
   const scale = 1 - total;
@@ -68,25 +90,28 @@ const getHwbLuminance = (
     return pure * scale + whiteness;
   };
 
-  return getRgbLuminance(getChannel(0), getChannel(8), getChannel(4));
+  return getRgbLuminance(getChannel(0), getChannel(8), getChannel(4), alpha);
 };
 
 const getLabLuminance = (lightness: number): number =>
   lightness > 8 ? ((lightness + 16) / 116) ** 3 : lightness / 903.3;
 
-const getHexLuminance = (hex: string): { luminance: number; alpha: number } => {
+const getHexLuminance = (hex: string): number => {
   const digits = hex.length <= 4 ? hex.replace(/./g, "$&$&") : hex;
   const getChannel = (index: number): number =>
     Number.parseInt(digits.slice(index * 2, index * 2 + 2), 16) / 255;
 
-  return {
-    luminance: getRgbLuminance(getChannel(0), getChannel(1), getChannel(2)),
-    alpha: digits.length === 8 ? getChannel(3) : 1,
-  };
+  return getRgbLuminance(
+    getChannel(0),
+    getChannel(1),
+    getChannel(2),
+    digits.length === 8 ? getChannel(3) : 1,
+  );
 };
 
 const getFunctionLuminance = (name: string, tokens: string[]): number => {
-  const [first, second, third] = tokens;
+  const [first, second, third, fourth] = tokens;
+  const alpha = fourth === undefined ? 1 : clamp(toNumber(fourth), 0, 1);
   const hue = ((toDegrees(first) % 360) + 360) % 360;
 
   switch (name) {
@@ -96,6 +121,7 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
         toNumber(first, 255) / 255,
         toNumber(second, 255) / 255,
         toNumber(third, 255) / 255,
+        alpha,
       );
     }
     case "hsl":
@@ -104,6 +130,7 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
         hue,
         clamp(toNumber(second, 100) / 100, 0, 1),
         clamp(toNumber(third, 100) / 100, 0, 1),
+        alpha,
       );
     }
     case "hwb": {
@@ -111,14 +138,18 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
         hue,
         clamp(toNumber(second, 100) / 100, 0, 1),
         clamp(toNumber(third, 100) / 100, 0, 1),
+        alpha,
       );
     }
     case "lab":
     case "lch": {
-      return getLabLuminance(clamp(toNumber(first, 100) / 100, 0, 1) * 100);
+      return getGrayLuminance(
+        getLabLuminance(clamp(toNumber(first, 100) / 100, 0, 1) * 100),
+        alpha,
+      );
     }
     default: {
-      return clamp(toNumber(first), 0, 1) ** 3;
+      return getGrayLuminance(clamp(toNumber(first), 0, 1) ** 3, alpha);
     }
   }
 };
@@ -134,12 +165,6 @@ export const getColorLuminance = (color?: string): number | undefined => {
   if (!hex && !name) return undefined;
 
   const tokens = (body ?? "").split(/[\s,/]+/).filter(Boolean);
-  const { luminance, alpha } = hex
-    ? getHexLuminance(hex)
-    : {
-        luminance: getFunctionLuminance(name, tokens),
-        alpha: tokens.length > 3 ? clamp(toNumber(tokens[3]), 0, 1) : 1,
-      };
 
-  return luminance * alpha + (1 - alpha);
+  return hex ? getHexLuminance(hex) : getFunctionLuminance(name, tokens);
 };

@@ -14,6 +14,10 @@ describe("isDarkFill()", () => {
     it.each(["#192430", "#851c22", "#000"])("returns true for %s", (color) => {
       expect(isDarkFill(color)).toBe(true);
     });
+
+    it("returns true for a translucent colour that is drawn dark on the white map", () => {
+      expect(isDarkFill("#000c")).toBe(true);
+    });
   });
 
   describe("given a colour of the frame or a light one", () => {

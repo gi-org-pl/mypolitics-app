@@ -49,6 +49,15 @@ describe("isDarkColor()", () => {
     it("keeps a mostly opaque dark colour dark", () => {
       expect(isDarkColor("#000000ee")).toBe(true);
     });
+
+    it("judges a colour by what a browser draws on white", () => {
+      expect(isDarkColor("#000c")).toBe(isDarkColor("#333"));
+      expect(isDarkColor("#000c")).toBe(true);
+      expect(isDarkColor("#192430cc")).toBe(isDarkColor("#475059"));
+      expect(isDarkColor("#192430cc")).toBe(true);
+      expect(isDarkColor("#19243080")).toBe(isDarkColor("#8c9197"));
+      expect(isDarkColor("#19243080")).toBe(false);
+    });
   });
 
   describe("given no usable colour", () => {
