@@ -910,7 +910,7 @@ test.describe("Feature: Questionnaire checkpoints - halfway through", () => {
   test("Scenario: A checkpoint appears and is dismissed", async ({ page }) => {
     await test.step("Given a user opened the nine-question quiz", async () => {
       await openCheckpointQuiz(page);
-      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCategoryGroup(page)).toHaveCount(0);
       await expect(getCheckpoint(page)).toHaveCount(0);
     });
 
