@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { SurveyPhaseContentProps } from "@/types/survey";
-import { buildResultInput } from "@/utils/survey/buildResultInput";
+import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 
 import { RESULT_STATES } from "../SurveyQuestionnaireResultsCalculation.constants";
 import type { HandInState } from "../SurveyQuestionnaireResultsCalculation.types";

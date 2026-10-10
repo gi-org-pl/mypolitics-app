@@ -13,9 +13,9 @@ import type {
   SurveyEmail,
   SurveySession,
 } from "@/types/survey";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 

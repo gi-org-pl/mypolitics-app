@@ -336,7 +336,7 @@ test.describe("Feature: Questionnaire", () => {
       await expect(getButton(page, "Zacznij od nowa")).toBeDisabled();
     });
 
-    await test.step("And one result is created with the picked topic, the two answers and no demographics", async () => {
+    await test.step("And one result is created with the picked category, the two answers and no demographics", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,

@@ -1,6 +1,5 @@
 import { act, fireEvent, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
@@ -8,6 +7,7 @@ import { requestResultLink } from "@/services/api/client/requestResultLink";
 import {
   CreateResultOutcome,
   type DemographicsValues,
+  ResultLinkOutcome,
   type Survey,
   SurveyResultState,
   type SurveySession,
@@ -168,7 +168,7 @@ describe("<SurveyQuestionnaireSession />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
-    vi.mocked(createResult).mockResolvedValue("stored");
+    vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
     vi.mocked(getResult).mockResolvedValue({ id: "", isCalculated: true });
   });
 
@@ -1048,7 +1048,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(openAddress).toHaveBeenCalledTimes(1);
       expect(screen.getByText(WAITING)).toBeVisible();
       expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().resultState).toBe("calculated");
+      expect(getSession().resultState).toBe(SurveyResultState.Calculated);
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeDisabled();
     });
@@ -1065,7 +1065,7 @@ describe("<SurveyQuestionnaireSession />", () => {
 
       await finishRequests();
 
-      expect(getSession().resultState).toBe("created");
+      expect(getSession().resultState).toBe(SurveyResultState.Created);
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
       expect(screen.getAllByText("Prawie gotowe")[0]).toBeVisible();
       expect(getBackButton()).toBeDisabled();
@@ -1079,7 +1079,7 @@ describe("<SurveyQuestionnaireSession />", () => {
     });
 
     it("turns reset on when the run has failed, and starts a new session when it is confirmed", async () => {
-      vi.mocked(createResult).mockResolvedValue("refused");
+      vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Refused);
 
       const { getSession } = renderScreen(onQuestion(ALL_DONE));
       const { id } = getSession();
@@ -1089,7 +1089,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       finishChange();
 
       expect(screen.getByRole("alert")).toBeInTheDocument();
-      expect(getSession().resultState).toBe("failed");
+      expect(getSession().resultState).toBe(SurveyResultState.Failed);
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeEnabled();
 
@@ -1099,7 +1099,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       // Nothing of the phase survives: no hand-in for the new session.
       expect(getSession().id).not.toBe(id);
       expect(getSession().phase).toBe("category-select");
-      expect(getSession().resultState).toBe("not-sent");
+      expect(getSession().resultState).toBe(SurveyResultState.NotSent);
       expect(createResult).toHaveBeenCalledTimes(1);
       expect(openAddress).not.toHaveBeenCalled();
     });
@@ -1110,7 +1110,9 @@ describe("<SurveyQuestionnaireSession />", () => {
         "isEmailSendingSetUp",
         "get",
       ).mockReturnValue(true);
-      vi.mocked(requestResultLink).mockResolvedValue("unavailable");
+      vi.mocked(requestResultLink).mockResolvedValue(
+        ResultLinkOutcome.Unavailable,
+      );
 
       const { survey, getSession } = renderScreen(
         inCalculation({
