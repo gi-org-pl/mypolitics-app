@@ -7,7 +7,6 @@ import type { AxisLayout, AxisSideLayout } from "@/types/axis";
 import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 
 import type { UniversalAxisProps } from "./UniversalAxis.types";
-import { UniversalAxisMask } from "./UniversalAxisMask/UniversalAxisMask";
 
 type AxisSide = "start" | "end";
 
@@ -181,7 +180,12 @@ export const UniversalAxis = ({
             renderOutsideValue("start", layout.start)}
           {layout.end?.valuePlacement === "outside" &&
             renderOutsideValue("end", layout.end)}
-          {layout.isMasked && <UniversalAxisMask />}
+          {layout.isMasked && (
+            <div
+              data-testid="universal-axis-mask"
+              className={`absolute inset-0 ${HATCH_CLASS_NAME}`}
+            />
+          )}
         </div>
 
         {layout.marker !== null && (

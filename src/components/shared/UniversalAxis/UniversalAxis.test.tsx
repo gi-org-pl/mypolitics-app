@@ -907,6 +907,19 @@ describe("<UniversalAxis /> - isMasked", () => {
       expect(track.children).toHaveLength(1);
     });
 
+    it("covers the whole track with the hatch, which holds nothing and carries no style", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} isMasked />,
+      );
+
+      const mask = screen.getByTestId("universal-axis-mask");
+
+      expect(mask).toHaveClass("absolute", "inset-0");
+      expect(mask.className).toContain("repeating-linear-gradient");
+      expect(mask).toBeEmptyDOMElement();
+      expect(mask).not.toHaveAttribute("style");
+    });
+
     it("renders no fill, no number and no marker", () => {
       const { container } = renderWithI18n(
         <UniversalAxis
