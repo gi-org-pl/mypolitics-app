@@ -2,11 +2,11 @@ import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { CheckpointAggregates } from "@/types/checkpoint";
-import { loadCheckpointAggregates } from "@/utils/survey/loadCheckpointAggregates";
+import { loadCheckpointAggregates } from "@/utils/survey/checkpoints/loadCheckpointAggregates";
 
 import { useCheckpointAggregates } from "./useCheckpointAggregates";
 
-vi.mock("@/utils/survey/loadCheckpointAggregates", () => ({
+vi.mock("@/utils/survey/checkpoints/loadCheckpointAggregates", () => ({
   loadCheckpointAggregates: vi.fn(),
 }));
 

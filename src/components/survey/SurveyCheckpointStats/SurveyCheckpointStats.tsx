@@ -2,8 +2,8 @@ import { useLingui } from "@lingui/react/macro";
 
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import type { CheckpointCardProps } from "@/types/checkpoint";
-import { getCheckpointSlots } from "@/utils/checkpoint/getCheckpointSlots";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
+import { getCheckpointSlots } from "@/utils/checkpoint/slots/getCheckpointSlots";
 
 import { SurveyCheckpointStatsChart } from "./SurveyCheckpointStatsChart/SurveyCheckpointStatsChart";
 import { getStatsQuote } from "./utils/getStatsQuote";

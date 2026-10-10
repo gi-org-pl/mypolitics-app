@@ -3,13 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { CheckpointAggregates } from "@/types/checkpoint";
 import type { Survey, SurveySession } from "@/types/survey";
-import { getSessionCheckpoint } from "@/utils/checkpoint/getSessionCheckpoint";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { loadCheckpointAggregates } from "@/utils/survey/loadCheckpointAggregates";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { getSessionCheckpoint } from "@/utils/checkpoint/engine/getSessionCheckpoint";
+import { loadCheckpointAggregates } from "@/utils/survey/checkpoints/loadCheckpointAggregates";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import { useQuestionActions } from "./useQuestionActions";
@@ -17,10 +17,10 @@ import { useQuestionActions } from "./useQuestionActions";
 vi.mock("../../../SurveyQuestionnaire.constants", () => ({
   CHECKPOINT_CARDS: {},
 }));
-vi.mock("@/utils/checkpoint/getSessionCheckpoint", { spy: true });
+vi.mock("@/utils/checkpoint/engine/getSessionCheckpoint", { spy: true });
 // No source of answer counts is set, so the real loader gives nothing. The
 // cases of the counts hand it some.
-vi.mock("@/utils/survey/loadCheckpointAggregates", { spy: true });
+vi.mock("@/utils/survey/checkpoints/loadCheckpointAggregates", { spy: true });
 
 const COUNTS: CheckpointAggregates = {
   q5: { resultsCounted: 1000, chosen: { "q5-a1": 80, "q5-a2": 620 } },
