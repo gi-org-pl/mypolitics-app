@@ -64,6 +64,12 @@ export const NoColor: Story = {
   },
 };
 
+export const LightColor: Story = {
+  args: {
+    color: "#fff176",
+  },
+};
+
 export const LongName: Story = {
   args: {
     name: "Radykalizm społeczno-gospodarczy z bardzo długą nazwą autorską, która nie mieści się w tytule",

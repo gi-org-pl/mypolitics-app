@@ -31,11 +31,11 @@ msgstr "{label} (opens in a new tab)"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:139
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:139
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -203,7 +203,7 @@ msgstr "No match"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:20
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:154
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -406,7 +406,7 @@ msgstr "Poland in the 1990s"
 msgid "Poprzednie pytanie"
 msgstr "Previous question"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:146
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 

@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_CLASS_NAME, HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -128,6 +128,7 @@ describe("<TraitPill />", () => {
         HATCH_LIGHT_CLASS_NAME,
         "bg-(--trait-color)",
       );
+      expect(getBody()).not.toHaveClass(HATCH_CLASS_NAME);
       expect(screen.getByTestId("trait-pill-avatar")).toBeInTheDocument();
     });
 
@@ -192,6 +193,45 @@ describe("<TraitPill />", () => {
       expect(getBody()).not.toHaveClass("text-white");
       expect(screen.getByTestId("trait-pill-image")).toHaveClass(
         "brightness-0",
+      );
+    });
+  });
+
+  describe("given a light trait only the other side holds", () => {
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+    ])("hatches the %s pill in the tone opposite to its dark label", (color) => {
+      renderWithI18n(
+        <TraitPill
+          item={{ ...withOrientation({ color }), holder: "other" }}
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(getBody()).toHaveClass(
+        HATCH_CLASS_NAME,
+        "bg-(--trait-color)",
+        "text-gi-primary",
+      );
+      expect(getBody()).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
+      expect(screen.getByTestId("trait-pill-image")).toHaveClass(
+        "brightness-0",
+      );
+    });
+
+    it("keeps a pill without a colour on the hatching for a light label", () => {
+      renderWithI18n(
+        <TraitPill
+          item={{ ...withOrientation({ color: undefined }), holder: "other" }}
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(getBody()).toHaveClass(
+        HATCH_LIGHT_CLASS_NAME,
+        "bg-gi-dark-gray",
+        "text-white",
       );
     });
   });
