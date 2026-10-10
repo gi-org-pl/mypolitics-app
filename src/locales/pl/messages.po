@@ -446,7 +446,7 @@ msgstr "Regulamin"
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
 msgid "Rodzaje quizów"
 msgstr "Rodzaje quizów"
 

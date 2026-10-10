@@ -37,6 +37,24 @@ describe("<QuizSectionTabs />", () => {
       );
     });
 
+    it("keeps the tabs together at the left, wrapped or not", () => {
+      renderTabs();
+
+      const tabList = screen.getByRole("tablist");
+
+      expect(tabList).toHaveClass("flex-wrap", "justify-start", "gap-2");
+      expect(tabList).not.toHaveClass("justify-between");
+    });
+
+    it("spreads the tabs only on a narrow screen and only when the row is wide enough for all three", () => {
+      renderTabs();
+
+      const tabList = screen.getByRole("tablist");
+
+      expect(tabList).toHaveClass("max-md:@sm:justify-between");
+      expect(tabList.parentElement).toHaveClass("@container", "w-full");
+    });
+
     it("draws keyboard focus on the tabs as the shared outline", () => {
       renderTabs();
 
