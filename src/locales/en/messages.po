@@ -192,7 +192,7 @@ msgstr "9 min"
 msgid "90 min"
 msgstr "90 min"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:36
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:50
 msgid "Adres e-mail"
 msgstr "E-mail address"
 
@@ -604,7 +604,7 @@ msgstr "Meaning?"
 msgid "Tryb porównania"
 msgstr "Comparison mode"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:37
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:51
 msgid "twoj@mail.com"
 msgstr "your@mail.com"
 
@@ -652,7 +652,7 @@ msgstr "Village"
 msgid "Wolę nie podawać"
 msgstr "I prefer not to say"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:42
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:56
 msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 msgstr "Enter a full e-mail address, for example your@mail.com."
 
