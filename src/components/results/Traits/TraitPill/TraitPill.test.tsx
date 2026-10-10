@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import type { Orientation } from "@/types/orientation";
@@ -97,7 +97,23 @@ describe("<TraitPill />", () => {
       ).toHaveAttribute("src", friend.imageUrl);
     });
 
-    it("fills the avatar with the colour of its border under the image", () => {
+    it("fills the avatar with the colour of its border while it draws an image", () => {
+      renderWithI18n(
+        <TraitPill
+          item={{ ...anarchism, holder: "both" }}
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(screen.getByTestId("trait-pill-avatar")).toHaveClass(
+        "border",
+        "border-gi-primary",
+        "bg-gi-ash",
+        "has-[>img]:bg-gi-primary",
+      );
+    });
+
+    it("leaves the light background under the placeholder of an image that fails to load", () => {
       renderWithI18n(
         <TraitPill
           item={{ ...anarchism, holder: "both" }}
@@ -107,12 +123,12 @@ describe("<TraitPill />", () => {
 
       const avatar = screen.getByTestId("trait-pill-avatar");
 
-      expect(avatar).toHaveClass(
-        "border",
-        "border-gi-primary",
-        "bg-gi-primary",
-      );
-      expect(avatar).not.toHaveClass("bg-gi-ash");
+      fireEvent.error(avatar.querySelector("img") as HTMLImageElement);
+
+      expect(avatar.querySelector("img")).toBeNull();
+      expect(avatar.querySelector("svg")).not.toBeNull();
+      expect(avatar).toHaveClass("bg-gi-ash");
+      expect(avatar).not.toHaveClass("bg-gi-primary");
     });
 
     it("says in words that it is shared", () => {
