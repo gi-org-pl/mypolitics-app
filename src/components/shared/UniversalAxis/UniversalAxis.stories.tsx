@@ -113,6 +113,38 @@ export const ComparisonBehind: Story = {
   },
 };
 
+export const ComparisonBehindClearOfValue: Story = {
+  args: {
+    start: { orientation: socialism, value: 80 },
+    comparison: { orientation: friend, value: 45 },
+    marker: false,
+  },
+};
+
+export const ComparisonAtTheClearance: Story = {
+  args: {
+    start: { orientation: socialism, value: 100 },
+    comparison: { orientation: friend, value: 26 },
+    marker: false,
+  },
+};
+
+export const ComparisonSmallValue: Story = {
+  args: {
+    start: { orientation: socialism, value: 5 },
+    comparison: { orientation: friend, value: 60 },
+    marker: false,
+  },
+};
+
+export const ComparisonFromEnd: Story = {
+  args: {
+    end: { orientation: conservatism, value: 60 },
+    comparison: { orientation: friend, value: 30 },
+    marker: false,
+  },
+};
+
 export const ComparisonOnly: Story = {
   args: {
     comparison: { orientation: friend, value: 60 },
@@ -189,6 +221,26 @@ export const DoubleSidedComparison: Story = {
     start: { orientation: liberalism, value: 69 },
     end: { orientation: conservatism, value: 31 },
     comparison: { orientation: friend, value: 90 },
+    marker: false,
+    showLabels: true,
+  },
+};
+
+export const DoubleSidedComparisonBothValues: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    comparison: { orientation: friend, value: 50 },
+    marker: false,
+    showLabels: true,
+  },
+};
+
+export const DoubleSidedComparisonNearStart: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    comparison: { orientation: friend, value: 10 },
     marker: false,
     showLabels: true,
   },

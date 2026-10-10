@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   DEFAULT_MARKER_POSITION,
+  DOUBLE_SIDED_COMPARISON_CLEARANCE,
   DOUBLE_SIDED_FIT_THRESHOLD,
+  ONE_SIDED_COMPARISON_CLEARANCE,
   ONE_SIDED_FIT_THRESHOLD,
 } from "@/constants/axis";
 import type { AxisEntry } from "@/types/axis";
@@ -368,15 +370,197 @@ describe("getAxisLayout()", () => {
       expect(layout.comparison?.displayValue).toBe(33);
     });
 
-    it("hides the fill values so the band never covers them", () => {
+    it("keeps the value of the side the other party is clear of and hides the one it is close to", () => {
       const layout = getAxisLayout({
         start: entryA(69),
         end: entryB(31),
         comparison: friendEntry(90),
       });
 
+      expect(layout.start?.valuePlacement).toBe("inside");
+      expect(layout.end?.valuePlacement).toBe("hidden");
+    });
+  });
+
+  describe("given a comparison and a one-sided bar", () => {
+    const getPlacement = (value: number, other: number) =>
+      getAxisLayout({ start: entryA(value), comparison: friendEntry(other) })
+        .start?.valuePlacement;
+
+    describe("when the other party is ahead", () => {
+      it("keeps the value inside the fill", () => {
+        expect(getPlacement(25, 77)).toBe("inside");
+      });
+    });
+
+    describe("when the other party is behind and clear of the number", () => {
+      it("keeps the value inside the fill, next to the band", () => {
+        expect(getPlacement(80, 45)).toBe("inside");
+      });
+    });
+
+    describe("when the other party is at the same value", () => {
+      it("keeps the value as long as that value is clear of the number", () => {
+        expect(getPlacement(50, 50)).toBe("inside");
+        expect(getPlacement(20, 20)).toBe("hidden");
+      });
+    });
+
+    describe("when the other party is within the clearance of the cap", () => {
+      it("shows no value, whichever side of the taker the other party is on", () => {
+        expect(getPlacement(80, 3)).toBe("hidden");
+        expect(getPlacement(20, 22)).toBe("hidden");
+      });
+
+      it("counts a position exactly at the clearance as clear", () => {
+        expect(getPlacement(80, ONE_SIDED_COMPARISON_CLEARANCE)).toBe("inside");
+        expect(getPlacement(80, ONE_SIDED_COMPARISON_CLEARANCE - 0.1)).toBe(
+          "hidden",
+        );
+      });
+    });
+
+    describe("when the value is below the fit threshold", () => {
+      it("shows no value instead of writing it after the fill", () => {
+        expect(getPlacement(ONE_SIDED_FIT_THRESHOLD - 1, 60)).toBe("hidden");
+        expect(getPlacement(5, 60)).toBe("hidden");
+        expect(getPlacement(0, 60)).toBe("hidden");
+      });
+    });
+
+    describe("when the comparison has no value", () => {
+      it("places the value by the usual rules", () => {
+        const layout = getAxisLayout({
+          start: entryA(5),
+          comparison: { orientation: friend },
+        });
+
+        expect(layout.start?.valuePlacement).toBe("outside");
+      });
+    });
+  });
+
+  describe("given a comparison and an end entry alone", () => {
+    const getPlacement = (value: number, other: number) =>
+      getAxisLayout({ end: entryB(value), comparison: friendEntry(other) }).end
+        ?.valuePlacement;
+
+    it("measures the clearance from the right cap, where the number sits", () => {
+      expect(getPlacement(25, 60)).toBe("inside");
+      expect(getPlacement(80, ONE_SIDED_COMPARISON_CLEARANCE)).toBe("inside");
+      expect(getPlacement(80, ONE_SIDED_COMPARISON_CLEARANCE - 0.1)).toBe(
+        "hidden",
+      );
+      expect(getPlacement(80, 3)).toBe("hidden");
+    });
+
+    it("shows no value below the fit threshold", () => {
+      expect(getPlacement(5, 60)).toBe("hidden");
+    });
+  });
+
+  describe("given a comparison and a double-sided bar", () => {
+    const getPlacements = (start: number, end: number, other: number) => {
+      const layout = getAxisLayout({
+        start: entryA(start),
+        end: entryB(end),
+        comparison: friendEntry(other),
+      });
+
+      return [layout.start?.valuePlacement, layout.end?.valuePlacement];
+    };
+
+    it("keeps both values when the other party is clear of both caps", () => {
+      expect(getPlacements(69, 31, 50)).toEqual(["inside", "inside"]);
+    });
+
+    it("hides only the value at the cap the other party is close to", () => {
+      expect(getPlacements(69, 31, 10)).toEqual(["hidden", "inside"]);
+      expect(getPlacements(69, 31, 90)).toEqual(["inside", "hidden"]);
+    });
+
+    it("counts a position exactly at the clearance of either cap as clear", () => {
+      const nearStart = DOUBLE_SIDED_COMPARISON_CLEARANCE;
+      const nearEnd = 100 - DOUBLE_SIDED_COMPARISON_CLEARANCE;
+
+      expect(getPlacements(50, 50, nearStart)).toEqual(["inside", "inside"]);
+      expect(getPlacements(50, 50, nearStart - 0.1)).toEqual([
+        "hidden",
+        "inside",
+      ]);
+      expect(getPlacements(50, 50, nearEnd)).toEqual(["inside", "inside"]);
+      expect(getPlacements(50, 50, nearEnd + 0.1)).toEqual([
+        "inside",
+        "hidden",
+      ]);
+    });
+
+    it("uses the clearance of its own mode", () => {
+      const between =
+        (ONE_SIDED_COMPARISON_CLEARANCE + DOUBLE_SIDED_COMPARISON_CLEARANCE) /
+        2;
+
+      expect(DOUBLE_SIDED_COMPARISON_CLEARANCE).toBeGreaterThan(
+        ONE_SIDED_COMPARISON_CLEARANCE,
+      );
+      expect(getPlacements(50, 50, between)).toEqual(["hidden", "inside"]);
+      expect(
+        getAxisLayout({ start: entryA(50), comparison: friendEntry(between) })
+          .start?.valuePlacement,
+      ).toBe("inside");
+    });
+
+    it("still hides a side below its fit threshold", () => {
+      expect(getPlacements(88, 12, 50)).toEqual(["inside", "hidden"]);
+    });
+
+    it("shows no value on either side when the track is hatched whole", () => {
+      const layout = getAxisLayout({
+        start: { orientation: orientationA },
+        end: entryB(31),
+        comparison: friendEntry(50),
+      });
+
+      expect(layout.comparison?.band).toEqual({ from: 0, to: 100 });
       expect(layout.start?.valuePlacement).toBe("hidden");
       expect(layout.end?.valuePlacement).toBe("hidden");
+    });
+
+    it("keeps the start value when only the end side has no value", () => {
+      const layout = getAxisLayout({
+        start: entryA(69),
+        end: { orientation: orientationB },
+        comparison: friendEntry(50),
+      });
+
+      expect(layout.start?.valuePlacement).toBe("inside");
+      expect(layout.end?.valuePlacement).toBe("hidden");
+    });
+
+    it("measures the clearance against the other party's position as drawn, which is not scaled with the fills", () => {
+      const layout = getAxisLayout({
+        start: entryA(90),
+        end: entryB(90),
+        comparison: friendEntry(70),
+      });
+
+      expect(layout.start?.width).toBe(50);
+      expect(layout.comparison?.position).toBe(70);
+      expect(layout.comparison?.band).toEqual({ from: 50, to: 70 });
+      expect(layout.start?.valuePlacement).toBe("inside");
+      expect(layout.end?.valuePlacement).toBe("inside");
+      expect(getPlacements(90, 90, 80)).toEqual(["inside", "hidden"]);
+    });
+  });
+
+  describe("given a comparison and a taker without a value", () => {
+    it("shows no value", () => {
+      const layout = getAxisLayout({
+        start: { orientation: orientationA },
+        comparison: friendEntry(60),
+      });
+
+      expect(layout.start?.valuePlacement).toBe("hidden");
     });
   });
 
@@ -533,7 +717,7 @@ describe("getAxisLayout()", () => {
           value: 69,
           displayValue: 69,
           width: 69,
-          valuePlacement: "hidden",
+          valuePlacement: "inside",
         },
         end: {
           name: "Orientation B",

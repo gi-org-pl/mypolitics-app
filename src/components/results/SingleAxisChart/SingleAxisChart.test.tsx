@@ -281,6 +281,20 @@ describe("<SingleAxisChart />", () => {
       ).toBeInTheDocument();
     });
 
+    it("keeps the value in the fill, next to the band", () => {
+      renderWithI18n(
+        <SingleAxisChart
+          orientation={radicalism}
+          value={69}
+          comparison={{ orientation: friend, value: 90 }}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "69%",
+      );
+    });
+
     it("passes it to the bar when the value is absent", () => {
       renderWithI18n(
         <SingleAxisChart
