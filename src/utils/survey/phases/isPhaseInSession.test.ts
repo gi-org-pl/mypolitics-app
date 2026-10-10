@@ -7,9 +7,9 @@ import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessi
 import { setSessionDemographics } from "@/utils/survey/demographics/setSessionDemographics";
 
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 import { isPhaseInSession } from "./isPhaseInSession";
 
 const EMAIL_ON = { isEmailSendingSetUp: true };

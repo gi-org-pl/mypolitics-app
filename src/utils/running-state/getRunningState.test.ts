@@ -2,17 +2,16 @@ import { describe, expect, it } from "vitest";
 
 import type { RunningState, RunningStateSession } from "@/types/checkpoint";
 import type { Survey, SurveyQuestion, SurveySession } from "@/types/survey";
+import { getFedOrientationIds } from "@/utils/running-state/orientations/getFedOrientationIds";
 import { stepBack } from "@/utils/survey/phases/stepBack";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createScoredQuestion } from "@/utils/vitest/createScoredQuestion";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyAxis } from "@/utils/vitest/createSurveyAxis";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
-
-import { getFedOrientationIds } from "./getFedOrientationIds";
+import { createScoredQuestion } from "@/utils/vitest/survey/createScoredQuestion";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyAxis } from "@/utils/vitest/survey/createSurveyAxis";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 import { getRunningState } from "./getRunningState";
 import {
   workedAnswerIds,

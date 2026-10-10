@@ -7,8 +7,8 @@ import {
 } from "@/types/survey";
 import { setSessionEmail } from "@/utils/survey/email-capture/setSessionEmail";
 import { stepBack } from "@/utils/survey/phases/stepBack";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { setSessionDemographics } from "./setSessionDemographics";
 

@@ -6,8 +6,8 @@ import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { QUIZ_PROJECT_IDS } from "@/constants/survey";
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import QuizPage from "./quizzes.$quizSlug";
 

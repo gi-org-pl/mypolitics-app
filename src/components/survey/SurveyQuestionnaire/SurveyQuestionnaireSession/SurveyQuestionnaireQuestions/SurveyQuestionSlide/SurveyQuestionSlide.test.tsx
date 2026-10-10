@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { SurveyQuestion } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { SurveyQuestionSlide } from "./SurveyQuestionSlide";
 import { QUESTION_SLIDE_MS } from "./SurveyQuestionSlide.constants";

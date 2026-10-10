@@ -4,15 +4,14 @@ import type {
   RunningStateSources,
 } from "@/types/checkpoint";
 import type { Survey } from "@/types/survey";
-
-import { getDoneQuestions } from "./getDoneQuestions";
-import { getRunningArchetypes } from "./getRunningArchetypes";
-import { getRunningAxes } from "./getRunningAxes";
-import { getRunningCompass } from "./getRunningCompass";
-import { getRunningProgress } from "./getRunningProgress";
-import { getRunningScores } from "./getRunningScores";
-import { getRunningTiming } from "./getRunningTiming";
-import { getUnlockedTraits } from "./getUnlockedTraits";
+import { getRunningAxes } from "@/utils/running-state/axes/getRunningAxes";
+import { getRunningCompass } from "@/utils/running-state/compass/getRunningCompass";
+import { getRunningArchetypes } from "@/utils/running-state/orientations/getRunningArchetypes";
+import { getUnlockedTraits } from "@/utils/running-state/orientations/getUnlockedTraits";
+import { getDoneQuestions } from "@/utils/running-state/progress/getDoneQuestions";
+import { getRunningProgress } from "@/utils/running-state/progress/getRunningProgress";
+import { getRunningScores } from "@/utils/running-state/scores/getRunningScores";
+import { getRunningTiming } from "@/utils/running-state/timing/getRunningTiming";
 
 // What the taker's answers add up to so far. It is derived: the same quiz,
 // session and sources always give the same state, and nothing here is stored,

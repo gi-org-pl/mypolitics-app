@@ -5,8 +5,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { type Survey, SurveyLoadStatus } from "@/types/survey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { SurveyQuestionnaire } from "./SurveyQuestionnaire";
 import type { SurveyQuestionnaireProps } from "./SurveyQuestionnaire.types";

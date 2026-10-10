@@ -8,8 +8,8 @@ import {
   identityQuizProject,
 } from "@/services/api/utils/project/readProject.fixtures";
 import { SurveyLoadStatus } from "@/types/survey";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { getProject } from "./getProject";

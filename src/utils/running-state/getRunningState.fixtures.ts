@@ -1,10 +1,10 @@
 import type { Survey } from "@/types/survey";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createScoredQuestion } from "@/utils/vitest/createScoredQuestion";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyAxis } from "@/utils/vitest/createSurveyAxis";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
-import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
+import { createScoredQuestion } from "@/utils/vitest/survey/createScoredQuestion";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyAxis } from "@/utils/vitest/survey/createSurveyAxis";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
+import { createSurveyQuestion } from "@/utils/vitest/survey/createSurveyQuestion";
 
 // The worked examples of the event model spec, "What one question adds" and
 // "Adding questions up".

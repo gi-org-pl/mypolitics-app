@@ -14,9 +14,9 @@ import {
   type SurveySession,
 } from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 import { SURVEY_PHASE_CONTENT } from "../SurveyQuestionnaireSession.constants";
 import { SurveyQuestionnaireResultsCalculation } from "./SurveyQuestionnaireResultsCalculation";
 import {

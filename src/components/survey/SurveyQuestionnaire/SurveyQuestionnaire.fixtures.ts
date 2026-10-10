@@ -1,10 +1,10 @@
 import type { Survey, SurveySession } from "@/types/survey";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
-import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
 import { padWithCopies } from "@/utils/vitest/padWithCopies";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
+import { createSurveyQuestion } from "@/utils/vitest/survey/createSurveyQuestion";
 
 // The quizzes and sessions of the stories. The store of a session lives as
 // long as the page does and is found by the quiz identifier, so every story

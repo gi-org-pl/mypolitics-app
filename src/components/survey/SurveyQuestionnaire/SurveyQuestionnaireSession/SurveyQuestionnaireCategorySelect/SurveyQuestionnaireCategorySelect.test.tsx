@@ -4,9 +4,9 @@ import { afterEach, describe, expect, it } from "vitest";
 import type { Survey, SurveySession } from "@/types/survey";
 import { getCategoryLimit } from "@/utils/survey/categories/getCategoryLimit";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { SurveyQuestionnaireCategorySelect } from "./SurveyQuestionnaireCategorySelect";
 

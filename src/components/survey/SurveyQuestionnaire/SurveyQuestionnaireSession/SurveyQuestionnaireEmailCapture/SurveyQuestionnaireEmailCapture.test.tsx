@@ -10,9 +10,9 @@ import {
   type SurveySession,
 } from "@/types/survey";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { SurveyQuestionnaireEmailCapture } from "./SurveyQuestionnaireEmailCapture";
 
