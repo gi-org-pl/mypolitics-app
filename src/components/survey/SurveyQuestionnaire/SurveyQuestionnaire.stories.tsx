@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 
 import { SurveyQuestionnaire } from "./SurveyQuestionnaire";
 import {

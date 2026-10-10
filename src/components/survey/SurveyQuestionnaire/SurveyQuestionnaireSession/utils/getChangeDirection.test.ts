@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { SurveyPhase, SurveySession } from "@/types/survey";
-import { answerQuestion } from "@/utils/survey/answerQuestion";
-import { confirmSessionTopics } from "@/utils/survey/confirmSessionTopics";
-import { createSession } from "@/utils/survey/createSession";
-import { leaveSessionDemographics } from "@/utils/survey/leaveSessionDemographics";
-import { resetSession } from "@/utils/survey/resetSession";
-import { skipQuestion } from "@/utils/survey/skipQuestion";
-import { stepBack } from "@/utils/survey/stepBack";
+import { confirmSessionCategories } from "@/utils/survey/categories/confirmSessionCategories";
+import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
+import { stepBack } from "@/utils/survey/phases/stepBack";
+import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
+import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
+import { createSession } from "@/utils/survey/session/createSession";
+import { resetSession } from "@/utils/survey/session/resetSession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -49,7 +49,7 @@ describe("getChangeDirection()", () => {
       const session = createSession(survey);
 
       expect(
-        getChangeDirection(session, confirmSessionTopics(survey, session)),
+        getChangeDirection(session, confirmSessionCategories(survey, session)),
       ).toBe("forwards");
     });
 

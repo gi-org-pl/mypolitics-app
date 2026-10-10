@@ -1,6 +1,6 @@
 import { SurveyQuestion } from "@/components/survey/SurveyQuestion/SurveyQuestion";
 import type { SurveyPhaseContentProps } from "@/types/survey";
-import { getCurrentQuestion } from "@/utils/survey/getCurrentQuestion";
+import { getCurrentQuestion } from "@/utils/survey/questions/getCurrentQuestion";
 
 import { SurveyQuestionnaireAnswers } from "./SurveyQuestionnaireAnswers/SurveyQuestionnaireAnswers";
 import { useQuestionActions } from "./utils/useQuestionActions";

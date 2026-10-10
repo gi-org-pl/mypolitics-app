@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { createResult } from "@/services/api/client/createResult";
 import type { SurveyPhaseContentProps } from "@/types/survey";
-import { buildResultInput } from "@/utils/survey/buildResultInput";
+import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 
 import type { HandIn } from "../SurveyQuestionnaireHandIn.types";
 

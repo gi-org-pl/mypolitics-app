@@ -1,4 +1,4 @@
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { SurveyQuestionnaireFrame } from "./SurveyQuestionnaireFrame/SurveyQuestionnaireFrame";
 import {
   CONTENT_CHANGE_MS,

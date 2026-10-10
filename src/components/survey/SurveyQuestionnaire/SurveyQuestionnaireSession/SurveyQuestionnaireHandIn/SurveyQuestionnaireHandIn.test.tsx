@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createResult } from "@/services/api/client/createResult";
 import type { CreateResultOutcome, Survey } from "@/types/survey";
-import { buildResultInput } from "@/utils/survey/buildResultInput";
+import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";

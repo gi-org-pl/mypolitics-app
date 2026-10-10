@@ -4,6 +4,7 @@ import { openPage } from "../layout/openPage";
 import { mockSurveyApi, type SurveyApiMock } from "./mockSurveyApi";
 import {
   CATEGORY_IDS,
+  PROJECT_ID,
   QUESTIONS,
   QUIZ_NAME,
   SURVEY_ID,
@@ -14,14 +15,14 @@ const QUIZ_PATH = "/quizzes/mypolitics";
 const UNKNOWN_QUIZ_PATH = "/quizzes/nie-ma-takiego-quizu";
 const RESULTS_ADDRESS = "https://mypolitics.pl/results/";
 const FEATURED_QUIZ = "myPolitics";
-const TOPICS_PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
+const CATEGORIES_PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
 const NOT_FOUND_HEADING = /To jest błąd 404/;
 const LOAD_ERROR_HEADING = "Nie udało się wczytać quizu";
 const [FIRST_QUESTION, SECOND_QUESTION, THIRD_QUESTION, FOURTH_QUESTION] =
   QUESTIONS;
 
-const getTopics = (page: Page) =>
-  page.getByRole("group", { name: TOPICS_PROMPT });
+const getCategoryGroup = (page: Page) =>
+  page.getByRole("group", { name: CATEGORIES_PROMPT });
 
 const getButton = (page: Page, name: string) =>
   page.getByRole("main").getByRole("button", { name, exact: true });
@@ -70,7 +71,7 @@ const skip = async (page: Page, question: (typeof QUESTIONS)[number]) => {
 
 const openQuiz = async (page: Page) => {
   await openPage(page, QUIZ_PATH);
-  await expect(getTopics(page)).toBeVisible();
+  await expect(getCategoryGroup(page)).toBeVisible();
 };
 
 // Picks an option of a field. The list closes and hands the focus back to its
@@ -126,9 +127,9 @@ test.describe("Feature: Questionnaire", () => {
         .click();
     });
 
-    await test.step('Then they are on the address of that quiz and see the topics to pick, with "Idziemy dalej" off', async () => {
+    await test.step('Then they are on the address of that quiz and see the categories to pick, with "Idziemy dalej" off', async () => {
       await expect(page).toHaveURL(QUIZ_PATH);
-      await expect(getTopics(page).getByRole("button")).toHaveText([
+      await expect(getCategoryGroup(page).getByRole("button")).toHaveText([
         "Gospodarka",
         "Ekologia",
       ]);
@@ -138,15 +139,19 @@ test.describe("Feature: Questionnaire", () => {
       await expect(
         page.getByRole("main").getByText(QUIZ_NAME, { exact: true }),
       ).toBeVisible();
+      expect(api.projectRequests).toHaveLength(1);
+      expect(api.projectRequests[0]).toContain(`/v1/project/${PROJECT_ID}`);
       expect(api.surveyRequests).toHaveLength(1);
       expect(api.surveyRequests[0]).toContain(`/v1/survey/${SURVEY_ID}`);
       expect(api.surveyRequests[0]).toContain("lang=pl");
     });
 
-    await test.step("When they pick a topic and continue", async () => {
-      await getTopics(page).getByRole("button", { name: "Ekologia" }).click();
+    await test.step("When they pick a category and continue", async () => {
+      await getCategoryGroup(page)
+        .getByRole("button", { name: "Ekologia" })
+        .click();
       await expect(
-        getTopics(page).getByRole("button", { name: "Gospodarka" }),
+        getCategoryGroup(page).getByRole("button", { name: "Gospodarka" }),
       ).toBeDisabled();
       await getButton(page, "Idziemy dalej").click();
     });
@@ -188,7 +193,7 @@ test.describe("Feature: Questionnaire", () => {
       await getButton(page, "Pomiń").click();
     });
 
-    await test.step("Then one result is created with the picked topic, the two answers and no demographics", async () => {
+    await test.step("Then one result is created with the picked category, the two answers and no demographics", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,
@@ -209,7 +214,7 @@ test.describe("Feature: Questionnaire", () => {
   });
 
   test("Scenario: A taker gives demographics", async ({ page }) => {
-    await test.step("Given a user opened the quiz, skipped the topics and answered every question", async () => {
+    await test.step("Given a user opened the quiz, skipped the categories and answered every question", async () => {
       await openQuiz(page);
       await getButton(page, "Pomiń").click();
       await answer(page, FIRST_QUESTION, "Zdecydowanie za");
@@ -280,7 +285,7 @@ test.describe("Feature: Questionnaire", () => {
     await test.step("Then they see the third question again, with the same number in the pill", async () => {
       await expectQuestion(page, THIRD_QUESTION);
       await expectPill(page, "Gospodarka", 1);
-      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCategoryGroup(page)).toHaveCount(0);
       await expect(getButton(page, "Poprzednie pytanie")).toBeEnabled();
       await expect(page).toHaveURL(QUIZ_PATH);
     });
@@ -314,11 +319,13 @@ test.describe("Feature: Questionnaire", () => {
         .click();
     });
 
-    await test.step("Then they see the topics to pick again, none picked", async () => {
-      await expect(getTopics(page)).toBeVisible();
+    await test.step("Then they see the categories to pick again, none picked", async () => {
+      await expect(getCategoryGroup(page)).toBeVisible();
 
-      for (const topic of await getTopics(page).getByRole("button").all()) {
-        await expect(topic).toHaveAttribute("aria-pressed", "false");
+      for (const category of await getCategoryGroup(page)
+        .getByRole("button")
+        .all()) {
+        await expect(category).toHaveAttribute("aria-pressed", "false");
       }
 
       await expect(getButton(page, "Idziemy dalej")).toBeDisabled();
@@ -342,7 +349,7 @@ test.describe("Feature: Questionnaire", () => {
       await expect(
         page.getByText("Sprawdź połączenie z internetem i spróbuj ponownie."),
       ).toBeVisible();
-      await expect(getTopics(page)).toHaveCount(0);
+      await expect(getCategoryGroup(page)).toHaveCount(0);
     });
 
     await test.step('When the API answers again and they press "Spróbuj ponownie"', async () => {
@@ -351,7 +358,7 @@ test.describe("Feature: Questionnaire", () => {
     });
 
     await test.step("Then they see the quiz", async () => {
-      await expect(getTopics(page)).toBeVisible();
+      await expect(getCategoryGroup(page)).toBeVisible();
       await expect(
         page.getByRole("heading", { name: LOAD_ERROR_HEADING }),
       ).toHaveCount(0);
@@ -370,6 +377,7 @@ test.describe("Feature: Questionnaire", () => {
       await expect(page.getByRole("banner")).toBeVisible();
       await expect(page.getByRole("contentinfo")).toBeVisible();
       await expect(page).toHaveURL(UNKNOWN_QUIZ_PATH);
+      expect(api.projectRequests).toHaveLength(0);
       expect(api.surveyRequests).toHaveLength(0);
     });
   });

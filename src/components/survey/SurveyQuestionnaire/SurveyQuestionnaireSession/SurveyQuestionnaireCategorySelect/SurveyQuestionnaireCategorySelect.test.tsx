@@ -2,7 +2,7 @@ import { fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import type { Survey, SurveySession } from "@/types/survey";
-import { createSession } from "@/utils/survey/createSession";
+import { createSession } from "@/utils/survey/session/createSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
 import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
@@ -96,8 +96,8 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
       ).toHaveLength(2);
     });
 
-    it("shows the topics the session holds as picked", () => {
-      renderPhase(undefined, { topicIds: ["b"] });
+    it("shows the categories the session holds as picked", () => {
+      renderPhase(undefined, { prioritizedCategoryIds: ["b"] });
 
       expect(getRow("Ustrój")).toHaveAttribute("aria-pressed", "true");
       expect(getRow("Ekologia")).toHaveAttribute("aria-pressed", "false");
@@ -105,25 +105,25 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
   });
 
   describe("when a row is pressed", () => {
-    it("passes a toggle to setTopics", () => {
+    it("passes a toggle to setCategories", () => {
       const { getSession } = renderPhase();
 
       fireEvent.click(getRow("Gospodarka"));
       fireEvent.click(getRow("Ustrój"));
 
-      expect(getSession().topicIds).toEqual(["c", "b"]);
+      expect(getSession().prioritizedCategoryIds).toEqual(["c", "b"]);
       expect(getRow("Gospodarka")).toHaveAttribute("aria-pressed", "true");
 
       fireEvent.click(getRow("Gospodarka"));
 
-      expect(getSession().topicIds).toEqual(["b"]);
+      expect(getSession().prioritizedCategoryIds).toEqual(["b"]);
       expect(getSession().phase).toBe("category-select");
     });
   });
 
-  describe("when the number of topics reaches the limit", () => {
+  describe("when the number of picked categories reaches the limit", () => {
     it("draws the other rows disabled and adds no line", () => {
-      renderPhase(undefined, { topicIds: ["a", "b", "c"] });
+      renderPhase(undefined, { prioritizedCategoryIds: ["a", "b", "c"] });
 
       expect(getRow("Polityka zagraniczna")).toBeDisabled();
       expect(getRow("Ekologia")).toBeDisabled();
@@ -144,7 +144,7 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
     });
   });
 
-  describe("given no topic picked", () => {
+  describe("given no category picked", () => {
     it('turns "Idziemy dalej" off, and keeps "Pomiń" working', () => {
       const { getSession } = renderPhase();
 
@@ -157,8 +157,8 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
     });
   });
 
-  describe("given at least one topic picked", () => {
-    it('turns "Idziemy dalej" on with one topic, below the limit and at it', () => {
+  describe("given at least one category picked", () => {
+    it('turns "Idziemy dalej" on with one category, below the limit and at it', () => {
       const { getSession } = renderPhase();
 
       fireEvent.click(getRow("Ustrój"));
@@ -168,47 +168,51 @@ describe("<SurveyQuestionnaireCategorySelect />", () => {
       fireEvent.click(getRow("Ekologia"));
       fireEvent.click(getRow("Gospodarka"));
 
-      expect(getSession().topicIds).toHaveLength(3);
+      expect(getSession().prioritizedCategoryIds).toHaveLength(3);
       expect(getContinueButton()).toBeEnabled();
     });
   });
 
   describe('when "Idziemy dalej" is pressed', () => {
-    it("confirms the topics: the first question comes", () => {
-      const { getSession } = renderPhase(undefined, { topicIds: ["b", "e"] });
+    it("confirms the categories: the first question comes", () => {
+      const { getSession } = renderPhase(undefined, {
+        prioritizedCategoryIds: ["b", "e"],
+      });
 
       fireEvent.click(getContinueButton());
 
       expect(getSession()).toMatchObject({
         phase: "questions",
-        topicIds: ["b", "e"],
-        areTopicsConfirmed: true,
+        prioritizedCategoryIds: ["b", "e"],
+        areCategoriesConfirmed: true,
         entries: [],
       });
     });
   });
 
   describe('when "Pomiń" is pressed', () => {
-    it("skips with no topic picked", () => {
+    it("skips with no category picked", () => {
       const { getSession } = renderPhase();
 
       fireEvent.click(getSkipButton());
 
       expect(getSession()).toMatchObject({
         phase: "questions",
-        topicIds: [],
+        prioritizedCategoryIds: [],
         entries: [],
       });
     });
 
     it("drops whatever was picked", () => {
-      const { getSession } = renderPhase(undefined, { topicIds: ["b", "e"] });
+      const { getSession } = renderPhase(undefined, {
+        prioritizedCategoryIds: ["b", "e"],
+      });
 
       fireEvent.click(getSkipButton());
 
       expect(getSession()).toMatchObject({
         phase: "questions",
-        topicIds: [],
+        prioritizedCategoryIds: [],
         entries: [],
       });
     });

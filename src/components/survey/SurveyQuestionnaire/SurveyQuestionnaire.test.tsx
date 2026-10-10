@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 

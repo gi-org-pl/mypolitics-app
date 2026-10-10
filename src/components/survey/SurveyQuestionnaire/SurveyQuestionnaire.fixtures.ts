@@ -1,5 +1,5 @@
 import type { Survey, SurveySession } from "@/types/survey";
-import { createSession } from "@/utils/survey/createSession";
+import { createSession } from "@/utils/survey/session/createSession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
@@ -89,7 +89,7 @@ export const categorySelectAtLimit = createFixture(
   createQuiz("category-select-at-limit"),
   (survey) => ({
     ...createSession(survey),
-    topicIds: ["system", "economy", "ecology"],
+    prioritizedCategoryIds: ["system", "economy", "ecology"],
   }),
 );
 

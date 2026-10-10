@@ -4,10 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import type { Survey, SurveySession } from "@/types/survey";
-import { createSession } from "@/utils/survey/createSession";
-import { getResultsUrl } from "@/utils/survey/getResultsUrl";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
+import { createSession } from "@/utils/survey/session/createSession";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { openAddress } from "@/utils/url/openAddress";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
@@ -211,7 +211,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession()).toMatchObject({
         phase: "category-select",
         entries: [],
-        topicIds: [],
+        prioritizedCategoryIds: [],
         areCheckpointsOff: true,
       });
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
