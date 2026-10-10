@@ -4,7 +4,7 @@ import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import { SurveyCheckpointOptions } from "@/components/survey/SurveyCheckpointOptions/SurveyCheckpointOptions";
 import type { CheckpointCardProps } from "@/types/checkpoint";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
 import { useCheckpointGuess } from "@/utils/checkpoint/useCheckpointGuess";
 
 import { getAxisPuzzleOptions } from "./utils/getAxisPuzzleOptions";

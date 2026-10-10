@@ -6,7 +6,7 @@ import { SURVEY_ID } from "./survey.fixture";
 // its positive side. In every question the two agreeing answers score the
 // first orientation and the two disagreeing answers score the second.
 //
-// It has one visible category, so no topics are picked, and it has no
+// It has one visible category, so no categories are picked, and it has no
 // identity orientations and no compass axes: the only personal checkpoint
 // card that can fire in it is the axis closeness card, after the fifth
 // answer.

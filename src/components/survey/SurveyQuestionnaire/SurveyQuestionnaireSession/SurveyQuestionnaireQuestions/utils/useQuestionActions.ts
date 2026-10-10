@@ -3,11 +3,11 @@ import { useEffect, useMemo, useRef } from "react";
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import type { CheckpointShownCard } from "@/types/checkpoint";
 import type { Survey, SurveySessionApi } from "@/types/survey";
-import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
-import { getSessionCheckpoint } from "@/utils/checkpoint/getSessionCheckpoint";
-import { fitSession } from "@/utils/survey/fitSession";
-import { getCurrentQuestion } from "@/utils/survey/getCurrentQuestion";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
+import { getSessionCheckpoint } from "@/utils/checkpoint/engine/getSessionCheckpoint";
+import { getCurrentQuestion } from "@/utils/survey/questions/getCurrentQuestion";
+import { fitSession } from "@/utils/survey/session/fitSession";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import type { QuestionActions } from "../SurveyQuestionnaireQuestions.types";

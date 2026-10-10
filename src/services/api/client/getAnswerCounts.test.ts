@@ -11,8 +11,8 @@ import {
 
 import { API_TIMEOUT_MS } from "@/constants/api";
 import { readAnswerCounts } from "@/services/api/utils/answer-counts/readAnswerCounts";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { getAnswerCounts } from "./getAnswerCounts";

@@ -74,6 +74,9 @@ const getText = () => within(getRegion()).getByRole("paragraph");
 
 const getButton = (name: string) => screen.getByRole("button", { name });
 
+// The box that moves its height: the second of the three parts of the frame.
+const getBox = () => getRegion().children[1] as HTMLElement;
+
 const queryButton = (name: string) => screen.queryByRole("button", { name });
 
 const getButtonNames = () =>
@@ -329,6 +332,52 @@ describe("<SurveyCheckpoint />", () => {
         "Trafione! — Wolny rynek jest Ci najbliższy.",
       );
       expect(getButtonNames()).toEqual([CONTINUE, OPT_OUT]);
+    });
+
+    it('keeps the text, the options and "Dalej" in one box that moves its height', () => {
+      renderWithI18n(<Puzzle />);
+
+      const box = getBox();
+
+      expect(box).toHaveClass("data-[animating=true]:overflow-y-clip");
+      expect(box).toContainElement(getText());
+      expect(box).toContainElement(getButton("Wolny rynek"));
+
+      fireEvent.click(getButton("Wolny rynek"));
+
+      expect(getBox()).toBe(box);
+      expect(box).toContainElement(getText());
+      expect(box).toContainElement(getButton(CONTINUE));
+    });
+
+    it('leaves the visual above that box and "Wyłącz checkpointy" under it', () => {
+      renderWithI18n(<Puzzle />);
+
+      const box = getBox();
+
+      expect(getRegion().children).toHaveLength(3);
+      expect(getRegion().firstElementChild).toContainElement(
+        screen.getByText("?"),
+      );
+      expect(getRegion().lastElementChild).toBe(getButton(OPT_OUT));
+      expect(box).not.toContainElement(screen.getByText("?"));
+    });
+
+    it("stacks what is in the box with the gap of the frame", () => {
+      renderCard({ options: OPTIONS });
+
+      const body = getText().parentElement;
+
+      expect(body).toHaveClass(
+        "flex",
+        "w-full",
+        "min-w-0",
+        "flex-col",
+        "gap-4",
+      );
+      expect(body).toContainElement(getButton("Interwencjonizm"));
+      expect(body).toContainElement(getButton(CONTINUE));
+      expect(getRegion()).toHaveClass("flex", "flex-col", "gap-4");
     });
   });
 

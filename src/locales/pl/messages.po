@@ -241,7 +241,7 @@ msgctxt "checkpoint-new-trait"
 msgid "A to niespodzianka!"
 msgstr "A to niespodzianka!"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:36
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:50
 msgid "Adres e-mail"
 msgstr "Adres e-mail"
 
@@ -278,7 +278,7 @@ msgctxt "checkpoint-new-trait"
 msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 msgstr "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:55
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:63
 msgid "Checkpoint"
 msgstr "Checkpoint"
 
@@ -309,7 +309,7 @@ msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zosta
 msgid "Czytamy programy partii"
 msgstr "Czytamy programy partii"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:90
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:100
 msgid "Dalej"
 msgstr "Dalej"
 
@@ -828,11 +828,11 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:36
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
 
@@ -1091,7 +1091,7 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "Twój wynik po stronie „{leading}” jest wyższy niż po stronie „{other}”!"
 msgstr "Twój wynik po stronie „{leading}” jest wyższy niż po stronie „{other}”!"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:37
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:51
 msgid "twoj@mail.com"
 msgstr "twoj@mail.com"
 
@@ -1183,11 +1183,11 @@ msgstr "Wieś"
 msgid "Wolę nie podawać"
 msgstr "Wolę nie podawać"
 
-#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:42
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:56
 msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 msgstr "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:39
 msgid "Wróć"
 msgstr "Wróć"
 
@@ -1228,7 +1228,7 @@ msgstr "Wyborczy 2023"
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:99
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:111
 msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
 

@@ -2,7 +2,8 @@ import { useParams } from "react-router";
 
 import { Error404 } from "@/components/shared/Error404/Error404";
 import { SurveyQuestionnaire } from "@/components/survey/SurveyQuestionnaire/SurveyQuestionnaire";
-import { getSurveyId } from "@/utils/survey/getSurveyId";
+import { SurveyLoadStatus } from "@/types/survey";
+import { getProjectId } from "@/utils/survey/getProjectId";
 import { useSurvey } from "@/utils/survey/useSurvey";
 
 // The address a quiz is taken at: /quizzes/:quizSlug. The slug says which
@@ -14,9 +15,9 @@ import { useSurvey } from "@/utils/survey/useSurvey";
 // centred column at every width, never wider than a comfortable line of text.
 export default function QuizPage() {
   const { quizSlug } = useParams();
-  const { load, retry } = useSurvey(getSurveyId(quizSlug));
+  const { load, retry } = useSurvey(getProjectId(quizSlug));
 
-  if (load.status === "not-found") {
+  if (load.status === SurveyLoadStatus.NotFound) {
     return <Error404 />;
   }
 

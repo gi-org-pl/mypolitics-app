@@ -2,11 +2,11 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
-import { getResultsUrl } from "@/utils/survey/getResultsUrl";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { openAddress } from "@/utils/url/openAddress";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useLeave } from "./useLeave";
 
@@ -44,7 +44,7 @@ describe("useLeave()", () => {
       const { id } = result.current.session.session;
       const stored: (string | null)[] = [];
 
-      act(() => result.current.session.skipTopics());
+      act(() => result.current.session.skipCategories());
 
       expect(sessionStorage.getItem(storageKey)).not.toBeNull();
 
@@ -62,7 +62,7 @@ describe("useLeave()", () => {
       const survey = createQuiz();
       const { result } = renderLeave(survey);
 
-      act(() => result.current.session.skipTopics());
+      act(() => result.current.session.skipCategories());
 
       const { session } = result.current.session;
 
@@ -95,7 +95,7 @@ describe("useLeave()", () => {
       const survey = createQuiz();
       const { result } = renderLeave(survey);
 
-      act(() => result.current.session.skipTopics());
+      act(() => result.current.session.skipCategories());
 
       const { id } = result.current.session.session;
 

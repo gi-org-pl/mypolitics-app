@@ -7,7 +7,7 @@ import { SURVEY_ID } from "./survey.fixture";
 // score the positive side of the question's axis and the two disagreeing
 // answers its negative side.
 //
-// It has one visible category, so no topics are picked, and it has no
+// It has one visible category, so no categories are picked, and it has no
 // identity orientations and no compass axes. After five answers only the
 // first axis has five answered questions behind it, and the axis closeness
 // card - ahead of the puzzle in priority - takes that axis. The next card can

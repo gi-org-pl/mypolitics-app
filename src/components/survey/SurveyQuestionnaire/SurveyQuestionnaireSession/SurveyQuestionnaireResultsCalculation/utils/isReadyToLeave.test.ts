@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type {
+import {
   HandInState,
   ResultLinkState,
 } from "../SurveyQuestionnaireResultsCalculation.types";
@@ -9,13 +9,17 @@ import { isReadyToLeave } from "./isReadyToLeave";
 describe("isReadyToLeave()", () => {
   describe("given a result that is not calculated", () => {
     it.each([
-      "sending",
-      "created",
-      "not-saved",
-      "not-ready",
+      HandInState.Sending,
+      HandInState.Created,
+      HandInState.NotSaved,
+      HandInState.NotReady,
     ] satisfies HandInState[])("is not ready before the result is calculated: %s", (handIn) => {
       expect(
-        isReadyToLeave({ handIn, link: "none", hasStayedLongEnough: true }),
+        isReadyToLeave({
+          handIn,
+          link: ResultLinkState.None,
+          hasStayedLongEnough: true,
+        }),
       ).toBe(false);
     });
   });
@@ -24,8 +28,8 @@ describe("isReadyToLeave()", () => {
     it("is not ready while the link request is pending", () => {
       expect(
         isReadyToLeave({
-          handIn: "calculated",
-          link: "pending",
+          handIn: HandInState.Calculated,
+          link: ResultLinkState.Pending,
           hasStayedLongEnough: true,
         }),
       ).toBe(false);
@@ -34,21 +38,21 @@ describe("isReadyToLeave()", () => {
     it("is not ready before the run has stayed long enough", () => {
       expect(
         isReadyToLeave({
-          handIn: "calculated",
-          link: "none",
+          handIn: HandInState.Calculated,
+          link: ResultLinkState.None,
           hasStayedLongEnough: false,
         }),
       ).toBe(false);
     });
 
     it.each([
-      "none",
-      "accepted",
-      "not-sent",
+      ResultLinkState.None,
+      ResultLinkState.Accepted,
+      ResultLinkState.NotSent,
     ] satisfies ResultLinkState[])("is ready when the result is calculated, the link has ended or was never asked for, and the stay is over: %s", (link) => {
       expect(
         isReadyToLeave({
-          handIn: "calculated",
+          handIn: HandInState.Calculated,
           link,
           hasStayedLongEnough: true,
         }),

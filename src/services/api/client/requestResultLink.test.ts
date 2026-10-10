@@ -2,7 +2,7 @@ import type { AxiosAdapter } from "axios";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RESULT_LINK_TIMEOUT_MS } from "@/constants/survey";
-import type { ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
+import { type ResultLinkInput, ResultLinkOutcome } from "@/types/survey";
 
 import { apiClient } from "./apiClient";
 import { requestResultLink } from "./requestResultLink";
@@ -144,7 +144,7 @@ describe("requestResultLink()", () => {
 
       apiClient.defaults.adapter = defaultAdapter;
 
-      expect(outcome).toBe("accepted");
+      expect(outcome).toBe(ResultLinkOutcome.Accepted);
       expect(fetchMock).toHaveBeenCalledTimes(1);
       expect(clientAdapter).not.toHaveBeenCalled();
     });
@@ -244,7 +244,9 @@ describe("requestResultLink()", () => {
     it("resolves accepted on 202", async () => {
       fetchMock.mockImplementationOnce(reply(202));
 
-      expect(await finish(requestResultLink(input))).toBe("accepted");
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Accepted,
+      );
     });
 
     it("resolves invalid on 400 and limited on 429", async () => {
@@ -252,8 +254,12 @@ describe("requestResultLink()", () => {
         .mockImplementationOnce(reply(400))
         .mockImplementationOnce(reply(429));
 
-      expect(await finish(requestResultLink(input))).toBe("invalid");
-      expect(await finish(requestResultLink(input))).toBe("limited");
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Invalid,
+      );
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Limited,
+      );
     });
 
     it.each([
@@ -261,15 +267,17 @@ describe("requestResultLink()", () => {
     ])("resolves unavailable on 503 and on any other status, 200 and 204 included: %i", async (status) => {
       fetchMock.mockImplementationOnce(reply(status));
 
-      expect(await finish(requestResultLink(input))).toBe("unavailable");
+      expect(await finish(requestResultLink(input))).toBe(
+        ResultLinkOutcome.Unavailable,
+      );
     });
 
     it.each([
-      [202, { outcome: "invalid" }, "accepted"],
-      [202, "<html></html>", "accepted"],
-      [400, { outcome: "accepted" }, "invalid"],
-      [429, null, "limited"],
-      [200, { outcome: "accepted" }, "unavailable"],
+      [202, { outcome: "invalid" }, ResultLinkOutcome.Accepted],
+      [202, "<html></html>", ResultLinkOutcome.Accepted],
+      [400, { outcome: "accepted" }, ResultLinkOutcome.Invalid],
+      [429, null, ResultLinkOutcome.Limited],
+      [200, { outcome: "accepted" }, ResultLinkOutcome.Unavailable],
     ])("reads the status and never the body: %i %j", async (status, data, outcome) => {
       fetchMock.mockImplementationOnce(reply(status, data));
 
@@ -282,7 +290,7 @@ describe("requestResultLink()", () => {
       fetchMock.mockImplementationOnce(failToConnect);
 
       await expect(finish(requestResultLink(input))).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
     });
 
@@ -306,14 +314,14 @@ describe("requestResultLink()", () => {
       await vi.advanceTimersByTimeAsync(0);
 
       expect(request.signal.aborted).toBe(true);
-      expect(seen.outcome).toBe("unavailable");
+      expect(seen.outcome).toBe(ResultLinkOutcome.Unavailable);
       expect(vi.getTimerCount()).toBe(0);
     });
 
     it("resolves unavailable without a request when it was cancelled before", async () => {
       await expect(
         finish(requestResultLink(input, { signal: AbortSignal.abort() })),
-      ).resolves.toBe("unavailable");
+      ).resolves.toBe(ResultLinkOutcome.Unavailable);
       expect(fetchMock).not.toHaveBeenCalled();
     });
 
@@ -321,7 +329,7 @@ describe("requestResultLink()", () => {
       fetchMock.mockImplementationOnce(neverAnswer);
 
       await expect(finish(requestResultLink(input))).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
       expect(getRequests()[0].signal.aborted).toBe(true);
     });
@@ -330,7 +338,7 @@ describe("requestResultLink()", () => {
       fetchMock.mockRejectedValueOnce(new TypeError("Unexpected"));
 
       await expect(finish(requestResultLink(input))).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
     });
 
@@ -344,7 +352,7 @@ describe("requestResultLink()", () => {
       });
 
       await expect(finish(requestResultLink(input))).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
     });
   });
@@ -372,7 +380,7 @@ describe("requestResultLink()", () => {
       await vi.advanceTimersByTimeAsync(1);
 
       expect(RESULT_LINK_TIMEOUT_MS).toBe(10_000);
-      expect(seen.outcome).toBe("unavailable");
+      expect(seen.outcome).toBe(ResultLinkOutcome.Unavailable);
       expect(vi.getTimerCount()).toBe(0);
     });
 
@@ -390,7 +398,7 @@ describe("requestResultLink()", () => {
       build.resultLinkUrl = undefined;
 
       await expect(finish(requestResultLink(inputWithConsent))).resolves.toBe(
-        "unavailable",
+        ResultLinkOutcome.Unavailable,
       );
       expect(fetchMock).not.toHaveBeenCalled();
     });

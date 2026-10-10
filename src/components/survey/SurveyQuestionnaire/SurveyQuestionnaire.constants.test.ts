@@ -6,7 +6,7 @@ import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNe
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
 import { SurveyCheckpointPositionPuzzle } from "@/components/survey/SurveyCheckpointPositionPuzzle/SurveyCheckpointPositionPuzzle";
 import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
-import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
+import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
 import { CHECKPOINT_CARDS } from "./SurveyQuestionnaire.constants";
 

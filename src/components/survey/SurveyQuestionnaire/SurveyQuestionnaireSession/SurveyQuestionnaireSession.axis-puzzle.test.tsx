@@ -2,13 +2,13 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-import { createScoredQuestion } from "@/utils/vitest/createScoredQuestion";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyAxis } from "@/utils/vitest/createSurveyAxis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createScoredQuestion } from "@/utils/vitest/survey/createScoredQuestion";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyAxis } from "@/utils/vitest/survey/createSurveyAxis";
 
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";

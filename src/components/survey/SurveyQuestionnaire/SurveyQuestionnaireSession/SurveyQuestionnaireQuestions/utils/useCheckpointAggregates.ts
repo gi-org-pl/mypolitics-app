@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import type { CheckpointAggregates } from "@/types/checkpoint";
-import { loadCheckpointAggregates } from "@/utils/survey/loadCheckpointAggregates";
+import { loadCheckpointAggregates } from "@/utils/survey/checkpoints/loadCheckpointAggregates";
 
 // The answer counts of the quiz, for the stats chart card. The load is
 // started when the questions are first drawn; drawn again - after a card,

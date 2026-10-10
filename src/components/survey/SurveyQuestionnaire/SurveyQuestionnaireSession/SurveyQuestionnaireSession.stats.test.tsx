@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAnswerCounts } from "@/services/api/client/getAnswerCounts";
 import type { CheckpointAggregates } from "@/types/checkpoint";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
