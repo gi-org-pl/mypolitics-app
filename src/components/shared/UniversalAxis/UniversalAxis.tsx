@@ -8,6 +8,7 @@ import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 import { isLightColor } from "@/utils/color/isLightColor";
 
 import type { UniversalAxisProps } from "./UniversalAxis.types";
+import { getTextClassName } from "./utils/getTextClassName";
 
 type AxisSide = "start" | "end";
 
@@ -23,12 +24,6 @@ const getPositionStyle = (position: number): CSSProperties =>
 
 const getBackgroundClassName = (color?: string): string =>
   color ? "bg-(--axis-color)" : "bg-gi-dark-gray";
-
-const getTextClassName = (color?: string): string => {
-  if (isLightColor(color)) return "text-gi-primary";
-
-  return color ? "text-(--axis-color)" : "text-gi-dark-gray";
-};
 
 const renderFill = (side: AxisSide, entry: AxisSideLayout) => (
   <div
