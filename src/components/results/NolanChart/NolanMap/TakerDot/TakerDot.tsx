@@ -7,9 +7,10 @@ import { getPositionStyle } from "../../utils/getPositionStyle";
 
 interface TakerDotProps {
   position: NolanPosition;
+  isOnDarkFill?: boolean;
 }
 
-export const TakerDot = ({ position }: TakerDotProps) => {
+export const TakerDot = ({ position, isOnDarkFill = false }: TakerDotProps) => {
   const style = getPositionStyle(position);
 
   return (
@@ -23,7 +24,7 @@ export const TakerDot = ({ position }: TakerDotProps) => {
       </div>
       <div
         data-testid="nolan-chart-dot"
-        className={`${MAP_POINT_CLASS_NAME} size-6 border-2 border-gi-primary bg-gi-light-primary`}
+        className={`${MAP_POINT_CLASS_NAME} size-6 border-2 border-gi-primary bg-gi-light-primary ${isOnDarkFill ? "ring-2 ring-white" : ""}`}
         style={style}
       />
     </>

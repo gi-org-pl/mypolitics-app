@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
+import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
 import type { NolanAxis, NolanComparison } from "../NolanChart.types";
 import { getNolanPosition } from "../utils/getNolanPosition";
 import { NolanRows } from "./NolanRows";
@@ -89,6 +90,26 @@ describe("<NolanRows />", () => {
     expect(getCapColor(verticalRow, "end")).toBe("");
   });
 
+  describe("given no colour", () => {
+    it("lightens the side each row does not lean to", () => {
+      renderWithI18n(
+        <NolanRows
+          id="rows"
+          horizontal={horizontal}
+          vertical={vertical}
+          position={POSITION}
+        />,
+      );
+
+      const [horizontalRow, verticalRow] = getRows();
+
+      expect(getCapColor(horizontalRow, "end")).toBe("");
+      expect(getCapColor(horizontalRow, "start")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor(verticalRow, "start")).toBe("");
+      expect(getCapColor(verticalRow, "end")).toBe(ROW_OTHER_SIDE_COLOR);
+    });
+  });
+
   describe("given no position", () => {
     it("renders both rows by the axis name alone, uncoloured", () => {
       renderWithI18n(
@@ -110,6 +131,7 @@ describe("<NolanRows />", () => {
         within(verticalRow).getByRole("heading", { level: 3 }),
       ).toHaveTextContent(/^Światopogląd$/);
       expect(getCapColor(horizontalRow, "end")).toBe("");
+      expect(getCapColor(horizontalRow, "start")).toBe("");
     });
   });
 

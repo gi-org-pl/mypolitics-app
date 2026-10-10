@@ -91,6 +91,89 @@ describe("<NolanMap />", () => {
     });
   });
 
+  describe("given a filled quadrant that is dark", () => {
+    it.each([
+      ["no colour", undefined],
+      ["an unsafe colour", "url(javascript:alert(1))"],
+      ["a dark colour", "#192430"],
+    ])("rings the dot on a quadrant with %s", (_name, color) => {
+      render(
+        <NolanMap
+          description="Opis"
+          horizontalName="Gospodarka"
+          verticalName="Światopogląd"
+          quadrants={{ ...quadrants, bottomLeft: { color } }}
+          position={MODERATE}
+          otherPosition={null}
+        />,
+      );
+
+      expect(getFilled()).toEqual(["nolan-chart-quadrant-bottomLeft"]);
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass(
+        "ring-2",
+        "ring-white",
+      );
+    });
+
+    it("rings the dot without any quadrants", () => {
+      render(
+        <NolanMap
+          description="Opis"
+          horizontalName="Gospodarka"
+          verticalName="Światopogląd"
+          position={MODERATE}
+          otherPosition={null}
+        />,
+      );
+
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass("ring-white");
+    });
+  });
+
+  describe("given a filled quadrant in a colour of the frame", () => {
+    it.each([
+      "#eb5760",
+      "#57bfeb",
+      "#36db8b",
+      "#8443e9",
+    ])("draws the dot without a ring on %s", (color) => {
+      render(
+        <NolanMap
+          description="Opis"
+          horizontalName="Gospodarka"
+          verticalName="Światopogląd"
+          quadrants={{ ...quadrants, bottomLeft: { color } }}
+          position={MODERATE}
+          otherPosition={null}
+        />,
+      );
+
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-white",
+      );
+    });
+  });
+
+  describe("given a centre position on quadrants without a colour", () => {
+    it("draws the dot without a ring, because no quadrant is filled", () => {
+      render(
+        <NolanMap
+          description="Opis"
+          horizontalName="Gospodarka"
+          verticalName="Światopogląd"
+          quadrants={{}}
+          position={CENTRE}
+          otherPosition={null}
+        />,
+      );
+
+      expect(getFilled()).toEqual([]);
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-white",
+      );
+    });
+  });
+
   describe("given no position", () => {
     it("draws no dot, no filled quadrant and no coordinates", () => {
       renderMap(null);

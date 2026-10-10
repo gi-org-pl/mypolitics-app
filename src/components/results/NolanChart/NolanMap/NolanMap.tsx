@@ -1,6 +1,8 @@
 import type { Orientation } from "@/types/orientation";
 
 import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
+import { getQuadrantColor } from "../utils/getQuadrantColor";
+import { isDarkFill } from "../utils/isDarkFill";
 import { AxisPill } from "./AxisPill/AxisPill";
 import { OrientationMarker } from "./OrientationMarker/OrientationMarker";
 import { QuadrantGrid } from "./QuadrantGrid/QuadrantGrid";
@@ -41,7 +43,15 @@ export const NolanMap = ({
             position && position.level !== "centre" ? position.quadrant : null
           }
         />
-        {position && <TakerDot position={position} />}
+        {position && (
+          <TakerDot
+            position={position}
+            isOnDarkFill={
+              position.level !== "centre" &&
+              isDarkFill(getQuadrantColor(quadrants, position))
+            }
+          />
+        )}
         {otherPosition && (
           <OrientationMarker
             orientation={otherOrientation}

@@ -66,6 +66,15 @@ describe("isLightColor()", () => {
       expect(isLightColor("#000000cc")).toBe(false);
       expect(isLightColor("oklch(0.25 0.03 250 / 0.9)")).toBe(false);
     });
+
+    it("judges a colour by what a browser draws on white", () => {
+      expect(isLightColor("#0000ff80")).toBe(isLightColor("#7f7fff"));
+      expect(isLightColor("#0000ff80")).toBe(false);
+      expect(isLightColor("#19243080")).toBe(isLightColor("#8c9197"));
+      expect(isLightColor("#19243080")).toBe(false);
+      expect(isLightColor("#36db8b80")).toBe(isLightColor("#9aedc5"));
+      expect(isLightColor("#36db8b80")).toBe(true);
+    });
   });
 
   describe("given no usable colour", () => {
