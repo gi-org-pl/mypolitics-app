@@ -3,7 +3,7 @@ import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { DEFAULT_COMPASS_QUADRANTS } from "@/constants/results";
 import type { Orientation } from "@/types/orientation";
-import { createCompassTrail } from "@/utils/vitest/createCompassTrail";
+import { createCompassTrail } from "@/utils/vitest/survey/createCompassTrail";
 
 import { CompassMap } from "./CompassMap";
 import type { CompassMapPosition } from "./CompassMap.types";

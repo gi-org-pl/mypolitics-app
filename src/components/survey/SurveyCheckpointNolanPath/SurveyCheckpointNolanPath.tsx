@@ -4,7 +4,7 @@ import { CompassMap } from "@/components/shared/CompassMap/CompassMap";
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import { DEFAULT_COMPASS_QUADRANTS } from "@/constants/results";
 import type { CheckpointCardProps } from "@/types/checkpoint";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
 
 import { getPathPosition } from "./utils/getPathPosition";
 import { useNolanPathDescription } from "./utils/useNolanPathDescription";
