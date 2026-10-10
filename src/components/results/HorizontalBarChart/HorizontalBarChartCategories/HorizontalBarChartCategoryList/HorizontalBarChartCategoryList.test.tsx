@@ -27,7 +27,7 @@ const item = (
 
 const CATEGORIES: CategoryItem[] = [
   item("economy", "Gospodarka", [entry("Beta", 65), entry("Alfa", 20)]),
-  item("views", "Światopogląd", [entry("Delta", 75)]),
+  item("views", "Światopogląd", [entry("Delta", 75), entry("Alfa", 10)]),
 ];
 
 const getCategories = (): HTMLElement[] =>
@@ -101,7 +101,12 @@ describe("<HorizontalBarChartCategoryList />", () => {
       renderWithI18n(
         <HorizontalBarChartCategoryList
           categories={[
-            item("economy", "Gospodarka", [entry("Alfa", 0)], false),
+            item(
+              "economy",
+              "Gospodarka",
+              [entry("Alfa", 0), entry("Beta")],
+              false,
+            ),
           ]}
           onOpen={vi.fn()}
         />,
@@ -113,6 +118,91 @@ describe("<HorizontalBarChartCategoryList />", () => {
       expect(
         screen.getByRole("button", { name: "Pokaż kategorię: Gospodarka" }),
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a category with one entry", () => {
+    const SINGLE = item("law", "Prawo", [entry("Gamma", 30)]);
+
+    it("renders its heading and leader bar with no control", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={[SINGLE]}
+          onOpen={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole("heading", { name: "Prawo — Gamma" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Gamma: 30%" }),
+      ).toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("closes it with the foot of a category that cannot be opened", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={[SINGLE, item("empty", "Pusta", [])]}
+          onOpen={vi.fn()}
+        />,
+      );
+
+      const [single, empty] = getCategories();
+
+      expect(single.lastElementChild).toHaveClass("h-4", "border-b");
+      expect(single.lastElementChild?.className).toBe(
+        empty.lastElementChild?.className,
+      );
+    });
+
+    it("leaves the controls of the other categories in place", () => {
+      const onOpen = vi.fn();
+
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={[...CATEGORIES, SINGLE]}
+          onOpen={onOpen}
+        />,
+      );
+
+      const [economy, views, law] = getCategories();
+
+      expect(within(economy).getByRole("button")).toBeInTheDocument();
+      expect(within(views).getByRole("button")).toBeInTheDocument();
+      expect(within(law).queryByRole("button")).not.toBeInTheDocument();
+      expect(screen.getAllByRole("button")).toHaveLength(2);
+    });
+
+    it("registers no control for it", () => {
+      const registerControl = vi.fn(() => vi.fn());
+
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={[...CATEGORIES, SINGLE]}
+          registerControl={registerControl}
+          onOpen={vi.fn()}
+        />,
+      );
+
+      expect(registerControl).toHaveBeenCalledWith("economy");
+      expect(registerControl).toHaveBeenCalledWith("views");
+      expect(registerControl).not.toHaveBeenCalledWith("law");
+    });
+
+    it("has no control when the entry has no result either", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={[item("law", "Prawo", [entry("Gamma", 0)], false)]}
+          onOpen={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.getByRole("heading", { name: "Prawo — Brak wyniku" }),
+      ).toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
     });
   });
 
@@ -136,7 +226,9 @@ describe("<HorizontalBarChartCategoryList />", () => {
     it("gives its control a general name", () => {
       renderWithI18n(
         <HorizontalBarChartCategoryList
-          categories={[item("nameless", "", [entry("Alfa", 40)])]}
+          categories={[
+            item("nameless", "", [entry("Alfa", 40), entry("Beta", 10)]),
+          ]}
           onOpen={vi.fn()}
         />,
       );
