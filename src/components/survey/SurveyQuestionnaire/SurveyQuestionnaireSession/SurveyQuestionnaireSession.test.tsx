@@ -17,6 +17,7 @@ import { openAddress } from "@/utils/url/openAddress";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { QUESTION_SLIDE_MS } from "./SurveyQuestionnaireQuestions/SurveyQuestionSlide/SurveyQuestionSlide.constants";
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
 
@@ -89,6 +90,21 @@ const getContent = (text: string) =>
 
 const finishChange = () => act(() => vi.advanceTimersByTime(CONTENT_CHANGE_MS));
 
+// The bubble of a question: the element that slides.
+const getBubble = (statement: string) =>
+  screen
+    .getByText(statement)
+    .closest("[data-leaving], [data-arriving]") as HTMLElement;
+
+const queryLeavingBubbles = (container: HTMLElement) =>
+  container.querySelectorAll("[data-leaving]");
+
+const allowMotion = () =>
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({ matches: false })),
+  );
+
 const finishAcknowledgement = () =>
   act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS));
 
@@ -112,6 +128,7 @@ describe("<SurveyQuestionnaireSession />", () => {
     vi.useRealTimers();
     vi.restoreAllMocks();
     vi.resetAllMocks();
+    vi.unstubAllGlobals();
     sessionStorage.clear();
   });
 
@@ -148,7 +165,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       ).toBeInTheDocument();
     });
 
-    it("keeps the bar and the controls mounted between two questions", () => {
+    it("keeps the bar, the controls and the content of the phase mounted between two questions", () => {
       renderScreen(onQuestion(0));
 
       const bar = getBar();
@@ -159,8 +176,39 @@ describe("<SurveyQuestionnaireSession />", () => {
 
       expect(getBar()).toBe(bar);
       expect(getBackButton()).toBe(backButton);
-      expect(firstContent).not.toBeInTheDocument();
-      expect(getContent(SECOND_STATEMENT)).toBeInTheDocument();
+      expect(getContent(SECOND_STATEMENT)).toBe(firstContent);
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+    });
+
+    it("mounts new content for another phase, under the same bar and controls", () => {
+      renderScreen();
+
+      const backButton = getBackButton();
+      const select = screen.getByRole("group", { name: PROMPT });
+      const selectContent = select.closest("[tabindex='-1']");
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBackButton()).toBe(backButton);
+      expect(select).not.toBeInTheDocument();
+      expect(getContent(FIRST_STATEMENT)).not.toBe(selectContent);
+    });
+
+    it("keeps the content in a box that follows its height, whatever the phase", () => {
+      const { container } = renderScreen();
+      const getBox = () =>
+        container.querySelector(
+          "[data-locked] > .data-\\[animating\\=true\\]\\:overflow-y-clip",
+        );
+      const box = getBox();
+
+      expect(box).toContainElement(screen.getByRole("group", { name: PROMPT }));
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBox()).toBe(box);
+      expect(box).toContainElement(getContent(FIRST_STATEMENT));
+      expect(box?.previousElementSibling).toHaveAttribute("role", "status");
     });
 
     it('announces the pill once when it becomes "Prawie koniec!" and "Prawie gotowe"', async () => {
@@ -435,6 +483,154 @@ describe("<SurveyQuestionnaireSession />", () => {
 
       expect(scrollIntoView).toHaveBeenCalledTimes(1);
       expect(scrollIntoView.mock.contexts[0]).toContainElement(getBar());
+    });
+  });
+
+  describe("when one question takes the place of another", () => {
+    beforeEach(() => {
+      allowMotion();
+    });
+
+    it("sends the bubble before to the left and brings the new one in from the right after an answer", () => {
+      const { container } = renderScreen(onQuestion(0));
+
+      fireEvent.click(screen.getByRole("button", { name: "Częściowo za" }));
+      finishAcknowledgement();
+
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "forwards",
+      );
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "forwards",
+      );
+      expect(queryLeavingBubbles(container)).toHaveLength(1);
+    });
+
+    it("does the same after a skip", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "forwards",
+      );
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "forwards",
+      );
+    });
+
+    it("turns the directions round after back", () => {
+      renderScreen(onQuestion(1));
+
+      fireEvent.click(getBackButton());
+
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "backwards",
+      );
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "backwards",
+      );
+    });
+
+    it("moves neither the bar, the controls nor the answers sideways", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      for (const still of [
+        getBar(),
+        getBackButton(),
+        getSkipButton(),
+        screen.getByRole("group", { name: SECOND_STATEMENT }),
+      ]) {
+        expect(still.closest("[data-leaving], [data-arriving]")).toBeNull();
+      }
+    });
+
+    it("takes no press while the bubbles move: no question is skipped and two bubbles are the most there are", () => {
+      const { container, getSession } = renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+      fireEvent.click(getSkipButton());
+      fireEvent.click(getBackButton());
+      fireEvent.click(
+        screen.getByRole("button", { name: "Ze źródeł odnawialnych" }),
+      );
+      act(() => vi.advanceTimersByTime(CONTENT_CHANGE_MS - 1));
+
+      expect(getSession().entries).toEqual([{ questionId: "q1" }]);
+      expect(queryLeavingBubbles(container)).toHaveLength(1);
+      expect(getLockedElement(container)).toHaveAttribute(
+        "data-locked",
+        "true",
+      );
+
+      act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS * 2));
+
+      expect(getSession().entries).toEqual([{ questionId: "q1" }]);
+      expect(queryLeavingBubbles(container)).toHaveLength(0);
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+      expect(getLockedElement(container)).toHaveAttribute(
+        "data-locked",
+        "false",
+      );
+    });
+
+    it("takes the next press when the slide is over, and answers the question that is on screen", () => {
+      const { getSession } = renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+      finishChange();
+      fireEvent.click(
+        screen.getByRole("button", { name: "Ze źródeł odnawialnych" }),
+      );
+      finishAcknowledgement();
+
+      expect(getSession().entries).toEqual([
+        { questionId: "q1" },
+        { questionId: "q2", answerId: "q2-renewables" },
+      ]);
+    });
+
+    it("puts the focus on the top of the content, out of the bubble that leaves", () => {
+      renderScreen(onQuestion(1));
+
+      const explanation = screen.getByRole("button", { expanded: false });
+
+      explanation.focus();
+      fireEvent.click(getSkipButton());
+
+      expect(getContent(SECOND_STATEMENT)).toHaveFocus();
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute("inert");
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+    });
+
+    it("names the new question once for a screen reader: by its bubble and by its answers", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      expect(screen.getAllByText(SECOND_STATEMENT)).toHaveLength(1);
+      expect(
+        screen.getAllByRole("group", { name: SECOND_STATEMENT }),
+      ).toHaveLength(1);
+      expect(
+        screen.queryByRole("group", { name: FIRST_STATEMENT }),
+      ).not.toBeInTheDocument();
+      expect(getBubble(SECOND_STATEMENT)).not.toHaveAttribute("aria-live");
+    });
+
+    it("locks the screen for exactly as long as a question slides", () => {
+      expect(CONTENT_CHANGE_MS).toBe(QUESTION_SLIDE_MS);
     });
   });
 

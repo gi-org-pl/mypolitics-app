@@ -479,11 +479,11 @@ msgstr "Learn what shapes your orientation"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:32
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
 msgid "Prawie gotowe"
 msgstr "Almost ready"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:31
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
 msgid "Prawie koniec!"
 msgstr "Almost done!"
 
@@ -635,7 +635,7 @@ msgstr "Village"
 msgid "Wolę nie podawać"
 msgstr "I prefer not to say"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
 msgid "Wróć"
 msgstr "Go back"
 

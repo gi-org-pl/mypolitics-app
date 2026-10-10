@@ -34,12 +34,19 @@ const getAnswers = (page: Page, question: (typeof QUESTIONS)[number]) =>
 const getProgressBar = (page: Page) =>
   page.getByRole("progressbar", { name: "Postęp quizu" });
 
+// A question is on screen when its answers and its statement are, and no
+// other statement is: one question takes the place of another by sliding, so
+// for a moment the bubble of the question before is still there.
 const expectQuestion = async (
   page: Page,
   question: (typeof QUESTIONS)[number],
 ) => {
   await expect(getAnswers(page, question)).toBeVisible();
   await expect(page.getByText(question.text, { exact: true })).toBeVisible();
+
+  for (const other of QUESTIONS.filter(({ text }) => text !== question.text)) {
+    await expect(page.getByText(other.text, { exact: true })).toHaveCount(0);
+  }
 };
 
 // The pill of a question of a visible category: its name and the questions

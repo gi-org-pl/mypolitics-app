@@ -12,12 +12,15 @@ import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession/SurveyQ
 // The padding of the card is the design's 24 px from the width it is drawn
 // at, and gives way to the content on a narrower card: it follows the width
 // of the card itself, whatever the page around it does.
+//
+// The sides of the card cut off what moves across them - the bubble of a
+// question on its way in or out. Nothing is cut off at the top or the bottom.
 export const SurveyQuestionnaire = ({
   load,
   onRetry,
 }: SurveyQuestionnaireProps) => (
   <div className="@container w-full">
-    <div className="w-full rounded-4xl bg-gi-ash p-3 @xs:p-4 @sm:p-6">
+    <div className="w-full overflow-x-clip rounded-4xl bg-gi-ash p-3 @xs:p-4 @sm:p-6">
       {load.status === SurveyLoadStatus.Loading && (
         <SurveyQuestionnaireLoading />
       )}

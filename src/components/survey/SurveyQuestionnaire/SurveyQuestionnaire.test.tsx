@@ -128,6 +128,19 @@ describe("<SurveyQuestionnaire />", () => {
       expect(screen.getByText("Ekologia")).toBeVisible();
     });
 
+    it("cuts off at its sides what moves across them, and nothing at the top or the bottom", () => {
+      const { container } = renderScreen({
+        status: SurveyLoadStatus.Ready,
+        survey: createQuiz(),
+      });
+      const card = container.querySelector(".bg-gi-ash");
+
+      expect(card).toHaveClass("overflow-x-clip");
+      expect(card?.className).not.toContain("overflow-hidden");
+      expect(card?.className).not.toContain("overflow-y");
+      expect(card?.className).not.toContain("overflow-clip");
+    });
+
     it("draws the same frame in every state: one card that takes the width of its parent", () => {
       const { container, rerenderScreen } = renderScreen({
         status: SurveyLoadStatus.Loading,

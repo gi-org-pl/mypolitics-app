@@ -479,11 +479,11 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:32
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:31
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
 
@@ -635,7 +635,7 @@ msgstr "Wieś"
 msgid "Wolę nie podawać"
 msgstr "Wolę nie podawać"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
 msgid "Wróć"
 msgstr "Wróć"
 
