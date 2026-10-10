@@ -250,7 +250,7 @@ msgctxt "checkpoint-new-trait"
 msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 msgstr "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:55
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:63
 msgid "Checkpoint"
 msgstr "Checkpoint"
 
@@ -281,7 +281,7 @@ msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zosta
 msgid "Czytamy programy partii"
 msgstr "Czytamy programy partii"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:90
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:100
 msgid "Dalej"
 msgstr "Dalej"
 
@@ -1176,7 +1176,7 @@ msgstr "Wyborczy 2023"
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:99
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:111
 msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
 
