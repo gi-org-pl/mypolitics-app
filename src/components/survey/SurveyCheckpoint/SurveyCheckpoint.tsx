@@ -7,7 +7,9 @@ import { toSingleLine } from "@/utils/text/toSingleLine";
 import {
   BODY_CLASS_NAME,
   CONTINUE_CLASS_NAME,
+  CONTINUE_ROW_CLASS_NAME,
   OPT_OUT_CLASS_NAME,
+  OPTIONS_CLASS_NAME,
 } from "./SurveyCheckpoint.constants";
 import type { SurveyCheckpointProps } from "./SurveyCheckpoint.types";
 import { SurveyCheckpointText } from "./SurveyCheckpointText/SurveyCheckpointText";
@@ -26,9 +28,12 @@ import { useTextFocus } from "./utils/useTextFocus";
 // continue.
 //
 // A card may change in place - a puzzle reveals its answer: the line changes,
-// the options go and "Dalej" comes. What changes height that way stands in a
-// box that moves its height, so "Wyłącz checkpointy" under it moves with it
-// instead of jumping. The frame animates nothing by itself: the card as a
+// the options go and "Dalej" comes, or stays when it was there already. Each
+// of the three stands in a box of its own that moves its height, so what is
+// under a part that changes - "Dalej" under the options, "Wyłącz checkpointy"
+// under all of them - moves with it instead of jumping. The gap above the
+// options and above "Dalej" is inside their boxes, so a part that is not
+// there takes no room. The frame animates nothing by itself: the card as a
 // whole arrives and leaves with the content of the screen.
 //
 // The dashes of the panel are 8 px long and 8 px apart, which a CSS border
@@ -78,30 +83,34 @@ export const SurveyCheckpoint = ({
         </svg>
         {visual}
       </div>
-      <AnimatedHeight>
-        <div className={BODY_CLASS_NAME}>
+      <div className={BODY_CLASS_NAME}>
+        <AnimatedHeight>
           <SurveyCheckpointText
             leadIn={leadInText}
             statement={statementText}
             quote={quote}
             textRef={textRef}
           />
-          {hasOptions && (
-            <div className="flex w-full min-w-0 flex-col gap-2">{options}</div>
-          )}
+        </AnimatedHeight>
+        <AnimatedHeight>
+          {hasOptions && <div className={OPTIONS_CLASS_NAME}>{options}</div>}
+        </AnimatedHeight>
+        <AnimatedHeight>
           {/* A card with no options has no other way forward: it keeps "Dalej". */}
           {(isContinueAvailable || !hasOptions) && (
-            <Button
-              type="ghost"
-              variant="primary"
-              className={CONTINUE_CLASS_NAME}
-              onClick={requestContinue}
-            >
-              <Trans>Dalej</Trans>
-            </Button>
+            <div className={CONTINUE_ROW_CLASS_NAME}>
+              <Button
+                type="ghost"
+                variant="primary"
+                className={CONTINUE_CLASS_NAME}
+                onClick={requestContinue}
+              >
+                <Trans>Dalej</Trans>
+              </Button>
+            </div>
           )}
-        </div>
-      </AnimatedHeight>
+        </AnimatedHeight>
+      </div>
       <Button
         type="ghost"
         variant="primary"
