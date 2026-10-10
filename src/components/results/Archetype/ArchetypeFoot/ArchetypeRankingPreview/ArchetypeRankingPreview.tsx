@@ -1,6 +1,7 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import plusIcon from "@/assets/icons/plus.svg";
+import { AVATAR_LEFT_OUT_WITHOUT_IMAGE_CLASS_NAME } from "@/constants/image";
 import { withKeys } from "@/utils/array/withKeys";
 
 import type { ArchetypeEntry } from "../../Archetype.types";
@@ -32,7 +33,7 @@ export const ArchetypeRankingPreview = ({
           src={item}
           alt=""
           dataTestId="archetype-ranking-preview-image"
-          className={ITEM_CLASS_NAME}
+          className={`${ITEM_CLASS_NAME} ${AVATAR_LEFT_OUT_WITHOUT_IMAGE_CLASS_NAME}`}
         />
       ))}
       {ranking.length > images.length && (

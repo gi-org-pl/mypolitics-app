@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { createOrientation } from "@/utils/vitest/createOrientation";
@@ -105,6 +105,28 @@ describe("<ArchetypeRankingPreview />", () => {
       const { container } = render(<ArchetypeRankingPreview ranking={[]} />);
 
       expect(container).toBeEmptyDOMElement();
+    });
+  });
+
+  describe("given an image that fails to load", () => {
+    it("leaves that entry out of the row, as an entry without an image", () => {
+      render(
+        <ArchetypeRankingPreview
+          ranking={[archetype("a", "a.png"), archetype("b", "b.png")]}
+        />,
+      );
+
+      const [first, second] = screen.getAllByTestId(
+        "archetype-ranking-preview-image",
+      );
+
+      fireEvent.error(first.querySelector("img") as HTMLImageElement);
+
+      expect(first.querySelector("img")).toBeNull();
+      expect(first).toHaveClass("has-[>[aria-hidden=true]]:hidden");
+      expect(first.querySelector(":scope > [aria-hidden=true]")).not.toBeNull();
+      expect(second.querySelector("img")).toHaveAttribute("src", "b.png");
+      expect(second.querySelector(":scope > [aria-hidden=true]")).toBeNull();
     });
   });
 });

@@ -1,6 +1,7 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME } from "@/constants/image";
 import type { Orientation } from "@/types/orientation";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
@@ -34,7 +35,7 @@ export const OrientationMarker = ({
             size="small"
             src={orientation.imageUrl}
             dataTestId="nolan-chart-comparison-image"
-            className={imageClassName}
+            className={`${imageClassName} ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME}`}
             style={imageStyle}
           />
         ) : (

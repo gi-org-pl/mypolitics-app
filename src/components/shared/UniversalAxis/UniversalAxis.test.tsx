@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import type { AxisEntry } from "@/types/axis";
@@ -337,6 +337,40 @@ describe("<UniversalAxis />", () => {
       expect(
         screen.getByTestId("universal-axis-cap-start").querySelector("img"),
       ).toHaveAttribute("src", "https://example.com/a.png");
+    });
+
+    it("leaves the cap empty when the image fails to load, as without an image", () => {
+      renderWithI18n(<UniversalAxis start={entryA(25)} />);
+
+      const cap = screen.getByTestId("universal-axis-cap-start");
+
+      fireEvent.error(cap.querySelector("img") as HTMLImageElement);
+
+      expect(cap.querySelector("img")).toBeNull();
+      expect(cap).toHaveClass("[&>[aria-hidden=true]]:hidden");
+      expect(cap.querySelectorAll(":scope > [aria-hidden=true]")).toHaveLength(
+        cap.children.length,
+      );
+      expect(cap).toHaveClass("bg-(--axis-color)");
+    });
+
+    it("leaves the mark of the other party empty when its image fails to load", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(25)}
+          comparison={{ orientation: friend, value: 60 }}
+        />,
+      );
+
+      const image = screen.getByTestId("universal-axis-comparison-image");
+
+      fireEvent.error(image.querySelector("img") as HTMLImageElement);
+
+      expect(image.querySelector("img")).toBeNull();
+      expect(image).toHaveClass("[&>[aria-hidden=true]]:hidden");
+      expect(
+        image.querySelectorAll(":scope > [aria-hidden=true]"),
+      ).toHaveLength(image.children.length);
     });
   });
 

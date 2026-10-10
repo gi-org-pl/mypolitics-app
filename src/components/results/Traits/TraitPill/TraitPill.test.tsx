@@ -63,6 +63,16 @@ describe("<TraitPill />", () => {
       expect(image.nextElementSibling).toHaveTextContent("Anarchizm");
     });
 
+    it("renders the name alone when the icon fails to load, as without an icon", () => {
+      renderWithI18n(<TraitPill item={anarchism} />);
+
+      fireEvent.error(screen.getByTestId("trait-pill-image"));
+
+      expect(screen.queryByTestId("trait-pill-image")).not.toBeInTheDocument();
+      expect(getBody().children).toHaveLength(1);
+      expect(getBody()).toHaveTextContent(/^Anarchizm$/);
+    });
+
     it("renders no avatar, even when the other side is passed", () => {
       renderWithI18n(<TraitPill item={anarchism} otherOrientation={friend} />);
 
