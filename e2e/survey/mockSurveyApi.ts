@@ -1,8 +1,9 @@
 import type { Page, Route } from "@playwright/test";
 
-import { surveyFixture } from "./survey.fixture";
+import { SURVEY_ID, surveyFixture } from "./survey.fixture";
 
 const API_ADDRESS = "https://api.mypolitics.pl/**";
+const PROJECT_ADDRESS = "**/v1/project/**";
 const SURVEY_ADDRESS = "**/v1/survey/**";
 const RESULT_ADDRESS = "**/v1/result";
 const RESULT_READ_ADDRESS = "**/v1/result/**";
@@ -25,6 +26,7 @@ const CORS_HEADERS = {
 export type SurveyApiCall = "result" | "link";
 
 export interface SurveyApiMock {
+  projectRequests: string[]; // the addresses the project of the quiz was asked for at
   results: unknown[]; // the bodies of the results that were created, oldest first
   repeatedResults: unknown[]; // the bodies of the results that were sent again and answered "already exists"
   surveyRequests: string[]; // the addresses the quiz was asked for at
@@ -56,6 +58,7 @@ export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
   let isLinkAvailable = true;
   const readResultIds = new Set<string>();
   const mock: SurveyApiMock = {
+    projectRequests: [],
     results: [],
     repeatedResults: [],
     surveyRequests: [],
@@ -76,6 +79,24 @@ export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
   };
 
   await page.route(API_ADDRESS, (route) => route.abort());
+
+  // The quiz is found through its project: every project names the survey
+  // of the fixture as its latest.
+  await page.route(PROJECT_ADDRESS, (route) => {
+    const request = route.request();
+
+    if (request.method() === "OPTIONS") return allowRequest(route);
+    if (request.method() !== "GET" || !isApiReachable) return route.abort();
+
+    mock.projectRequests.push(request.url());
+
+    const projectId = new URL(request.url()).pathname.split("/").at(-1);
+
+    return route.fulfill({
+      json: { id: projectId, latestSurveyId: SURVEY_ID },
+      headers: CORS_HEADERS,
+    });
+  });
 
   await page.route(SURVEY_ADDRESS, (route) => {
     const request = route.request();

@@ -1,20 +1,24 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
-import type { CreateResultOutcome, Survey, SurveyResult } from "@/types/survey";
-import { buildResultInput } from "@/utils/survey/buildResultInput";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import {
+  CreateResultOutcome,
+  type Survey,
+  type SurveyResult,
+  SurveyResultState,
+} from "@/types/survey";
+import { buildResultInput } from "@/utils/survey/result/buildResultInput";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
-
 import {
   CREATE_RESULT_TIMEOUT_MS,
   RESULT_READ_INTERVAL_MS,
   RESULT_WAIT_MS,
 } from "../SurveyQuestionnaireResultsCalculation.constants";
+import { HandInState } from "../SurveyQuestionnaireResultsCalculation.types";
 import { useResultHandIn } from "./useResultHandIn";
 
 vi.mock("@/services/api/client/createResult");
@@ -77,7 +81,7 @@ const renderHandIn = () => {
 describe("useResultHandIn()", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    createResultMock.mockResolvedValue("stored");
+    createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
     getResultMock.mockResolvedValue(toResult(false));
   });
 
@@ -102,17 +106,19 @@ describe("useResultHandIn()", () => {
       });
       expect(getResultMock).not.toHaveBeenCalled();
 
-      await answer("stored");
+      await answer(CreateResultOutcome.Stored);
     });
 
     it("sets the result state to sending", async () => {
       const answer = holdHandIn();
       const { result } = renderHandIn();
 
-      expect(result.current.handIn).toBe("sending");
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.handIn).toBe(HandInState.Sending);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
 
-      await answer("stored");
+      await answer(CreateResultOutcome.Stored);
     });
   });
 
@@ -121,10 +127,12 @@ describe("useResultHandIn()", () => {
       const answer = holdHandIn();
       const { result, input } = renderHandIn();
 
-      await answer("stored");
+      await answer(CreateResultOutcome.Stored);
 
-      expect(result.current.handIn).toBe("created");
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
       expect(getResultMock).toHaveBeenCalledTimes(1);
       expect(getResultMock).toHaveBeenCalledWith(input.sessionId, {
         signal: expect.any(AbortSignal),
@@ -162,8 +170,10 @@ describe("useResultHandIn()", () => {
       await pass(RESULT_READ_INTERVAL_MS * 5);
 
       expect(getResultMock).toHaveBeenCalledTimes(6);
-      expect(result.current.handIn).toBe("created");
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
     });
 
     it("sets the result state to calculated and stops reading", async () => {
@@ -175,14 +185,16 @@ describe("useResultHandIn()", () => {
 
       await pass(RESULT_READ_INTERVAL_MS);
 
-      expect(result.current.handIn).toBe("calculated");
-      expect(result.current.session.resultState).toBe("calculated");
+      expect(result.current.handIn).toBe(HandInState.Calculated);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Calculated,
+      );
       expect(vi.getTimerCount()).toBe(0);
 
       await pass(RESULT_WAIT_MS);
 
       expect(getResultMock).toHaveBeenCalledTimes(2);
-      expect(result.current.handIn).toBe("calculated");
+      expect(result.current.handIn).toBe(HandInState.Calculated);
     });
   });
 
@@ -192,56 +204,60 @@ describe("useResultHandIn()", () => {
       const answerSecond = holdHandIn();
       const { result } = renderHandIn();
 
-      await answerFirst("unreachable");
+      await answerFirst(CreateResultOutcome.Unreachable);
 
-      expect(result.current.handIn).toBe("sending");
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.handIn).toBe(HandInState.Sending);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
       expect(createResultMock).toHaveBeenCalledTimes(2);
       expect(createResultMock.mock.calls[1]).toEqual(
         createResultMock.mock.calls[0],
       );
 
-      await answerSecond("stored");
+      await answerSecond(CreateResultOutcome.Stored);
     });
 
     it("carries on when the second try is stored", async () => {
-      createResultMock.mockResolvedValueOnce("unreachable");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Unreachable);
 
       const { result } = renderHandIn();
 
       await pass(0);
 
       expect(createResultMock).toHaveBeenCalledTimes(2);
-      expect(result.current.handIn).toBe("created");
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
       expect(getResultMock).toHaveBeenCalledTimes(1);
     });
 
     it("ends not-saved and sets the result state to failed when the second try fails", async () => {
-      createResultMock.mockResolvedValue("unreachable");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Unreachable);
 
       const { result } = renderHandIn();
 
       await pass(RESULT_WAIT_MS);
 
       expect(createResultMock).toHaveBeenCalledTimes(2);
-      expect(result.current.handIn).toBe("not-saved");
-      expect(result.current.session.resultState).toBe("failed");
+      expect(result.current.handIn).toBe(HandInState.NotSaved);
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
       expect(getResultMock).not.toHaveBeenCalled();
     });
   });
 
   describe("given a refused hand-in", () => {
     it("ends not-saved with no second try", async () => {
-      createResultMock.mockResolvedValue("refused");
+      createResultMock.mockResolvedValue(CreateResultOutcome.Refused);
 
       const { result } = renderHandIn();
 
       await pass(RESULT_WAIT_MS);
 
       expect(createResultMock).toHaveBeenCalledTimes(1);
-      expect(result.current.handIn).toBe("not-saved");
-      expect(result.current.session.resultState).toBe("failed");
+      expect(result.current.handIn).toBe(HandInState.NotSaved);
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
       expect(getResultMock).not.toHaveBeenCalled();
     });
   });
@@ -252,15 +268,15 @@ describe("useResultHandIn()", () => {
 
       await pass(RESULT_WAIT_MS - 1);
 
-      expect(result.current.handIn).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
 
       await pass(1);
 
       const reads = getResultMock.mock.calls.length;
 
       expect(RESULT_WAIT_MS).toBe(30_000);
-      expect(result.current.handIn).toBe("not-ready");
-      expect(result.current.session.resultState).toBe("failed");
+      expect(result.current.handIn).toBe(HandInState.NotReady);
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
       expect(vi.getTimerCount()).toBe(0);
 
       await pass(RESULT_WAIT_MS);
@@ -271,28 +287,30 @@ describe("useResultHandIn()", () => {
 
   describe("when a new run starts after a failure", () => {
     it("is sending from the render that starts it", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, rerender } = renderHandIn();
 
       await pass(0);
 
-      expect(result.current.handIn).toBe("not-saved");
+      expect(result.current.handIn).toBe(HandInState.NotSaved);
 
       const answer = holdHandIn();
 
       rerender({ run: 1 });
 
-      expect(result.current.handIn).toBe("sending");
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.handIn).toBe(HandInState.Sending);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
 
-      await answer("stored");
+      await answer(CreateResultOutcome.Stored);
 
-      expect(result.current.handIn).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
     });
 
     it("sends the same hand-in again", async () => {
-      createResultMock.mockResolvedValueOnce("refused");
+      createResultMock.mockResolvedValueOnce(CreateResultOutcome.Refused);
 
       const { result, input, rerender } = renderHandIn();
 
@@ -305,7 +323,7 @@ describe("useResultHandIn()", () => {
         createResultMock.mock.calls[0][0],
       );
       expect(createResultMock.mock.calls[1][0]).toEqual(input);
-      expect(result.current.handIn).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
     });
 
     it("waits another RESULT_WAIT_MS", async () => {
@@ -313,20 +331,22 @@ describe("useResultHandIn()", () => {
 
       await pass(RESULT_WAIT_MS);
 
-      expect(result.current.handIn).toBe("not-ready");
+      expect(result.current.handIn).toBe(HandInState.NotReady);
 
       rerender({ run: 1 });
       await pass(RESULT_WAIT_MS - 1);
 
       // The result exists already: the hand-in is answered "stored" again.
       expect(createResultMock).toHaveBeenCalledTimes(2);
-      expect(result.current.handIn).toBe("created");
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.handIn).toBe(HandInState.Created);
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
 
       await pass(1);
 
-      expect(result.current.handIn).toBe("not-ready");
-      expect(result.current.session.resultState).toBe("failed");
+      expect(result.current.handIn).toBe(HandInState.NotReady);
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
     });
   });
 
@@ -342,9 +362,11 @@ describe("useResultHandIn()", () => {
 
       expect(signal?.aborted).toBe(true);
 
-      await answer("stored");
+      await answer(CreateResultOutcome.Stored);
 
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
       expect(getResultMock).not.toHaveBeenCalled();
       expect(vi.getTimerCount()).toBe(0);
     });
@@ -368,7 +390,9 @@ describe("useResultHandIn()", () => {
       await pass(RESULT_WAIT_MS);
 
       expect(getResultMock).toHaveBeenCalledTimes(reads);
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
     });
   });
 });

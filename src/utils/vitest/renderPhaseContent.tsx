@@ -6,8 +6,8 @@ import type {
   SurveyPhaseContentProps,
   SurveySession,
 } from "@/types/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 
 import { renderWithI18n } from "./renderWithI18n";
 

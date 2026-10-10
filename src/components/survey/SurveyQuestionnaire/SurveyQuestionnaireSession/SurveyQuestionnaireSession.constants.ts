@@ -22,9 +22,11 @@ export const SURVEY_PHASE_CONTENT: Partial<
   "results-calculation": SurveyQuestionnaireResultsCalculation,
 };
 
-// How long the movement between two contents lasts. Never longer than the
-// acknowledgement of an answer, 300 ms.
-export const CONTENT_CHANGE_MS = 200;
+// How long the movement between two contents lasts - the slide from one
+// question to the next, the arrival of another phase and the change of
+// height that goes with either: the 0.3 s of the legacy questionnaire. Never
+// longer than the acknowledgement of an answer, 300 ms.
+export const CONTENT_CHANGE_MS = 300;
 
 // How long a lock that nothing answers holds the screen. Longer than the
 // acknowledgement of an answer, so the change it waits for comes first.

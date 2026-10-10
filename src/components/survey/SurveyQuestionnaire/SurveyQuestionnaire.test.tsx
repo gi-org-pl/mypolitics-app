@@ -3,8 +3,8 @@ import { I18nProvider } from "@lingui/react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import type { Survey } from "@/types/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { type Survey, SurveyLoadStatus } from "@/types/survey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -45,7 +45,7 @@ describe("<SurveyQuestionnaire />", () => {
 
   describe("given a loading quiz", () => {
     it("shows the placeholders and no text or button", () => {
-      renderScreen({ status: "loading" });
+      renderScreen({ status: SurveyLoadStatus.Loading });
 
       expect(screen.getByRole("status").lastElementChild).toHaveAttribute(
         "aria-hidden",
@@ -56,7 +56,7 @@ describe("<SurveyQuestionnaire />", () => {
     });
 
     it('says "Wczytywanie quizu" to assistive technology', () => {
-      renderScreen({ status: "loading" });
+      renderScreen({ status: SurveyLoadStatus.Loading });
 
       expect(screen.getByRole("status")).toHaveTextContent(
         /^Wczytywanie quizu$/,
@@ -66,7 +66,7 @@ describe("<SurveyQuestionnaire />", () => {
 
   describe("given a failed read", () => {
     it("shows the heading, the line and the retry button", () => {
-      renderScreen({ status: "failed" });
+      renderScreen({ status: SurveyLoadStatus.Failed });
 
       expect(
         screen.getByRole("heading", { name: "Nie udało się wczytać quizu" }),
@@ -81,7 +81,7 @@ describe("<SurveyQuestionnaire />", () => {
     });
 
     it("announces the failure", () => {
-      renderScreen({ status: "failed" });
+      renderScreen({ status: SurveyLoadStatus.Failed });
 
       expect(screen.getByRole("alert")).toHaveTextContent(
         "Nie udało się wczytać quizu",
@@ -89,7 +89,7 @@ describe("<SurveyQuestionnaire />", () => {
     });
 
     it("calls onRetry when retry is pressed", () => {
-      const { onRetry } = renderScreen({ status: "failed" });
+      const { onRetry } = renderScreen({ status: SurveyLoadStatus.Failed });
 
       fireEvent.click(screen.getByRole("button", { name: "Spróbuj ponownie" }));
 
@@ -97,7 +97,7 @@ describe("<SurveyQuestionnaire />", () => {
     });
 
     it("touches no session", () => {
-      renderScreen({ status: "failed" });
+      renderScreen({ status: SurveyLoadStatus.Failed });
 
       expect(sessionStorage).toHaveLength(0);
     });
@@ -105,7 +105,7 @@ describe("<SurveyQuestionnaire />", () => {
 
   describe("given a quiz", () => {
     it("shows the first phase of a new session", () => {
-      renderScreen({ status: "ready", survey: createQuiz() });
+      renderScreen({ status: SurveyLoadStatus.Ready, survey: createQuiz() });
 
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
       expect(
@@ -120,7 +120,7 @@ describe("<SurveyQuestionnaire />", () => {
         createStartedSession(survey, 1),
         true,
       );
-      renderScreen({ status: "ready", survey });
+      renderScreen({ status: SurveyLoadStatus.Ready, survey });
 
       expect(
         screen.getByText("Z czego Polska powinna czerpać energię?"),
@@ -128,18 +128,33 @@ describe("<SurveyQuestionnaire />", () => {
       expect(screen.getByText("Ekologia")).toBeVisible();
     });
 
+    it("cuts off at its sides what moves across them, and nothing at the top or the bottom", () => {
+      const { container } = renderScreen({
+        status: SurveyLoadStatus.Ready,
+        survey: createQuiz(),
+      });
+      const card = container.querySelector(".bg-gi-ash");
+
+      expect(card).toHaveClass("overflow-x-clip");
+      expect(card?.className).not.toContain("overflow-hidden");
+      expect(card?.className).not.toContain("overflow-y");
+      expect(card?.className).not.toContain("overflow-clip");
+    });
+
     it("draws the same frame in every state: one card that takes the width of its parent", () => {
-      const { container, rerenderScreen } = renderScreen({ status: "loading" });
+      const { container, rerenderScreen } = renderScreen({
+        status: SurveyLoadStatus.Loading,
+      });
       const frame = container.firstElementChild;
 
       expect(frame).toHaveClass("w-full");
       expect(frame?.firstElementChild).toHaveClass("w-full", "bg-gi-ash");
 
-      rerenderScreen({ status: "failed" });
+      rerenderScreen({ status: SurveyLoadStatus.Failed });
 
       expect(container.firstElementChild).toBe(frame);
 
-      rerenderScreen({ status: "ready", survey: createQuiz() });
+      rerenderScreen({ status: SurveyLoadStatus.Ready, survey: createQuiz() });
 
       expect(container.firstElementChild).toBe(frame);
     });
@@ -154,14 +169,17 @@ describe("<SurveyQuestionnaire />", () => {
         true,
       );
 
-      const { rerenderScreen } = renderScreen({ status: "ready", survey });
+      const { rerenderScreen } = renderScreen({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
 
-      rerenderScreen({ status: "loading" });
+      rerenderScreen({ status: SurveyLoadStatus.Loading });
 
       expect(screen.getByRole("status")).toHaveTextContent("Wczytywanie quizu");
 
       rerenderScreen({
-        status: "ready",
+        status: SurveyLoadStatus.Ready,
         survey: {
           ...survey,
           questions: survey.questions.map((question) => ({
@@ -189,9 +207,12 @@ describe("<SurveyQuestionnaire />", () => {
         true,
       );
 
-      const { rerenderScreen } = renderScreen({ status: "ready", survey });
+      const { rerenderScreen } = renderScreen({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
 
-      rerenderScreen({ status: "ready", survey: otherSurvey });
+      rerenderScreen({ status: SurveyLoadStatus.Ready, survey: otherSurvey });
 
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
       expect(

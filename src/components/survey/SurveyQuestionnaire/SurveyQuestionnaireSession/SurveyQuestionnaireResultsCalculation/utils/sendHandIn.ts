@@ -1,5 +1,5 @@
 import { createResult } from "@/services/api/client/createResult";
-import type { CreateResultOutcome, ResultInput } from "@/types/survey";
+import { CreateResultOutcome, type ResultInput } from "@/types/survey";
 
 import { CREATE_RESULT_TIMEOUT_MS } from "../SurveyQuestionnaireResultsCalculation.constants";
 
@@ -14,7 +14,7 @@ export const sendHandIn = async (
   const options = { signal, timeoutMs: CREATE_RESULT_TIMEOUT_MS };
   const outcome = await createResult(input, options);
 
-  return outcome === "unreachable" && !signal.aborted
+  return outcome === CreateResultOutcome.Unreachable && !signal.aborted
     ? createResult(input, options)
     : outcome;
 };

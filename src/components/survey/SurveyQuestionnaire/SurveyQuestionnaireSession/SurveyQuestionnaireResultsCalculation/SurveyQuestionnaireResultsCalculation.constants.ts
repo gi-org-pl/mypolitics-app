@@ -1,9 +1,9 @@
 import type { MessageDescriptor } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 
-import type { SurveyResultState } from "@/types/survey";
+import { SurveyResultState } from "@/types/survey";
 
-import type { HandInState } from "./SurveyQuestionnaireResultsCalculation.types";
+import { HandInState } from "./SurveyQuestionnaireResultsCalculation.types";
 
 // What the card can say while it waits: the same pool in every quiz. It is
 // content - adding, removing or rewording a line changes strings and nothing
@@ -48,22 +48,22 @@ export const RESULTS_CALCULATION_DRAW = "results-calculation";
 // The result state the frame reads, for each state of the hand-in. A failure
 // of either step is what turns reset on.
 export const RESULT_STATES: Record<HandInState, SurveyResultState> = {
-  sending: "sending",
-  created: "created",
-  calculated: "calculated",
-  "not-saved": "failed",
-  "not-ready": "failed",
+  [HandInState.Sending]: SurveyResultState.Sending,
+  [HandInState.Created]: SurveyResultState.Created,
+  [HandInState.Calculated]: SurveyResultState.Calculated,
+  [HandInState.NotSaved]: SurveyResultState.Failed,
+  [HandInState.NotReady]: SurveyResultState.Failed,
 };
 
 // The states in which the result is stored: step 1 has ended.
 export const STORED_HAND_IN_STATES: readonly HandInState[] = [
-  "created",
-  "calculated",
-  "not-ready",
+  HandInState.Created,
+  HandInState.Calculated,
+  HandInState.NotReady,
 ];
 
 // The states in which a run has ended in a failure, and can be tried again.
 export const FAILED_HAND_IN_STATES: readonly HandInState[] = [
-  "not-saved",
-  "not-ready",
+  HandInState.NotSaved,
+  HandInState.NotReady,
 ];

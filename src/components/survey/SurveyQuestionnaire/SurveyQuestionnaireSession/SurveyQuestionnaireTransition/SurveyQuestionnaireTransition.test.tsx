@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import type { ChangeDirection } from "../SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition";
 
-const DURATION_MS = 200;
+const DURATION_MS = 300;
 
 const getTransition = (contentKey: string, direction?: ChangeDirection) => (
   <SurveyQuestionnaireTransition
@@ -112,6 +112,16 @@ describe("<SurveyQuestionnaireTransition />", () => {
   });
 
   describe("when rendered again with the same content", () => {
+    it("keeps the element when the direction is another: what changed is inside the content", () => {
+      const { rerender } = render(getTransition("first", "forwards"));
+      const content = getContent("first");
+
+      rerender(getTransition("first", "backwards"));
+
+      expect(getContent("first")).toBe(content);
+      expect(content).toHaveAttribute("data-direction", "backwards");
+    });
+
     it("keeps the element", () => {
       const { rerender } = render(getTransition("first", "forwards"));
       const content = getContent("first");

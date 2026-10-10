@@ -131,8 +131,27 @@ describe("<SurveyQuestionnaireFrame />", () => {
 
       renderFrame({ frame: CLOSING_FRAME, topRef });
 
+      const [barPlace, controls] = topRef.current?.children ?? [];
+
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
-      expect(topRef.current?.children).toHaveLength(1);
+      expect(topRef.current?.children).toHaveLength(2);
+      expect(barPlace).toHaveTextContent("");
+      expect(barPlace.querySelector("[class*='pb-']")).toBeNull();
+      expect(controls).toContainElement(getBackButton());
+      expect(topRef.current?.className).not.toContain("gap-");
+    });
+
+    it("keeps the place of the bar in a box that closes and opens smoothly, with the space under the bar in it", () => {
+      const topRef = createRef<HTMLDivElement>();
+
+      renderFrame({ topRef });
+
+      const [barPlace] = topRef.current?.children ?? [];
+
+      expect(barPlace).toHaveClass("data-[animating=true]:overflow-y-clip");
+      expect(barPlace).toContainElement(getBar());
+      expect(getBar().closest(".pb-4")).not.toBeNull();
+      expect(barPlace).not.toContainElement(getBackButton());
     });
   });
 

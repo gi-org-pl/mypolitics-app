@@ -2,6 +2,8 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
+import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
@@ -11,6 +13,8 @@ import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions";
 // The acknowledgement of an answer: it reports the press when it has played.
 const ACKNOWLEDGEMENT_MS = 300;
 const EXPLANATION = "Chodzi o główne źródło energii w najbliższych dekadach.";
+const FIRST_STATEMENT = "Podatki powinny być niższe.";
+const SECOND_STATEMENT = "Z czego Polska powinna czerpać energię?";
 
 // The stores live as long as the module does, so every test takes a quiz of
 // its own.
@@ -33,6 +37,16 @@ const getExplanationButton = () =>
 const finishAcknowledgement = () =>
   act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS));
 
+// The bubble of a question: the element that slides.
+const getBubble = (statement: string) =>
+  screen.getByText(statement).closest("[style]") as HTMLElement;
+
+const allowMotion = () =>
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({ matches: false })),
+  );
+
 describe("<SurveyQuestionnaireQuestions />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -40,6 +54,7 @@ describe("<SurveyQuestionnaireQuestions />", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.unstubAllGlobals();
     sessionStorage.clear();
   });
 
@@ -116,6 +131,98 @@ describe("<SurveyQuestionnaireQuestions />", () => {
       expect(
         screen.queryByText("Podatki powinny być niższe."),
       ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("when one question takes the place of another", () => {
+    it("slides the bubbles: the one before leaves while the new one arrives", () => {
+      allowMotion();
+      renderPhase();
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "forwards",
+      );
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "forwards",
+      );
+    });
+
+    it("changes the answers in place and at once: they do not slide", () => {
+      allowMotion();
+      renderPhase();
+
+      const answers = screen.getByRole("group", { name: FIRST_STATEMENT });
+
+      fireEvent.click(getSkipButton());
+
+      expect(answers).toHaveAccessibleName(SECOND_STATEMENT);
+      expect(screen.getAllByRole("group")).toHaveLength(1);
+      expect(
+        within(answers)
+          .getAllByRole("button")
+          .map((answer) => answer.textContent),
+      ).toEqual(["Z węgla", "Z atomu", "Ze źródeł odnawialnych"]);
+      expect(answers.closest("[data-leaving], [data-arriving]")).toBeNull();
+    });
+
+    it("keeps the answers in a box that follows the height of their list, apart from the bubbles", () => {
+      renderPhase();
+
+      const answersBox = screen
+        .getByRole("group", { name: FIRST_STATEMENT })
+        .closest(".data-\\[animating\\=true\\]\\:overflow-y-clip");
+      const bubbleBox = screen
+        .getByText(FIRST_STATEMENT)
+        .closest(".data-\\[animating\\=true\\]\\:overflow-y-clip");
+
+      expect(answersBox).toContainElement(getSkipButton());
+      expect(bubbleBox).not.toBeNull();
+      expect(bubbleBox).not.toBe(answersBox);
+      expect(bubbleBox?.nextElementSibling).toBe(answersBox);
+    });
+
+    it("gives the new question as many seconds of slide as the one before", () => {
+      allowMotion();
+      renderPhase();
+
+      fireEvent.click(getSkipButton());
+      act(() => vi.advanceTimersByTime(299));
+
+      expect(screen.getByText(FIRST_STATEMENT)).toBeInTheDocument();
+
+      act(() => vi.advanceTimersByTime(1));
+
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+      expect(screen.getByText(SECOND_STATEMENT)).toBeVisible();
+    });
+
+    it("replaces the question at once where nothing may move", () => {
+      renderPhase();
+
+      fireEvent.click(getSkipButton());
+
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+      expect(getBubble(SECOND_STATEMENT)).not.toHaveAttribute("data-arriving");
+    });
+  });
+
+  describe("when another question took its place while an answer was being acknowledged", () => {
+    it("records no answer for the new question", () => {
+      const survey = createQuiz();
+      const { getSession } = renderPhase(0, survey);
+      const store = getSurveySessionStore(survey);
+
+      fireEvent.click(getAnswer("Częściowo za"));
+      act(() => store.setState(skipQuestion(survey, store.getState()), true));
+      finishAcknowledgement();
+      act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS * 4));
+
+      expect(getSession().entries).toEqual([{ questionId: "q1" }]);
+      expect(screen.getByText(SECOND_STATEMENT)).toBeVisible();
     });
   });
 
