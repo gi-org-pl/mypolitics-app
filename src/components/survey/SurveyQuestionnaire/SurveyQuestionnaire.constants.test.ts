@@ -3,6 +3,7 @@ import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpo
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
+import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
 import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
 import { CHECKPOINT_CARDS } from "./SurveyQuestionnaire.constants";
@@ -36,5 +37,13 @@ describe("CHECKPOINT_CARDS", () => {
 
   it('makes "nolan-path" one of the enabled types', () => {
     expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("nolan-path");
+  });
+
+  it('holds SurveyCheckpointStats under "stats"', () => {
+    expect(CHECKPOINT_CARDS.stats).toBe(SurveyCheckpointStats);
+  });
+
+  it('makes "stats" one of the enabled types', () => {
+    expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("stats");
   });
 });

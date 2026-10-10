@@ -15,6 +15,13 @@ const RESULTS_PAGE_ADDRESS = "https://mypolitics.pl/results/**";
 export const RESULT_LINK_ADDRESS =
   "https://link.mypolitics.test/v1/result-link";
 
+// Where that build asks for the answer counts of a quiz, given to it the same
+// way and under the same reserved domain. The counts are asked for with a
+// query, so the route takes whatever follows the address.
+export const ANSWER_COUNTS_ADDRESS =
+  "https://counts.mypolitics.test/v1/answer-counts";
+const ANSWER_COUNTS_ROUTE = `${ANSWER_COUNTS_ADDRESS}**`;
+
 // The app and the API live at different addresses, so the browser asks
 // before it posts and reads the reply only when the API allows it.
 const CORS_HEADERS = {
@@ -31,11 +38,13 @@ export interface SurveyApiMock {
   repeatedResults: unknown[]; // the bodies of the results that were sent again and answered "already exists"
   surveyRequests: string[]; // the addresses the quiz was asked for at
   linkRequests: unknown[]; // the bodies of the requests for the result link, oldest first
+  countsRequests: string[]; // the addresses the answer counts were asked for at
   calls: SurveyApiCall[]; // every result that was sent and every link that was asked for, in the order they arrived
   setReachable: (isReachable: boolean) => void; // false: the API does not answer
   setResultRefused: (isRefused: boolean) => void; // true: the API refuses every result that is sent
   setResultCalculated: (isCalculated: boolean) => void; // false: a stored result stays not calculated; true: it is calculated at the next read
   setLinkAvailable: (isAvailable: boolean) => void; // false: the link endpoint answers "unavailable"
+  setAnswerCounts: (counts: unknown) => void; // what the source of answer counts replies with; without it the source does not answer
 }
 
 const allowRequest = (route: Route) =>
@@ -50,8 +59,9 @@ const getSessionId = (result: unknown): string =>
 // with 409 when one with its identifier exists already; it is read as not
 // calculated the first time and as calculated from then on. A link is
 // accepted with 202, the results page is a stub, and every other request to
-// the API is aborted. Routes registered later are asked first, so the
-// catch-all comes first.
+// the API is aborted. The source of answer counts does not answer unless a
+// test hands it counts, so the questionnaire goes on as without one. Routes
+// registered later are asked first, so the catch-all comes first.
 export const mockSurveyApi = async (
   page: Page,
   survey: unknown = surveyFixture,
@@ -60,6 +70,7 @@ export const mockSurveyApi = async (
   let isResultRefused = false;
   let isResultCalculated: boolean | undefined;
   let isLinkAvailable = true;
+  let answerCounts: unknown;
   const readResultIds = new Set<string>();
   const mock: SurveyApiMock = {
     projectRequests: [],
@@ -67,6 +78,7 @@ export const mockSurveyApi = async (
     repeatedResults: [],
     surveyRequests: [],
     linkRequests: [],
+    countsRequests: [],
     calls: [],
     setReachable: (isReachable) => {
       isApiReachable = isReachable;
@@ -79,6 +91,9 @@ export const mockSurveyApi = async (
     },
     setLinkAvailable: (isAvailable) => {
       isLinkAvailable = isAvailable;
+    },
+    setAnswerCounts: (counts) => {
+      answerCounts = counts;
     },
   };
 
@@ -184,6 +199,19 @@ export const mockSurveyApi = async (
       status: isLinkAvailable ? 202 : 503,
       headers: CORS_HEADERS,
     });
+  });
+
+  await page.route(ANSWER_COUNTS_ROUTE, (route) => {
+    const request = route.request();
+
+    if (request.method() === "OPTIONS") return allowRequest(route);
+    if (request.method() !== "GET") return route.abort();
+
+    mock.countsRequests.push(request.url());
+
+    return answerCounts === undefined
+      ? route.abort()
+      : route.fulfill({ json: answerCounts, headers: CORS_HEADERS });
   });
 
   await page.route(RESULTS_PAGE_ADDRESS, (route) =>
