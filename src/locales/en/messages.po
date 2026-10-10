@@ -446,7 +446,7 @@ msgstr "Terms"
 msgid "Resetuj quiz"
 msgstr "Reset quiz"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
 msgid "Rodzaje quizów"
 msgstr "Kinds of quizzes"
 
