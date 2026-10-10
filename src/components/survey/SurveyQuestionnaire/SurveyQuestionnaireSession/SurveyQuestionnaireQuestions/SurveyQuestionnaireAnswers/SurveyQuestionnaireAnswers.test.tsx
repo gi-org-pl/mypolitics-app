@@ -2,7 +2,7 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { SurveyQuestion } from "@/types/survey";
-import { getAnswersToDraw } from "@/utils/survey/getAnswersToDraw";
+import { getAnswersToDraw } from "@/utils/survey/questions/getAnswersToDraw";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { createSurveyQuestion } from "@/utils/vitest/createSurveyQuestion";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";

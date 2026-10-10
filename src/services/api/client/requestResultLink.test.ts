@@ -265,11 +265,11 @@ describe("requestResultLink()", () => {
     });
 
     it.each([
-      [202, { outcome: "invalid" }, "accepted"],
-      [202, "<html></html>", "accepted"],
-      [400, { outcome: "accepted" }, "invalid"],
-      [429, null, "limited"],
-      [200, { outcome: "accepted" }, "unavailable"],
+      [202, { outcome: "invalid" }, ResultLinkOutcome.Accepted],
+      [202, "<html></html>", ResultLinkOutcome.Accepted],
+      [400, { outcome: "accepted" }, ResultLinkOutcome.Invalid],
+      [429, null, ResultLinkOutcome.Limited],
+      [200, { outcome: "accepted" }, ResultLinkOutcome.Unavailable],
     ])("reads the status and never the body: %i %j", async (status, data, outcome) => {
       fetchMock.mockImplementationOnce(reply(status, data));
 

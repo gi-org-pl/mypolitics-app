@@ -3,7 +3,8 @@ import { fn, spyOn } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { SurveyLoadStatus } from "@/types/survey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 
 import { SurveyQuestionnaire } from "./SurveyQuestionnaire";
 import {
@@ -23,7 +24,7 @@ import {
 // A story of a session: the quiz as read, and its session put in the store
 // before the screen renders. No story makes a request.
 const toStory = ({ survey, session }: QuestionnaireFixture): Story => ({
-  args: { load: { status: "ready", survey } },
+  args: { load: { status: SurveyLoadStatus.Ready, survey } },
   beforeEach: () => {
     getSurveySessionStore(survey).setState(session, true);
   },
@@ -38,7 +39,7 @@ const meta = {
     },
   },
   args: {
-    load: { status: "loading" },
+    load: { status: SurveyLoadStatus.Loading },
     onRetry: fn(),
   },
 } satisfies Meta<typeof SurveyQuestionnaire>;
@@ -50,7 +51,7 @@ type Story = StoryObj<typeof meta>;
 export const Loading: Story = {};
 
 export const FailedToLoad: Story = {
-  args: { load: { status: "failed" } },
+  args: { load: { status: SurveyLoadStatus.Failed } },
 };
 
 export const CategorySelect: Story = toStory(categorySelect);
