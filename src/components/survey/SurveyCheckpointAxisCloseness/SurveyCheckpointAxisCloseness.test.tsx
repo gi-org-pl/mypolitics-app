@@ -609,12 +609,14 @@ describe("<SurveyCheckpointAxisCloseness />", () => {
     });
   });
 
-  it("never calls onReveal", () => {
-    const { onReveal } = renderCard(createSingleCard());
+  describe("when both buttons of the card are activated", () => {
+    it("never calls onReveal", () => {
+      const { onReveal } = renderCard(createSingleCard());
 
-    fireEvent.click(getButton(CONTINUE));
-    fireEvent.click(getButton(OPT_OUT));
+      fireEvent.click(getButton(CONTINUE));
+      fireEvent.click(getButton(OPT_OUT));
 
-    expect(onReveal).not.toHaveBeenCalled();
+      expect(onReveal).not.toHaveBeenCalled();
+    });
   });
 });

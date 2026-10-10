@@ -5,9 +5,13 @@ import type { SurveyCheckpointRecord } from "@/types/survey";
 import {
   allCards,
   axisPuzzleCard,
+  doubleClosenessCard,
   halfwayCard,
   newTraitCard,
+  partialPathCard,
   positionPuzzleCard,
+  singleClosenessCard,
+  statsForCard,
 } from "@/utils/checkpoint/engine/getNextCheckpoint.fixtures";
 import { readCheckpointRecord } from "./readCheckpointRecord";
 
@@ -106,5 +110,36 @@ describe("readCheckpointRecord()", () => {
         readCheckpointRecord(stored as unknown as SurveyCheckpointRecord),
       ).toEqual({ cardsShown: [], timeSamples: [] });
     }
+  });
+
+  describe("given a card short of a threshold of its type", () => {
+    it("drops it: the engine never hands such a card over", () => {
+      const { entry } = singleClosenessCard;
+      const { start } = doubleClosenessCard;
+      const { end } = axisPuzzleCard;
+
+      expect(
+        readCheckpointRecord(
+          toStored([
+            { card: { ...halfwayCard, boundary: 4 } },
+            { card: { ...partialPathCard, boundary: 9 } },
+            {
+              card: { ...singleClosenessCard, entry: { ...entry, value: 69 } },
+            },
+            // 46 against 60, and 70 against 56: a lean of 14 points.
+            {
+              card: { ...doubleClosenessCard, start: { ...start, value: 46 } },
+            },
+            { card: { ...axisPuzzleCard, end: { ...end, value: 56 } } },
+            {
+              card: {
+                ...statsForCard,
+                counts: { for: 9, against: 90, noAnswer: 901 },
+              },
+            },
+          ]),
+        ).cardsShown,
+      ).toEqual([]);
+    });
   });
 });
