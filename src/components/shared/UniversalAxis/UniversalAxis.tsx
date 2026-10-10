@@ -10,15 +10,12 @@ import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import type { AxisLayout, AxisSideLayout } from "@/types/axis";
 import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 
+import { LABEL_CLASS_NAME } from "./UniversalAxis.constants";
 import type { UniversalAxisProps } from "./UniversalAxis.types";
 
 type AxisSide = "start" | "end";
 
 const VALUE_CLASS_NAME = "text-xs leading-none font-bold whitespace-nowrap";
-
-// The line box is as high as the row (12px) and the glyphs are higher, so the
-// box that cuts a long name is padded - and pulled back by the same amount.
-const LABEL_CLASS_NAME = "-my-1 min-w-0 truncate py-1";
 
 const toPercent = (value: number): string => `${value}%`;
 
