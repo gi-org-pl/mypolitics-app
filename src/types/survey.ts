@@ -53,9 +53,11 @@ export interface Survey {
   questions: SurveyQuestion[]; // in the API's order, at least one
 }
 
-// How reading a quiz ended. An enum - see ApiFailureKind in types/api.ts
-// for why it is a constant with a type of the same name.
+// Where reading a quiz stands: on its way, or how it ended. An enum - see
+// ApiFailureKind in types/api.ts for why it is a constant with a type of the
+// same name.
 export const SurveyLoadStatus = {
+  Loading: "loading", // no reply yet; never the status of a result
   Ready: "ready",
   NotFound: "not-found", // no such quiz, or no question of it can be asked
   Failed: "failed", // no reply, a refusal, or a reply that is not a quiz
@@ -68,6 +70,12 @@ export type SurveyLoadResult =
   | { status: typeof SurveyLoadStatus.Ready; survey: Survey }
   | { status: typeof SurveyLoadStatus.NotFound }
   | { status: typeof SurveyLoadStatus.Failed };
+
+// What a screen that reads a quiz is told: the result, or that it is on
+// its way.
+export type SurveyLoadState =
+  | { status: typeof SurveyLoadStatus.Loading }
+  | SurveyLoadResult;
 
 export type ResidenceAreaSize =
   | "village"
@@ -254,6 +262,15 @@ export interface SurveySessionApi {
 }
 
 export type SurveySessionActions = Omit<SurveySessionApi, "session">;
+
+// What every phase of the questionnaire screen is given. The content of a
+// phase is a component that takes exactly this.
+export interface SurveyPhaseContentProps {
+  survey: Survey;
+  session: SurveySessionApi; // from useSurveySession(survey); the screen calls the hook once
+  lock: () => void; // call at a press that changes the screen only after a delay; the screen releases it
+  onLeave: () => void; // end the session and open the results destination
+}
 
 // What an event makes of a session. It returns the very session it was handed
 // when the event does not apply at that moment.

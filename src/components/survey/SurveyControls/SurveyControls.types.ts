@@ -5,6 +5,7 @@ export interface SurveyControlsProps {
   questionsLeft?: number;
   isPreviousDisabled?: boolean;
   isResetDisabled?: boolean;
+  previousLabel?: string; // accessible name of the back control, passed translated. Default "Poprzednie pytanie"
   onPrevious: () => void;
   onReset: () => void;
 }
