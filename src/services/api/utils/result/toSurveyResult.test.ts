@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { ApiFailureKind } from "@/types/api";
+
 import { toSurveyResult } from "./toSurveyResult";
 
 const RESULT_ID = "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11";
@@ -71,7 +73,7 @@ describe("toSurveyResult()", () => {
       ["<html></html>"],
       [7],
       [[]],
-      [{ kind: "http", status: 404 }],
+      [{ kind: ApiFailureKind.Http, status: 404 }],
       [{ message: "Result with given ID does not exist", statusCode: 404 }],
     ])("is not calculated for %j", (response) => {
       expect(toSurveyResult(response, RESULT_ID)).toEqual({

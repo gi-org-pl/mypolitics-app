@@ -2,7 +2,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 
 import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyCheckpoint";
 import type { CheckpointCardProps } from "@/types/checkpoint";
-import { getCheckpointText } from "@/utils/checkpoint/getCheckpointText";
+import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
 
 import { getHalfwayPercent } from "./utils/getHalfwayPercent";
 

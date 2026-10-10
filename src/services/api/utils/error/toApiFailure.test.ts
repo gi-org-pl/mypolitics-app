@@ -1,6 +1,8 @@
 import { AxiosError, AxiosHeaders, CanceledError } from "axios";
 import { describe, expect, it } from "vitest";
 
+import { ApiFailureKind } from "@/types/api";
+
 import { toApiFailure } from "./toApiFailure";
 
 const config = { headers: new AxiosHeaders() };
@@ -26,7 +28,7 @@ describe("toApiFailure()", () => {
       400, 404, 409, 422, 500, 503,
     ])("reads a reply with a status as http with that status: %i", (status) => {
       expect(toApiFailure(createReplyError(status))).toEqual({
-        kind: "http",
+        kind: ApiFailureKind.Http,
         status,
       });
     });
@@ -45,7 +47,7 @@ describe("toApiFailure()", () => {
         toApiFailure(
           new AxiosError("Network Error", AxiosError.ERR_NETWORK, config, {}),
         ),
-      ).toEqual({ kind: "network" });
+      ).toEqual({ kind: ApiFailureKind.Network });
     });
 
     it("reads a refused connection as network", () => {
@@ -53,7 +55,7 @@ describe("toApiFailure()", () => {
         toApiFailure(
           new AxiosError("connect ECONNREFUSED", "ECONNREFUSED", config, {}),
         ),
-      ).toEqual({ kind: "network" });
+      ).toEqual({ kind: ApiFailureKind.Network });
     });
   });
 
@@ -68,14 +70,14 @@ describe("toApiFailure()", () => {
             {},
           ),
         ),
-      ).toEqual({ kind: "timeout" });
+      ).toEqual({ kind: ApiFailureKind.Timeout });
     });
   });
 
   describe("given a cancelled request", () => {
     it("reads a cancelled request as aborted", () => {
       expect(toApiFailure(new CanceledError("canceled"))).toEqual({
-        kind: "aborted",
+        kind: ApiFailureKind.Aborted,
       });
     });
 
@@ -89,7 +91,7 @@ describe("toApiFailure()", () => {
             {},
           ),
         ),
-      ).toEqual({ kind: "aborted" });
+      ).toEqual({ kind: ApiFailureKind.Aborted });
     });
   });
 
@@ -103,19 +105,19 @@ describe("toApiFailure()", () => {
       [null],
       [{}],
       [{ kind: "unknown" }],
-      [{ kind: "http" }],
+      [{ kind: ApiFailureKind.Http }],
       [{ response: { status: 404 } }],
     ])("reads anything else as network: %j", (error) => {
-      expect(toApiFailure(error)).toEqual({ kind: "network" });
+      expect(toApiFailure(error)).toEqual({ kind: ApiFailureKind.Network });
     });
   });
 
   describe("given a failure that was read before", () => {
     it.each([
-      [{ kind: "http", status: 404 }],
-      [{ kind: "network" }],
-      [{ kind: "timeout" }],
-      [{ kind: "aborted" }],
+      [{ kind: ApiFailureKind.Http, status: 404 }],
+      [{ kind: ApiFailureKind.Network }],
+      [{ kind: ApiFailureKind.Timeout }],
+      [{ kind: ApiFailureKind.Aborted }],
     ])("returns it as it is: %j", (failure) => {
       expect(toApiFailure(failure)).toBe(failure);
     });

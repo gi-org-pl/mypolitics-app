@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_VERSION } from "@/constants/survey";
 import type { Survey, SurveySession } from "@/types/survey";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useQuestionTimer } from "./useQuestionTimer";
 
