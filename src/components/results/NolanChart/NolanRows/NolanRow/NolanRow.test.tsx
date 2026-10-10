@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
+import { ROW_OTHER_SIDE_COLOR } from "../../NolanChart.constants";
 import type { NolanAxis } from "../../NolanChart.types";
 import { NolanRow } from "./NolanRow";
 
@@ -71,6 +72,54 @@ describe("<NolanRow />", () => {
 
       expect(getCapColor("start")).toBe("");
       expect(getCapColor("end")).toBe("#36db8b");
+    });
+  });
+
+  describe("given a leaning side without a colour", () => {
+    it("draws it in the neutral fallback and the other side in a lighter neutral", () => {
+      const { unmount } = renderWithI18n(
+        <NolanRow axis={axis} coordinate={-0.54} lean="start" />,
+      );
+
+      expect(getCapColor("start")).toBe("");
+      expect(getCapColor("end")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(
+        screen
+          .getByTestId("universal-axis-fill-end")
+          .style.getPropertyValue("--axis-color"),
+      ).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
+        "bg-gi-dark-gray",
+      );
+
+      unmount();
+      renderWithI18n(<NolanRow axis={axis} coordinate={0.54} lean="end" />);
+
+      expect(getCapColor("start")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor("end")).toBe("");
+    });
+
+    it("keeps both values white", () => {
+      renderWithI18n(<NolanRow axis={axis} coordinate={-0.54} lean="start" />);
+
+      expect(screen.getByText("77%")).toHaveClass("text-white");
+      expect(screen.getByText("23%")).toHaveClass("text-white");
+    });
+  });
+
+  describe("given a leaning side in a dark colour", () => {
+    it("draws the other side in the lighter neutral", () => {
+      renderWithI18n(
+        <NolanRow
+          axis={axis}
+          coordinate={-0.54}
+          lean="start"
+          color="#192430"
+        />,
+      );
+
+      expect(getCapColor("start")).toBe("#192430");
+      expect(getCapColor("end")).toBe(ROW_OTHER_SIDE_COLOR);
     });
   });
 

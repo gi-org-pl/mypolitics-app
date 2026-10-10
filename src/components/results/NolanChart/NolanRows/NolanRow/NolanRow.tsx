@@ -9,6 +9,7 @@ import type {
 import { getPoleName } from "../../utils/getPoleName";
 import { getRowComparison } from "../../utils/getRowComparison";
 import { getRowEntry } from "../../utils/getRowEntry";
+import { getRowSideColor } from "../../utils/getRowSideColor";
 
 interface NolanRowProps {
   axis: NolanAxis;
@@ -31,8 +32,8 @@ export const NolanRow = ({
     <AxisRow
       name={axis.name}
       leadName={getPoleName(axis, lean, coordinate)}
-      start={getRowEntry(axis.start, lean === "start" ? color : undefined)}
-      end={getRowEntry(axis.end, lean === "end" ? color : undefined)}
+      start={getRowEntry(axis.start, getRowSideColor("start", lean, color))}
+      end={getRowEntry(axis.end, getRowSideColor("end", lean, color))}
       comparison={getRowComparison(otherOrientation, otherValues)}
     />
   </div>

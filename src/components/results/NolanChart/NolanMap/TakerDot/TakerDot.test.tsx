@@ -55,6 +55,45 @@ describe("<TakerDot />", () => {
     );
   });
 
+  describe("given a dark fill under the dot", () => {
+    it("rings the dot in white, outside its own border", () => {
+      render(<TakerDot position={at(-0.54, -0.34)} isOnDarkFill />);
+
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass(
+        "ring-2",
+        "ring-white",
+        "border-2",
+        "border-gi-primary",
+        "size-6",
+      );
+    });
+
+    it("leaves the halo as it is", () => {
+      render(<TakerDot position={at(-0.54, -0.34)} isOnDarkFill />);
+
+      expect(screen.getByTestId("nolan-chart-halo")).not.toHaveClass(
+        "ring-2",
+        "ring-white",
+      );
+    });
+  });
+
+  describe("given any other fill", () => {
+    it.each([
+      undefined,
+      false,
+    ])("draws the dot without a ring for %j", (isOnDarkFill) => {
+      render(
+        <TakerDot position={at(-0.54, -0.34)} isOnDarkFill={isOnDarkFill} />,
+      );
+
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-2",
+        "ring-white",
+      );
+    });
+  });
+
   it("draws the dot above the halo", () => {
     render(<TakerDot position={at(0, 0)} />);
 

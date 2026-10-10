@@ -5,6 +5,7 @@ import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { NolanChart } from "./NolanChart";
+import { ROW_OTHER_SIDE_COLOR } from "./NolanChart.constants";
 import type {
   NolanAxis,
   NolanChartProps,
@@ -706,6 +707,48 @@ describe("<NolanChart />", () => {
       expect(
         within(getRows()[0])
           .getByTestId("universal-axis-cap-start")
+          .style.getPropertyValue("--axis-color"),
+      ).toBe("");
+    });
+
+    it("keeps the dot and the split of the rows visible on the fallback", () => {
+      renderChart(MODERATE, {
+        quadrants: {
+          ...quadrants,
+          bottomLeft: { names: quadrants.bottomLeft.names },
+        },
+      });
+      openCard();
+
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass(
+        "ring-2",
+        "ring-white",
+      );
+
+      for (const row of getRows()) {
+        expect(
+          within(row)
+            .getByTestId("universal-axis-cap-start")
+            .style.getPropertyValue("--axis-color"),
+        ).toBe("");
+        expect(
+          within(row)
+            .getByTestId("universal-axis-cap-end")
+            .style.getPropertyValue("--axis-color"),
+        ).toBe(ROW_OTHER_SIDE_COLOR);
+      }
+    });
+
+    it("leaves the dot and the rows of a frame colour as they were", () => {
+      renderChart(MODERATE);
+      openCard();
+
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-white",
+      );
+      expect(
+        within(getRows()[0])
+          .getByTestId("universal-axis-cap-end")
           .style.getPropertyValue("--axis-color"),
       ).toBe("");
     });
