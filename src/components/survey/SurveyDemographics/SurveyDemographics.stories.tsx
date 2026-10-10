@@ -100,17 +100,6 @@ export const DialogOpen: Story = {
   },
 };
 
-export const DialogInTransformedAncestor: Story = {
-  ...DialogOpen,
-  decorators: [
-    (Story) => (
-      <div style={{ transform: "scale(1)" }}>
-        <Story />
-      </div>
-    ),
-  ],
-};
-
 export const PartlyFilled: Story = {
   args: {
     values: {
