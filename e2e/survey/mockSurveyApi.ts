@@ -46,12 +46,16 @@ const getSessionId = (result: unknown): string =>
 
 // Stands in for the API, for the endpoint that sends the result link and for
 // the results page: no test ever reaches a live address. The quiz is the
-// fixture. A result is created with 201, and with 409 when one with its
-// identifier exists already; it is read as not calculated the first time and
-// as calculated from then on. A link is accepted with 202, the results page
-// is a stub, and every other request to the API is aborted. Routes registered
-// later are asked first, so the catch-all comes first.
-export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
+// fixture, or the quiz that is handed in. A result is created with 201, and
+// with 409 when one with its identifier exists already; it is read as not
+// calculated the first time and as calculated from then on. A link is
+// accepted with 202, the results page is a stub, and every other request to
+// the API is aborted. Routes registered later are asked first, so the
+// catch-all comes first.
+export const mockSurveyApi = async (
+  page: Page,
+  survey: unknown = surveyFixture,
+): Promise<SurveyApiMock> => {
   let isApiReachable = true;
   let isResultRefused = false;
   let isResultCalculated: boolean | undefined;
@@ -106,7 +110,7 @@ export const mockSurveyApi = async (page: Page): Promise<SurveyApiMock> => {
 
     mock.surveyRequests.push(request.url());
 
-    return route.fulfill({ json: surveyFixture, headers: CORS_HEADERS });
+    return route.fulfill({ json: survey, headers: CORS_HEADERS });
   });
 
   await page.route(RESULT_ADDRESS, (route) => {

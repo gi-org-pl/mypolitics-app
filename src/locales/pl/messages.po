@@ -49,6 +49,10 @@ msgstr "{name}: {value}%"
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
+#: src/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway.tsx:33
+msgid "{percent}%"
+msgstr "{percent}%"
+
 #: src/constants/checkpoint.ts:515
 msgctxt "checkpoint-position-puzzle-hit"
 msgid "{position} jest do Ciebie bardzo blisko na tym etapie quizu."
