@@ -49,6 +49,10 @@ msgstr "{count, plural, one {Choose the # topic that matters most to you.} other
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (opens in a new tab)"
 
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:25
+msgid "{name} jest blisko Ciebie"
+msgstr "{name} is close to you"
+
 #: src/components/survey/SurveyCheckpointStats/utils/useStatsDescription.ts:26
 msgid "{name}: {percent}%"
 msgstr "{name}: {percent}%"
@@ -274,7 +278,7 @@ msgctxt "checkpoint-new-trait"
 msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 msgstr "The trait “{trait}” is yours from now on. Good or bad? That is for you to judge."
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:63
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:68
 msgid "Checkpoint"
 msgstr "Checkpoint"
 
@@ -305,7 +309,7 @@ msgstr "Are you sure you want to start the quiz over? Your answers will not be s
 msgid "Czytamy programy partii"
 msgstr "Reading the party programmes"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:100
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:108
 msgid "Dalej"
 msgstr "Continue"
 
@@ -1137,6 +1141,10 @@ msgstr "Only one of these options is really close to you. Point to it!"
 msgid "Ukryj osie"
 msgstr "Hide axes"
 
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:21
+msgid "Ukryta postać jest blisko Ciebie"
+msgstr "A hidden character is close to you"
+
 #: src/constants/checkpoint.ts:259
 msgctxt "checkpoint-nolan-path-partial"
 msgid "W trakcie wykonywania quizu Twoja pozycja przeszła już przez {count} ćwiartki kompasu!"
@@ -1220,7 +1228,7 @@ msgstr "Elections 2023"
 msgid "Wykształcenie"
 msgstr "Education"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:111
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:120
 msgid "Wyłącz checkpointy"
 msgstr "Turn off checkpoints"
 
