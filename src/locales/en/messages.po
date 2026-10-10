@@ -61,11 +61,11 @@ msgstr "{name}: {percent}%"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -265,7 +265,7 @@ msgstr "No answer"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:164
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -799,11 +799,11 @@ msgstr "Skip"
 msgid "Poprzednie pytanie"
 msgstr "Previous question"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:154
 msgid "porównanie z {name}"
 msgstr "compared with {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:157
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:156
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 

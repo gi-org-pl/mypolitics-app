@@ -25,11 +25,11 @@ const CONTINUE = "Dalej";
 const OPT_OUT = "Wyłącz checkpointy";
 const NAME = "Monarchizm";
 const STATEMENT = `A to niespodzianka! — Masz nową cechę: „${NAME}”... to dobrze, niedobrze?`;
-const FOURTH_STATEMENT = "Stwierdzenie q4.";
+const SIXTH_STATEMENT = "Stwierdzenie q6.";
 
 const CARD: NewTraitCheckpointCard = {
   type: "new-trait",
-  boundary: 3,
+  boundary: 5,
   line: { pool: "new-trait", index: 0 },
   trait: createOrientation("monarchism", NAME, {
     imageUrl: "https://example.com/monarchism.svg",
@@ -47,13 +47,14 @@ const createQuiz = () => {
   return { survey, store: getSurveySessionStore(survey) };
 };
 
-// Three questions done, and the card up at that boundary.
+// Five questions done, and the card up at that boundary: the first one a card
+// can stand at.
 const renderCardUp = () => {
   const { survey, store } = createQuiz();
 
   store.setState(
     {
-      ...createStartedSession(survey, 3),
+      ...createStartedSession(survey, 5),
       phase: "checkpoints",
       checkpointRecord: { cardsShown: [{ card: CARD }], timeSamples: [] },
     },
@@ -114,7 +115,7 @@ describe("<SurveyQuestionnaireSession /> - the new trait card", () => {
 
       expectNewTraitCard();
       expect(screen.queryByRole("list")).not.toBeInTheDocument();
-      expect(screen.queryByText(FOURTH_STATEMENT)).not.toBeInTheDocument();
+      expect(screen.queryByText(SIXTH_STATEMENT)).not.toBeInTheDocument();
       expect(getSession().phase).toBe("checkpoints");
     });
 
@@ -124,7 +125,7 @@ describe("<SurveyQuestionnaireSession /> - the new trait card", () => {
       press(CONTINUE);
 
       expect(queryCard()).not.toBeInTheDocument();
-      expect(screen.getByText(FOURTH_STATEMENT)).toBeVisible();
+      expect(screen.getByText(SIXTH_STATEMENT)).toBeVisible();
       expect(getSession().phase).toBe("questions");
       expect(getSession().areCheckpointsOff).toBe(false);
       expect(getSession().checkpointRecord.cardsShown).toEqual([
@@ -138,7 +139,7 @@ describe("<SurveyQuestionnaireSession /> - the new trait card", () => {
       press(OPT_OUT);
 
       expect(queryCard()).not.toBeInTheDocument();
-      expect(screen.getByText(FOURTH_STATEMENT)).toBeVisible();
+      expect(screen.getByText(SIXTH_STATEMENT)).toBeVisible();
       expect(getSession().phase).toBe("questions");
       expect(getSession().areCheckpointsOff).toBe(true);
     });

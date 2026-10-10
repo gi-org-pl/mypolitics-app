@@ -1,7 +1,19 @@
 import { expect, type Page, test } from "@playwright/test";
 
 import { openPage } from "../layout/openPage";
-import { mockSurveyApi, type SurveyApiMock } from "./mockSurveyApi";
+import {
+  COUNTS_DESCRIPTION,
+  createAnswerCounts,
+  RARE_ANSWER,
+  RARE_PERCENT,
+  RARE_QUESTION,
+  RARE_QUOTE,
+} from "./answer-counts.fixture";
+import {
+  ANSWER_COUNTS_ADDRESS,
+  mockSurveyApi,
+  type SurveyApiMock,
+} from "./mockSurveyApi";
 import {
   CATEGORY_IDS,
   PROJECT_ID,
@@ -1180,6 +1192,99 @@ test.describe("Feature: Questionnaire checkpoints - Nolan chart path", () => {
     await test.step("Then they see the eleventh question", async () => {
       await expectQuestion(page, eleventhQuestion);
       await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+  });
+});
+
+// The stats chart card needs the answer counts of the quiz. The build the
+// tests run against has the address of their source, and the mock stands in
+// for it: it answers only here, where it is handed counts, so in every other
+// scenario the questionnaire goes on as without a source.
+test.describe("Feature: Questionnaire checkpoints - stats chart", () => {
+  // The first boundary a card can stand at: after the fifth question.
+  const boundary = 5;
+  const sixthQuestion = CHECKPOINT_QUESTIONS[boundary];
+  let api: SurveyApiMock;
+
+  test.beforeEach(async ({ page }) => {
+    api = await mockSurveyApi(page, checkpointSurveyFixture);
+    api.setAnswerCounts(createAnswerCounts());
+  });
+
+  test("Scenario: The stats chart card appears after an answer on the rare side", async ({
+    page,
+  }) => {
+    await test.step("Given the source of answer counts says 8% of takers agree with the fifth thesis", async () => {
+      expect(api.countsRequests).toHaveLength(0);
+    });
+
+    await test.step("And a user opened the nine-question quiz, which asked the source for the counts of that quiz", async () => {
+      const counts = page.waitForResponse((response) =>
+        response.url().startsWith(ANSWER_COUNTS_ADDRESS),
+      );
+
+      await openPage(page, QUIZ_PATH);
+      await expectQuestion(page, CHECKPOINT_QUESTIONS[0]);
+      await counts;
+
+      expect(api.countsRequests).toHaveLength(1);
+      expect(new URL(api.countsRequests[0]).searchParams.get("surveyId")).toBe(
+        SURVEY_ID,
+      );
+    });
+
+    await test.step('When they answer the first four questions "Częściowo przeciw"', async () => {
+      await answerQuestions(
+        page,
+        CHECKPOINT_QUESTIONS,
+        boundary - 1,
+        "Częściowo przeciw",
+      );
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+
+    await test.step('And they answer the fifth question "Zdecydowanie za"', async () => {
+      await answer(page, RARE_QUESTION, RARE_ANSWER);
+    });
+
+    await test.step('Then a region named "Checkpoint" is shown in place of the question', async () => {
+      await expect(getCheckpoint(page)).toBeVisible();
+      await expect(getAnswers(page, sixthQuestion)).toHaveCount(0);
+      await expect(
+        page.getByText(sixthQuestion.text, { exact: true }),
+      ).toHaveCount(0);
+    });
+
+    await test.step("And it holds a chart whose description gives the three shares, with a legend of three names", async () => {
+      await expect(
+        getCheckpoint(page).getByRole("img", { name: COUNTS_DESCRIPTION }),
+      ).toBeVisible();
+      await expect(getCheckpoint(page).getByRole("img")).toHaveCount(1);
+      await expect(getCheckpoint(page).getByRole("listitem")).toHaveText([
+        "Za",
+        "Przeciw",
+        "Brak odpowiedzi",
+      ]);
+    });
+
+    await test.step('And its text says "8%" and quotes the fifth thesis', async () => {
+      const text = getCheckpoint(page).getByRole("paragraph");
+
+      await expect(text).toContainText(RARE_PERCENT);
+      await expect(text).toContainText(RARE_QUOTE);
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the sixth question", async () => {
+      await expectQuestion(page, sixthQuestion);
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+
+    await test.step("And the source was asked once", async () => {
+      expect(api.countsRequests).toHaveLength(1);
     });
   });
 });
