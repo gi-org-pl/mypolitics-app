@@ -288,7 +288,7 @@ test.describe("Feature: Questionnaire", () => {
       await getButton(page, "Pomiń").click();
     });
 
-    await test.step("Then one result is created with the picked topic, the two answers and no demographics", async () => {
+    await test.step("Then one result is created with the picked category, the two answers and no demographics", async () => {
       await expect.poll(() => api.results).toHaveLength(1);
       expect(api.results[0]).toEqual({
         surveyId: SURVEY_ID,
@@ -309,7 +309,7 @@ test.describe("Feature: Questionnaire", () => {
   });
 
   test("Scenario: A taker gives demographics", async ({ page }) => {
-    await test.step("Given a user opened the quiz, skipped the topics and answered every question", async () => {
+    await test.step("Given a user opened the quiz, skipped the categories and answered every question", async () => {
       await answerEveryQuestion(page);
     });
 
@@ -368,7 +368,7 @@ test.describe("Feature: Questionnaire", () => {
   test("Scenario: A taker under 18 is not asked for an address", async ({
     page,
   }) => {
-    await test.step("Given a user opened the quiz, skipped the topics and answered every question", async () => {
+    await test.step("Given a user opened the quiz, skipped the categories and answered every question", async () => {
       await answerEveryQuestion(page);
     });
 

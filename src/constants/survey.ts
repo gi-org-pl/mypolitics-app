@@ -7,7 +7,7 @@ import type {
   SurveyPhase,
   SurveySessionConfig,
 } from "@/types/survey";
-import { getResultLinkUrl } from "@/utils/survey/getResultLinkUrl";
+import { getResultLinkUrl } from "@/utils/survey/email-capture/getResultLinkUrl";
 
 // The API has no slugs, so the map is kept by hand: one entry per quiz that
 // has a project in this API, from its slug to the identifier of the project.

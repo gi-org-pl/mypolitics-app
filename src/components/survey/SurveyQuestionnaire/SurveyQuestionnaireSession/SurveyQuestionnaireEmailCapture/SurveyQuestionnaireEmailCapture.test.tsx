@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { apiClient } from "@/services/api/client/apiClient";
 import type { Survey, SurveyEmail, SurveySession } from "@/types/survey";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
