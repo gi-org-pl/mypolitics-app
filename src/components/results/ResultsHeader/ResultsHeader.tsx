@@ -1,7 +1,13 @@
 import { useLingui } from "@lingui/react/macro";
+import type { CSSProperties } from "react";
 
+import { getLongestWordLength } from "@/utils/text/getLongestWordLength";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
+import {
+  NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME,
+  NAME_SIZE_CLASS_NAME,
+} from "./ResultsHeader.constants";
 import type { ResultsHeaderProps } from "./ResultsHeader.types";
 import { ResultsHeaderConfidence } from "./ResultsHeaderConfidence/ResultsHeaderConfidence";
 import { ResultsHeaderLinkButton } from "./ResultsHeaderLinkButton/ResultsHeaderLinkButton";
@@ -22,6 +28,7 @@ export const ResultsHeader = ({
   const { t } = useLingui();
 
   const result = getHeaderResult(orientation, confidence);
+  const name = result ? result.name : t`Brak dopasowania`;
   const sloganText = result ? toSingleLine(orientation?.slogan) : "";
   const safeLink = result
     ? getSafeLink(orientation?.websiteUrl, linkLabel)
@@ -42,8 +49,15 @@ export const ResultsHeader = ({
             <ResultsHeaderNoMatchMark />
           )}
           <div className="min-w-0">
-            <h1 className="line-clamp-2 text-2xl leading-[1.5] font-bold wrap-break-word text-gi-primary">
-              {result ? result.name : t`Brak dopasowania`}
+            <h1
+              className={`line-clamp-2 leading-[1.5] font-bold wrap-break-word text-gi-primary ${NAME_SIZE_CLASS_NAME} ${hasExtras ? NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME : ""}`}
+              style={
+                {
+                  "--name-letters": Math.max(1, getLongestWordLength(name)),
+                } as CSSProperties
+              }
+            >
+              {name}
             </h1>
             {result && (
               <ResultsHeaderConfidence

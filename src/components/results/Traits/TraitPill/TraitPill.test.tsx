@@ -97,6 +97,24 @@ describe("<TraitPill />", () => {
       ).toHaveAttribute("src", friend.imageUrl);
     });
 
+    it("fills the avatar with the colour of its border under the image", () => {
+      renderWithI18n(
+        <TraitPill
+          item={{ ...anarchism, holder: "both" }}
+          otherOrientation={friend}
+        />,
+      );
+
+      const avatar = screen.getByTestId("trait-pill-avatar");
+
+      expect(avatar).toHaveClass(
+        "border",
+        "border-gi-primary",
+        "bg-gi-primary",
+      );
+      expect(avatar).not.toHaveClass("bg-gi-ash");
+    });
+
     it("says in words that it is shared", () => {
       renderWithI18n(
         <TraitPill
@@ -156,6 +174,20 @@ describe("<TraitPill />", () => {
 
       expect(avatar.querySelector("img")).toBeNull();
       expect(avatar.querySelector("svg")).not.toBeNull();
+    });
+
+    it("keeps the light background under the placeholder", () => {
+      renderWithI18n(
+        <TraitPill
+          item={{ ...anarchism, holder: "both" }}
+          otherOrientation={{ ...friend, imageUrl: undefined }}
+        />,
+      );
+
+      const avatar = screen.getByTestId("trait-pill-avatar");
+
+      expect(avatar).toHaveClass("border", "border-gi-primary", "bg-gi-ash");
+      expect(avatar).not.toHaveClass("bg-gi-primary");
     });
   });
 
