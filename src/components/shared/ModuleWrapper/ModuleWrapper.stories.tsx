@@ -114,3 +114,16 @@ export const EmptyBody: Story = {
     children: undefined,
   },
 };
+
+export const LongWordBody: Story = {
+  args: {
+    title: "Title",
+    onStatsClick: fn(),
+    onInfoClick: fn(),
+    children: (
+      <p className="text-sm text-gi-primary">
+        7f3a9c2e5b8d1f4a6c0e9b2d7f3a9c2e5b8d1f4a6c0e9b2d7f3a9c2e5b8d1f4a6c0e9b2d7f3a9c2e
+      </p>
+    ),
+  },
+};
