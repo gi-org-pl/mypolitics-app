@@ -78,6 +78,17 @@ export const ResetDialogOpen: Story = {
   },
 };
 
+export const ResetDialogInTransformedAncestor: Story = {
+  ...ResetDialogOpen,
+  decorators: [
+    (Story) => (
+      <div style={{ transform: "scale(1)" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const CountOnly: Story = {
   args: {
     questionsLeft: 11,

@@ -211,11 +211,11 @@ msgstr "No result"
 msgid "Brak zdobytych cech"
 msgstr "No traits earned"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:45
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz {quizName} over? Your answers will not be saved."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
 
@@ -227,7 +227,7 @@ msgstr "Debates"
 msgid "Dołącz na Discord Fundacji Generacja Innowacja"
 msgstr "Join the Discord of the Generacja Innowacja Foundation"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:33
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Your answers in this section let us analyse results in the future, to improve the quiz and to prepare analyses on data.mypolitics.pl."
 
@@ -442,7 +442,7 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:61
 msgid "Resetuj quiz"
 msgstr "Reset quiz"
 
@@ -450,7 +450,7 @@ msgstr "Reset quiz"
 msgid "Rodzaje quizów"
 msgstr "Kinds of quizzes"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:39
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
 
@@ -517,7 +517,7 @@ msgstr "Comparison mode"
 msgid "Twoja tożsamość"
 msgstr "Your identity"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:41
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Your data stays completely anonymous."
 
@@ -577,7 +577,7 @@ msgstr "Education"
 msgid "Zacznij od nowa"
 msgstr "Start over"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
 
