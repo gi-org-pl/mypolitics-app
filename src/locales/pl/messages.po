@@ -39,8 +39,9 @@ msgstr "{name}: {value}%"
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
-#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:48
 #: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
+#: src/components/results/OrientationChip/OrientationChipName/OrientationChipNamePair/OrientationChipNamePair.tsx:18
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
 
@@ -441,6 +442,10 @@ msgstr "Ranking"
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
+
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:41
+msgid "Remis"
+msgstr "Remis"
 
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
 msgid "Resetuj quiz"

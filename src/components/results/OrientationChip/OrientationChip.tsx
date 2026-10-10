@@ -5,12 +5,15 @@ import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import { LOOK_CLASS_NAMES } from "./OrientationChip.constants";
 import type { OrientationChipProps } from "./OrientationChip.types";
+import { OrientationChipName } from "./OrientationChipName/OrientationChipName";
 
 export const OrientationChip = ({
   name,
   imageUrl,
   color,
   look = "emphasised",
+  secondName,
+  shortName,
 }: OrientationChipProps) => {
   const displayName = toSingleLine(name);
   const displayImageUrl = look === "neutral" ? undefined : imageUrl;
@@ -38,9 +41,11 @@ export const OrientationChip = ({
         />
       )}
       {displayName && (
-        <span className="min-w-0 truncate text-base leading-5 font-bold">
-          {displayName}
-        </span>
+        <OrientationChipName
+          name={displayName}
+          secondName={toSingleLine(secondName)}
+          shortName={toSingleLine(shortName)}
+        />
       )}
     </div>
   );
