@@ -1,7 +1,7 @@
 // The field: a dark surface with a 16 px corner and 16 px around its content,
 // which is stacked from the top and centred. It is as tall as a full stack of
 // eight one-row lines, so the card keeps its height while the lines arrive;
-// lines that wrap make it taller.
+// lines that wrap make it taller, smoothly (the component says how).
 export const FIELD_CLASS_NAME =
   "relative isolate flex min-h-106.25 w-full flex-col items-center overflow-hidden rounded-2xl bg-gi-dark-primary p-4";
 

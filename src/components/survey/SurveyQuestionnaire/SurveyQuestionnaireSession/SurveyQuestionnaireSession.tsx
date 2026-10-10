@@ -1,4 +1,5 @@
-import { useSurveySession } from "@/utils/survey/useSurveySession";
+import { AnimatedHeight } from "@/components/shared/AnimatedHeight/AnimatedHeight";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { SurveyQuestionnaireFrame } from "./SurveyQuestionnaireFrame/SurveyQuestionnaireFrame";
 import {
   CONTENT_CHANGE_MS,
@@ -6,6 +7,7 @@ import {
 } from "./SurveyQuestionnaireSession.constants";
 import type { SurveyQuestionnaireSessionProps } from "./SurveyQuestionnaireSession.types";
 import { SurveyQuestionnaireTransition } from "./SurveyQuestionnaireTransition/SurveyQuestionnaireTransition";
+import { getPhaseKey } from "./utils/getPhaseKey";
 import { getSurveyFrame } from "./utils/getSurveyFrame";
 import { useContentChange } from "./utils/useContentChange";
 import { useLeave } from "./utils/useLeave";
@@ -17,6 +19,12 @@ import { useUndrawnPhase } from "./utils/useUndrawnPhase";
 // content registered for that phase. The screen decides nothing about the
 // session - every event is an action of the session, called here or by the
 // content.
+//
+// The content of a phase stays mounted for as long as the phase lasts, and
+// sees to what changes inside it - the questions phase to the change from one
+// question to the next. Whatever the content is, the height of its place
+// moves to the new height when it changes, so the card around it never jumps:
+// that holds for every phase registered now or later.
 export const SurveyQuestionnaireSession = ({
   survey,
 }: SurveyQuestionnaireSessionProps) => {
@@ -38,21 +46,23 @@ export const SurveyQuestionnaireSession = ({
       onPrevious={session.back}
       onReset={session.reset}
     >
-      <SurveyQuestionnaireTransition
-        contentKey={contentKey}
-        direction={direction}
-        durationMs={CONTENT_CHANGE_MS}
-        contentRef={contentRef}
-      >
-        {Content && (
-          <Content
-            survey={survey}
-            session={session}
-            lock={lock}
-            onLeave={leave}
-          />
-        )}
-      </SurveyQuestionnaireTransition>
+      <AnimatedHeight durationMs={CONTENT_CHANGE_MS}>
+        <SurveyQuestionnaireTransition
+          contentKey={getPhaseKey(session.session)}
+          direction={direction}
+          durationMs={CONTENT_CHANGE_MS}
+          contentRef={contentRef}
+        >
+          {Content && (
+            <Content
+              survey={survey}
+              session={session}
+              lock={lock}
+              onLeave={leave}
+            />
+          )}
+        </SurveyQuestionnaireTransition>
+      </AnimatedHeight>
     </SurveyQuestionnaireFrame>
   );
 };

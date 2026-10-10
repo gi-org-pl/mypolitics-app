@@ -2,9 +2,9 @@ import { type AxiosAdapter, AxiosError } from "axios";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
-import type { ResultInput } from "@/types/survey";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { CreateResultOutcome, type ResultInput } from "@/types/survey";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { createResult } from "./createResult";
@@ -75,7 +75,7 @@ describe("createResult()", () => {
       expect(getSentBodies()[1]).not.toHaveProperty("demographics");
     });
 
-    it("sends an empty list of topics and of answers as they are", async () => {
+    it("sends an empty list of categories and of answers as they are", async () => {
       adapter.mockImplementationOnce(createApiReply(201));
 
       await createResult({ ...input, prioritizedCategories: [], answers: [] });
@@ -117,7 +117,7 @@ describe("createResult()", () => {
         createApiReply(201, { id: input.sessionId, results: null }),
       );
 
-      expect(await createResult(input)).toBe("stored");
+      expect(await createResult(input)).toBe(CreateResultOutcome.Stored);
     });
 
     it("resolves stored on 409", async () => {
@@ -125,7 +125,7 @@ describe("createResult()", () => {
         createApiReply(409, { message: "Result with this ID already exists" }),
       );
 
-      expect(await createResult(input)).toBe("stored");
+      expect(await createResult(input)).toBe(CreateResultOutcome.Stored);
     });
 
     it.each([
@@ -138,7 +138,7 @@ describe("createResult()", () => {
     ])("resolves stored on 201 whatever the body holds: %j", async (data) => {
       adapter.mockImplementationOnce(createApiReply(201, data));
 
-      expect(await createResult(input)).toBe("stored");
+      expect(await createResult(input)).toBe(CreateResultOutcome.Stored);
     });
 
     it.each([
@@ -148,7 +148,9 @@ describe("createResult()", () => {
         createApiReply(status, { message: "Refused" }),
       );
 
-      expect(await createResult(inputWithDemographics)).toBe("refused");
+      expect(await createResult(inputWithDemographics)).toBe(
+        CreateResultOutcome.Refused,
+      );
     });
 
     it.each([
@@ -156,7 +158,7 @@ describe("createResult()", () => {
     ])("resolves refused on any other reply: %i", async (status) => {
       adapter.mockImplementationOnce(createApiReply(status));
 
-      expect(await createResult(input)).toBe("refused");
+      expect(await createResult(input)).toBe(CreateResultOutcome.Refused);
     });
   });
 
@@ -166,14 +168,16 @@ describe("createResult()", () => {
         .mockImplementationOnce(createApiError(AxiosError.ERR_NETWORK))
         .mockImplementationOnce(createApiError(AxiosError.ETIMEDOUT));
 
-      expect(await createResult(input)).toBe("unreachable");
-      expect(await createResult(input)).toBe("unreachable");
+      expect(await createResult(input)).toBe(CreateResultOutcome.Unreachable);
+      expect(await createResult(input)).toBe(CreateResultOutcome.Unreachable);
     });
 
     it("resolves unreachable when the request throws something unexpected", async () => {
       adapter.mockRejectedValueOnce(new TypeError("Unexpected"));
 
-      await expect(createResult(input)).resolves.toBe("unreachable");
+      await expect(createResult(input)).resolves.toBe(
+        CreateResultOutcome.Unreachable,
+      );
     });
   });
 
@@ -219,13 +223,13 @@ describe("createResult()", () => {
 
       await expect(
         createResult(input, { signal: controller.signal }),
-      ).resolves.toBe("unreachable");
+      ).resolves.toBe(CreateResultOutcome.Unreachable);
     });
 
     it("resolves unreachable without a request when it was cancelled before", async () => {
       await expect(
         createResult(input, { signal: AbortSignal.abort() }),
-      ).resolves.toBe("unreachable");
+      ).resolves.toBe(CreateResultOutcome.Unreachable);
       expect(adapter).not.toHaveBeenCalled();
     });
   });
