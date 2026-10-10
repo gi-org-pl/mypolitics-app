@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import type { Survey } from "@/types/survey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 
 const MS_PER_SECOND = 1000;
 

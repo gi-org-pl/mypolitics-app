@@ -4,12 +4,11 @@ import type {
   CheckpointType,
 } from "@/types/checkpoint";
 import type { Survey, SurveySession } from "@/types/survey";
+import { readCheckpointRecord } from "@/utils/checkpoint/record/readCheckpointRecord";
 import { safely } from "@/utils/function/safely";
 import { getRunningState } from "@/utils/running-state/getRunningState";
-import { getCurrentQuestion } from "@/utils/survey/getCurrentQuestion";
-
+import { getCurrentQuestion } from "@/utils/survey/questions/getCurrentQuestion";
 import { getNextCheckpoint } from "./getNextCheckpoint";
-import { readCheckpointRecord } from "./readCheckpointRecord";
 
 // The card for the boundary the session stands at, or nothing. It is asked
 // with the session as it is right after a question was done.

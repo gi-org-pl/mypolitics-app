@@ -10,11 +10,11 @@ import type {
 import {
   axisPuzzleCard,
   halfwayCard,
-} from "@/utils/checkpoint/getNextCheckpoint.fixtures";
-import { closeSessionCheckpoint } from "@/utils/survey/closeSessionCheckpoint";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+} from "@/utils/checkpoint/engine/getNextCheckpoint.fixtures";
+import { closeSessionCheckpoint } from "@/utils/survey/checkpoints/closeSessionCheckpoint";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { CHECKPOINT_CARDS } from "../../SurveyQuestionnaire.constants";
 import { SurveyQuestionnaireCheckpoints } from "./SurveyQuestionnaireCheckpoints";
@@ -22,7 +22,7 @@ import { SurveyQuestionnaireCheckpoints } from "./SurveyQuestionnaireCheckpoints
 vi.mock("../../SurveyQuestionnaire.constants", () => ({
   CHECKPOINT_CARDS: {},
 }));
-vi.mock("@/utils/survey/closeSessionCheckpoint", { spy: true });
+vi.mock("@/utils/survey/checkpoints/closeSessionCheckpoint", { spy: true });
 
 // A card that shows what it was handed and has a control for each of its
 // three callbacks.

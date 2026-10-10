@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { getEnabledCheckpointTypes } from "@/utils/checkpoint/getEnabledCheckpointTypes";
-import { getSessionCheckpoint } from "@/utils/checkpoint/getSessionCheckpoint";
+import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
+import { getSessionCheckpoint } from "@/utils/checkpoint/engine/getSessionCheckpoint";
 
 import { createNineQuestionSurvey } from "./createNineQuestionSurvey";
 import { createStartedSession } from "./createStartedSession";

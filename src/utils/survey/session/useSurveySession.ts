@@ -12,6 +12,7 @@ import { confirmSessionCategories } from "@/utils/survey/categories/confirmSessi
 import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
 import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCategories";
 import { closeSessionCheckpoint } from "@/utils/survey/checkpoints/closeSessionCheckpoint";
+import { setSessionCheckpointRecord } from "@/utils/survey/checkpoints/setSessionCheckpointRecord";
 import { showSessionCheckpoint } from "@/utils/survey/checkpoints/showSessionCheckpoint";
 import { turnSessionCheckpointsOff } from "@/utils/survey/checkpoints/turnSessionCheckpointsOff";
 import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
@@ -28,7 +29,6 @@ import { fitSession } from "./fitSession";
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
 import { resetSession } from "./resetSession";
-import { setSessionCheckpointRecord } from "./setSessionCheckpointRecord";
 
 // The React side of the session's Zustand store.
 //

@@ -2,12 +2,12 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey, SurveySession } from "@/types/survey";
-import { getSessionCheckpoint } from "@/utils/checkpoint/getSessionCheckpoint";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
-import { useSurveySession } from "@/utils/survey/useSurveySession";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { getSessionCheckpoint } from "@/utils/checkpoint/engine/getSessionCheckpoint";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { useSurveySession } from "@/utils/survey/session/useSurveySession";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { CHECKPOINT_CARDS } from "../../../SurveyQuestionnaire.constants";
 import { useQuestionActions } from "./useQuestionActions";
@@ -15,7 +15,7 @@ import { useQuestionActions } from "./useQuestionActions";
 vi.mock("../../../SurveyQuestionnaire.constants", () => ({
   CHECKPOINT_CARDS: {},
 }));
-vi.mock("@/utils/checkpoint/getSessionCheckpoint", { spy: true });
+vi.mock("@/utils/checkpoint/engine/getSessionCheckpoint", { spy: true });
 
 const StubCard = () => null;
 

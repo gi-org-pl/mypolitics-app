@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CheckpointType } from "@/types/checkpoint";
 import type { SurveySession } from "@/types/survey";
 import { getRunningState } from "@/utils/running-state/getRunningState";
-import { createNineQuestionSurvey } from "@/utils/vitest/createNineQuestionSurvey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
+import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 
 import { getNextCheckpoint } from "./getNextCheckpoint";
 import {

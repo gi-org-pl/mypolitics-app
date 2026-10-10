@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import type { SurveyCheckpointRecord } from "@/types/survey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { setSessionCheckpointRecord } from "./setSessionCheckpointRecord";
 import { showSessionCheckpoint } from "./showSessionCheckpoint";
