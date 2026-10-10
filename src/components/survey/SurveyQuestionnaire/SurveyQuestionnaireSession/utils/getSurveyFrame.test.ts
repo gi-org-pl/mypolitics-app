@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import type { Survey, SurveyPhase, SurveySession } from "@/types/survey";
-import { canReset } from "@/utils/survey/canReset";
-import { canStepBack } from "@/utils/survey/canStepBack";
-import { createSession } from "@/utils/survey/createSession";
+import {
+  type Survey,
+  type SurveyPhase,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
+import { canStepBack } from "@/utils/survey/phases/canStepBack";
+import { canReset } from "@/utils/survey/session/canReset";
+import { createSession } from "@/utils/survey/session/createSession";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
@@ -36,7 +41,7 @@ describe("getSurveyFrame()", () => {
     it("draws an empty bar, the quiz name and both controls off", () => {
       const session = {
         ...createSession(survey),
-        topicIds: ["economy"],
+        prioritizedCategoryIds: ["economy"],
       };
 
       expect(getSurveyFrame(survey, session)).toEqual({
@@ -110,13 +115,13 @@ describe("getSurveyFrame()", () => {
     it("takes back and reset from canStepBack and canReset", () => {
       const first = createStartedSession(survey, 0);
       const third = createStartedSession(survey, 2);
-      const withTopics = {
+      const withCategories = {
         ...first,
-        topicIds: ["economy"],
-        areTopicsConfirmed: true,
+        prioritizedCategoryIds: ["economy"],
+        areCategoriesConfirmed: true,
       };
 
-      for (const session of [first, third, withTopics]) {
+      for (const session of [first, third, withCategories]) {
         const frame = getSurveyFrame(survey, session);
 
         expect(frame.canStepBack).toBe(canStepBack(session));
@@ -131,7 +136,7 @@ describe("getSurveyFrame()", () => {
         canStepBack: true,
         canReset: true,
       });
-      expect(getSurveyFrame(survey, withTopics)).toMatchObject({
+      expect(getSurveyFrame(survey, withCategories)).toMatchObject({
         canStepBack: false,
         canReset: true,
       });
@@ -189,7 +194,9 @@ describe("getSurveyFrame()", () => {
       expect(
         getSurveyFrame(
           survey,
-          inPhase("results-calculation", allDone, { resultState: "sending" }),
+          inPhase("results-calculation", allDone, {
+            resultState: SurveyResultState.Sending,
+          }),
         ),
       ).toEqual({
         label: ALMOST_READY_LABEL,
@@ -199,7 +206,9 @@ describe("getSurveyFrame()", () => {
       expect(
         getSurveyFrame(
           survey,
-          inPhase("results-calculation", allDone, { resultState: "failed" }),
+          inPhase("results-calculation", allDone, {
+            resultState: SurveyResultState.Failed,
+          }),
         ),
       ).toEqual({
         label: ALMOST_READY_LABEL,

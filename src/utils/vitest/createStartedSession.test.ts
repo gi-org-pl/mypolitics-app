@@ -8,8 +8,8 @@ describe("createStartedSession()", () => {
     const session = createStartedSession(createSurvey());
 
     expect(session.phase).toBe("questions");
-    expect(session.areTopicsConfirmed).toBe(true);
-    expect(session.topicIds).toEqual([]);
+    expect(session.areCategoriesConfirmed).toBe(true);
+    expect(session.prioritizedCategoryIds).toEqual([]);
     expect(session.entries).toEqual([]);
   });
 
@@ -35,6 +35,6 @@ describe("createStartedSession()", () => {
     const session = createStartedSession(createSurvey({ categories: [] }));
 
     expect(session.phase).toBe("questions");
-    expect(session.areTopicsConfirmed).toBe(false);
+    expect(session.areCategoriesConfirmed).toBe(false);
   });
 });

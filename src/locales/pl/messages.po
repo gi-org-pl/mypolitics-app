@@ -492,11 +492,11 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:36
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
 msgid "Prawie koniec!"
 msgstr "Prawie koniec!"
 
@@ -656,7 +656,7 @@ msgstr "Wolę nie podawać"
 msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 msgstr "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
 msgid "Wróć"
 msgstr "Wróć"
 

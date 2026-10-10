@@ -4,15 +4,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
-import type { DemographicsValues, Survey, SurveySession } from "@/types/survey";
-import { createSession } from "@/utils/survey/createSession";
-import { getResultsUrl } from "@/utils/survey/getResultsUrl";
-import { getSessionStorageKey } from "@/utils/survey/getSessionStorageKey";
-import { getSurveySessionStore } from "@/utils/survey/getSurveySessionStore";
+import {
+  CreateResultOutcome,
+  type DemographicsValues,
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
+import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
+import { createSession } from "@/utils/survey/session/createSession";
+import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { openAddress } from "@/utils/url/openAddress";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { QUESTION_SLIDE_MS } from "./SurveyQuestionnaireQuestions/SurveyQuestionSlide/SurveyQuestionSlide.constants";
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
 
@@ -36,6 +43,17 @@ const ADULT: DemographicsValues = {
   residenceAreaSize: "city_below_200k",
   education: "higher",
 };
+
+// Fewer than two visible categories: such a quiz has no category select.
+const ONE_VISIBLE_CATEGORY = [
+  { id: "economy", name: "Gospodarka", weight: 1, isHidden: false },
+  { id: "ecology", name: "Ekologia", weight: 1, isHidden: true },
+  { id: "hidden", name: "Pytania kontrolne", weight: 1, isHidden: true },
+];
+const NO_VISIBLE_CATEGORY = ONE_VISIBLE_CATEGORY.map((category) => ({
+  ...category,
+  isHidden: true,
+}));
 
 const scrollIntoView = vi.fn();
 
@@ -106,6 +124,21 @@ const getContent = (text: string) =>
 
 const finishChange = () => act(() => vi.advanceTimersByTime(CONTENT_CHANGE_MS));
 
+// The bubble of a question: the element that slides.
+const getBubble = (statement: string) =>
+  screen
+    .getByText(statement)
+    .closest("[data-leaving], [data-arriving]") as HTMLElement;
+
+const queryLeavingBubbles = (container: HTMLElement) =>
+  container.querySelectorAll("[data-leaving]");
+
+const allowMotion = () =>
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({ matches: false })),
+  );
+
 const finishAcknowledgement = () =>
   act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS));
 
@@ -122,13 +155,14 @@ describe("<SurveyQuestionnaireSession />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
-    vi.mocked(createResult).mockResolvedValue("stored");
+    vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
   });
 
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
     vi.resetAllMocks();
+    vi.unstubAllGlobals();
     sessionStorage.clear();
   });
 
@@ -165,7 +199,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       ).toBeInTheDocument();
     });
 
-    it("keeps the bar and the controls mounted between two questions", () => {
+    it("keeps the bar, the controls and the content of the phase mounted between two questions", () => {
       renderScreen(onQuestion(0));
 
       const bar = getBar();
@@ -176,8 +210,39 @@ describe("<SurveyQuestionnaireSession />", () => {
 
       expect(getBar()).toBe(bar);
       expect(getBackButton()).toBe(backButton);
-      expect(firstContent).not.toBeInTheDocument();
-      expect(getContent(SECOND_STATEMENT)).toBeInTheDocument();
+      expect(getContent(SECOND_STATEMENT)).toBe(firstContent);
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+    });
+
+    it("mounts new content for another phase, under the same bar and controls", () => {
+      renderScreen();
+
+      const backButton = getBackButton();
+      const select = screen.getByRole("group", { name: PROMPT });
+      const selectContent = select.closest("[tabindex='-1']");
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBackButton()).toBe(backButton);
+      expect(select).not.toBeInTheDocument();
+      expect(getContent(FIRST_STATEMENT)).not.toBe(selectContent);
+    });
+
+    it("keeps the content in a box that follows its height, whatever the phase", () => {
+      const { container } = renderScreen();
+      const getBox = () =>
+        container.querySelector(
+          "[data-locked] > .data-\\[animating\\=true\\]\\:overflow-y-clip",
+        );
+      const box = getBox();
+
+      expect(box).toContainElement(screen.getByRole("group", { name: PROMPT }));
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBox()).toBe(box);
+      expect(box).toContainElement(getContent(FIRST_STATEMENT));
+      expect(box?.previousElementSibling).toHaveAttribute("role", "status");
     });
 
     it('announces the pill once when it becomes "Prawie koniec!" and "Prawie gotowe"', async () => {
@@ -230,6 +295,81 @@ describe("<SurveyQuestionnaireSession />", () => {
     });
   });
 
+  describe.each([
+    ["one visible category", ONE_VISIBLE_CATEGORY],
+    ["no visible category", NO_VISIBLE_CATEGORY],
+  ])("given a quiz with %s", (_name, categories) => {
+    const queryCategorySelect = () =>
+      screen.queryByRole("group", { name: /^Wybierz / });
+
+    it("draws no category select: the session starts on the first question", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+
+      expect(getSession().phase).toBe("questions");
+      expect(queryCategorySelect()).not.toBeInTheDocument();
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(
+        screen.getByRole("group", { name: FIRST_STATEMENT }),
+      ).toBeInTheDocument();
+      expect(getBar()).toHaveAttribute("aria-valuenow", "0");
+    });
+
+    it("has nothing to step back to or to reset on the first question", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+      const session = getSession();
+
+      expect(getBackButton()).toBeDisabled();
+      expect(getResetButton()).toBeDisabled();
+
+      fireEvent.click(getBackButton());
+      fireEvent.click(getResetButton());
+
+      expect(getSession()).toBe(session);
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+
+    it("steps back from the second question to the first and no further, never to a select", () => {
+      const { getSession } = renderScreen(
+        createSession,
+        createQuiz({ categories }),
+      );
+
+      fireEvent.click(getSkipButton());
+      finishChange();
+
+      expect(screen.getByText(SECOND_STATEMENT)).toBeVisible();
+
+      fireEvent.click(getBackButton());
+      finishChange();
+
+      expect(getSession()).toMatchObject({ phase: "questions", entries: [] });
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(queryCategorySelect()).not.toBeInTheDocument();
+      expect(getBackButton()).toBeDisabled();
+    });
+
+    it("comes back to the first question after a confirmed reset", () => {
+      const { getSession } = renderScreen(
+        onQuestion(2),
+        createQuiz({ categories }),
+      );
+
+      fireEvent.click(getResetButton());
+      fireEvent.click(screen.getByRole("button", { name: "Resetuj quiz" }));
+      finishChange();
+
+      expect(getSession()).toMatchObject({ phase: "questions", entries: [] });
+      expect(screen.getByText(FIRST_STATEMENT)).toBeVisible();
+      expect(queryCategorySelect()).not.toBeInTheDocument();
+    });
+  });
+
   describe("when reset is confirmed", () => {
     it("calls reset of the session and shows the first phase", () => {
       const { getSession } = renderScreen(
@@ -244,7 +384,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession()).toMatchObject({
         phase: "category-select",
         entries: [],
-        topicIds: [],
+        prioritizedCategoryIds: [],
         areCheckpointsOff: true,
       });
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
@@ -377,6 +517,154 @@ describe("<SurveyQuestionnaireSession />", () => {
 
       expect(scrollIntoView).toHaveBeenCalledTimes(1);
       expect(scrollIntoView.mock.contexts[0]).toContainElement(getBar());
+    });
+  });
+
+  describe("when one question takes the place of another", () => {
+    beforeEach(() => {
+      allowMotion();
+    });
+
+    it("sends the bubble before to the left and brings the new one in from the right after an answer", () => {
+      const { container } = renderScreen(onQuestion(0));
+
+      fireEvent.click(screen.getByRole("button", { name: "Częściowo za" }));
+      finishAcknowledgement();
+
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "forwards",
+      );
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "forwards",
+      );
+      expect(queryLeavingBubbles(container)).toHaveLength(1);
+    });
+
+    it("does the same after a skip", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "forwards",
+      );
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "forwards",
+      );
+    });
+
+    it("turns the directions round after back", () => {
+      renderScreen(onQuestion(1));
+
+      fireEvent.click(getBackButton());
+
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "data-leaving",
+        "backwards",
+      );
+      expect(getBubble(FIRST_STATEMENT)).toHaveAttribute(
+        "data-arriving",
+        "backwards",
+      );
+    });
+
+    it("moves neither the bar, the controls nor the answers sideways", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      for (const still of [
+        getBar(),
+        getBackButton(),
+        getSkipButton(),
+        screen.getByRole("group", { name: SECOND_STATEMENT }),
+      ]) {
+        expect(still.closest("[data-leaving], [data-arriving]")).toBeNull();
+      }
+    });
+
+    it("takes no press while the bubbles move: no question is skipped and two bubbles are the most there are", () => {
+      const { container, getSession } = renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+      fireEvent.click(getSkipButton());
+      fireEvent.click(getBackButton());
+      fireEvent.click(
+        screen.getByRole("button", { name: "Ze źródeł odnawialnych" }),
+      );
+      act(() => vi.advanceTimersByTime(CONTENT_CHANGE_MS - 1));
+
+      expect(getSession().entries).toEqual([{ questionId: "q1" }]);
+      expect(queryLeavingBubbles(container)).toHaveLength(1);
+      expect(getLockedElement(container)).toHaveAttribute(
+        "data-locked",
+        "true",
+      );
+
+      act(() => vi.advanceTimersByTime(ACKNOWLEDGEMENT_MS * 2));
+
+      expect(getSession().entries).toEqual([{ questionId: "q1" }]);
+      expect(queryLeavingBubbles(container)).toHaveLength(0);
+      expect(screen.queryByText(FIRST_STATEMENT)).not.toBeInTheDocument();
+      expect(getLockedElement(container)).toHaveAttribute(
+        "data-locked",
+        "false",
+      );
+    });
+
+    it("takes the next press when the slide is over, and answers the question that is on screen", () => {
+      const { getSession } = renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+      finishChange();
+      fireEvent.click(
+        screen.getByRole("button", { name: "Ze źródeł odnawialnych" }),
+      );
+      finishAcknowledgement();
+
+      expect(getSession().entries).toEqual([
+        { questionId: "q1" },
+        { questionId: "q2", answerId: "q2-renewables" },
+      ]);
+    });
+
+    it("puts the focus on the top of the content, out of the bubble that leaves", () => {
+      renderScreen(onQuestion(1));
+
+      const explanation = screen.getByRole("button", { expanded: false });
+
+      explanation.focus();
+      fireEvent.click(getSkipButton());
+
+      expect(getContent(SECOND_STATEMENT)).toHaveFocus();
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute("inert");
+      expect(getBubble(SECOND_STATEMENT)).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+    });
+
+    it("names the new question once for a screen reader: by its bubble and by its answers", () => {
+      renderScreen(onQuestion(0));
+
+      fireEvent.click(getSkipButton());
+
+      expect(screen.getAllByText(SECOND_STATEMENT)).toHaveLength(1);
+      expect(
+        screen.getAllByRole("group", { name: SECOND_STATEMENT }),
+      ).toHaveLength(1);
+      expect(
+        screen.queryByRole("group", { name: FIRST_STATEMENT }),
+      ).not.toBeInTheDocument();
+      expect(getBubble(SECOND_STATEMENT)).not.toHaveAttribute("aria-live");
+    });
+
+    it("locks the screen for exactly as long as a question slides", () => {
+      expect(CONTENT_CHANGE_MS).toBe(QUESTION_SLIDE_MS);
     });
   });
 
@@ -740,7 +1028,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(openAddress).toHaveBeenCalledTimes(1);
       expect(screen.getByText(WAITING)).toBeVisible();
       expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().resultState).toBe("created");
+      expect(getSession().resultState).toBe(SurveyResultState.Created);
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeDisabled();
     });
@@ -748,7 +1036,9 @@ describe("<SurveyQuestionnaireSession />", () => {
 
   describe("when the hand-in fails", () => {
     it("turns reset on, and a confirmed reset starts a new session without handing in", async () => {
-      vi.mocked(createResult).mockResolvedValue("unreachable");
+      vi.mocked(createResult).mockResolvedValue(
+        CreateResultOutcome.Unreachable,
+      );
 
       const { getSession } = renderScreen(onQuestion(ALL_DONE));
       const { id } = getSession();
@@ -786,7 +1076,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession()).toMatchObject({
         phase: "category-select",
         entries: [],
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
       expect(screen.queryByText(WAITING)).not.toBeInTheDocument();

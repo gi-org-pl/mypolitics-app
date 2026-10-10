@@ -1,11 +1,13 @@
 import { CONTENT_ARRIVAL_CLASS_NAME } from "./SurveyQuestionnaireTransition.constants";
 import type { SurveyQuestionnaireTransitionProps } from "./SurveyQuestionnaireTransition.types";
 
-// The movement between two contents. The old content leaves at once and the
-// new one arrives from the side the taker is moving to, in one short CSS
-// transition from its starting style; under reduced motion nothing moves. The
-// content that is on screen when the screen appears has no direction, and
-// does not move either.
+// The movement between the contents of two phases. The old content leaves at
+// once and the new one arrives from the side the taker is moving to, in one
+// short CSS transition from its starting style; under reduced motion nothing
+// moves. The content that is on screen when the screen appears has no
+// direction, and does not move either. What changes inside a phase - one
+// question taking the place of another - is the content's own to move: the
+// element stays, whatever direction it is told then.
 //
 // How long the movement lasts is the screen's to say, because the screen
 // stays locked for as long. A class name cannot be built from a number, so

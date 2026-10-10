@@ -3,14 +3,14 @@ import { useLingui } from "@lingui/react/macro";
 import { SurveyCategorySelect } from "@/components/survey/SurveyCategorySelect/SurveyCategorySelect";
 import { SurveyPhaseActions } from "@/components/survey/SurveyPhaseActions/SurveyPhaseActions";
 import type { SurveyPhaseContentProps } from "@/types/survey";
-import { getTopicLimit } from "@/utils/survey/getTopicLimit";
-import { getVisibleCategories } from "@/utils/survey/getVisibleCategories";
+import { getCategoryLimit } from "@/utils/survey/categories/getCategoryLimit";
+import { getVisibleCategories } from "@/utils/survey/categories/getVisibleCategories";
 
-// The first phase: the topics that matter most to the taker. Picking them
+// The first phase: the categories that matter most to the taker. Picking them
 // prioritises and cuts nothing, and no line on screen says otherwise.
 export const SurveyQuestionnaireCategorySelect = ({
   survey,
-  session: { session, setTopics, confirmTopics, skipTopics },
+  session: { session, setCategories, confirmCategories, skipCategories },
 }: SurveyPhaseContentProps) => {
   const { t } = useLingui();
 
@@ -18,15 +18,15 @@ export const SurveyQuestionnaireCategorySelect = ({
     <>
       <SurveyCategorySelect
         categories={getVisibleCategories(survey)}
-        selectedIds={session.topicIds}
-        maxSelection={getTopicLimit(survey)}
-        onChange={setTopics}
+        selectedIds={session.prioritizedCategoryIds}
+        maxSelection={getCategoryLimit(survey)}
+        onChange={setCategories}
       />
       <SurveyPhaseActions
         primaryLabel={t`Idziemy dalej`}
-        isPrimaryDisabled={session.topicIds.length === 0}
-        onPrimary={confirmTopics}
-        onSkip={skipTopics}
+        isPrimaryDisabled={session.prioritizedCategoryIds.length === 0}
+        onPrimary={confirmCategories}
+        onSkip={skipCategories}
       />
     </>
   );

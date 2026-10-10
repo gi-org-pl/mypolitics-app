@@ -1,10 +1,10 @@
 import type { Survey, SurveySession } from "@/types/survey";
-import { canReset } from "@/utils/survey/canReset";
-import { canStepBack } from "@/utils/survey/canStepBack";
-import { getCurrentQuestion } from "@/utils/survey/getCurrentQuestion";
-import { getProgress } from "@/utils/survey/getProgress";
-import { getQuestionsLeftInCategory } from "@/utils/survey/getQuestionsLeftInCategory";
-import { getVisibleCategories } from "@/utils/survey/getVisibleCategories";
+import { getVisibleCategories } from "@/utils/survey/categories/getVisibleCategories";
+import { canStepBack } from "@/utils/survey/phases/canStepBack";
+import { getCurrentQuestion } from "@/utils/survey/questions/getCurrentQuestion";
+import { getProgress } from "@/utils/survey/questions/getProgress";
+import { getQuestionsLeftInCategory } from "@/utils/survey/questions/getQuestionsLeftInCategory";
+import { canReset } from "@/utils/survey/session/canReset";
 import {
   ALMOST_DONE_LABEL,
   ALMOST_READY_LABEL,
