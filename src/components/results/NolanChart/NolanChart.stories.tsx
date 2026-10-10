@@ -32,6 +32,7 @@ const RED = "#eb5760";
 const BLUE = "#57bfeb";
 const GREEN = "#36db8b";
 const PURPLE = "#8443e9";
+const YELLOW = "#fff176";
 
 const createAxis = (
   name: string,
@@ -341,6 +342,25 @@ export const NoQuadrantColor: Story = {
       bottomLeft: { names: QUADRANTS.bottomLeft.names },
       bottomRight: { names: QUADRANTS.bottomRight.names },
     },
+  },
+  play: openCard,
+};
+
+export const LightColorModerate: Story = {
+  args: {
+    quadrants: {
+      ...QUADRANTS,
+      bottomLeft: { ...QUADRANTS.bottomLeft, color: YELLOW },
+    },
+  },
+  play: openCard,
+};
+
+export const LightColorExtreme: Story = {
+  args: {
+    ...LightColorModerate.args,
+    horizontal: createEconomy(100, 0),
+    vertical: createWorldview(100, 0),
   },
   play: openCard,
 };

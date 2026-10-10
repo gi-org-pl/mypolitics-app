@@ -10,22 +10,44 @@ describe("<QuadrantTitle />", () => {
     it("renders coloured text on a pale tint of the colour", () => {
       render(
         <QuadrantTitle
-          name="Umiarkowana zielona"
+          name="Umiarkowana fioletowa"
           shortName=""
           look="moderate"
-          color="#36db8b"
+          color="#8443e9"
         />,
       );
 
-      expect(getTitle()).toHaveTextContent("Umiarkowana zielona");
+      expect(getTitle()).toHaveTextContent("Umiarkowana fioletowa");
       expect(getTitle()).toHaveAttribute("data-look", "moderate");
       expect(getTitle()).toHaveClass(
         "bg-(--nolan-color)/10",
         "text-(--nolan-color)",
       );
       expect(getTitle().style.getPropertyValue("--nolan-color")).toBe(
-        "#36db8b",
+        "#8443e9",
       );
+    });
+
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+      "#36db8b",
+    ])("renders the dark text of the plain title on the tint of the light %s", (color) => {
+      render(
+        <QuadrantTitle
+          name="Umiarkowana zielona"
+          shortName=""
+          look="moderate"
+          color={color}
+        />,
+      );
+
+      expect(getTitle()).toHaveClass(
+        "bg-(--nolan-color)/10",
+        "text-gi-primary",
+      );
+      expect(getTitle()).not.toHaveClass("text-(--nolan-color)");
+      expect(getTitle().style.getPropertyValue("--nolan-color")).toBe(color);
     });
 
     it("uses the neutral fallback without a colour", () => {
@@ -40,15 +62,33 @@ describe("<QuadrantTitle />", () => {
     it("renders white text on the colour at full strength", () => {
       render(
         <QuadrantTitle
-          name="Skrajna zielona"
+          name="Skrajna fioletowa"
           shortName=""
           look="extreme"
-          color="#36db8b"
+          color="#8443e9"
         />,
       );
 
       expect(getTitle()).toHaveAttribute("data-look", "extreme");
       expect(getTitle()).toHaveClass("bg-(--nolan-color)", "text-white");
+    });
+
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+      "#36db8b",
+    ])("renders the dark text of the plain title on the light %s", (color) => {
+      render(
+        <QuadrantTitle
+          name="Skrajna zielona"
+          shortName=""
+          look="extreme"
+          color={color}
+        />,
+      );
+
+      expect(getTitle()).toHaveClass("bg-(--nolan-color)", "text-gi-primary");
+      expect(getTitle()).not.toHaveClass("text-white");
     });
 
     it("uses the neutral fallback without a colour", () => {

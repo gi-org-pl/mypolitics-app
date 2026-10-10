@@ -1,13 +1,13 @@
 import { Avatar } from "@gi-org-pl/athena";
 import type { CSSProperties } from "react";
 
-import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_CLASS_NAME, HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { isLightColor } from "@/utils/color/isLightColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import type { TraitPillProps } from "./TraitPill.types";
 import { getPillHolder } from "./utils/getPillHolder";
-import { isLightColor } from "./utils/isLightColor";
 import { useTraitDescription } from "./utils/useTraitDescription";
 
 export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
@@ -20,6 +20,7 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
 
   const safeColor = getSafeColor(orientation.color);
   const isLight = isLightColor(safeColor);
+  const hatchClassName = isLight ? HATCH_CLASS_NAME : HATCH_LIGHT_CLASS_NAME;
 
   return (
     <li
@@ -29,7 +30,7 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
     >
       <div
         data-testid="trait-pill-body"
-        className={`flex h-8 min-w-0 items-center gap-2 rounded-lg px-4 ${safeColor ? "bg-(--trait-color)" : "bg-gi-dark-gray"} ${isLight ? "text-gi-primary" : "text-white"} ${isHatched ? HATCH_LIGHT_CLASS_NAME : ""}`}
+        className={`flex h-8 min-w-0 items-center gap-2 rounded-lg px-4 ${safeColor ? "bg-(--trait-color)" : "bg-gi-dark-gray"} ${isLight ? "text-gi-primary" : "text-white"} ${isHatched ? hatchClassName : ""}`}
         style={
           safeColor
             ? ({ "--trait-color": safeColor } as CSSProperties)

@@ -78,6 +78,36 @@ describe("<OrientationChip />", () => {
     });
   });
 
+  describe("given the emphasised look and a light colour", () => {
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+    ])("renders the name in the dark text colour on %s", (color) => {
+      render(<OrientationChip name="Radykalizm" color={color} />);
+
+      const chip = screen.getByTestId("orientation-chip");
+
+      expect(chip.style.getPropertyValue("--chip-color")).toBe(color);
+      expect(chip).toHaveClass("bg-(--chip-color)", "text-gi-primary");
+      expect(chip).not.toHaveClass("text-white");
+    });
+
+    it("darkens the image together with the name", () => {
+      render(
+        <OrientationChip
+          name="Radykalizm"
+          imageUrl={IMAGE_URL}
+          color="#fff176"
+        />,
+      );
+
+      const image = screen.getByTestId("orientation-chip-image");
+
+      expect(image).toHaveClass("brightness-0");
+      expect(image).not.toHaveClass("opacity-20");
+    });
+  });
+
   describe("given the quiet look", () => {
     it("outlines the chip and mutes its content", () => {
       render(
@@ -109,6 +139,25 @@ describe("<OrientationChip />", () => {
           .getByTestId("orientation-chip")
           .style.getPropertyValue("--chip-color"),
       ).toBe("");
+    });
+
+    it("looks the same for a light colour", () => {
+      render(
+        <OrientationChip
+          name="Radykalizm"
+          imageUrl={IMAGE_URL}
+          color="#fff176"
+          look="quiet"
+        />,
+      );
+
+      expect(screen.getByTestId("orientation-chip")).toHaveClass(
+        "text-gi-dark-ash",
+      );
+      expect(screen.getByTestId("orientation-chip-image")).toHaveClass(
+        "brightness-0",
+        "opacity-20",
+      );
     });
   });
 
