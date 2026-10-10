@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SurveyResultState } from "@/types/survey";
 import { setSessionCategories } from "@/utils/survey/categories/setSessionCategories";
 import { setSessionDemographics } from "@/utils/survey/demographics/setSessionDemographics";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
@@ -31,9 +32,9 @@ describe("getContentKey()", () => {
     it("stays the same when the result state changes", () => {
       const session = createStartedSession(survey, 1);
 
-      expect(getContentKey({ ...session, resultState: "failed" })).toBe(
-        getContentKey(session),
-      );
+      expect(
+        getContentKey({ ...session, resultState: SurveyResultState.Failed }),
+      ).toBe(getContentKey(session));
     });
   });
 

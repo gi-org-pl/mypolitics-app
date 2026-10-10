@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 
 import { Error404 } from "@/components/shared/Error404/Error404";
 import { SurveyQuestionnaire } from "@/components/survey/SurveyQuestionnaire/SurveyQuestionnaire";
+import { SurveyLoadStatus } from "@/types/survey";
 import { getProjectId } from "@/utils/survey/getProjectId";
 import { useSurvey } from "@/utils/survey/useSurvey";
 
@@ -16,7 +17,7 @@ export default function QuizPage() {
   const { quizSlug } = useParams();
   const { load, retry } = useSurvey(getProjectId(quizSlug));
 
-  if (load.status === "not-found") {
+  if (load.status === SurveyLoadStatus.NotFound) {
     return <Error404 />;
   }
 

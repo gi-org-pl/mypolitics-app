@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { QUIZ_PROJECT_IDS } from "@/constants/survey";
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
-import type { SurveyLoadResult } from "@/types/survey";
+import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -45,7 +45,7 @@ const renderPage = (address: string) => {
 
 describe("<QuizPage />", () => {
   beforeEach(() => {
-    getLatestSurveyMock.mockResolvedValue({ status: "failed" });
+    getLatestSurveyMock.mockResolvedValue({ status: SurveyLoadStatus.Failed });
   });
 
   afterEach(() => {
@@ -77,7 +77,7 @@ describe("<QuizPage />", () => {
         { signal: expect.any(AbortSignal) },
       );
 
-      await finish({ status: "failed" });
+      await finish({ status: SurveyLoadStatus.Failed });
 
       expect(getLatestSurveyMock).toHaveBeenCalledTimes(1);
     });
@@ -93,7 +93,7 @@ describe("<QuizPage />", () => {
       );
       expect(router.state.location.pathname).toBe("/quizzes/Prezydencki2025");
 
-      await finish({ status: "failed" });
+      await finish({ status: SurveyLoadStatus.Failed });
     });
 
     it("shows the screen while the quiz loads", async () => {
@@ -106,7 +106,7 @@ describe("<QuizPage />", () => {
         screen.queryByRole("heading", { name: NOT_FOUND_HEADING }),
       ).not.toBeInTheDocument();
 
-      await finish({ status: "failed" });
+      await finish({ status: SurveyLoadStatus.Failed });
     });
 
     it("shows the screen when the quiz failed to load, and reads it again on retry", async () => {
@@ -123,7 +123,7 @@ describe("<QuizPage />", () => {
       expect(getLatestSurveyMock).toHaveBeenCalledTimes(2);
 
       await finish({
-        status: "ready",
+        status: SurveyLoadStatus.Ready,
         survey: createSurvey({ id: crypto.randomUUID() }),
       });
 
@@ -132,7 +132,7 @@ describe("<QuizPage />", () => {
 
     it("shows the screen when the quiz is ready", async () => {
       getLatestSurveyMock.mockResolvedValue({
-        status: "ready",
+        status: SurveyLoadStatus.Ready,
         survey: createSurvey({ id: crypto.randomUUID() }),
       });
 
@@ -145,7 +145,9 @@ describe("<QuizPage />", () => {
     });
 
     it("shows the not-found page when the quiz does not exist", async () => {
-      getLatestSurveyMock.mockResolvedValue({ status: "not-found" });
+      getLatestSurveyMock.mockResolvedValue({
+        status: SurveyLoadStatus.NotFound,
+      });
 
       renderPage("/quizzes/mypolitics");
 

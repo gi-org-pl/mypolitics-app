@@ -53,9 +53,11 @@ export interface Survey {
   questions: SurveyQuestion[]; // in the API's order, at least one
 }
 
-// How reading a quiz ended. An enum - see ApiFailureKind in types/api.ts
-// for why it is a constant with a type of the same name.
+// Where reading a quiz stands: on its way, or how it ended. An enum - see
+// ApiFailureKind in types/api.ts for why it is a constant with a type of the
+// same name.
 export const SurveyLoadStatus = {
+  Loading: "loading", // no reply yet; never the status of a result
   Ready: "ready",
   NotFound: "not-found", // no such quiz, or no question of it can be asked
   Failed: "failed", // no reply, a refusal, or a reply that is not a quiz
@@ -69,7 +71,11 @@ export type SurveyLoadResult =
   | { status: typeof SurveyLoadStatus.NotFound }
   | { status: typeof SurveyLoadStatus.Failed };
 
-export type SurveyLoadState = { status: "loading" } | SurveyLoadResult;
+// What a screen that reads a quiz is told: the result, or that it is on
+// its way.
+export type SurveyLoadState =
+  | { status: typeof SurveyLoadStatus.Loading }
+  | SurveyLoadResult;
 
 export type ResidenceAreaSize =
   | "village"

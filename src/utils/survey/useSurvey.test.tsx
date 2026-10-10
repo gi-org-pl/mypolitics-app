@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
-import type { SurveyLoadResult } from "@/types/survey";
+import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { createSurvey } from "@/utils/vitest/createSurvey";
 
 import { useSurvey } from "./useSurvey";
@@ -45,7 +45,10 @@ const holdReading = () => {
 
 describe("useSurvey()", () => {
   beforeEach(() => {
-    getLatestSurveyMock.mockResolvedValue({ status: "ready", survey });
+    getLatestSurveyMock.mockResolvedValue({
+      status: SurveyLoadStatus.Ready,
+      survey,
+    });
   });
 
   afterEach(() => {
@@ -58,7 +61,9 @@ describe("useSurvey()", () => {
     it("is not-found and reads nothing", () => {
       const { result } = renderSurvey();
 
-      expect(result.current.load).toEqual({ status: "not-found" });
+      expect(result.current.load).toEqual({
+        status: SurveyLoadStatus.NotFound,
+      });
       expect(getLatestSurveyMock).not.toHaveBeenCalled();
     });
   });
@@ -67,17 +72,22 @@ describe("useSurvey()", () => {
     it("is loading, then ready with the quiz", async () => {
       const { result } = renderSurvey(PROJECT_ID);
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
 
       await waitFor(() =>
-        expect(result.current.load).toEqual({ status: "ready", survey }),
+        expect(result.current.load).toEqual({
+          status: SurveyLoadStatus.Ready,
+          survey,
+        }),
       );
     });
 
     it("asks for the quiz in the language of the app", async () => {
       const { result } = renderSurvey(PROJECT_ID);
 
-      await waitFor(() => expect(result.current.load.status).toBe("ready"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Ready),
+      );
 
       expect(getLatestSurveyMock).toHaveBeenCalledTimes(1);
       expect(getLatestSurveyMock).toHaveBeenCalledWith(
@@ -90,63 +100,85 @@ describe("useSurvey()", () => {
     });
 
     it("is not-found when the quiz does not exist", async () => {
-      getLatestSurveyMock.mockResolvedValue({ status: "not-found" });
+      getLatestSurveyMock.mockResolvedValue({
+        status: SurveyLoadStatus.NotFound,
+      });
 
       const { result } = renderSurvey(PROJECT_ID);
 
       await waitFor(() =>
-        expect(result.current.load).toEqual({ status: "not-found" }),
+        expect(result.current.load).toEqual({
+          status: SurveyLoadStatus.NotFound,
+        }),
       );
     });
 
     it("is failed when the quiz cannot be read", async () => {
-      getLatestSurveyMock.mockResolvedValue({ status: "failed" });
+      getLatestSurveyMock.mockResolvedValue({
+        status: SurveyLoadStatus.Failed,
+      });
 
       const { result } = renderSurvey(PROJECT_ID);
 
       await waitFor(() =>
-        expect(result.current.load).toEqual({ status: "failed" }),
+        expect(result.current.load).toEqual({
+          status: SurveyLoadStatus.Failed,
+        }),
       );
     });
 
     it("does not read the quiz again while it is ready", async () => {
       const { result, rerender } = renderSurvey(PROJECT_ID);
 
-      await waitFor(() => expect(result.current.load.status).toBe("ready"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Ready),
+      );
 
       rerender({ id: PROJECT_ID });
       rerender({ id: PROJECT_ID });
 
-      expect(result.current.load).toEqual({ status: "ready", survey });
+      expect(result.current.load).toEqual({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
       expect(getLatestSurveyMock).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("when retry is called", () => {
     it("is loading again and reads the quiz again", async () => {
-      getLatestSurveyMock.mockResolvedValueOnce({ status: "failed" });
+      getLatestSurveyMock.mockResolvedValueOnce({
+        status: SurveyLoadStatus.Failed,
+      });
 
       const { result } = renderSurvey(PROJECT_ID);
 
-      await waitFor(() => expect(result.current.load.status).toBe("failed"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Failed),
+      );
 
       const finish = holdReading();
 
       act(() => result.current.retry());
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
       expect(getLatestSurveyMock).toHaveBeenCalledTimes(2);
 
-      await finish({ status: "ready", survey });
+      await finish({ status: SurveyLoadStatus.Ready, survey });
 
-      expect(result.current.load).toEqual({ status: "ready", survey });
+      expect(result.current.load).toEqual({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
     });
 
     it("keeps the same function between renders", async () => {
       const { result, rerender } = renderSurvey(PROJECT_ID);
       const { retry } = result.current;
 
-      await waitFor(() => expect(result.current.load.status).toBe("ready"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Ready),
+      );
       rerender({ id: PROJECT_ID });
 
       expect(result.current.retry).toBe(retry);
@@ -157,24 +189,29 @@ describe("useSurvey()", () => {
     it("reads the quiz again, and is loading until it arrives", async () => {
       const { result } = renderSurvey(PROJECT_ID);
 
-      await waitFor(() => expect(result.current.load.status).toBe("ready"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Ready),
+      );
 
       const translatedSurvey = createSurvey({ name: "Test quiz" });
       const finish = holdReading();
 
       act(() => i18n.activate(OTHER_LANGUAGE));
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
       expect(getLatestSurveyMock).toHaveBeenLastCalledWith(
         PROJECT_ID,
         OTHER_LANGUAGE,
         { signal: expect.any(AbortSignal) },
       );
 
-      await finish({ status: "ready", survey: translatedSurvey });
+      await finish({
+        status: SurveyLoadStatus.Ready,
+        survey: translatedSurvey,
+      });
 
       expect(result.current.load).toEqual({
-        status: "ready",
+        status: SurveyLoadStatus.Ready,
         survey: translatedSurvey,
       });
     });
@@ -184,17 +221,21 @@ describe("useSurvey()", () => {
     it("reads the other quiz, and is loading until it arrives", async () => {
       const { result, rerender } = renderSurvey(PROJECT_ID);
 
-      await waitFor(() => expect(result.current.load.status).toBe("ready"));
+      await waitFor(() =>
+        expect(result.current.load.status).toBe(SurveyLoadStatus.Ready),
+      );
 
       const finish = holdReading();
 
       rerender({ id: "other" });
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
 
-      await finish({ status: "not-found" });
+      await finish({ status: SurveyLoadStatus.NotFound });
 
-      expect(result.current.load).toEqual({ status: "not-found" });
+      expect(result.current.load).toEqual({
+        status: SurveyLoadStatus.NotFound,
+      });
     });
   });
 
@@ -210,9 +251,9 @@ describe("useSurvey()", () => {
 
       expect(signal?.aborted).toBe(true);
 
-      await finish({ status: "ready", survey });
+      await finish({ status: SurveyLoadStatus.Ready, survey });
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
     });
   });
 
@@ -224,13 +265,16 @@ describe("useSurvey()", () => {
 
       act(() => result.current.retry());
 
-      await finishFirst({ status: "failed" });
+      await finishFirst({ status: SurveyLoadStatus.Failed });
 
-      expect(result.current.load).toEqual({ status: "loading" });
+      expect(result.current.load).toEqual({ status: SurveyLoadStatus.Loading });
 
-      await finishSecond({ status: "ready", survey });
+      await finishSecond({ status: SurveyLoadStatus.Ready, survey });
 
-      expect(result.current.load).toEqual({ status: "ready", survey });
+      expect(result.current.load).toEqual({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
     });
   });
 });

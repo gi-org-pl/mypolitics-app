@@ -1,3 +1,5 @@
+import { SurveyLoadStatus } from "@/types/survey";
+
 import type { SurveyQuestionnaireProps } from "./SurveyQuestionnaire.types";
 import { SurveyQuestionnaireLoadError } from "./SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError";
 import { SurveyQuestionnaireLoading } from "./SurveyQuestionnaireLoading/SurveyQuestionnaireLoading";
@@ -16,11 +18,13 @@ export const SurveyQuestionnaire = ({
 }: SurveyQuestionnaireProps) => (
   <div className="@container w-full">
     <div className="w-full rounded-4xl bg-gi-ash p-3 @xs:p-4 @sm:p-6">
-      {load.status === "loading" && <SurveyQuestionnaireLoading />}
-      {load.status === "failed" && (
+      {load.status === SurveyLoadStatus.Loading && (
+        <SurveyQuestionnaireLoading />
+      )}
+      {load.status === SurveyLoadStatus.Failed && (
         <SurveyQuestionnaireLoadError onRetry={onRetry} />
       )}
-      {load.status === "ready" && (
+      {load.status === SurveyLoadStatus.Ready && (
         <SurveyQuestionnaireSession key={load.survey.id} survey={load.survey} />
       )}
     </div>

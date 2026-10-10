@@ -2,15 +2,19 @@ import { useLingui } from "@lingui/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
-import type { SurveyLoadResult, SurveyLoadState } from "@/types/survey";
+import {
+  type SurveyLoadResult,
+  type SurveyLoadState,
+  SurveyLoadStatus,
+} from "@/types/survey";
 
 interface SurveyRead {
   key: string; // which reading the result belongs to
   result: SurveyLoadResult;
 }
 
-const LOADING: SurveyLoadState = { status: "loading" };
-const NOT_FOUND: SurveyLoadState = { status: "not-found" };
+const LOADING: SurveyLoadState = { status: SurveyLoadStatus.Loading };
+const NOT_FOUND: SurveyLoadState = { status: SurveyLoadStatus.NotFound };
 
 // The quiz of a project - its latest survey - read once per visit, language
 // and retry. Nothing is kept between visits. A result is shown only for the

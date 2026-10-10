@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { createResult } from "@/services/api/client/createResult";
-import type { SurveyPhaseContentProps } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  type SurveyPhaseContentProps,
+  SurveyResultState,
+} from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 
 import type { HandIn } from "../SurveyQuestionnaireHandIn.types";
@@ -19,21 +23,21 @@ export const useHandIn = ({
 }: Pick<SurveyPhaseContentProps, "survey" | "session" | "onLeave">): HandIn => {
   const [input] = useState(() => buildResultInput(survey, session));
   const [attempt, setAttempt] = useState(0);
-  const hasFailed = session.resultState === "failed";
+  const hasFailed = session.resultState === SurveyResultState.Failed;
 
   // Every attempt is one request, also when it sends what the one before sent.
   useEffect(() => {
     const controller = new AbortController();
 
-    setResultState("sending");
+    setResultState(SurveyResultState.Sending);
     createResult(input, { signal: controller.signal }).then((outcome) => {
       if (controller.signal.aborted) return;
 
-      if (outcome === "stored") {
-        setResultState("created");
+      if (outcome === CreateResultOutcome.Stored) {
+        setResultState(SurveyResultState.Created);
         onLeave();
       } else {
-        setResultState("failed");
+        setResultState(SurveyResultState.Failed);
       }
     });
 

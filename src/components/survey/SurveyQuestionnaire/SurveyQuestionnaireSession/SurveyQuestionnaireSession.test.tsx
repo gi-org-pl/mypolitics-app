@@ -3,7 +3,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
-import type { Survey, SurveySession } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  type Survey,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
 import { createSession } from "@/utils/survey/session/createSession";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
@@ -89,7 +94,7 @@ describe("<SurveyQuestionnaireSession />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
-    vi.mocked(createResult).mockResolvedValue("stored");
+    vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
   });
 
   afterEach(() => {
@@ -443,7 +448,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(openAddress).toHaveBeenCalledTimes(1);
       expect(screen.getByText(WAITING)).toBeVisible();
       expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().resultState).toBe("created");
+      expect(getSession().resultState).toBe(SurveyResultState.Created);
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeDisabled();
     });
@@ -451,7 +456,9 @@ describe("<SurveyQuestionnaireSession />", () => {
 
   describe("when the hand-in fails", () => {
     it("turns reset on, and a confirmed reset starts a new session without handing in", async () => {
-      vi.mocked(createResult).mockResolvedValue("unreachable");
+      vi.mocked(createResult).mockResolvedValue(
+        CreateResultOutcome.Unreachable,
+      );
 
       const { getSession } = renderScreen(onQuestion(ALL_DONE));
       const { id } = getSession();
@@ -489,7 +496,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession()).toMatchObject({
         phase: "category-select",
         entries: [],
-        resultState: "not-sent",
+        resultState: SurveyResultState.NotSent,
       });
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
       expect(screen.queryByText(WAITING)).not.toBeInTheDocument();

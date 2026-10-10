@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import type { Survey, SurveyPhase, SurveySession } from "@/types/survey";
+import {
+  type Survey,
+  type SurveyPhase,
+  SurveyResultState,
+  type SurveySession,
+} from "@/types/survey";
 import { canStepBack } from "@/utils/survey/phases/canStepBack";
 import { canReset } from "@/utils/survey/session/canReset";
 import { createSession } from "@/utils/survey/session/createSession";
@@ -189,7 +194,9 @@ describe("getSurveyFrame()", () => {
       expect(
         getSurveyFrame(
           survey,
-          inPhase("results-calculation", allDone, { resultState: "sending" }),
+          inPhase("results-calculation", allDone, {
+            resultState: SurveyResultState.Sending,
+          }),
         ),
       ).toEqual({
         label: ALMOST_READY_LABEL,
@@ -199,7 +206,9 @@ describe("getSurveyFrame()", () => {
       expect(
         getSurveyFrame(
           survey,
-          inPhase("results-calculation", allDone, { resultState: "failed" }),
+          inPhase("results-calculation", allDone, {
+            resultState: SurveyResultState.Failed,
+          }),
         ),
       ).toEqual({
         label: ALMOST_READY_LABEL,

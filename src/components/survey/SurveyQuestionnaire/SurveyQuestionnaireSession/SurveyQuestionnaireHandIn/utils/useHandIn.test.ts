@@ -2,7 +2,11 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createResult } from "@/services/api/client/createResult";
-import type { CreateResultOutcome, Survey } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  type Survey,
+  SurveyResultState,
+} from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
@@ -54,7 +58,7 @@ const renderHandIn = () => {
 
 describe("useHandIn()", () => {
   beforeEach(() => {
-    createResultMock.mockResolvedValue("stored");
+    createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
   });
 
   afterEach(() => {
@@ -74,17 +78,19 @@ describe("useHandIn()", () => {
         signal: expect.any(AbortSignal),
       });
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
 
     it("sets the result state to sending, and has not failed", () => {
       const finish = holdRequest();
       const { result } = renderHandIn();
 
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
       expect(result.current.handIn.hasFailed).toBe(false);
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
   });
 
@@ -95,17 +101,19 @@ describe("useHandIn()", () => {
 
       expect(onLeave).not.toHaveBeenCalled();
 
-      await finish("stored");
+      await finish(CreateResultOutcome.Stored);
 
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
       expect(result.current.handIn.hasFailed).toBe(false);
       expect(onLeave).toHaveBeenCalledTimes(1);
     });
   });
 
   describe.each([
-    "refused",
-    "unreachable",
+    CreateResultOutcome.Refused,
+    CreateResultOutcome.Unreachable,
   ] satisfies CreateResultOutcome[])("given a hand-in that is %s", (outcome) => {
     it("sets the result state to failed, and does not leave", async () => {
       const finish = holdRequest();
@@ -113,7 +121,7 @@ describe("useHandIn()", () => {
 
       await finish(outcome);
 
-      expect(result.current.session.resultState).toBe("failed");
+      expect(result.current.session.resultState).toBe(SurveyResultState.Failed);
       expect(result.current.handIn.hasFailed).toBe(true);
       expect(onLeave).not.toHaveBeenCalled();
     });
@@ -124,13 +132,15 @@ describe("useHandIn()", () => {
       const finishFirst = holdRequest();
       const { result, input, onLeave } = renderHandIn();
 
-      await finishFirst("unreachable");
+      await finishFirst(CreateResultOutcome.Unreachable);
 
       const finishSecond = holdRequest();
 
       act(() => result.current.handIn.retry());
 
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
       expect(result.current.handIn.hasFailed).toBe(false);
       expect(createResultMock).toHaveBeenCalledTimes(2);
       expect(createResultMock.mock.calls[1][0]).toBe(
@@ -138,9 +148,11 @@ describe("useHandIn()", () => {
       );
       expect(createResultMock.mock.calls[1][0]).toEqual(input);
 
-      await finishSecond("stored");
+      await finishSecond(CreateResultOutcome.Stored);
 
-      expect(result.current.session.resultState).toBe("created");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Created,
+      );
       expect(onLeave).toHaveBeenCalledTimes(1);
     });
 
@@ -148,7 +160,7 @@ describe("useHandIn()", () => {
       const finishFirst = holdRequest();
       const { result } = renderHandIn();
 
-      await finishFirst("refused");
+      await finishFirst(CreateResultOutcome.Refused);
 
       const finishSecond = holdRequest();
 
@@ -157,7 +169,7 @@ describe("useHandIn()", () => {
 
       expect(createResultMock).toHaveBeenCalledTimes(2);
 
-      await finishSecond("stored");
+      await finishSecond(CreateResultOutcome.Stored);
     });
   });
 
@@ -170,7 +182,7 @@ describe("useHandIn()", () => {
 
       expect(createResultMock).toHaveBeenCalledTimes(1);
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
   });
 
@@ -186,9 +198,11 @@ describe("useHandIn()", () => {
 
       expect(signal?.aborted).toBe(true);
 
-      await finish("stored");
+      await finish(CreateResultOutcome.Stored);
 
-      expect(result.current.session.resultState).toBe("sending");
+      expect(result.current.session.resultState).toBe(
+        SurveyResultState.Sending,
+      );
       expect(onLeave).not.toHaveBeenCalled();
     });
   });

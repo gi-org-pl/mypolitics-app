@@ -2,7 +2,11 @@ import { act, fireEvent, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createResult } from "@/services/api/client/createResult";
-import type { CreateResultOutcome, Survey } from "@/types/survey";
+import {
+  CreateResultOutcome,
+  type Survey,
+  SurveyResultState,
+} from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { createStartedSession } from "@/utils/vitest/createStartedSession";
 import { createSurvey } from "@/utils/vitest/createSurvey";
@@ -51,7 +55,7 @@ const getRetryButton = () =>
 
 describe("<SurveyQuestionnaireHandIn />", () => {
   beforeEach(() => {
-    createResultMock.mockResolvedValue("stored");
+    createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
   });
 
   afterEach(() => {
@@ -69,7 +73,7 @@ describe("<SurveyQuestionnaireHandIn />", () => {
       expect(screen.queryByRole("button")).not.toBeInTheDocument();
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
 
     it("sends the hand-in of the session once", () => {
@@ -81,16 +85,16 @@ describe("<SurveyQuestionnaireHandIn />", () => {
         signal: expect.any(AbortSignal),
       });
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
 
     it("sets the result state to sending", () => {
       const finish = holdRequest();
       const { getSession } = renderPhase();
 
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
 
-      return finish("stored");
+      return finish(CreateResultOutcome.Stored);
     });
   });
 
@@ -99,17 +103,17 @@ describe("<SurveyQuestionnaireHandIn />", () => {
       const finish = holdRequest();
       const { getSession, onLeave } = renderPhase();
 
-      await finish("stored");
+      await finish(CreateResultOutcome.Stored);
 
-      expect(getSession().resultState).toBe("created");
+      expect(getSession().resultState).toBe(SurveyResultState.Created);
       expect(onLeave).toHaveBeenCalledTimes(1);
       expect(screen.getByRole("status")).toHaveTextContent(WAITING);
     });
   });
 
   describe.each([
-    "refused",
-    "unreachable",
+    CreateResultOutcome.Refused,
+    CreateResultOutcome.Unreachable,
   ] satisfies CreateResultOutcome[])("given a hand-in that is %s", (outcome) => {
     it("sets the result state to failed", async () => {
       const finish = holdRequest();
@@ -117,7 +121,7 @@ describe("<SurveyQuestionnaireHandIn />", () => {
 
       await finish(outcome);
 
-      expect(getSession().resultState).toBe("failed");
+      expect(getSession().resultState).toBe(SurveyResultState.Failed);
       expect(onLeave).not.toHaveBeenCalled();
     });
 
@@ -138,7 +142,7 @@ describe("<SurveyQuestionnaireHandIn />", () => {
       const finishFirst = holdRequest();
       const { input, getSession, onLeave } = renderPhase();
 
-      await finishFirst("unreachable");
+      await finishFirst(CreateResultOutcome.Unreachable);
 
       const finishSecond = holdRequest();
 
@@ -146,11 +150,11 @@ describe("<SurveyQuestionnaireHandIn />", () => {
 
       expect(screen.getByRole("status")).toHaveTextContent(WAITING);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
       expect(createResultMock).toHaveBeenCalledTimes(2);
       expect(createResultMock.mock.calls[1][0]).toEqual(input);
 
-      await finishSecond("stored");
+      await finishSecond(CreateResultOutcome.Stored);
 
       expect(onLeave).toHaveBeenCalledTimes(1);
     });
@@ -159,7 +163,7 @@ describe("<SurveyQuestionnaireHandIn />", () => {
       const finishFirst = holdRequest();
 
       renderPhase();
-      await finishFirst("refused");
+      await finishFirst(CreateResultOutcome.Refused);
 
       const finishSecond = holdRequest();
       const retryButton = getRetryButton();
@@ -169,7 +173,7 @@ describe("<SurveyQuestionnaireHandIn />", () => {
 
       expect(createResultMock).toHaveBeenCalledTimes(2);
 
-      await finishSecond("stored");
+      await finishSecond(CreateResultOutcome.Stored);
     });
   });
 
@@ -183,9 +187,9 @@ describe("<SurveyQuestionnaireHandIn />", () => {
 
       expect(signal?.aborted).toBe(true);
 
-      await finish("stored");
+      await finish(CreateResultOutcome.Stored);
 
-      expect(getSession().resultState).toBe("sending");
+      expect(getSession().resultState).toBe(SurveyResultState.Sending);
       expect(onLeave).not.toHaveBeenCalled();
     });
   });
