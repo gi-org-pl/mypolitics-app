@@ -6,7 +6,7 @@ import { SURVEY_ID } from "./survey.fixture";
 // agreeing answers score the first archetype, "Częściowo przeciw" the second
 // and "Zdecydowanie przeciw" the third.
 //
-// It has one visible category, so no topics are picked, and it has no axes
+// It has one visible category, so no categories are picked, and it has no axes
 // at all. After five answers of "Zdecydowanie za" the first archetype stands
 // at 100 and the other two at 0, and half the questions are done, so the
 // double axis puzzle is due at that boundary. With no axes and no compass no
