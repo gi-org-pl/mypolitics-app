@@ -2,7 +2,7 @@ import {
   NAME_CLASS_NAME,
   NAME_SWITCH_CLASS_NAME,
   SHORT_NAME_SWITCH_CLASS_NAME,
-} from "../OrientationChip.constants";
+} from "./OrientationChipName.constants";
 import type { OrientationChipNameProps } from "./OrientationChipName.types";
 import { OrientationChipNamePair } from "./OrientationChipNamePair/OrientationChipNamePair";
 
