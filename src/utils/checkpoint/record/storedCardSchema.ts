@@ -19,6 +19,7 @@ import {
 } from "@/constants/checkpoint";
 import { PARTIAL_MATCH_FROM } from "@/constants/results";
 import type { NolanLevel, NolanQuadrantKey } from "@/types/results";
+import { getStatsPercent } from "@/utils/checkpoint/answer-counts/getStatsPercent";
 
 // A coordinate of the compass runs from -1 to 1.
 const COMPASS_EDGE = 1;
@@ -96,7 +97,7 @@ const pairSchema = z
 // gives it - the thresholds of its trigger included, wherever the card holds
 // the value they are measured on: a card the engine could not have handed
 // over is no card. The stats card has the sample and the rare side its chart
-// needs; the position puzzle has three different rows and the leader is one
+// needs, and prints the percent its counts give; the position puzzle has three different rows and the leader is one
 // of them; a Nolan path has a trail to stand on, and counts four quadrants
 // exactly when it is the full one; an axis leans as far as an axis card
 // needs. Whether the card can be put into words is not checked here.
@@ -115,13 +116,14 @@ export const storedCardSchema = z.union([
       }),
       percent: z.number().int().min(STATS_MIN_PERCENT).max(STATS_MAX_PERCENT),
     })
-    .refine(({ side, counts }) => {
+    .refine(({ side, counts, percent }) => {
       const sample = counts.for + counts.against;
 
       return (
         sample >= STATS_MIN_SAMPLE &&
         counts[side] * WHOLE_PERCENT <=
-          STATS_MAX_PERCENT * (sample + counts.noAnswer)
+          STATS_MAX_PERCENT * (sample + counts.noAnswer) &&
+        percent === getStatsPercent(counts, side)
       );
     }),
   z.object({
