@@ -22,6 +22,12 @@ describe("isDarkColor()", () => {
     it("trims the surrounding whitespace", () => {
       expect(isDarkColor("  #192430\n")).toBe(true);
     });
+
+    it("counts a saturated oklab colour that the grey of its lightness would not be", () => {
+      expect(isDarkColor("oklab(0.47 0.03 -0.29)")).toBe(true);
+      expect(isDarkColor("oklch(0.47 0.2915 275.9)")).toBe(true);
+      expect(isDarkColor("oklab(0.47 0 0)")).toBe(false);
+    });
   });
 
   describe("given a mid-tone or light colour", () => {

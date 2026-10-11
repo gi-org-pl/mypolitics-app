@@ -7,6 +7,9 @@ const ANGLE_TO_DEGREES: Record<string, number> = {
   turn: 360,
 };
 
+// 100% on a colour axis of oklab(), and of the chroma of oklch().
+const OKLAB_AXIS_PERCENT = 0.4;
+
 const toNumber = (token = "", percentScale = 1): number => {
   const value = Number.parseFloat(token);
 
@@ -43,9 +46,9 @@ const getRgbLuminance = (
   0.7152 * toLinearOverWhite(green, alpha) +
   0.0722 * toLinearOverWhite(blue, alpha);
 
-// lab(), lch(), oklab() and oklch() are read for their lightness alone, so
-// they have no channels to mix: a translucent one is taken as the grey of the
-// same luminance.
+// lab() and lch() are read for their lightness alone - it is defined by the
+// luminance and by nothing else - so they have no channels to mix: a
+// translucent one is taken as the grey of the same luminance.
 const getGrayLuminance = (luminance: number, alpha: number): number =>
   alpha < 1 ? toLinearOverWhite(toChannel(luminance), alpha) : luminance;
 
@@ -96,6 +99,44 @@ const getHwbLuminance = (
 const getLabLuminance = (lightness: number): number =>
   lightness > 8 ? ((lightness + 16) / 116) ** 3 : lightness / 903.3;
 
+// The lightness of oklab() and oklch() is not the luminance: a saturated
+// blue and a grey of the same lightness are drawn far apart. The colour is
+// taken to the channels of the screen first - through the cone responses of
+// the Oklab definition - and a channel outside the screen's range is cut to
+// it, which is what the browsers draw for such a colour.
+const getOklabLuminance = (
+  [lightness, greenRed, blueYellow]: number[],
+  alpha: number,
+): number => {
+  const long =
+    (lightness + 0.396_337_777_4 * greenRed + 0.215_803_757_3 * blueYellow) **
+    3;
+  const medium =
+    (lightness - 0.105_561_345_8 * greenRed - 0.063_854_172_8 * blueYellow) **
+    3;
+  const short =
+    (lightness - 0.089_484_177_5 * greenRed - 1.291_485_548 * blueYellow) ** 3;
+
+  return getRgbLuminance(
+    toChannel(
+      4.076_741_662_1 * long -
+        3.307_711_591_3 * medium +
+        0.230_969_929_2 * short,
+    ),
+    toChannel(
+      -1.268_438_004_6 * long +
+        2.609_757_401_1 * medium -
+        0.341_319_396_5 * short,
+    ),
+    toChannel(
+      -0.004_196_086_3 * long -
+        0.703_418_614_7 * medium +
+        1.707_614_701 * short,
+    ),
+    alpha,
+  );
+};
+
 const getHexLuminance = (hex: string): number => {
   const digits = hex.length <= 4 ? hex.replace(/./g, "$&$&") : hex;
   const getChannel = (index: number): number =>
@@ -145,6 +186,29 @@ const getFunctionLuminance = (name: string, tokens: string[]): number => {
     case "lch": {
       return getGrayLuminance(
         getLabLuminance(clamp(toNumber(first, 100) / 100, 0, 1) * 100),
+        alpha,
+      );
+    }
+    case "oklab": {
+      return getOklabLuminance(
+        [
+          clamp(toNumber(first), 0, 1),
+          toNumber(second, OKLAB_AXIS_PERCENT),
+          toNumber(third, OKLAB_AXIS_PERCENT),
+        ],
+        alpha,
+      );
+    }
+    case "oklch": {
+      const chroma = Math.max(toNumber(second, OKLAB_AXIS_PERCENT), 0);
+      const angle = (toDegrees(third) * Math.PI) / 180;
+
+      return getOklabLuminance(
+        [
+          clamp(toNumber(first), 0, 1),
+          chroma * Math.cos(angle),
+          chroma * Math.sin(angle),
+        ],
         alpha,
       );
     }

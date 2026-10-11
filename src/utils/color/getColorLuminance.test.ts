@@ -34,9 +34,59 @@ describe("getColorLuminance()", () => {
       ["lab(5 0 0)", 0.0055],
       ["lch(0 0 0)", 0],
       ["oklab(1 0 0)", 1],
-      ["oklch(0.5 0.1 100)", 0.125],
+      ["oklab(0.5 0 0)", 0.125],
+      ["oklch(0.5 0.1 100)", 0.1261],
     ])("returns the luminance of %s", (color, luminance) => {
       expect(getColorLuminance(color)).toBeCloseTo(luminance, 3);
+    });
+
+    it.each([
+      ["oklab(0.452014 -0.032457 -0.311528)", "#0000ff"],
+      ["oklab(0.627955 0.224863 0.125846)", "#ff0000"],
+      ["oklab(0.86644 -0.233888 0.179498)", "#00ff00"],
+      ["oklab(0.599871 0 0)", "#808080"],
+      ["oklch(0.627955 0.257683 29.2339)", "#ff0000"],
+      ["oklch(0.627955 0.257683 0.0812053turn)", "#ff0000"],
+      ["oklab(45.2014% -8.11425% -77.882%)", "#0000ff"],
+      ["oklch(62.7955% 64.42075% 29.2339deg)", "#ff0000"],
+    ])("reads %s as the colour it is, %s", (color, hex) => {
+      expect(getColorLuminance(color)).toBeCloseTo(
+        getColorLuminance(hex) as number,
+        5,
+      );
+    });
+
+    it("tells a saturated colour from the grey of its lightness", () => {
+      // A blue at the lightness of a grey that is light enough: the blue is
+      // drawn darker than the line between dark and light, the grey is not.
+      expect(getColorLuminance("oklab(0.47 0.03 -0.29)")).toBeCloseTo(
+        0.0814,
+        4,
+      );
+      expect(getColorLuminance("oklab(0.47 0 0)")).toBeCloseTo(0.1038, 4);
+    });
+
+    // The colours a browser draws for these, read from its pixels.
+    it.each([
+      ["oklch(0.7 0.5 140)", "rgb(0 213 0)"],
+      ["oklch(0.3 0.4 270)", "rgb(64 0 244)"],
+      ["oklch(0.9 0.4 100)", "rgb(255 212 0)"],
+      ["oklab(1 0.2 -0.3)", "rgb(255 168 255)"],
+      ["oklab(0 0.2 -0.3)", "rgb(28 0 83)"],
+    ])("cuts %s, which the screen cannot show, channel by channel to %s", (color, drawn) => {
+      expect(getColorLuminance(color)).toBeCloseTo(
+        getColorLuminance(drawn) as number,
+        2,
+      );
+    });
+
+    it("keeps the lightness of an oklab colour between none and all of it", () => {
+      expect(getColorLuminance("oklch(120% 0 0)")).toBeCloseTo(1, 6);
+      expect(getColorLuminance("oklab(-5% 0 0)")).toBe(0);
+    });
+
+    it("takes a negative chroma as no chroma", () => {
+      expect(getColorLuminance("oklch(0.5 -0.2 100)")).toBeCloseTo(0.125, 6);
     });
 
     it("reads a hue in any angle unit", () => {
@@ -62,7 +112,7 @@ describe("getColorLuminance()", () => {
     it("counts a notation with no numbers in it as black", () => {
       expect(getColorLuminance("rgb()")).toBe(0);
       expect(getColorLuminance("hsl(,,)")).toBe(0);
-      expect(getColorLuminance("oklch(none 0.2 25)")).toBe(0);
+      expect(getColorLuminance("oklch(none none none)")).toBe(0);
     });
   });
 
@@ -110,6 +160,15 @@ describe("getColorLuminance()", () => {
       expect(getColorLuminance("oklch(0.5 0.1 100 / 100%)")).toBe(
         getColorLuminance("oklch(0.5 0.1 100)"),
       );
+    });
+
+    it("mixes an oklab colour over white channel by channel, like any other", () => {
+      expect(
+        getColorLuminance("oklab(0.452014 -0.032457 -0.311528 / 0.5)"),
+      ).toBeCloseTo(getColorLuminance("rgb(0 0 255 / 0.5)") as number, 5);
+      expect(
+        getColorLuminance("oklch(0.627955 0.257683 29.2339 / 25%)"),
+      ).toBeCloseTo(getColorLuminance("rgb(255 0 0 / 0.25)") as number, 5);
     });
 
     it("takes a notation read for its lightness alone as the grey of that luminance", () => {
