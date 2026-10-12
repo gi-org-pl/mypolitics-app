@@ -892,7 +892,7 @@ msgctxt "checkpoint-halfway"
 msgid "Reszta pytań zajmie ok. {minutes} min."
 msgstr "Reszta pytań zajmie ok. {minutes} min."
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
 msgid "Rodzaje quizów"
 msgstr "Rodzaje quizów"
 
