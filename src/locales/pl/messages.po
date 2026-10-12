@@ -13,11 +13,33 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/constants/checkpoint.ts:558
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "Najbliżej Ciebie jest inna postać. Która? To się okaże w wynikach."
+msgstr "Najbliżej Ciebie jest inna postać. Która? To się okaże w wynikach."
+
 #. Ends the one-line preview of an explanation, right after the trigger phrase, e.g. 'Obraza uczuć religijnych to...'.
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:15
 msgctxt "survey question: explanation preview ellipsis"
 msgid "..."
 msgstr "..."
+
+#: src/constants/checkpoint.ts:202
+msgctxt "checkpoint-axis-closeness-double"
+msgid "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
+msgstr "„{leading}” czy „{other}”? Na tym etapie quizu bliżej Ci do pierwszej z tych stron."
+
+#: src/components/survey/SurveyCheckpointAxisPuzzle/utils/useAxisPuzzleDescription.ts:29
+msgid "„{start}” i „{end}”: bliżej Ci do strony „{leading}”"
+msgstr "„{start}” i „{end}”: bliżej Ci do strony „{leading}”"
+
+#: src/components/survey/SurveyCheckpointAxisPuzzle/utils/useAxisPuzzleDescription.ts:25
+msgid "„{start}” i „{end}”: wynik ukryty"
+msgstr "„{start}” i „{end}”: wynik ukryty"
+
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:29
+msgid "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
+msgstr "„{start}” i „{end}”: wyższy wynik po stronie „{leading}”"
 
 #: src/components/survey/SurveyCategorySelect/SurveyCategorySelectPrompt/SurveyCategorySelectPrompt.tsx:15
 msgid "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wybierz # najważniejsze dla Ciebie tematy.} many {Wybierz # najważniejszych dla Ciebie tematów.} other {Wybierz # najważniejszych dla Ciebie tematów.}}"
@@ -27,17 +49,34 @@ msgstr "{count, plural, one {Wybierz # najważniejszy dla Ciebie temat.} few {Wy
 msgid "{label} (otwiera się w nowej karcie)"
 msgstr "{label} (otwiera się w nowej karcie)"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:52
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:25
+msgid "{name} jest blisko Ciebie"
+msgstr "{name} jest blisko Ciebie"
+
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsDescription.ts:26
+msgid "{name}: {percent}%"
+msgstr "{name}: {percent}%"
+
+#: src/components/results/NolanChart/utils/useMapDescription.ts:53
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:133
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:147
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
+
+#: src/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway.tsx:33
+msgid "{percent}%"
+msgstr "{percent}%"
+
+#: src/constants/checkpoint.ts:515
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "{position} jest do Ciebie bardzo blisko na tym etapie quizu."
+msgstr "{position} jest do Ciebie bardzo blisko na tym etapie quizu."
 
 #: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
 #: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
@@ -48,15 +87,15 @@ msgstr "{startName} / {endName}"
 msgid "{title}:"
 msgstr "{title}:"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:40
+#: src/components/results/NolanChart/utils/useMapDescription.ts:41
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:18
 msgid "{trait} - tylko {name}"
 msgstr "{trait} - tylko {name}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:19
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - wspólna z: {name}"
 
@@ -64,7 +103,7 @@ msgstr "{trait} - wspólna z: {name}"
 msgid "{value}% pewności"
 msgstr "{value}% pewności"
 
-#: src/components/results/NolanChart/utils/useMapDescription.ts:41
+#: src/components/results/NolanChart/utils/useMapDescription.ts:42
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
@@ -192,24 +231,71 @@ msgstr "9 min"
 msgid "90 min"
 msgstr "90 min"
 
+#: src/constants/checkpoint.ts:444
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "A to ciekawe!"
+msgstr "A to ciekawe!"
+
+#: src/constants/checkpoint.ts:222
+msgctxt "checkpoint-new-trait"
+msgid "A to niespodzianka!"
+msgstr "A to niespodzianka!"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:50
+msgid "Adres e-mail"
+msgstr "Adres e-mail"
+
 #: src/constants/home.ts:77
 msgid "Algorytm jest jawny"
 msgstr "Algorytm jest jawny"
+
+#: src/constants/checkpoint.ts:431
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Bez pudła"
+msgstr "Bez pudła"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
 #: src/components/results/ResultsHeader/ResultsHeader.tsx:46
 msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:12
+msgid "Brak odpowiedzi"
+msgstr "Brak odpowiedzi"
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
-#: src/components/results/NolanChart/utils/useNolanTitle.ts:20
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/results/NolanChart/utils/useNolanTitle.ts:17
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:164
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
-#: src/components/results/Traits/Traits.tsx:37
+#: src/components/results/Traits/Traits.tsx:39
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
+
+#: src/constants/checkpoint.ts:246
+msgctxt "checkpoint-new-trait"
+msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
+msgstr "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
+
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:68
+msgid "Checkpoint"
+msgstr "Checkpoint"
+
+#: src/constants/checkpoint.ts:255
+msgctxt "checkpoint-nolan-path-partial"
+msgid "Co ja tu robię?"
+msgstr "Co ja tu robię?"
+
+#: src/constants/checkpoint.ts:498
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Czas na typowanie"
+msgstr "Czas na typowanie"
+
+#: src/constants/checkpoint.ts:314
+msgctxt "checkpoint-nolan-path-full"
+msgid "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
+msgstr "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
@@ -219,17 +305,63 @@ msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedz
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:26
+msgid "Czytamy programy partii"
+msgstr "Czytamy programy partii"
+
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:108
+msgid "Dalej"
+msgstr "Dalej"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:44
+msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
 msgstr "Debaty"
+
+#: src/constants/checkpoint.ts:383
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Do czego jest Tobie bliżej? Zgadnij teraz!"
+msgstr "Do czego jest Tobie bliżej? Zgadnij teraz!"
+
+#: src/constants/checkpoint.ts:480
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Do jednej z opcji jest Tobie bardzo blisko, zgadnij do której!"
+msgstr "Do jednej z opcji jest Tobie bardzo blisko, zgadnij do której!"
+
+#: src/constants/checkpoint.ts:147
+msgctxt "checkpoint-halfway"
+msgid "Do końca quizu zostało ok. {minutes} min."
+msgstr "Do końca quizu zostało ok. {minutes} min."
+
+#: src/constants/checkpoint.ts:236
+msgctxt "checkpoint-new-trait"
+msgid "Do Twojego profilu trafia cecha „{trait}”. Co Ty na to?"
+msgstr "Do Twojego profilu trafia cecha „{trait}”. Co Ty na to?"
+
+#: src/constants/checkpoint.ts:531
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "Dobre oko"
+msgstr "Dobre oko"
 
 #: src/constants/home.ts:53
 msgid "Dołącz na Discord Fundacji Generacja Innowacja"
 msgstr "Dołącz na Discord Fundacji Generacja Innowacja"
 
+#: src/constants/checkpoint.ts:300
+msgctxt "checkpoint-nolan-path-full"
+msgid "Dookoła kompasu"
+msgstr "Dookoła kompasu"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:21
+msgid "Dzielimy przez zero"
+msgstr "Dzielimy przez zero"
 
 #: src/constants/home.ts:244
 msgid "Eurowyborczy 2024"
@@ -243,6 +375,10 @@ msgstr "Filozoficzny"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect.tsx:26
+msgid "Idziemy dalej"
+msgstr "Idziemy dalej"
+
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
 msgstr "Ilustracja misia — błąd 404"
@@ -255,6 +391,30 @@ msgstr "Informacje"
 msgid "Informacje: {name}"
 msgstr "Informacje: {name}"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:12
+msgid "Inna"
+msgstr "Inna"
+
+#: src/constants/checkpoint.ts:213
+msgctxt "checkpoint-axis-closeness-double"
+msgid "Jak dotąd strona „{leading}” wyprzedza u Ciebie stronę „{other}”."
+msgstr "Jak dotąd strona „{leading}” wyprzedza u Ciebie stronę „{other}”."
+
+#: src/constants/checkpoint.ts:425
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Jak dotąd wygrywa u Ciebie strona „{leading}”."
+msgstr "Jak dotąd wygrywa u Ciebie strona „{leading}”."
+
+#: src/constants/checkpoint.ts:379
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Jak myślisz?"
+msgstr "Jak myślisz?"
+
+#: src/constants/checkpoint.ts:476
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Jak myślisz?"
+msgstr "Jak myślisz?"
+
 #: src/constants/home.ts:290
 msgid "Jaka filozofia Cię reprezentuje?"
 msgstr "Jaka filozofia Cię reprezentuje?"
@@ -263,17 +423,133 @@ msgstr "Jaka filozofia Cię reprezentuje?"
 msgid "Jakie miałbyś poglądy tysiące lat temu?"
 msgstr "Jakie miałbyś poglądy tysiące lat temu?"
 
+#: src/constants/checkpoint.ts:491
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Jedna z tych postaci jest teraz najbliżej Twoich odpowiedzi. Która?"
+msgstr "Jedna z tych postaci jest teraz najbliżej Twoich odpowiedzi. Która?"
+
+#: src/constants/checkpoint.ts:175
+msgctxt "checkpoint-axis-closeness-single"
+msgid "Jedno jest jasne"
+msgstr "Jedno jest jasne"
+
+#: src/constants/checkpoint.ts:521
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "Jest!"
+msgstr "Jest!"
+
+#: src/constants/checkpoint.ts:125
+msgctxt "checkpoint-halfway"
+msgid "Jesteś na półmetku"
+msgstr "Jesteś na półmetku"
+
+#: src/constants/checkpoint.ts:367
+msgctxt "checkpoint-stats-against"
+msgid "Jesteś w małej grupie"
+msgstr "Jesteś w małej grupie"
+
+#: src/constants/checkpoint.ts:337
+msgctxt "checkpoint-stats-for"
+msgid "Jesteś w małej grupie"
+msgstr "Jesteś w małej grupie"
+
 #: src/constants/home.ts:78
 msgid "Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkowników. <0>Sprawdź jak działa algorytm.</0>"
 msgstr "Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkowników. <0>Sprawdź jak działa algorytm.</0>"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:25
+msgid "Jesteśmy za, a nawet przeciw"
+msgstr "Jesteśmy za, a nawet przeciw"
 
 #: src/constants/home.ts:263
 msgid "Kiedyś to było... no właśnie, jak?"
 msgstr "Kiedyś to było... no właśnie, jak?"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:10
+msgid "Kobieta"
+msgstr "Kobieta"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:24
+msgid "Kolorujemy wykresy"
+msgstr "Kolorujemy wykresy"
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:29
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz blisko środka."
+
+#: src/components/survey/SurveyCheckpointNolanPath/utils/useNolanPathDescription.ts:28
+msgid "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
+msgstr "Kompas: trasa przeszła przez {count} z 4 ćwiartek. Twoja pozycja jest teraz w podświetlonej ćwiartce."
+
+#: src/constants/checkpoint.ts:310
+msgctxt "checkpoint-nolan-path-full"
+msgid "Komplet!"
+msgstr "Komplet!"
+
 #: src/constants/home.ts:296
 msgid "Kraje starożytne"
 msgstr "Kraje starożytne"
+
+#: src/constants/checkpoint.ts:393
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Która strona tej osi jest Ci bliższa? Wybierz jedną!"
+msgstr "Która strona tej osi jest Ci bliższa? Wybierz jedną!"
+
+#: src/constants/checkpoint.ts:548
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "Ktoś inny jest Tobie najbliższy. Kto? Teraz nie powiemy!"
+msgstr "Ktoś inny jest Tobie najbliższy. Kto? Teraz nie powiemy!"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:21
+msgid "Liczenie wyników trwa dłużej niż zwykle. Twoje odpowiedzi są zapisane. Spróbuj ponownie za chwilę."
+msgstr "Liczenie wyników trwa dłużej niż zwykle. Twoje odpowiedzi są zapisane. Spróbuj ponownie za chwilę."
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.tsx:35
+msgid "Liczymy Twoje wyniki"
+msgstr "Liczymy Twoje wyniki"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:19
+msgid "Liczymy, ale się cieszymy"
+msgstr "Liczymy, ale się cieszymy"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:14
+msgid "Liczymy, nie oceniamy"
+msgstr "Liczymy, nie oceniamy"
+
+#: src/constants/checkpoint.ts:389
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Mała zagadka"
+msgstr "Mała zagadka"
+
+#: src/constants/checkpoint.ts:270
+msgctxt "checkpoint-nolan-path-partial"
+msgid "Masz już za sobą {count} ćwiartki kompasu, a quiz jeszcze trwa."
+msgstr "Masz już za sobą {count} ćwiartki kompasu, a quiz jeszcze trwa."
+
+#: src/constants/checkpoint.ts:226
+msgctxt "checkpoint-new-trait"
+msgid "Masz nową cechę: „{trait}”... to dobrze, niedobrze?"
+msgstr "Masz nową cechę: „{trait}”... to dobrze, niedobrze?"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:11
+msgid "Mężczyzna"
+msgstr "Mężczyzna"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:21
+msgid "Miasto do 50 tys. mieszkańców"
+msgstr "Miasto do 50 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:23
+msgid "Miasto od 200 do 500 tys. mieszkańców"
+msgstr "Miasto od 200 do 500 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:22
+msgid "Miasto od 50 do 200 tys. mieszkańców"
+msgstr "Miasto od 50 do 200 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:24
+msgid "Miasto powyżej 500 tys. mieszkańców"
+msgstr "Miasto powyżej 500 tys. mieszkańców"
 
 #: src/constants/home.ts:70
 msgid "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
@@ -288,9 +564,39 @@ msgstr "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błą
 msgid "myPolitics"
 msgstr "myPolitics"
 
+#: src/constants/checkpoint.ts:169
+msgctxt "checkpoint-axis-closeness-single"
+msgid "Na skali „{orientation}” wypadasz wysoko."
+msgstr "Na skali „{orientation}” wypadasz wysoko."
+
+#: src/constants/checkpoint.ts:415
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Na tym etapie quizu bliżej Ci do strony „{leading}”."
+msgstr "Na tym etapie quizu bliżej Ci do strony „{leading}”."
+
+#: src/constants/checkpoint.ts:458
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "Na tym etapie quizu bliżej Ci jednak do strony „{leading}”."
+msgstr "Na tym etapie quizu bliżej Ci jednak do strony „{leading}”."
+
+#: src/constants/checkpoint.ts:525
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "Na tym etapie quizu najbliżej Ciebie jest {position}."
+msgstr "Na tym etapie quizu najbliżej Ciebie jest {position}."
+
 #: src/constants/home.ts:272
 msgid "Najdłuższy quiz na myPolitics!"
 msgstr "Najdłuższy quiz na myPolitics!"
+
+#: src/constants/checkpoint.ts:353
+msgctxt "checkpoint-stats-against"
+msgid "Należysz do {percent}% osób, które nie zgadzają się z tezą „{thesis}”."
+msgstr "Należysz do {percent}% osób, które nie zgadzają się z tezą „{thesis}”."
+
+#: src/constants/checkpoint.ts:323
+msgctxt "checkpoint-stats-for"
+msgid "Należysz do {percent}% osób, które popierają tezę „{thesis}”."
+msgstr "Należysz do {percent}% osób, które popierają tezę „{thesis}”."
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
 msgid "Nawigacja główna"
@@ -310,13 +616,59 @@ msgstr "nie"
 msgid "Nie ma jeszcze quizów tego rodzaju."
 msgstr "Nie ma jeszcze quizów tego rodzaju."
 
+#: src/constants/checkpoint.ts:554
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "Nie tym razem"
+msgstr "Nie tym razem"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:16
+msgid "Nie udało się wczytać quizu"
+msgstr "Nie udało się wczytać quizu"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:25
+msgid "Nie udało się wysłać linku na Twój e-mail. Twoje wyniki są gotowe. Zapisz adres strony z wynikami, żeby móc do nich wrócić."
+msgstr "Nie udało się wysłać linku na Twój e-mail. Twoje wyniki są gotowe. Zapisz adres strony z wynikami, żeby móc do nich wrócić."
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:17
+msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
+msgstr "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
+
+#: src/constants/checkpoint.ts:454
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "Niespodzianka"
+msgstr "Niespodzianka"
+
+#: src/constants/checkpoint.ts:330
+msgctxt "checkpoint-stats-for"
+msgid "Niewielu Was"
+msgstr "Niewielu Was"
+
+#: src/constants/checkpoint.ts:266
+msgctxt "checkpoint-nolan-path-partial"
+msgid "Niezła wędrówka"
+msgstr "Niezła wędrówka"
+
 #: src/constants/home.ts:73
 msgid "Nikt nas nie finansuje"
 msgstr "Nikt nas nie finansuje"
 
+#: src/constants/checkpoint.ts:464
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "No proszę"
+msgstr "No proszę"
+
+#: src/constants/checkpoint.ts:242
+msgctxt "checkpoint-new-trait"
+msgid "Nowość w kolekcji"
+msgstr "Nowość w kolekcji"
+
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:8
 msgid "O nas"
 msgstr "O nas"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:28
+msgid "Obradujemy przy okrągłym stole"
+msgstr "Obradujemy przy okrągłym stole"
 
 #: src/components/shared/Footer/FooterSocials/FooterSocials.constants.ts:52
 msgid "Odwiedź nasz kanał na YouTube"
@@ -354,6 +706,14 @@ msgstr "Orientacja seksualna"
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:16
+msgid "Panowie, liczymy głosy"
+msgstr "Panowie, liczymy głosy"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculationActions/SurveyResultsCalculationActions.tsx:39
+msgid "Pełne wyniki"
+msgstr "Pełne wyniki"
+
 #: src/components/results/Archetype/ArchetypeFoot/ArchetypeFoot.tsx:38
 msgid "Pełny opis"
 msgstr "Pełny opis"
@@ -366,9 +726,27 @@ msgstr "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęli�
 msgid "Płeć"
 msgstr "Płeć"
 
+#: src/constants/checkpoint.ts:403
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Po której stronie wypadasz na tym etapie quizu? Zgadnij!"
+msgstr "Po której stronie wypadasz na tym etapie quizu? Zgadnij!"
+
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculationActions/SurveyResultsCalculationActions.tsx:31
+msgid "Pobierz"
+msgstr "Pobierz"
+
+#: src/constants/checkpoint.ts:360
+msgctxt "checkpoint-stats-against"
+msgid "Pod prąd"
+msgstr "Pod prąd"
+
 #: src/components/quiz/FeaturedQuizBanner/FeaturedQuizBanner.tsx:33
 msgid "Podgląd wyników quizu myPolitics"
 msgstr "Podgląd wyników quizu myPolitics"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:28
+msgid "Podstawowe"
+msgstr "Podstawowe"
 
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
@@ -398,17 +776,45 @@ msgstr "Pokaż osie"
 msgid "Pokaż wszystkie"
 msgstr "Pokaż wszystkie"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:41
+msgid "Polityka prywatności."
+msgstr "Polityka prywatności."
+
+#: src/constants/checkpoint.ts:136
+msgctxt "checkpoint-halfway"
+msgid "Połowa za Tobą"
+msgstr "Połowa za Tobą"
+
 #: src/constants/home.ts:260
 msgid "Polskie Lata 90."
 msgstr "Polskie Lata 90."
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:36
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
+#: src/components/survey/SurveyPhaseActions/SurveyPhaseActions.tsx:48
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireQuestions/SurveyQuestionnaireAnswers/SurveyQuestionnaireAnswers.tsx:46
+msgid "Pomiń"
+msgstr "Pomiń"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:38
 msgid "Poprzednie pytanie"
 msgstr "Poprzednie pytanie"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:154
+msgid "porównanie z {name}"
+msgstr "porównanie z {name}"
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:156
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
+
+#: src/constants/checkpoint.ts:535
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "Postać najbliższa Twoim odpowiedziom to jak dotąd {position}."
+msgstr "Postać najbliższa Twoim odpowiedziom to jak dotąd {position}."
+
+#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:29
+msgid "Postęp quizu"
+msgstr "Postęp quizu"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
 msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
@@ -422,13 +828,43 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
+msgid "Prawie gotowe"
+msgstr "Prawie gotowe"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:37
+msgid "Prawie koniec!"
+msgstr "Prawie koniec!"
+
 #: src/constants/home.ts:278
 msgid "Preferencje muzyczne"
 msgstr "Preferencje muzyczne"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:13
+msgid "Prostujemy osie"
+msgstr "Prostujemy osie"
+
+#: src/constants/checkpoint.ts:232
+msgctxt "checkpoint-new-trait"
+msgid "Proszę, proszę"
+msgstr "Proszę, proszę"
+
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:7
 msgid "Prywatność"
 msgstr "Prywatność"
+
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:11
+msgid "Przeciw"
+msgstr "Przeciw"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:18
+msgid "Przeliczamy jeszcze raz"
+msgstr "Przeliczamy jeszcze raz"
+
+#: src/constants/checkpoint.ts:544
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "Pudło!"
+msgstr "Pudło!"
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
@@ -446,9 +882,18 @@ msgstr "Regulamin"
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
+#: src/constants/checkpoint.ts:137
+msgctxt "checkpoint-halfway"
+msgid "Reszta pytań zajmie ok. {minutes} min."
+msgstr "Reszta pytań zajmie ok. {minutes} min."
+
 #: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
 msgid "Rodzaje quizów"
 msgstr "Rodzaje quizów"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:22
+msgid "Rozdajemy 100 milionów"
+msgstr "Rozdajemy 100 milionów"
 
 #: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
 msgid "Rozpocząć od nowa?"
@@ -462,9 +907,36 @@ msgstr "Rozpocznij"
 msgid "Rozpocznij quiz"
 msgstr "Rozpocznij quiz"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:17
+msgid "Rozpoczynamy trzecie czytanie"
+msgstr "Rozpoczynamy trzecie czytanie"
+
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Rozwiń"
 msgstr "Rozwiń"
+
+#: src/constants/checkpoint.ts:349
+msgctxt "checkpoint-stats-against"
+msgid "Rzadki okaz"
+msgstr "Rzadki okaz"
+
+#: src/constants/checkpoint.ts:322
+msgctxt "checkpoint-stats-for"
+msgid "Rzadki okaz"
+msgstr "Rzadki okaz"
+
+#: src/constants/checkpoint.ts:179
+msgctxt "checkpoint-axis-closeness-single"
+msgid "Skala „{orientation}”: jak dotąd wysoki wynik."
+msgstr "Skala „{orientation}”: jak dotąd wysoki wynik."
+
+#: src/components/survey/SurveyCheckpointAxisCloseness/utils/useAxisClosenessDescription.ts:22
+msgid "Skala „{orientation}”: wysoki wynik"
+msgstr "Skala „{orientation}”: wysoki wynik"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:29
+msgid "Słuchamy wywiadów w telewizji"
+msgstr "Słuchamy wywiadów w telewizji"
 
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:22
 msgid "Sondaże"
@@ -474,9 +946,31 @@ msgstr "Sondaże"
 msgid "Społecznościowe"
 msgstr "Społecznościowe"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:19
+msgid "Sprawdź połączenie z internetem i spróbuj ponownie."
+msgstr "Sprawdź połączenie z internetem i spróbuj ponownie."
+
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:13
 msgid "Sprawdź wyjaśnienie"
 msgstr "Sprawdź wyjaśnienie"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:20
+msgid "Sprawdzamy czy przekraczasz próg"
+msgstr "Sprawdzamy czy przekraczasz próg"
+
+#: src/constants/checkpoint.ts:399
+msgctxt "checkpoint-axis-puzzle-ask"
+msgid "Sprawdźmy intuicję"
+msgstr "Sprawdźmy intuicję"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:28
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:8
+msgid "Spróbuj ponownie"
+msgstr "Spróbuj ponownie"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:30
+msgid "Średnie"
+msgstr "Średnie"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
@@ -495,6 +989,40 @@ msgstr "Strona główna"
 msgid "Stwórz własny"
 msgstr "Stwórz własny"
 
+#: src/constants/checkpoint.ts:209
+msgctxt "checkpoint-axis-closeness-double"
+msgid "Szala się przechyla"
+msgstr "Szala się przechyla"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:15
+msgid "Szukamy Twojej ćwiartki"
+msgstr "Szukamy Twojej ćwiartki"
+
+#: src/constants/checkpoint.ts:435
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Tak, na tym etapie quizu prowadzi u Ciebie strona „{leading}”."
+msgstr "Tak, na tym etapie quizu prowadzi u Ciebie strona „{leading}”."
+
+#: src/constants/checkpoint.ts:187
+msgctxt "checkpoint-axis-closeness-double"
+msgid "Tego już jesteśmy pewni"
+msgstr "Tego już jesteśmy pewni"
+
+#: src/constants/checkpoint.ts:143
+msgctxt "checkpoint-halfway"
+msgid "Teraz już z górki"
+msgstr "Teraz już z górki"
+
+#: src/constants/checkpoint.ts:361
+msgctxt "checkpoint-stats-against"
+msgid "Tezę „{thesis}” odrzuca tylko {percent}% osób. Ty też."
+msgstr "Tezę „{thesis}” odrzuca tylko {percent}% osób. Ty też."
+
+#: src/constants/checkpoint.ts:331
+msgctxt "checkpoint-stats-for"
+msgid "Tezę „{thesis}” popiera tylko {percent}% osób. Ty też."
+msgstr "Tezę „{thesis}” popiera tylko {percent}% osób. Ty też."
+
 #. The word that ends the preview of an explanation: the preview is the explanation up to its first whole-word occurrence, e.g. 'Obraza uczuć religijnych to...'.
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:5
 msgctxt "survey question: explanation trigger phrase"
@@ -505,13 +1033,72 @@ msgstr "to"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
+#: src/constants/checkpoint.ts:129
+msgctxt "checkpoint-halfway"
+msgid "To już prawie koniec, pozostałe pytania zajmą ok. {minutes} min."
+msgstr "To już prawie koniec, pozostałe pytania zajmą ok. {minutes} min."
+
+#: src/constants/checkpoint.ts:155
+msgctxt "checkpoint-axis-closeness-single"
+msgid "To już wiemy"
+msgstr "To już wiemy"
+
+#: src/constants/checkpoint.ts:569
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "To nie ta opcja. Kto jest najbliżej? Odpowiedź czeka w wynikach."
+msgstr "To nie ta opcja. Kto jest najbliżej? Odpowiedź czeka w wynikach."
+
+#: src/constants/checkpoint.ts:198
+msgctxt "checkpoint-axis-closeness-double"
+msgid "To widać coraz wyraźniej"
+msgstr "To widać coraz wyraźniej"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:16
 msgid "To znaczy?"
 msgstr "To znaczy?"
 
+#: src/constants/checkpoint.ts:411
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Trafione!"
+msgstr "Trafione!"
+
+#: src/constants/checkpoint.ts:511
+msgctxt "checkpoint-position-puzzle-hit"
+msgid "Trafione!"
+msgstr "Trafione!"
+
+#: src/constants/checkpoint.ts:277
+msgctxt "checkpoint-nolan-path-partial"
+msgid "Trochę Cię nosi"
+msgstr "Trochę Cię nosi"
+
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
 msgid "Tryb porównania"
 msgstr "Tryb porównania"
+
+#: src/constants/checkpoint.ts:165
+msgctxt "checkpoint-axis-closeness-single"
+msgid "Tu nie ma wątpliwości"
+msgstr "Tu nie ma wątpliwości"
+
+#: src/constants/checkpoint.ts:159
+msgctxt "checkpoint-axis-closeness-single"
+msgid "Twój wynik na skali „{orientation}” jest wysoki!"
+msgstr "Twój wynik na skali „{orientation}” jest wysoki!"
+
+#: src/constants/checkpoint.ts:191
+msgctxt "checkpoint-axis-closeness-double"
+msgid "Twój wynik po stronie „{leading}” jest wyższy niż po stronie „{other}”!"
+msgstr "Twój wynik po stronie „{leading}” jest wyższy niż po stronie „{other}”!"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:51
+msgid "twoj@mail.com"
+msgstr "twoj@mail.com"
+
+#: src/constants/checkpoint.ts:304
+msgctxt "checkpoint-nolan-path-full"
+msgid "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
+msgstr "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:9
 msgid "Twoja tożsamość"
@@ -521,13 +1108,47 @@ msgstr "Twoja tożsamość"
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Twoje dane pozostaną całkowicie anonimowe."
 
+#: src/constants/checkpoint.ts:281
+msgctxt "checkpoint-nolan-path-partial"
+msgid "Twoje odpowiedzi prowadzą już przez {count} ćwiartki kompasu."
+msgstr "Twoje odpowiedzi prowadzą już przez {count} ćwiartki kompasu."
+
+#: src/constants/checkpoint.ts:468
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "Twoje odpowiedzi wskazują jak dotąd na stronę „{leading}”."
+msgstr "Twoje odpowiedzi wskazują jak dotąd na stronę „{leading}”."
+
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:27
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
 
+#: src/constants/checkpoint.ts:371
+msgctxt "checkpoint-stats-against"
+msgid "Tylko {percent}% osób jest przeciw tezie „{thesis}”."
+msgstr "Tylko {percent}% osób jest przeciw tezie „{thesis}”."
+
+#: src/constants/checkpoint.ts:341
+msgctxt "checkpoint-stats-for"
+msgid "Tylko {percent}% osób jest za tezą „{thesis}”."
+msgstr "Tylko {percent}% osób jest za tezą „{thesis}”."
+
+#: src/constants/checkpoint.ts:502
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
+msgstr "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
+
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
 msgstr "Ukryj osie"
+
+#: src/components/survey/SurveyCheckpointPositionPuzzle/utils/usePositionPuzzleDescription.ts:21
+msgid "Ukryta postać jest blisko Ciebie"
+msgstr "Ukryta postać jest blisko Ciebie"
+
+#: src/constants/checkpoint.ts:259
+msgctxt "checkpoint-nolan-path-partial"
+msgid "W trakcie wykonywania quizu Twoja pozycja przeszła już przez {count} ćwiartki kompasu!"
+msgstr "W trakcie wykonywania quizu Twoja pozycja przeszła już przez {count} ćwiartki kompasu!"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:21
 msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
@@ -537,13 +1158,38 @@ msgstr "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgid "Warszawski Radar Wyborczy"
 msgstr "Warszawski Radar Wyborczy"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoading/SurveyQuestionnaireLoading.tsx:14
+msgid "Wczytywanie quizu"
+msgstr "Wczytywanie quizu"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
 msgstr "Wiek"
 
+#: src/constants/checkpoint.ts:290
+msgctxt "checkpoint-nolan-path-full"
+msgid "Wielka przeprawa!"
+msgstr "Wielka przeprawa!"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
 msgid "Wielkość miejsca zamieszkania"
 msgstr "Wielkość miejsca zamieszkania"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:20
+msgid "Wieś"
+msgstr "Wieś"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:13
+msgid "Wolę nie podawać"
+msgstr "Wolę nie podawać"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:56
+msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
+msgstr "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:39
+msgid "Wróć"
+msgstr "Wróć"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
@@ -561,6 +1207,15 @@ msgstr "Wróć do kategorii"
 msgid "Wszystkie"
 msgstr "Wszystkie"
 
+#: src/constants/checkpoint.ts:294
+msgctxt "checkpoint-nolan-path-full"
+msgid "Wszystkie ćwiartki kompasu są już za Tobą."
+msgstr "Wszystkie ćwiartki kompasu są już za Tobą."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:29
+msgid "Wybierz wszystkie cztery pola albo pomiń"
+msgstr "Wybierz wszystkie cztery pola albo pomiń"
+
 #: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:8
 msgid "Wyborcze"
 msgstr "Wyborcze"
@@ -573,9 +1228,47 @@ msgstr "Wyborczy 2023"
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:57
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:120
+msgid "Wyłącz checkpointy"
+msgstr "Wyłącz checkpointy"
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:30
+msgid "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+msgstr "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:41
+msgid "Wyślemy na Twój e-mail link do wyników, dzięki czemu łatwo do nich wrócisz."
+msgstr "Wyślemy na Twój e-mail link do wyników, dzięki czemu łatwo do nich wrócisz."
+
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:65
+msgid "Wyślij i zobacz wyniki"
+msgstr "Wyślij i zobacz wyniki"
+
+#: src/constants/checkpoint.ts:448
+msgctxt "checkpoint-axis-puzzle-miss"
+msgid "Wyszło inaczej, niż się spodziewasz."
+msgstr "Wyszło inaczej, niż się spodziewasz."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:31
+msgid "Wyższe"
+msgstr "Wyższe"
+
+#: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:10
+msgid "Za"
+msgstr "Za"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:59
 msgid "Zacznij od nowa"
 msgstr "Zacznij od nowa"
+
+#: src/constants/checkpoint.ts:565
+msgctxt "checkpoint-position-puzzle-miss"
+msgid "Zagadka trwa"
+msgstr "Zagadka trwa"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:23
+msgid "Zaglądamy do teczek"
+msgstr "Zaglądamy do teczek"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
 msgid "Zakres wykorzystania danych"
@@ -589,9 +1282,36 @@ msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
 
+#: src/components/survey/SurveyEmailCapture/SurveyEmailCapture.tsx:38
+msgid "Zapisz swoje wyniki!"
+msgstr "Zapisz swoje wyniki!"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:29
+msgid "Zasadnicze zawodowe"
+msgstr "Zasadnicze zawodowe"
+
+#: src/constants/checkpoint.ts:487
+msgctxt "checkpoint-position-puzzle-ask"
+msgid "Zgadnij, kto to"
+msgstr "Zgadnij, kto to"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:27
+msgid "Zgłaszamy wniosek formalny"
+msgstr "Zgłaszamy wniosek formalny"
+
+#: src/constants/checkpoint.ts:421
+msgctxt "checkpoint-axis-puzzle-hit"
+msgid "Znasz siebie"
+msgstr "Znasz siebie"
+
 #: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:24
 msgid "Zobacz więcej"
 msgstr "Zobacz więcej"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:27
+#: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:26
+msgid "Zobacz wyniki"
+msgstr "Zobacz wyniki"
 
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Zwiń"

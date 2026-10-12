@@ -1,6 +1,17 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  AXIS_EXTREME_COORDINATE,
+  AXIS_MODERATE_COORDINATE,
+} from "../NolanChart.constants";
 import { getAxisLevel } from "./getAxisLevel";
+
+describe("thresholds", () => {
+  it("are the ones the spec names", () => {
+    expect(AXIS_MODERATE_COORDINATE).toBeCloseTo(0.3333, 4);
+    expect(AXIS_EXTREME_COORDINATE).toBe(1);
+  });
+});
 
 describe("getAxisLevel()", () => {
   it("returns centre nearer to zero than 1/3", () => {
