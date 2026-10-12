@@ -1,6 +1,5 @@
 import {
   STATS_MAX_PERCENT,
-  STATS_MIN_PERCENT,
   STATS_MIN_SAMPLE,
   WHOLE_PERCENT,
 } from "@/constants/checkpoint";
@@ -11,6 +10,7 @@ import type {
 
 import { getAnswerSide } from "@/utils/checkpoint/answer-counts/getAnswerSide";
 import { getQuestionCounts } from "@/utils/checkpoint/answer-counts/getQuestionCounts";
+import { getStatsPercent } from "@/utils/checkpoint/answer-counts/getStatsPercent";
 import { getShownCards } from "@/utils/checkpoint/record/getShownCards";
 
 // The stats chart, once per session: the question done at this boundary was
@@ -50,7 +50,6 @@ export const getStatsCandidate = ({
 
   const { sample, ...counts } = questionCounts;
   const resultsCounted = sample + counts.noAnswer;
-  const sidePercent = (counts[side] * WHOLE_PERCENT) / resultsCounted;
 
   return sample >= STATS_MIN_SAMPLE &&
     counts[side] * WHOLE_PERCENT <= STATS_MAX_PERCENT * resultsCounted
@@ -61,7 +60,7 @@ export const getStatsCandidate = ({
         thesis: question.text,
         side,
         counts,
-        percent: Math.max(STATS_MIN_PERCENT, Math.ceil(sidePercent)),
+        percent: getStatsPercent(counts, side),
       }
     : undefined;
 };

@@ -70,7 +70,8 @@ describe("storedCardSchema", () => {
     ).toBe(false);
     expect(passesWith(statsForCard, { percent: 0 })).toBe(false);
     expect(passesWith(statsForCard, { percent: 11 })).toBe(false);
-    expect(passesWith(statsForCard, { percent: 10 })).toBe(true);
+    expect(passesWith(statsForCard, { percent: 8.5 })).toBe(false);
+    expect(passesWith(statsForCard, { percent: 8 })).toBe(true);
   });
 
   it("refuses a new trait card whose trait has no identifier", () => {
@@ -330,11 +331,13 @@ describe("storedCardSchema", () => {
       expect(
         passesWith(statsForCard, {
           counts: { for: 10, against: 90, noAnswer: 900 },
+          percent: 1,
         }),
       ).toBe(true);
       expect(
         passesWith(statsForCard, {
           counts: { for: 9, against: 90, noAnswer: 901 },
+          percent: 1,
         }),
       ).toBe(false);
       expect(
@@ -348,6 +351,7 @@ describe("storedCardSchema", () => {
       expect(
         passesWith(statsForCard, {
           counts: { for: 100, against: 800, noAnswer: 100 },
+          percent: 10,
         }),
       ).toBe(true);
       expect(
@@ -367,6 +371,28 @@ describe("storedCardSchema", () => {
           counts: { for: 900, against: 80, noAnswer: 20 },
         }),
       ).toBe(true);
+    });
+
+    it("refuses a stats card whose percent is not the one its counts give", () => {
+      // 1 of 100 is 1%: a card that prints 10% contradicts its own chart.
+      const rare = { for: 1, against: 99, noAnswer: 0 };
+
+      expect(passesWith(statsForCard, { counts: rare, percent: 10 })).toBe(
+        false,
+      );
+      expect(passesWith(statsForCard, { counts: rare, percent: 1 })).toBe(true);
+      // 81 of 1000 is 8.1%, printed as 9.
+      const rounded = { for: 81, against: 900, noAnswer: 19 };
+
+      expect(passesWith(statsForCard, { counts: rounded, percent: 8 })).toBe(
+        false,
+      );
+      expect(passesWith(statsForCard, { counts: rounded, percent: 9 })).toBe(
+        true,
+      );
+      // 80 of 1000 is 8%: a percent one off, either way, is refused.
+      expect(passesWith(statsForCard, { percent: 9 })).toBe(false);
+      expect(passesWith(statsForCard, { percent: 7 })).toBe(false);
     });
   });
 });
