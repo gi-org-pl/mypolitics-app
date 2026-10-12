@@ -1,6 +1,10 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import {
+  AXIS_LINE_BACKGROUND_CLASS_NAME,
+  AXIS_LINE_BORDER_CLASS_NAME,
+} from "@/constants/axis";
 import type { AxisEntry } from "@/types/axis";
 import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -95,6 +99,15 @@ describe("<UniversalAxis />", () => {
         "rounded-r-full",
       );
     });
+
+    it("outlines the cap in the opaque colour of the track border, not in a shade of its own colour", () => {
+      renderWithI18n(<UniversalAxis start={entryA(25)} />);
+
+      const cap = screen.getByTestId("universal-axis-cap-start");
+
+      expect(cap).toHaveClass("border", AXIS_LINE_BORDER_CLASS_NAME);
+      expect(cap).not.toHaveClass("border-gi-primary/30");
+    });
   });
 
   describe("given only an end entry", () => {
@@ -114,6 +127,15 @@ describe("<UniversalAxis />", () => {
         "rounded-l-full",
       );
     });
+
+    it("outlines the cap in the opaque colour of the track border", () => {
+      renderWithI18n(<UniversalAxis end={entryB(25)} />);
+
+      const cap = screen.getByTestId("universal-axis-cap-end");
+
+      expect(cap).toHaveClass("border", AXIS_LINE_BORDER_CLASS_NAME);
+      expect(cap).not.toHaveClass("border-gi-primary/30");
+    });
   });
 
   describe("given both entries", () => {
@@ -132,6 +154,18 @@ describe("<UniversalAxis />", () => {
       });
       expect(screen.getByText("69%")).toBeInTheDocument();
       expect(screen.getByText("31%")).toBeInTheDocument();
+    });
+
+    it("draws both caps without a border", () => {
+      renderWithI18n(<UniversalAxis start={entryA(69)} end={entryB(31)} />);
+
+      for (const side of ["start", "end"]) {
+        const cap = screen.getByTestId(`universal-axis-cap-${side}`);
+
+        expect(cap).not.toHaveClass("border");
+        expect(cap).not.toHaveClass("border-gi-primary/30");
+        expect(cap).not.toHaveClass(AXIS_LINE_BORDER_CLASS_NAME);
+      }
     });
 
     it("hides the value of a side below its threshold", () => {
@@ -179,6 +213,32 @@ describe("<UniversalAxis />", () => {
       expect(screen.getByText("Orientation B")).toHaveClass(
         "ml-auto",
         "text-right",
+      );
+    });
+
+    it("pads the box that cuts a long name, so that descenders and accents are drawn in full", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
+      );
+
+      for (const name of ["Orientation A", "Orientation B"]) {
+        expect(screen.getByText(name)).toHaveClass(
+          "truncate",
+          "min-w-0",
+          "py-1",
+          "-my-1",
+        );
+      }
+    });
+
+    it("keeps the row at its height when the names are present", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
+      );
+
+      expect(screen.getByTestId("universal-axis-labels")).toHaveClass(
+        "h-3",
+        "leading-none",
       );
     });
 
@@ -247,6 +307,15 @@ describe("<UniversalAxis />", () => {
           .getByTestId("universal-axis-marker")
           .style.getPropertyValue("--axis-position"),
       ).toBe("75%");
+    });
+
+    it("draws the marker in the opaque colour of the track border, so that a fill under it does not change it", () => {
+      renderWithI18n(<UniversalAxis start={entryA(90)} marker={75} />);
+
+      const marker = screen.getByTestId("universal-axis-marker");
+
+      expect(marker).toHaveClass("w-px", AXIS_LINE_BACKGROUND_CLASS_NAME);
+      expect(marker).not.toHaveClass("bg-gi-primary/30");
     });
   });
 
