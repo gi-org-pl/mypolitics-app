@@ -1,13 +1,12 @@
-import type { NolanPosition } from "@/types/results";
-
 import {
   MAP_CLIP_CLASS_NAME,
   MAP_POINT_CLASS_NAME,
-} from "../../NolanChart.constants";
-import { getPositionStyle } from "../../utils/getPositionStyle";
+} from "../CompassMap.constants";
+import type { CompassMapPoint } from "../CompassMap.types";
+import { getPositionStyle } from "../utils/getPositionStyle";
 
 interface TakerDotProps {
-  position: NolanPosition;
+  position: CompassMapPoint;
 }
 
 export const TakerDot = ({ position }: TakerDotProps) => {

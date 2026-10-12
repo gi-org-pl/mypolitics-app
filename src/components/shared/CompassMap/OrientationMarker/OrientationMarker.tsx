@@ -2,16 +2,16 @@ import { Avatar } from "@gi-org-pl/athena";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import type { Orientation } from "@/types/orientation";
-import type { NolanPosition } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
 
-import { MAP_CLIP_CLASS_NAME } from "../../NolanChart.constants";
-import { getColorStyle } from "../../utils/getColorStyle";
-import { getPositionStyle } from "../../utils/getPositionStyle";
+import { MAP_CLIP_CLASS_NAME } from "../CompassMap.constants";
+import type { CompassMapPoint } from "../CompassMap.types";
+import { getPositionStyle } from "../utils/getPositionStyle";
 
 interface OrientationMarkerProps {
   orientation?: Orientation;
-  position: NolanPosition;
+  position: CompassMapPoint;
 }
 
 export const OrientationMarker = ({
@@ -20,7 +20,7 @@ export const OrientationMarker = ({
 }: OrientationMarkerProps) => {
   const color = getSafeColor(orientation?.color);
   const imageClassName = `size-6 rounded-full border-2 border-gi-primary ${color ? "bg-(--nolan-color)" : "bg-gi-dark-gray"}`;
-  const imageStyle = getColorStyle(color);
+  const imageStyle = getNolanColorStyle(color);
 
   return (
     <div className={MAP_CLIP_CLASS_NAME}>

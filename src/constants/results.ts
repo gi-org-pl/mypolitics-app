@@ -26,3 +26,18 @@ export const QUADRANT_BY_POLES: Record<
   start: { start: "bottomLeft", end: "topLeft" },
   end: { start: "bottomRight", end: "topRight" },
 };
+
+// The colours a compass is drawn in when the quiz sends none, by corner: red
+// top left, blue top right, green bottom left, purple bottom right. Literal
+// values of the Tailwind palette tokens named beside them - the tokens
+// closest to the colours of the design: the map's colour check accepts no CSS
+// variables, so the tokens cannot be referenced.
+export const DEFAULT_COMPASS_QUADRANTS: Record<
+  NolanQuadrantKey,
+  { color: string }
+> = {
+  topLeft: { color: "oklch(70.4% 0.191 22.216)" }, // --color-red-400
+  topRight: { color: "oklch(74.6% 0.16 232.661)" }, // --color-sky-400
+  bottomLeft: { color: "oklch(76.5% 0.177 163.223)" }, // --color-emerald-400
+  bottomRight: { color: "oklch(54.1% 0.281 293.009)" }, // --color-violet-600
+};

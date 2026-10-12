@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { NolanQuadrants } from "../../NolanChart.types";
+import type { CompassMapQuadrants } from "../CompassMap.types";
 import { QuadrantGrid } from "./QuadrantGrid";
 
-const quadrants: NolanQuadrants = {
+const quadrants: CompassMapQuadrants = {
   topLeft: { color: "#eb5760" },
   topRight: { color: "#57bfeb" },
   bottomLeft: { color: "#36db8b" },
