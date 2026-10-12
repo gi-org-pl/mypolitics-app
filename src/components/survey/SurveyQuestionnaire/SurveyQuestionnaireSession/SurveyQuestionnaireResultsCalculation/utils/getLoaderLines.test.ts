@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { seededShuffle } from "@/utils/checkpoint/seededShuffle";
+import { seededShuffle } from "@/utils/checkpoint/random/seededShuffle";
 
 import {
   RESULTS_CALCULATION_DRAW,

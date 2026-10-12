@@ -1,4 +1,4 @@
-import { seededShuffle } from "@/utils/checkpoint/seededShuffle";
+import { seededShuffle } from "@/utils/checkpoint/random/seededShuffle";
 
 import { RESULTS_CALCULATION_DRAW } from "../SurveyQuestionnaireResultsCalculation.constants";
 
