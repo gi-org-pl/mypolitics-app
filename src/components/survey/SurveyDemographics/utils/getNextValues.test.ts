@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { DemographicsValues } from "../SurveyDemographics.types";
+import type { DemographicsValues } from "@/types/survey";
+
 import { getNextValues } from "./getNextValues";
 
 describe("getNextValues()", () => {
