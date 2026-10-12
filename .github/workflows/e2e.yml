@@ -17,8 +17,10 @@ on:
 permissions:
   contents: read
 
+# A group per trigger: a run started by hand never cancels the scheduled one,
+# nor the other way round. A newer run of the same kind replaces the older.
 concurrency:
-  group: e2e-${{ github.ref }}
+  group: e2e-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
