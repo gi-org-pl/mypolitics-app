@@ -125,7 +125,8 @@ describe("<TraitPill />", () => {
     it("fills the avatar with the colour of its border while it draws an image", () => {
       renderWithI18n(
         <TraitPill
-          item={{ ...anarchism, holder: "both" }}
+          orientation={anarchism}
+          holder="both"
           otherOrientation={friend}
         />,
       );
@@ -141,7 +142,8 @@ describe("<TraitPill />", () => {
     it("leaves the light background under the placeholder of an image that fails to load", () => {
       renderWithI18n(
         <TraitPill
-          item={{ ...anarchism, holder: "both" }}
+          orientation={anarchism}
+          holder="both"
           otherOrientation={friend}
         />,
       );
@@ -224,7 +226,8 @@ describe("<TraitPill />", () => {
     it("keeps the light background under the placeholder", () => {
       renderWithI18n(
         <TraitPill
-          item={{ ...anarchism, holder: "both" }}
+          orientation={anarchism}
+          holder="both"
           otherOrientation={{ ...friend, imageUrl: undefined }}
         />,
       );
