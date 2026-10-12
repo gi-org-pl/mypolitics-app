@@ -328,6 +328,123 @@ describe("<UniversalAxis />", () => {
       expect(image.querySelector("img")).toBeNull();
       expect(image).toHaveClass("bg-gi-dark-gray");
     });
+
+    it("writes the taker's value in the fill when the other party is clear of it", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(25)} comparison={friendEntry(77)} />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "25%",
+      );
+    });
+
+    it("writes the value next to a band that lies over the fill", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(80)} comparison={friendEntry(45)} />,
+      );
+
+      expect(screen.getByTestId("universal-axis-band")).toHaveStyle({
+        left: "45%",
+        width: "35%",
+      });
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "80%",
+      );
+    });
+
+    it("writes no value when the other party is close to the cap, and keeps it in the description", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(80)} comparison={friendEntry(3)} />,
+      );
+
+      expect(screen.queryByText("80%")).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: 80%, porównanie z Ania: 3%",
+      );
+    });
+
+    it("writes no value after the fill, and keeps it in the description", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(5)} comparison={friendEntry(60)} />,
+      );
+
+      expect(screen.queryByTestId("universal-axis-value-start")).toBeNull();
+      expect(screen.queryByText("5%")).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: 5%, porównanie z Ania: 60%",
+      );
+    });
+
+    it("writes no value that fits its fill only without a comparison, and keeps it in the description", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(16)} comparison={friendEntry(60)} />,
+      );
+
+      expect(screen.queryByText("16%")).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: 16%, porównanie z Ania: 60%",
+      );
+    });
+
+    it("writes the value from the fit threshold of a bar with a comparison on", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(17)} comparison={friendEntry(60)} />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "17%",
+      );
+    });
+
+    it("writes each side's value on a double-sided bar unless the other party is close to its cap", () => {
+      const { unmount } = renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(50)}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "69%",
+      );
+      expect(screen.getByTestId("universal-axis-fill-end")).toHaveTextContent(
+        "31%",
+      );
+
+      unmount();
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(90)}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveTextContent(
+        "69%",
+      );
+      expect(screen.queryByText("31%")).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: 69%, Orientation B: 31%, porównanie z Ania: 90%",
+      );
+    });
+
+    it("writes no value on a track that is hatched whole", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: orientationA }}
+          end={entryB(31)}
+          comparison={friendEntry(50)}
+        />,
+      );
+
+      expect(screen.queryByText(/%/)).toBeNull();
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A: brak wyniku, Orientation B: 31%, porównanie z Ania: 50%",
+      );
+    });
   });
 
   describe("given an orientation with an image", () => {
