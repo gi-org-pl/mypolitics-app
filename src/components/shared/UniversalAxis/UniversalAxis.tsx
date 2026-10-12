@@ -9,9 +9,11 @@ import {
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import type { AxisLayout, AxisSideLayout } from "@/types/axis";
 import { getAxisLayout } from "@/utils/axis/getAxisLayout";
+import { isLightColor } from "@/utils/color/isLightColor";
 
 import { LABEL_CLASS_NAME } from "./UniversalAxis.constants";
 import type { UniversalAxisProps } from "./UniversalAxis.types";
+import { getTextClassName } from "./utils/getTextClassName";
 
 type AxisSide = "start" | "end";
 
@@ -28,9 +30,6 @@ const getPositionStyle = (position: number): CSSProperties =>
 const getBackgroundClassName = (color?: string): string =>
   color ? "bg-(--axis-color)" : "bg-gi-dark-gray";
 
-const getTextClassName = (color?: string): string =>
-  color ? "text-(--axis-color)" : "text-gi-dark-gray";
-
 const renderFill = (side: AxisSide, entry: AxisSideLayout) => (
   <div
     data-testid={`universal-axis-fill-${side}`}
@@ -40,7 +39,9 @@ const renderFill = (side: AxisSide, entry: AxisSideLayout) => (
     style={{ ...getColorStyle(entry.color), width: toPercent(entry.width) }}
   >
     {entry.valuePlacement === "inside" && (
-      <span className={`px-4 ${VALUE_CLASS_NAME} text-white`}>
+      <span
+        className={`px-4 ${VALUE_CLASS_NAME} ${isLightColor(entry.color) ? "text-gi-dark-primary" : "text-white"}`}
+      >
         {entry.displayValue}%
       </span>
     )}

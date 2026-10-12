@@ -101,7 +101,7 @@ export const ModuleWrapper = ({
           {hasBody && <hr className="-mx-4 -mb-px border-gi-ash" />}
         </>
       )}
-      {hasBody && <div className="min-w-0">{children}</div>}
+      {hasBody && <div className="min-w-0 wrap-break-word">{children}</div>}
     </section>
   );
 };

@@ -50,6 +50,46 @@ describe("<HorizontalBarChartCategories />", () => {
     });
   });
 
+  describe("given a category with one entry", () => {
+    it("lists it with no control and keeps the controls of the others", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategories categories={[ECONOMY, LAW, VIEWS]} />,
+      );
+
+      expect(getNames()).toEqual([
+        "Gospodarka — Beta",
+        "Prawo — Gamma",
+        "Światopogląd — Delta",
+      ]);
+      expect(
+        screen.queryByRole("button", { name: "Pokaż kategorię: Prawo" }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getAllByRole("button").map((button) => button.ariaLabel),
+      ).toEqual([
+        "Pokaż kategorię: Gospodarka",
+        "Pokaż kategorię: Światopogląd",
+      ]);
+    });
+
+    it("still opens and closes the categories next to it", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategories categories={[ECONOMY, LAW, VIEWS]} />,
+      );
+
+      press("Pokaż kategorię: Światopogląd");
+
+      expect(getNames()).toEqual(["Światopogląd — Delta", "Alfa"]);
+
+      press("Wróć do kategorii");
+
+      expect(getNames()).toHaveLength(3);
+      expect(
+        screen.getByRole("button", { name: "Pokaż kategorię: Światopogląd" }),
+      ).toHaveFocus();
+    });
+  });
+
   describe("when a category is opened", () => {
     it("renders that category alone and moves focus to the return control", () => {
       renderWithI18n(

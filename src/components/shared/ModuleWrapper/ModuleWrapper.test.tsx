@@ -205,6 +205,37 @@ describe("<ModuleWrapper />", () => {
     });
   });
 
+  describe("given a body with a word longer than the card", () => {
+    const LONG_WORD = "Pneumonoultramicroscopicsilicovolcanoconiosis".repeat(2);
+
+    it("lets the word wrap inside the card instead of sticking out", () => {
+      renderWithI18n(
+        <ModuleWrapper title="Oś gospodarcza">{LONG_WORD}</ModuleWrapper>,
+      );
+
+      expect(screen.getByText(LONG_WORD)).toHaveClass(
+        "min-w-0",
+        "wrap-break-word",
+      );
+    });
+
+    it("wraps it in a card without a header as well", () => {
+      renderWithI18n(<ModuleWrapper>{LONG_WORD}</ModuleWrapper>);
+
+      expect(screen.getByText(LONG_WORD)).toHaveClass("wrap-break-word");
+    });
+
+    it("does not scroll the body, clip it or give it a height", () => {
+      renderWithI18n(
+        <ModuleWrapper title="Oś gospodarcza">{LONG_WORD}</ModuleWrapper>,
+      );
+
+      expect(screen.getByText(LONG_WORD).className).not.toMatch(
+        /overflow|truncate|line-clamp|(^|\s)(max-|min-)?h-/,
+      );
+    });
+  });
+
   describe("given only onStatsClick", () => {
     it("renders the statistics button and no info button", () => {
       renderWithI18n(

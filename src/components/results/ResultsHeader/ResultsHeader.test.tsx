@@ -4,6 +4,10 @@ import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { ResultsHeader } from "./ResultsHeader";
+import {
+  NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME,
+  NAME_SIZE_CLASS_NAME,
+} from "./ResultsHeader.constants";
 import type { ResultsHeaderProps } from "./ResultsHeader.types";
 
 const IMAGE_URL = "https://example.org/liberalism.png";
@@ -116,6 +120,15 @@ describe("<ResultsHeader />", () => {
   });
 
   describe("given no match", () => {
+    it("sizes the no match wording like a name", () => {
+      renderHeader({ confidence: 49 });
+
+      const heading = screen.getByRole("heading", { name: "Brak dopasowania" });
+
+      expect(heading.style.getPropertyValue("--name-letters")).toBe("11");
+      expect(heading).toHaveClass(NAME_SIZE_CLASS_NAME);
+    });
+
     it("renders the question mark and the no match wording", () => {
       renderHeader({ confidence: 49 });
 
@@ -406,6 +419,77 @@ describe("<ResultsHeader />", () => {
 
       expect(heading).toHaveClass("line-clamp-2");
       expect(heading).toHaveTextContent(LONG_NAME);
+    });
+  });
+
+  describe("given a name with a long word", () => {
+    it("sizes the name by the length of its longest word", () => {
+      renderHeader({ orientation: { ...liberalism, name: LONG_NAME } });
+
+      const heading = screen.getByRole("heading", { name: LONG_NAME });
+
+      expect(heading.style.getPropertyValue("--name-letters")).toBe("19");
+      expect(heading).toHaveClass(NAME_SIZE_CLASS_NAME);
+      expect(heading).not.toHaveClass("text-2xl");
+    });
+
+    it("lets the size fall from 24 px to 16 px with the width of the header", () => {
+      expect(NAME_SIZE_CLASS_NAME).toBe(
+        "text-[length:clamp(1rem,calc((100cqw_-_113px)_/_(var(--name-letters)_*_0.6)),1.5rem)]",
+      );
+    });
+
+    it("counts the part before a hyphen as a word of its own", () => {
+      renderHeader({
+        orientation: { ...liberalism, name: "Konserwatywno-liberalny" },
+      });
+
+      expect(
+        screen.getByRole("heading").style.getPropertyValue("--name-letters"),
+      ).toBe("14");
+    });
+  });
+
+  describe("given a short name", () => {
+    it("sizes it by the same rule", () => {
+      renderHeader();
+
+      const heading = screen.getByRole("heading", { name: "Liberalizm" });
+
+      expect(heading.style.getPropertyValue("--name-letters")).toBe("10");
+      expect(heading).toHaveClass(NAME_SIZE_CLASS_NAME);
+    });
+  });
+
+  describe("given an empty name", () => {
+    it("counts one letter, so that the size stays defined", () => {
+      renderHeader({ orientation: { ...liberalism, name: "" } });
+
+      expect(
+        screen.getByRole("heading").style.getPropertyValue("--name-letters"),
+      ).toBe("1");
+    });
+  });
+
+  describe("given a name beside extras", () => {
+    it("sizes the name for half of the row in the wide layout", () => {
+      renderHeader({ orientation: withSlogan("Wolność") });
+
+      expect(screen.getByRole("heading")).toHaveClass(
+        NAME_SIZE_CLASS_NAME,
+        NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME,
+      );
+      expect(NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME).toBe(
+        "@xl:text-[length:clamp(1rem,calc((50cqw_-_115px)_/_(var(--name-letters)_*_0.6)),1.5rem)]",
+      );
+    });
+
+    it("keeps the whole row for the name when there are no extras", () => {
+      renderHeader();
+
+      expect(screen.getByRole("heading")).not.toHaveClass(
+        NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME,
+      );
     });
   });
 

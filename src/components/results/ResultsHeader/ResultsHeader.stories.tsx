@@ -154,3 +154,15 @@ export const ComparisonTabActive: Story = {
     activeTab: "comparison",
   },
 };
+
+export const LongWordBesideExtras: Story = {
+  args: {
+    orientation: {
+      ...withExtras,
+      name: "Socjaldemokratyczny liberalizm",
+      slogan:
+        "Wolność, równość i solidarność dla każdego, kto chce budować wspólną przyszłość",
+    },
+    linkLabel: "Link Name",
+  },
+};

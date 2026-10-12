@@ -1,6 +1,6 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
+import { HATCH_CLASS_NAME, HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
 import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
@@ -122,6 +122,42 @@ describe("<TraitPill />", () => {
       ).toHaveAttribute("src", friend.imageUrl);
     });
 
+    it("fills the avatar with the colour of its border while it draws an image", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={anarchism}
+          holder="both"
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(screen.getByTestId("trait-pill-avatar")).toHaveClass(
+        "border",
+        "border-gi-primary",
+        "bg-gi-ash",
+        "has-[>img]:bg-gi-primary",
+      );
+    });
+
+    it("leaves the light background under the placeholder of an image that fails to load", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={anarchism}
+          holder="both"
+          otherOrientation={friend}
+        />,
+      );
+
+      const avatar = screen.getByTestId("trait-pill-avatar");
+
+      fireEvent.error(avatar.querySelector("img") as HTMLImageElement);
+
+      expect(avatar.querySelector("img")).toBeNull();
+      expect(avatar.querySelector("svg")).not.toBeNull();
+      expect(avatar).toHaveClass("bg-gi-ash");
+      expect(avatar).not.toHaveClass("bg-gi-primary");
+    });
+
     it("says in words that it is shared", () => {
       renderWithI18n(
         <TraitPill
@@ -155,6 +191,7 @@ describe("<TraitPill />", () => {
         HATCH_LIGHT_CLASS_NAME,
         "bg-(--trait-color)",
       );
+      expect(getBody()).not.toHaveClass(HATCH_CLASS_NAME);
       expect(screen.getByTestId("trait-pill-avatar")).toBeInTheDocument();
     });
 
@@ -185,6 +222,21 @@ describe("<TraitPill />", () => {
 
       expect(avatar.querySelector("img")).toBeNull();
       expect(avatar.querySelector("svg")).not.toBeNull();
+    });
+
+    it("keeps the light background under the placeholder", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={anarchism}
+          holder="both"
+          otherOrientation={{ ...friend, imageUrl: undefined }}
+        />,
+      );
+
+      const avatar = screen.getByTestId("trait-pill-avatar");
+
+      expect(avatar).toHaveClass("border", "border-gi-primary", "bg-gi-ash");
+      expect(avatar).not.toHaveClass("bg-gi-primary");
     });
   });
 
@@ -221,6 +273,47 @@ describe("<TraitPill />", () => {
       expect(getBody()).not.toHaveClass("text-white");
       expect(screen.getByTestId("trait-pill-image")).toHaveClass(
         "brightness-0",
+      );
+    });
+  });
+
+  describe("given a light trait only the other side holds", () => {
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+    ])("hatches the %s pill in the tone opposite to its dark label", (color) => {
+      renderWithI18n(
+        <TraitPill
+          orientation={{ ...anarchism, color }}
+          holder="other"
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(getBody()).toHaveClass(
+        HATCH_CLASS_NAME,
+        "bg-(--trait-color)",
+        "text-gi-primary",
+      );
+      expect(getBody()).not.toHaveClass(HATCH_LIGHT_CLASS_NAME);
+      expect(screen.getByTestId("trait-pill-image")).toHaveClass(
+        "brightness-0",
+      );
+    });
+
+    it("keeps a pill without a colour on the hatching for a light label", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={{ ...anarchism, color: undefined }}
+          holder="other"
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(getBody()).toHaveClass(
+        HATCH_LIGHT_CLASS_NAME,
+        "bg-gi-dark-gray",
+        "text-white",
       );
     });
   });

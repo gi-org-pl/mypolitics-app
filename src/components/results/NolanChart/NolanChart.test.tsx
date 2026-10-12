@@ -154,10 +154,7 @@ describe("<NolanChart />", () => {
       const title = screen.getByTestId("nolan-chart-title");
 
       expect(title).toHaveTextContent("Umiarkowana zielona");
-      expect(title).toHaveClass(
-        "bg-(--nolan-color)/10",
-        "text-(--nolan-color)",
-      );
+      expect(title).toHaveClass("bg-(--nolan-color)/10", "text-gi-primary");
       expect(title.style.getPropertyValue("--nolan-color")).toBe(GREEN);
       expect(
         screen.getByRole("region", { name: "Umiarkowana zielona" }),
