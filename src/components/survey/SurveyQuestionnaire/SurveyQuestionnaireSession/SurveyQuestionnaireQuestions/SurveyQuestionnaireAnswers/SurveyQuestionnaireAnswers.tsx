@@ -7,8 +7,8 @@ import { SKIP_CLASS_NAME } from "./SurveyQuestionnaireAnswers.constants";
 import type { SurveyQuestionnaireAnswersProps } from "./SurveyQuestionnaireAnswers.types";
 import { useAnswersToDraw } from "./utils/useAnswersToDraw";
 
-// The answers of a question, as a group named by its statement, and "Pomiń"
-// under the last one. An answer reports its press only when its
+// The answers of a question, as a group named by its statement, and the skip
+// button under the last one. An answer reports its press only when its
 // acknowledgement has played, so the press is caught here, on the group, at
 // the moment it happens. An answer of a question is never drawn disabled and
 // never drawn selected.

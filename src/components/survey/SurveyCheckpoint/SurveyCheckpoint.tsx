@@ -18,9 +18,9 @@ import { useCheckpointActions } from "./utils/useCheckpointActions";
 import { useTextFocus } from "./utils/useTextFocus";
 
 // The frame every checkpoint card is drawn in: the visual in its panel, one
-// paragraph of text, the options of a puzzle, "Dalej" and "Wyłącz
-// checkpointy". It knows nothing of card types: it draws what it is given and
-// reports which button was pressed, once.
+// paragraph of text, the options of a puzzle, the continue button and the
+// opt-out button. It knows nothing of card types: it draws what it is given
+// and reports which button was pressed, once.
 //
 // It is part of the page and not a dialog: it covers nothing, holds no focus
 // inside itself and does not close on Escape or by itself. A card without a
@@ -28,13 +28,14 @@ import { useTextFocus } from "./utils/useTextFocus";
 // continue.
 //
 // A card may change in place - a puzzle reveals its answer: the line changes,
-// the options go and "Dalej" comes, or stays when it was there already. Each
-// of the three stands in a box of its own that moves its height, so what is
-// under a part that changes - "Dalej" under the options, "Wyłącz checkpointy"
-// under all of them - moves with it instead of jumping. The gap above the
-// options and above "Dalej" is inside their boxes, so a part that is not
-// there takes no room. The frame animates nothing by itself: the card as a
-// whole arrives and leaves with the content of the screen.
+// the options go and the continue button comes, or stays when it was there
+// already. Each of the three stands in a box of its own that moves its
+// height, so what is under a part that changes - the continue button under
+// the options, the opt-out button under all of them - moves with it instead
+// of jumping. The gap above the options and above the continue button is
+// inside their boxes, so a part that is not there takes no room. The frame
+// animates nothing by itself: the card as a whole arrives and leaves with the
+// content of the screen.
 //
 // The dashes of the panel are 8 px long and 8 px apart, which a CSS border
 // cannot be told, so the outline is a rectangle drawn over the panel, and the
@@ -96,7 +97,7 @@ export const SurveyCheckpoint = ({
           {hasOptions && <div className={OPTIONS_CLASS_NAME}>{options}</div>}
         </AnimatedHeight>
         <AnimatedHeight>
-          {/* A card with no options has no other way forward: it keeps "Dalej". */}
+          {/* A card with no options has no other way forward: the button stays. */}
           {(isContinueAvailable || !hasOptions) && (
             <div className={CONTINUE_ROW_CLASS_NAME}>
               <Button

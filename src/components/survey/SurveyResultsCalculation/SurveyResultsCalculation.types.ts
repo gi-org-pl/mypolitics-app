@@ -9,8 +9,8 @@ export type SurveyResultsCalculationState =
 export interface SurveyResultsCalculationProps {
   state: SurveyResultsCalculationState;
   lines: string[]; // the lines of the run so far, oldest first, passed translated. The last one is the current line
-  onRetry: () => void; // "Spróbuj ponownie", in the two failed states
-  onSeeResults: () => void; // "Zobacz wyniki", on the notice
+  onRetry: () => void; // the retry button, in the two failed states
+  onSeeResults: () => void; // the see-results button, on the notice
 }
 
 // The states in which a message stands where the lines were.

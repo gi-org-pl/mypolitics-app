@@ -41,8 +41,8 @@ const renderCard = (props: Partial<SurveyCheckpointProps> = {}) => {
 };
 
 // A card that changes in place, as a puzzle does on a guess: the visual, the
-// text and the options are swapped, and "Dalej" comes back - or was there all
-// along, for a puzzle whose guess can be passed over.
+// text and the options are swapped, and the continue button comes back - or
+// was there all along, for a puzzle whose guess can be passed over.
 const Puzzle = ({ isContinueKept = false }: { isContinueKept?: boolean }) => {
   const [isRevealed, setIsRevealed] = useState(false);
 
@@ -75,12 +75,12 @@ const getText = () => within(getRegion()).getByRole("paragraph");
 
 const getButton = (name: string) => screen.getByRole("button", { name });
 
-// What stands between the panel and "Wyłącz checkpointy": the second of the
+// What stands between the panel and the opt-out button: the second of the
 // three parts of the frame.
 const getBody = () => getRegion().children[1] as HTMLElement;
 
 // The boxes that move their height, in the order of the body: the text, the
-// options, "Dalej".
+// options, the continue button.
 const getBoxes = () => [...getBody().children] as HTMLElement[];
 
 const BOX_CLASS_NAME = "data-[animating=true]:overflow-y-clip";

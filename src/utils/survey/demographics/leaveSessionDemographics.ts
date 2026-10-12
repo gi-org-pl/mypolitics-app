@@ -9,10 +9,10 @@ import {
 import { isPhaseInSession } from "@/utils/survey/phases/isPhaseInSession";
 import { toResultDemographics } from "./toResultDemographics";
 
-// "Zobacz wyniki" (given) takes all four fields; "Pomiń" always works and
-// keeps the picked values for the screen. When e-mail capture is not part of
-// the session, an address typed before the taker went back is dropped, so it
-// is never used.
+// The see-results button (given) takes all four fields; the skip button
+// always works and keeps the picked values for the screen. When e-mail
+// capture is not part of the session, an address typed before the taker went
+// back is dropped, so it is never used.
 export const leaveSessionDemographics: SurveySessionAction<
   [isGiven: boolean, config?: SurveySessionConfig]
 > = (survey, session, isGiven, config = SURVEY_SESSION_CONFIG) => {

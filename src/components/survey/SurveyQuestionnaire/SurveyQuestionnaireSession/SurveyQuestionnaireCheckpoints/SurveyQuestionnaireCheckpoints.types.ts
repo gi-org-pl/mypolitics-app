@@ -7,6 +7,6 @@ import type {
 export interface CheckpointCardControls {
   card: CheckpointCard | null; // the card that is up: the last of the cards shown, when it can be read and its type is registered
   reveal: (outcome: CheckpointOutcome) => CheckpointLine | undefined; // the reveal line of a puzzle, kept with its card
-  close: () => void; // "Dalej": the session's closeCheckpoint
-  optOut: () => void; // "Wyłącz checkpointy": the session's turnCheckpointsOff
+  close: () => void; // the continue button: the session's closeCheckpoint
+  optOut: () => void; // the opt-out button: the session's turnCheckpointsOff
 }

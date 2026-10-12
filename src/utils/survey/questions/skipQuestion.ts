@@ -3,7 +3,7 @@ import type { SurveySessionAction } from "@/types/survey";
 import { addSessionEntry } from "./addSessionEntry";
 import { getCurrentQuestion } from "./getCurrentQuestion";
 
-// "Pomiń" under a question: it is done, with no answer.
+// The skip button under a question: it is done, with no answer.
 export const skipQuestion: SurveySessionAction<[seconds?: number]> = (
   survey,
   session,

@@ -14,9 +14,10 @@ import { useAxisPuzzleDescription } from "./utils/useAxisPuzzleDescription";
 // The single axis puzzle: it hides the reading of one two-sided axis, asks
 // the taker which of its two poles they are closer to, and shows the reading
 // the moment they pick. It asks with the bar masked and the two poles as
-// options, in the order of the bar, and without "Dalej": the guess is the way
-// forward. After the guess the same bar is uncovered - the same for a hit and
-// for a miss - the options are gone and the line of the outcome is shown.
+// options, in the order of the bar, and without the continue button: the
+// guess is the way forward. After the guess the same bar is uncovered - the
+// same for a hit and for a miss - the options are gone and the line of the
+// outcome is shown.
 //
 // The guess is held here for as long as the card is on screen and goes
 // nowhere else. Hit or miss is read from the card as it fired; nothing is

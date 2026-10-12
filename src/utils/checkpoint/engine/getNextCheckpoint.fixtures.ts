@@ -51,7 +51,7 @@ export const createState = (
   ...overrides,
 });
 
-// A two-sided axis "Lewica - Prawica" style: the start side is the negative
+// A two-sided axis in the left-right style: the start side is the negative
 // one. The lean and the leading side are worked out as the running state
 // does.
 export const createTwoSidedAxis = (

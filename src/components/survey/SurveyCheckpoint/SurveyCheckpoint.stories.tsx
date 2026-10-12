@@ -93,7 +93,7 @@ export const Quote: Story = {
 };
 
 // A puzzle on a guess: the visual, the text and the options are swapped in
-// place, "Dalej" appears, and the focus moves to the new text.
+// place, the continue button appears, and the focus moves to the new text.
 export const ChangedInPlace: Story = {
   render: function Render(args) {
     const [isRevealed, setIsRevealed] = useState(false);
