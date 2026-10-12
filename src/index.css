@@ -9,3 +9,13 @@
 body {
   font-family: var(--font-family);
 }
+
+/* How far the rings of the loader card have drifted. A custom property is
+   animated smoothly only when the browser knows what it holds, and that is
+   said once for the whole document, so it is said here. The keyframes that
+   move it travel with the card. */
+@property --survey-rings-shift {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}

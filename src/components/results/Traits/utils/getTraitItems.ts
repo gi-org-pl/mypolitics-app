@@ -1,5 +1,6 @@
+import type { TraitHolder } from "@/components/shared/TraitPill/TraitPill.types";
 import { toSingleLine } from "@/utils/text/toSingleLine";
-import type { TraitHolder, TraitItem, TraitsProps } from "../Traits.types";
+import type { TraitItem, TraitsProps } from "../Traits.types";
 
 type TraitItemsInput = Pick<TraitsProps, "traits" | "earnedIds" | "comparison">;
 
