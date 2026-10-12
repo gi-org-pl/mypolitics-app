@@ -5,8 +5,8 @@ import type { SurveyPhase, SurveyPhaseContentProps } from "@/types/survey";
 import { SurveyQuestionnaireCategorySelect } from "./SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect";
 import { SurveyQuestionnaireDemographics } from "./SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics";
 import { SurveyQuestionnaireEmailCapture } from "./SurveyQuestionnaireEmailCapture/SurveyQuestionnaireEmailCapture";
-import { SurveyQuestionnaireHandIn } from "./SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn";
 import { SurveyQuestionnaireQuestions } from "./SurveyQuestionnaireQuestions/SurveyQuestionnaireQuestions";
+import { SurveyQuestionnaireResultsCalculation } from "./SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation";
 
 // What is drawn in each phase. A later phase is a component that takes
 // `SurveyPhaseContentProps`, added here under its phase: the bar, the pill,
@@ -19,7 +19,7 @@ export const SURVEY_PHASE_CONTENT: Partial<
   questions: SurveyQuestionnaireQuestions,
   demographics: SurveyQuestionnaireDemographics,
   "email-capture": SurveyQuestionnaireEmailCapture,
-  "results-calculation": SurveyQuestionnaireHandIn, // stand-in until survey-results-calculation
+  "results-calculation": SurveyQuestionnaireResultsCalculation,
 };
 
 // How long the movement between two contents lasts - the slide from one
