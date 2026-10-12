@@ -1,0 +1,155 @@
+name: e2e
+
+# The end-to-end suite does not run on pull requests: authors run it locally
+# (AGENTS.md 4.6). Here it runs once a day on the default branch, in all three
+# browsers, and can be started by hand on any branch from the Actions tab.
+on:
+  schedule:
+    # 02:17 UTC every day. Not on the hour: GitHub delays runs queued then.
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+    inputs:
+      report_failure:
+        description: "Open or update the failure issue if this run does not pass (a scheduled run always does)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# A group per trigger: a run started by hand never cancels the scheduled one,
+# nor the other way round. A newer run of the same kind replaces the older.
+concurrency:
+  group: e2e-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Check for new commits
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      # A scheduled run is skipped when the last scheduled run that succeeded
+      # was on this very commit, so a day without a commit costs one short job.
+      # A skipped run succeeds too, which keeps the skip going until a commit
+      # arrives; a failed run never counts, so a broken commit is tried again.
+      - name: Decide whether the suite has to run
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow e2e.yml \
+            --event schedule --status success --limit 1 \
+            --json headSha --jq '.[0].headSha // ""')
+
+          if [ "$last" = "$GITHUB_SHA" ]; then
+            echo "No commit since the last scheduled run that succeeded ($GITHUB_SHA): skipped."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  e2e:
+    name: Test E2E
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    # The time limits that count are on the steps: a step that runs out of
+    # time fails, so the job ends as a failure and is reported like one. A job
+    # stopped by its own limit is marked cancelled instead, so that limit is
+    # set well above the sum of the steps (10 + 10 + 25) and is never the one
+    # that ends a run.
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        timeout-minutes: 10
+        run: yarn install --frozen-lockfile --network-concurrency 1
+
+      - name: Install Playwright browsers
+        timeout-minutes: 10
+        run: npx playwright install --with-deps --only-shell
+
+      # The Playwright configuration builds the app and serves the build.
+      - name: Run Playwright tests
+        timeout-minutes: 25
+        run: yarn e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # Reports every way a scheduled run can end without the suite having passed:
+  # the preflight did not succeed (the suite is then skipped), a scenario
+  # failed, or the suite ran out of time (its step fails then, see above). A
+  # run that was skipped on purpose is not reported. Neither is a run that
+  # somebody cancelled, which `cancelled()` sees.
+  report:
+    name: Report a failure
+    needs: [changes, e2e]
+    if: >-
+      ${{
+        !cancelled() &&
+        (github.event_name == 'schedule' || inputs.report_failure) &&
+        (needs.changes.result != 'success' ||
+          (needs.e2e.result != 'success' && needs.e2e.result != 'skipped'))
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      # One open issue at a time: a failure while it is open adds a comment.
+      # The workflow never closes it - a person does, after the fix.
+      - name: Open or update the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LABEL: e2e-nightly
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          PREFLIGHT_RESULT: ${{ needs.changes.result }}
+          SUITE_RESULT: ${{ needs.e2e.result }}
+        run: |
+          gh label create "$LABEL" --repo "$GITHUB_REPOSITORY" --color B60205 \
+            --description "The scheduled e2e run did not pass" 2>/dev/null || true
+
+          body="The e2e run did not pass on \`$GITHUB_REF_NAME\` at [\`${GITHUB_SHA::7}\`]($COMMIT_URL) (trigger: $GITHUB_EVENT_NAME).
+
+          - Jobs: preflight \`$PREFLIGHT_RESULT\`, suite \`$SUITE_RESULT\`. On the suite, \`failure\` is a failed scenario or the 25 minute limit of the test step, and \`skipped\` means the preflight did not get that far.
+          - Run: $RUN_URL
+          - Playwright report: the \`playwright-report\` artifact of that run, kept for 7 days (there is none when the suite did not start).
+
+          Reproduce locally with \`CI=1 yarn e2e\`. Close this issue once \`main\` passes again."
+
+          open=$(gh issue list --repo "$GITHUB_REPOSITORY" --label "$LABEL" --state open \
+            --limit 1 --json number --jq '.[0].number // ""')
+
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --label "$LABEL" \
+              --title "The scheduled e2e run did not pass" --body "$body"
+          fi

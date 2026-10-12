@@ -120,7 +120,9 @@ yarn build            # Build for production
 yarn preview          # Start production server (after build)
 yarn test             # Run unit tests with Vitest
 yarn test:coverage    # Run tests with coverage report
-yarn e2e              # Run end-to-end tests with Playwright
+yarn e2e              # Run end-to-end tests with Playwright (Chromium, Firefox, WebKit)
+yarn e2e:local        # Run them in Chromium only
+CI=1 yarn e2e:local   # The run before a pull request: builds and serves its own app
 yarn e2e:ui           # Run Playwright tests in UI mode
 yarn lint             # Run Biome linter
 yarn lint:fix         # Fix linting issues automatically
@@ -141,14 +143,16 @@ Build the project with `yarn build` and preview the production build locally wit
 This project includes both unit testing and end-to-end testing:
 
 - **Unit Tests**: Uses Vitest with React Testing Library for component and utility testing
-- **E2E Tests**: Uses Playwright for browser-based end-to-end testing
+- **E2E Tests**: Uses Playwright for browser-based end-to-end testing. Pull requests get no e2e job: run `CI=1 yarn e2e:local` before opening one (`CI=1` makes Playwright build and serve the current code instead of reusing whatever answers on port 4173). The full suite runs once a day on `main` (`.github/workflows/e2e.yml`)
 
 Run tests with:
 
 ```bash
 yarn test              # Run unit tests
 yarn test:coverage     # Run tests with coverage
-yarn e2e               # Run E2E tests
+yarn e2e               # Run E2E tests in all three browsers
+yarn e2e:local         # Run E2E tests in Chromium only
+CI=1 yarn e2e:local    # The same on a fresh build - the run before a pull request
 yarn e2e:ui            # Run E2E tests in UI mode
 ```
 

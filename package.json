@@ -13,6 +13,7 @@
     "test": "yarn prebuild && vitest",
     "test:coverage": "yarn prebuild && vitest run --coverage",
     "e2e": "playwright test",
+    "e2e:local": "playwright test --project=chromium",
     "e2e:ui": "playwright test --ui",
     "lint": "npx @biomejs/biome lint",
     "lint:fix": "npx @biomejs/biome check --write",
