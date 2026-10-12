@@ -243,6 +243,10 @@ msgstr "Filozoficzny"
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect.tsx:26
+msgid "Idziemy dalej"
+msgstr "Idziemy dalej"
+
 #: src/components/shared/Error404/Error404.tsx:14
 msgid "Ilustracja misia — błąd 404"
 msgstr "Ilustracja misia — błąd 404"
@@ -254,6 +258,10 @@ msgstr "Informacje"
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
 msgid "Informacje: {name}"
 msgstr "Informacje: {name}"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:12
+msgid "Inna"
+msgstr "Inna"
 
 #: src/constants/home.ts:290
 msgid "Jaka filozofia Cię reprezentuje?"
@@ -271,9 +279,37 @@ msgstr "Jesteśmy w pełni transparentni, nie ukrywamy jak dopasowujemy użytkow
 msgid "Kiedyś to było... no właśnie, jak?"
 msgstr "Kiedyś to było... no właśnie, jak?"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:10
+msgid "Kobieta"
+msgstr "Kobieta"
+
 #: src/constants/home.ts:296
 msgid "Kraje starożytne"
 msgstr "Kraje starożytne"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:19
+msgid "Liczymy Twoje wyniki"
+msgstr "Liczymy Twoje wyniki"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:11
+msgid "Mężczyzna"
+msgstr "Mężczyzna"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:21
+msgid "Miasto do 50 tys. mieszkańców"
+msgstr "Miasto do 50 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:23
+msgid "Miasto od 200 do 500 tys. mieszkańców"
+msgstr "Miasto od 200 do 500 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:22
+msgid "Miasto od 50 do 200 tys. mieszkańców"
+msgstr "Miasto od 50 do 200 tys. mieszkańców"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:24
+msgid "Miasto powyżej 500 tys. mieszkańców"
+msgstr "Miasto powyżej 500 tys. mieszkańców"
 
 #: src/constants/home.ts:70
 msgid "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
@@ -309,6 +345,14 @@ msgstr "nie"
 #: src/components/home/QuizSection/QuizSectionList/QuizSectionList.tsx:24
 msgid "Nie ma jeszcze quizów tego rodzaju."
 msgstr "Nie ma jeszcze quizów tego rodzaju."
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:16
+msgid "Nie udało się wczytać quizu"
+msgstr "Nie udało się wczytać quizu"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:27
+msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
+msgstr "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
 
 #: src/constants/home.ts:73
 msgid "Nikt nas nie finansuje"
@@ -370,6 +414,10 @@ msgstr "Płeć"
 msgid "Podgląd wyników quizu myPolitics"
 msgstr "Podgląd wyników quizu myPolitics"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:28
+msgid "Podstawowe"
+msgstr "Podstawowe"
+
 #: src/components/results/MultiAxisChart/GroupListItem/GroupListItem.tsx:51
 msgid "Pokaż grupę"
 msgstr "Pokaż grupę"
@@ -402,13 +450,22 @@ msgstr "Pokaż wszystkie"
 msgid "Polskie Lata 90."
 msgstr "Polskie Lata 90."
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:36
+#: src/components/survey/SurveyPhaseActions/SurveyPhaseActions.tsx:48
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireQuestions/SurveyQuestionnaireAnswers/SurveyQuestionnaireAnswers.tsx:46
+msgid "Pomiń"
+msgstr "Pomiń"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:38
 msgid "Poprzednie pytanie"
 msgstr "Poprzednie pytanie"
 
 #: src/components/shared/UniversalAxis/UniversalAxis.tsx:140
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
+
+#: src/components/survey/SurveySaturatedProgressBar/SurveySaturatedProgressBar.tsx:29
+msgid "Postęp quizu"
+msgstr "Postęp quizu"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographicsInfo/SurveyDemographicsInfo.tsx:9
 msgid "Powyższe dane w przyszłości pozwolą Ci porównać się z innymi!"
@@ -421,6 +478,14 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 #: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:28
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:34
+msgid "Prawie gotowe"
+msgstr "Prawie gotowe"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:33
+msgid "Prawie koniec!"
+msgstr "Prawie koniec!"
 
 #: src/constants/home.ts:278
 msgid "Preferencje muzyczne"
@@ -474,9 +539,22 @@ msgstr "Sondaże"
 msgid "Społecznościowe"
 msgstr "Społecznościowe"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:19
+msgid "Sprawdź połączenie z internetem i spróbuj ponownie."
+msgstr "Sprawdź połączenie z internetem i spróbuj ponownie."
+
 #: src/components/survey/SurveyQuestion/SurveyQuestionExplanation/SurveyQuestionExplanation.constants.ts:13
 msgid "Sprawdź wyjaśnienie"
 msgstr "Sprawdź wyjaśnienie"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:28
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireHandIn/SurveyQuestionnaireHandIn.tsx:38
+msgid "Spróbuj ponownie"
+msgstr "Spróbuj ponownie"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:30
+msgid "Średnie"
+msgstr "Średnie"
 
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:58
 msgid "Statystyki"
@@ -537,6 +615,10 @@ msgstr "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgid "Warszawski Radar Wyborczy"
 msgstr "Warszawski Radar Wyborczy"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoading/SurveyQuestionnaireLoading.tsx:14
+msgid "Wczytywanie quizu"
+msgstr "Wczytywanie quizu"
+
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
 msgstr "Wiek"
@@ -544,6 +626,18 @@ msgstr "Wiek"
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:10
 msgid "Wielkość miejsca zamieszkania"
 msgstr "Wielkość miejsca zamieszkania"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:20
+msgid "Wieś"
+msgstr "Wieś"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:13
+msgid "Wolę nie podawać"
+msgstr "Wolę nie podawać"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:35
+msgid "Wróć"
+msgstr "Wróć"
 
 #: src/components/results/MultiAxisChart/OpenGroup/OpenGroup.tsx:67
 msgid "Wróć do grup"
@@ -561,6 +655,10 @@ msgstr "Wróć do kategorii"
 msgid "Wszystkie"
 msgstr "Wszystkie"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:29
+msgid "Wybierz wszystkie cztery pola albo pomiń"
+msgstr "Wybierz wszystkie cztery pola albo pomiń"
+
 #: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:8
 msgid "Wyborcze"
 msgstr "Wyborcze"
@@ -573,7 +671,11 @@ msgstr "Wyborczy 2023"
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 
-#: src/components/survey/SurveyControls/SurveyControls.tsx:57
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:31
+msgid "Wyższe"
+msgstr "Wyższe"
+
+#: src/components/survey/SurveyControls/SurveyControls.tsx:59
 msgid "Zacznij od nowa"
 msgstr "Zacznij od nowa"
 
@@ -589,9 +691,17 @@ msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
 
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:29
+msgid "Zasadnicze zawodowe"
+msgstr "Zasadnicze zawodowe"
+
 #: src/components/home/QuizSection/QuizSectionActions/QuizSectionActions.tsx:24
 msgid "Zobacz więcej"
 msgstr "Zobacz więcej"
+
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:27
+msgid "Zobacz wyniki"
+msgstr "Zobacz wyniki"
 
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Zwiń"
