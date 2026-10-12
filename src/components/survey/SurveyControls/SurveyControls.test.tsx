@@ -185,6 +185,29 @@ describe("<SurveyControls />", () => {
     });
   });
 
+  describe("given previousLabel", () => {
+    it("names the back control with it", () => {
+      renderControls({ previousLabel: "Wróć" });
+
+      expect(screen.getByRole("button", { name: "Wróć" })).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Poprzednie pytanie" }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given no previousLabel, or a blank one", () => {
+    it.each([
+      undefined,
+      "",
+      "   ",
+    ])('names the back control "Poprzednie pytanie" for %j', (previousLabel) => {
+      renderControls({ previousLabel });
+
+      expect(getBackButton()).toBeInTheDocument();
+    });
+  });
+
   describe("when the reset button is activated", () => {
     it("opens the dialog", async () => {
       const user = userEvent.setup();
