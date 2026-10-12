@@ -1,6 +1,7 @@
+import type { NolanPosition } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
-import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
+import type { NolanQuadrants } from "../NolanChart.types";
 
 export const getQuadrantColor = (
   quadrants: Partial<NolanQuadrants> | undefined,

@@ -30,6 +30,17 @@ const isPresentEntry = (entry?: AxisEntry): entry is AxisEntry =>
 const hasEntryValue = (entry: AxisEntry): entry is AxisEntryWithValue =>
   isNumber(entry.value);
 
+// The entry a side is laid out from. A masked bar keeps who the entry is and
+// drops its value, so that nothing in the layout can differ by a value.
+const getPresentEntry = (
+  entry: AxisEntry | undefined,
+  isMasked: boolean,
+): AxisEntry | null => {
+  if (!isPresentEntry(entry)) return null;
+
+  return isMasked ? { orientation: entry.orientation } : entry;
+};
+
 const getEntryValue = (entry: AxisEntry): number =>
   hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
 
@@ -37,8 +48,9 @@ const getValuePlacement = (
   mode: AxisMode,
   width: number,
   hasComparison: boolean,
+  showValues: boolean,
 ): AxisValuePlacement => {
-  if (hasComparison || width <= MIN_AXIS_VALUE) return "hidden";
+  if (!showValues || hasComparison || width <= MIN_AXIS_VALUE) return "hidden";
 
   if (mode === "double-sided") {
     return width >= DOUBLE_SIDED_FIT_THRESHOLD ? "inside" : "hidden";
@@ -52,6 +64,7 @@ const getSideLayout = (
   mode: AxisMode,
   width: number,
   hasComparison: boolean,
+  showValues: boolean,
 ): AxisSideLayout => {
   const value = getEntryValue(entry);
 
@@ -63,7 +76,7 @@ const getSideLayout = (
     value,
     displayValue: Math.round(value),
     width,
-    valuePlacement: getValuePlacement(mode, width, hasComparison),
+    valuePlacement: getValuePlacement(mode, width, hasComparison, showValues),
   };
 };
 
@@ -147,11 +160,15 @@ export const getAxisLayout = ({
   end,
   comparison,
   marker,
+  showValues = true,
+  isMasked = false,
 }: AxisLayoutInput): AxisLayout => {
-  const presentStart = isPresentEntry(start) ? start : null;
-  const presentEnd = isPresentEntry(end) ? end : null;
+  const presentStart = getPresentEntry(start, isMasked);
+  const presentEnd = getPresentEntry(end, isMasked);
   const presentComparison =
-    isPresentEntry(comparison) && hasEntryValue(comparison) ? comparison : null;
+    !isMasked && isPresentEntry(comparison) && hasEntryValue(comparison)
+      ? comparison
+      : null;
   const mode = getMode(presentStart !== null, presentEnd !== null);
   const hasComparison = presentComparison !== null;
 
@@ -161,19 +178,20 @@ export const getAxisLayout = ({
   );
 
   const startLayout = presentStart
-    ? getSideLayout(presentStart, mode, startWidth, hasComparison)
+    ? getSideLayout(presentStart, mode, startWidth, hasComparison, showValues)
     : null;
   const endLayout = presentEnd
-    ? getSideLayout(presentEnd, mode, endWidth, hasComparison)
+    ? getSideLayout(presentEnd, mode, endWidth, hasComparison, showValues)
     : null;
 
   return {
     mode,
     start: startLayout,
     end: endLayout,
-    marker: getMarker(marker),
+    marker: isMasked ? null : getMarker(marker),
     comparison: presentComparison
       ? getComparisonLayout(presentComparison, startLayout, endLayout)
       : null,
+    ...(isMasked ? { isMasked } : {}),
   };
 };

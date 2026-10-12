@@ -23,7 +23,8 @@ When generating developer tasks based on this document:
   (TypeScript strict), unit tests added/updated, e2e covers happy path if user-facing flow changed
   (what counts as "user-facing flow" is defined in §4.6).
 - Every path a ticket names must exist in the §2 layout. Do not name grouping folders
-  (`modules/`, `charts/`, `common/`, ...) between the domain folder and the component folder.
+  (`modules/`, `charts/`, `common/`, ...) between the domain folder and the component folder. The
+  only extra level the layout has is the sub-domain folder of a large util folder (§2).
 
 ---
 
@@ -73,6 +74,7 @@ approval.
 |   |       |- schemas/             # Zod schemas / data models
 |   |       |- client/              # Axios instance + config
 |   |       |- utils/               # Client helpers (interceptors, transforms)
+|   |           |- [sub-domain]/    # e.g. error/, request/, survey/
 |   |- constants/
 |   |   |- [domain-name].ts         # e.g. common.ts, user.ts, config.ts
 |   |- types/
@@ -81,6 +83,9 @@ approval.
 |   |   |- [domain-name]/           # e.g. number/, text/, object/
 |   |       |- transformNumber.ts
 |   |       |- transformNumber.test.ts
+|   |       |- [sub-domain]/        # Only in a large domain folder (see below), e.g. survey/session/
+|   |           |- createSession.ts
+|   |           |- createSession.test.ts
 |   |- locales/
 |   |   |- [locale]/                # e.g. pl/, en/
 |   |       |- messages.po          # Gettext source — edit this
@@ -108,6 +113,30 @@ Hard rules:
   src/components/results/ResultsHeader/           # Right
   ```
 
+- **A large util folder is split into sub-domain folders.** A folder of utils is flat until it
+  passes about 12 source files (tests and fixtures do not count). From then on its files are
+  grouped one level down, in folders named after what the files are about. This holds for
+  `src/utils/[domain-name]/`, for `src/services/[api-name]/utils/` and for a component's own
+  `utils/`.
+
+  ```txt
+  src/utils/survey/createSession.ts               # Wrong — one of 43 files in a flat folder
+  src/utils/survey/session/createSession.ts       # Right
+  src/utils/survey/helpers/createSession.ts       # Wrong — a catch-all, not a sub-domain
+  src/utils/number/math/clamp.ts                  # Wrong — a small folder stays flat
+  ```
+
+  - One level only, `kebab-case`. No catch-all folder (`misc/`, `common/`, `helpers/`): a file that
+    fits no sub-domain stays at the root of the util folder, as long as only a few do.
+  - A file keeps its name, still holds one function, and its test and fixtures move with it.
+  - Import a file of the same folder with `./name`, and a file of another sub-domain folder of
+    `src/utils/` or `src/services/` through the alias (`@/utils/survey/session/createSession`).
+  - Split the folder in the PR that takes it past the limit. Do not split a small folder ahead of
+    time.
+
+  This is the only grouping level the layout has, and it exists for utils alone. The rule above is
+  unchanged: no grouping folder between a domain folder and a component folder.
+
 When a ticket spans multiple files, follow the structure above when adding new files. Do not invent
 new folders (top-level or in between) without TL approval.
 
@@ -132,6 +161,7 @@ Concrete:
 | --- | --- | --- |
 | Domain folder | `kebab-case` | `user-profile/` |
 | Component folder | `PascalCase` | `UserProfileCard/` |
+| Sub-domain folder of utils (§2) | `kebab-case` | `session/`, `email-capture/` |
 | Other folders | `kebab-case` | `utils/`, `schemas/` |
 | Component file | `PascalCase.<type>.<ext>` | `UserProfileCard.tsx`, `UserProfileCard.types.ts` |
 | Asset | `kebab-case.ext` | `arrow-right.svg`, `hero-banner.jpg` |
@@ -237,6 +267,9 @@ Search `src/utils/`, `src/types/` and `src/constants/` before writing a helper; 
 | Used by a second component on its own account (not just to render the first one) — promote in the same PR that adds the second consumer and update both | `src/utils/[domain-name]/`, `src/types/[domain-name].ts`, `src/constants/[domain-name].ts` |
 | General-purpose even with one consumer today: only primitives or generics in the signature, nothing about the component in its name or body (clamping a number, "is this a finite number", collapsing whitespace) | `src/utils/[domain-name]/` (`number/`, `text/`, `object/`, ...) |
 | A subcomponent needed by a second parent | A sibling component in `src/components/[domain-name]/` (or `shared/` when ≥2 domains use it) |
+
+When the domain folder has sub-domain folders (§2), the util goes into the one it is about:
+`src/utils/[domain-name]/[sub-domain]/`.
 
 Never keep a private copy of a helper that already exists globally, and never copy one from another
 component — promote it.
@@ -411,6 +444,7 @@ assumptions about the frame it was drawn in.
 - [ ] Code follows folder structure (docs/frontend/conventions/PROJECT_STRUCTURE.md)
 - [ ] Naming follows docs/frontend/conventions/NAMING.md
 - [ ] Components sit directly in src/components/[domain]/ or shared/ — no extra folder layer
+- [ ] No util folder with more than ~12 source files is left flat — sub-domain folders, one level, no catch-all (§2)
 - [ ] Component layout follows docs/frontend/conventions/COMPONENT_STRUCTURE.md
 - [ ] Component files hold one component: no `renderX()` functions, no helpers — subcomponents, local `utils/`, local hooks instead
 - [ ] Nothing imported from another component's `utils/`, constants or subcomponents; shared and general-purpose code promoted to src/utils, src/types, src/constants
@@ -441,6 +475,11 @@ assumptions about the frame it was drawn in.
   test); stateful logic becomes a local `useSomething` hook.
 - "Local `utils/` or `src/utils/`?" → second consumer, or general-purpose (primitives in, primitives
   out, nothing component-specific)? Global. Otherwise local.
+- "This util folder has a lot of files — may I add sub-folders?" → past about 12 source files: yes,
+  one level of sub-domain folders named after what the files are about. Below that: no, it stays
+  flat. Never `misc/`, `common/` or `helpers/` (§2).
+- "Which folder of `src/utils/[domain-name]/` does the new util go into?" → the sub-domain folder it
+  is about, if the domain has them; otherwise the domain folder itself.
 - "Can I import that from another component?" → the component and its props types: yes. Its
   `utils/`, constants or subcomponents: no, promote them first.
 - "Can I use the Figma frame's width/height?" → no. Parent's width, automatic height; stories without

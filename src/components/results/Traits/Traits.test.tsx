@@ -89,15 +89,85 @@ describe("<Traits />", () => {
       expect(screen.getByRole("heading", { name: "Cechy" })).toBeVisible();
     });
 
-    it("renders the pills as a list", () => {
+    it("renders the pills as a list, each item named by its trait", () => {
       renderWithI18n(
         <Traits traits={traits} earnedIds={["anarchism", "monarchism"]} />,
       );
 
       const list = screen.getByRole("list");
+      const items = within(list).getAllByRole("listitem");
 
-      expect(within(list).getAllByRole("listitem")).toHaveLength(2);
+      expect(items.map((item) => item.textContent)).toEqual([
+        "Anarchizm",
+        "Monarchizm",
+      ]);
       expect(list).toHaveClass("flex", "flex-wrap");
+      // The item is the module's own element: one pill in each, and it lets
+      // a long name shrink to the width of the list.
+      for (const item of items) {
+        expect(item.parentElement).toBe(list);
+        expect(within(item).getAllByTestId("trait-pill")).toHaveLength(1);
+        expect(item).toHaveClass("max-w-full", "min-w-0");
+      }
+    });
+
+    it("passes the trait and its holder to each pill", () => {
+      renderWithI18n(
+        <Traits
+          traits={traits}
+          earnedIds={["pro-choice", "anarchism"]}
+          comparison={{
+            orientation: friend,
+            earnedIds: ["pro-choice", "pro-euro"],
+          }}
+        />,
+      );
+
+      expect(
+        screen
+          .getAllByTestId("trait-pill")
+          .map((pill) => [
+            within(pill).getByTestId("trait-pill-image").getAttribute("src"),
+            within(pill)
+              .getByTestId("trait-pill-body")
+              .style.getPropertyValue("--trait-color"),
+            pill.getAttribute("data-holder"),
+          ]),
+      ).toEqual([
+        [proChoice.imageUrl, proChoice.color, "both"],
+        [proEuro.imageUrl, proEuro.color, "other"],
+        [anarchism.imageUrl, anarchism.color, "taker"],
+      ]);
+    });
+
+    it("passes the other side to each pill only in a comparison", () => {
+      const { unmount } = renderWithI18n(
+        <Traits traits={traits} earnedIds={["pro-choice", "pro-euro"]} />,
+      );
+
+      expect(screen.queryByTestId("trait-pill-avatar")).not.toBeInTheDocument();
+
+      unmount();
+      renderWithI18n(
+        <Traits
+          traits={traits}
+          earnedIds={["pro-choice", "pro-euro"]}
+          comparison={{
+            orientation: friend,
+            earnedIds: ["pro-choice", "pro-euro"],
+          }}
+        />,
+      );
+
+      const avatars = screen.getAllByTestId("trait-pill-avatar");
+
+      expect(avatars).toHaveLength(2);
+      for (const avatar of avatars) {
+        expect(avatar.querySelector("img")).toHaveAttribute(
+          "src",
+          friend.imageUrl,
+        );
+      }
     });
 
     it("renders a pill without an icon with the name alone", () => {
