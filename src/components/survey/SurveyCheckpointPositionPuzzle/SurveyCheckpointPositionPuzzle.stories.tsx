@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
+import { PARTIAL_MATCH_FROM } from "@/constants/results";
 import type {
   CheckpointLine,
   CheckpointOutcome,
@@ -126,6 +127,13 @@ export const HitMatch: Story = {
 export const FullBar: Story = {
   args: {
     card: createCard(100),
+  },
+};
+
+// The other end of the bar: the lowest closeness the card can carry.
+export const ShortestBar: Story = {
+  args: {
+    card: createCard(PARTIAL_MATCH_FROM),
   },
 };
 
