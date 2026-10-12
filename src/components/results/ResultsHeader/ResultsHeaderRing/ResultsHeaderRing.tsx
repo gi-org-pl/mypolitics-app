@@ -1,6 +1,11 @@
 import { Avatar } from "@gi-org-pl/athena";
 
-import { BAND_CLASS_NAME, IMAGE_CLASS_NAME } from "../ResultsHeader.constants";
+import {
+  BAND_CLASS_NAME,
+  RING_IMAGE_CLASS_NAME,
+  RING_OVERLAP,
+  RING_TRACK_CLASS_NAME,
+} from "../ResultsHeader.constants";
 import type { ResultsHeaderBand } from "../ResultsHeader.types";
 
 interface ResultsHeaderRingProps {
@@ -15,6 +20,18 @@ export const ResultsHeaderRing = ({
   imageUrl,
 }: ResultsHeaderRingProps) => (
   <div className={`relative size-[65px] shrink-0 ${BAND_CLASS_NAME[band]}`}>
+    {imageUrl ? (
+      <Avatar
+        src={imageUrl}
+        dataTestId="results-header-image"
+        className={`${RING_IMAGE_CLASS_NAME} bg-gi-dark-primary`}
+      />
+    ) : (
+      <div
+        data-testid="results-header-image-placeholder"
+        className={`${RING_IMAGE_CLASS_NAME} bg-gi-dark-ash`}
+      />
+    )}
     <svg
       aria-hidden="true"
       data-testid="results-header-ring"
@@ -22,10 +39,14 @@ export const ResultsHeaderRing = ({
       className="absolute inset-0 size-full"
     >
       <circle
+        data-testid="results-header-ring-track"
         cx="32.5"
         cy="32.5"
-        r="32.5"
-        className="fill-current opacity-10"
+        r="30"
+        pathLength={100}
+        strokeDasharray={`${RING_OVERLAP} ${confidence - 2 * RING_OVERLAP} ${100 - confidence + RING_OVERLAP}`}
+        strokeWidth="5"
+        className={RING_TRACK_CLASS_NAME}
       />
       <circle
         data-testid="results-header-ring-arc"
@@ -38,17 +59,5 @@ export const ResultsHeaderRing = ({
         className="fill-none stroke-current"
       />
     </svg>
-    {imageUrl ? (
-      <Avatar
-        src={imageUrl}
-        dataTestId="results-header-image"
-        className={`${IMAGE_CLASS_NAME} bg-gi-dark-primary`}
-      />
-    ) : (
-      <div
-        data-testid="results-header-image-placeholder"
-        className={`${IMAGE_CLASS_NAME} bg-gi-dark-ash`}
-      />
-    )}
   </div>
 );

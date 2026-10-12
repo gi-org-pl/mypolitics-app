@@ -2,11 +2,16 @@ import { Avatar } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 import type { CSSProperties } from "react";
 
+import {
+  AXIS_LINE_BACKGROUND_CLASS_NAME,
+  AXIS_LINE_BORDER_CLASS_NAME,
+} from "@/constants/axis";
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import type { AxisLayout, AxisSideLayout } from "@/types/axis";
 import { getAxisLayout } from "@/utils/axis/getAxisLayout";
 import { isLightColor } from "@/utils/color/isLightColor";
 
+import { LABEL_CLASS_NAME } from "./UniversalAxis.constants";
 import type { UniversalAxisProps } from "./UniversalAxis.types";
 import { getTextClassName } from "./utils/getTextClassName";
 
@@ -57,9 +62,16 @@ const renderOutsideValue = (side: AxisSide, entry: AxisSideLayout) => (
   </span>
 );
 
-const renderCap = (side: AxisSide, entry: AxisSideLayout) => {
+const renderCap = (
+  side: AxisSide,
+  entry: AxisSideLayout,
+  hasBorder: boolean,
+) => {
   const positionClassName = side === "start" ? "left-0" : "right-0";
-  const capClassName = `absolute top-0 size-8 rounded-full border border-gi-primary/30 ${positionClassName} ${getBackgroundClassName(entry.color)}`;
+  const borderClassName = hasBorder
+    ? `border ${AXIS_LINE_BORDER_CLASS_NAME}`
+    : "";
+  const capClassName = `absolute top-0 size-8 rounded-full ${borderClassName} ${positionClassName} ${getBackgroundClassName(entry.color)}`;
 
   return entry.imageUrl ? (
     <Avatar
@@ -193,7 +205,7 @@ export const UniversalAxis = ({
           <div className={`absolute inset-y-0 ${laneClassName}`}>
             <div
               data-testid="universal-axis-marker"
-              className="absolute inset-y-0 left-[clamp(0px,calc(var(--axis-position)-0.5px),calc(100%-1px))] w-px bg-gi-primary/30"
+              className={`absolute inset-y-0 left-[clamp(0px,calc(var(--axis-position)-0.5px),calc(100%-1px))] w-px ${AXIS_LINE_BACKGROUND_CLASS_NAME}`}
               style={getPositionStyle(layout.marker)}
             />
           </div>
@@ -220,8 +232,8 @@ export const UniversalAxis = ({
             className="absolute top-0 left-0 size-8 rounded-full border border-gi-primary/30 bg-white"
           />
         )}
-        {layout.start && renderCap("start", layout.start)}
-        {layout.end && renderCap("end", layout.end)}
+        {layout.start && renderCap("start", layout.start, !isDoubleSided)}
+        {layout.end && renderCap("end", layout.end, !isDoubleSided)}
 
         {layout.comparison && (
           <div
@@ -239,10 +251,10 @@ export const UniversalAxis = ({
           className={`flex h-3 gap-2 text-xs leading-none font-bold text-gi-primary/50 ${isDoubleSided ? "mt-1" : "mt-2"}`}
         >
           {layout.start && (
-            <span className="min-w-0 truncate">{layout.start.name}</span>
+            <span className={LABEL_CLASS_NAME}>{layout.start.name}</span>
           )}
           {layout.end && (
-            <span className="ml-auto min-w-0 truncate text-right">
+            <span className={`ml-auto text-right ${LABEL_CLASS_NAME}`}>
               {layout.end.name}
             </span>
           )}

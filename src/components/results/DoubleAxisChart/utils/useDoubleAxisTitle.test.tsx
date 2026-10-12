@@ -104,12 +104,43 @@ describe("useDoubleAxisTitle()", () => {
   });
 
   describe("given a tie", () => {
-    it("returns a neutral chip naming both poles, start first", () => {
-      const name = "Eurosceptycyzm / Federacjonizm";
+    it("names the card after both poles, start first", () => {
+      expect(getTitle(50, 50).name).toBe("Eurosceptycyzm / Federacjonizm");
+    });
 
-      expect(getTitle(50, 50)).toEqual({
-        name,
-        chip: { name, look: "neutral" },
+    it("returns a neutral chip with each pole as a name of its own, start first", () => {
+      expect(getTitle(50, 50).chip).toMatchObject({
+        name: "Eurosceptycyzm",
+        secondName: "Federacjonizm",
+        look: "neutral",
+      });
+    });
+
+    it("gives the chip the word for a tie as its short name", () => {
+      expect(getTitle(50, 50).chip?.shortName).toBe("Remis");
+    });
+
+    it("passes no image and no colour to the chip", () => {
+      expect(getTitle(50, 50).chip).toEqual({
+        name: "Eurosceptycyzm",
+        secondName: "Federacjonizm",
+        shortName: "Remis",
+        look: "neutral",
+      });
+    });
+
+    it("writes each name on a single line", () => {
+      const title = getTitle(
+        50,
+        50,
+        { ...euroscepticism, name: " Euro\nsceptycyzm " },
+        { ...federalism, name: "Federa  cjonizm" },
+      );
+
+      expect(title.name).toBe("Euro sceptycyzm / Federa cjonizm");
+      expect(title.chip).toMatchObject({
+        name: "Euro sceptycyzm",
+        secondName: "Federa cjonizm",
       });
     });
 
@@ -123,16 +154,30 @@ describe("useDoubleAxisTitle()", () => {
   });
 
   describe("given a tie with a missing name", () => {
-    it("names the pole that has a name, without a separator", () => {
-      expect(getTitle(50, 50, { ...euroscepticism, name: "" }).name).toBe(
-        "Federacjonizm",
-      );
-      expect(
-        getTitle(50, 50, euroscepticism, { ...federalism, name: " " }).name,
-      ).toBe("Eurosceptycyzm");
+    const TIE_TITLE = {
+      name: "Remis",
+      chip: { name: "Remis", look: "neutral" },
+    };
+
+    it.each([
+      "",
+      " ",
+      undefined,
+    ])("returns the word for a tie, never the end pole alone, for a start name of %j", (name) => {
+      expect(getTitle(50, 50, { ...euroscepticism, name })).toEqual(TIE_TITLE);
     });
 
-    it("returns no chip when both names are missing", () => {
+    it.each([
+      "",
+      " ",
+      undefined,
+    ])("returns the word for a tie, never the start pole alone, for an end name of %j", (name) => {
+      expect(getTitle(50, 50, euroscepticism, { ...federalism, name })).toEqual(
+        TIE_TITLE,
+      );
+    });
+
+    it("returns the word for a tie when both names are missing", () => {
       expect(
         getTitle(
           50,
@@ -140,7 +185,13 @@ describe("useDoubleAxisTitle()", () => {
           { ...euroscepticism, name: "" },
           { ...federalism, name: "" },
         ),
-      ).toEqual({ name: "", chip: undefined });
+      ).toEqual(TIE_TITLE);
+    });
+
+    it("returns the word for a tie when both values are absent too", () => {
+      expect(
+        getTitle(undefined, undefined, { ...euroscepticism, name: "" }),
+      ).toEqual(TIE_TITLE);
     });
   });
 });

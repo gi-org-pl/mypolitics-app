@@ -557,6 +557,28 @@ describe("<Archetype />", () => {
       ).toBeVisible();
     });
 
+    it("keeps the number on a bar with a band", () => {
+      renderArchetype({ comparison });
+
+      expect(
+        within(
+          screen.getByRole("img", {
+            name: "Alfa: 85%, porównanie z Ania: 60%",
+          }),
+        ).getByText("85%"),
+      ).toBeVisible();
+
+      press("Ranking");
+
+      expect(
+        within(
+          screen.getByRole("img", {
+            name: "Gamma: 55%, porównanie z Ania: 90%",
+          }),
+        ).getByText("55%"),
+      ).toBeVisible();
+    });
+
     it("draws a bar without an overlay when there is no value for it", () => {
       renderArchetype({ comparison });
 

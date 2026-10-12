@@ -12,15 +12,17 @@ export const QuizSectionTabs = ({
   const { i18n, t } = useLingui();
 
   return (
-    <Tabs
-      value={activeTab}
-      onValueChange={(value) => onTabChange(toQuizTab(value))}
-      items={QUIZ_TABS.map(({ value, label }) => ({
-        value,
-        label: i18n._(label),
-      }))}
-      aria-label={t`Rodzaje quizów`}
-      className={TABS_CLASS_NAME}
-    />
+    <div className="@container w-full">
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => onTabChange(toQuizTab(value))}
+        items={QUIZ_TABS.map(({ value, label }) => ({
+          value,
+          label: i18n._(label),
+        }))}
+        aria-label={t`Rodzaje quizów`}
+        className={TABS_CLASS_NAME}
+      />
+    </div>
   );
 };

@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { AXIS_LINE_BACKGROUND_CLASS_NAME } from "@/constants/axis";
+
 import { GroupMarker } from "./GroupMarker";
 
 const getPosition = () =>
@@ -54,9 +56,17 @@ describe("<GroupMarker />", () => {
         "left-[clamp(0px,calc(var(--axis-position)-0.5px),calc(100%-1px))]",
         "w-px",
         "inset-y-0",
-        "bg-gi-primary/30",
       );
       expect(line.parentElement).toHaveClass("absolute", "inset-x-5");
+    });
+
+    it("has the opaque colour of the track border, so that the fills it crosses do not change it", () => {
+      render(<GroupMarker />);
+
+      const line = screen.getByTestId("multi-axis-chart-marker");
+
+      expect(line).toHaveClass(AXIS_LINE_BACKGROUND_CLASS_NAME);
+      expect(line).not.toHaveClass("bg-gi-primary/30");
     });
 
     it("runs from the headline bar above its container to the last bar, whatever the heading height", () => {
