@@ -1,12 +1,9 @@
+import { CompassMap } from "@/components/shared/CompassMap/CompassMap";
 import type { Orientation } from "@/types/orientation";
+import type { NolanPosition } from "@/types/results";
 
-import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
-import { getQuadrantColor } from "../utils/getQuadrantColor";
-import { isDarkFill } from "../utils/isDarkFill";
+import type { NolanQuadrants } from "../NolanChart.types";
 import { AxisPill } from "./AxisPill/AxisPill";
-import { OrientationMarker } from "./OrientationMarker/OrientationMarker";
-import { QuadrantGrid } from "./QuadrantGrid/QuadrantGrid";
-import { TakerDot } from "./TakerDot/TakerDot";
 
 interface NolanMapProps {
   description: string;
@@ -18,6 +15,9 @@ interface NolanMapProps {
   otherPosition: NolanPosition | null;
 }
 
+// The map of the result's Nolan chart with the names of its two axes beside
+// it. The map itself is `CompassMap`; the image and its description are this
+// element's, because the axis names and coordinates belong to the picture.
 export const NolanMap = ({
   description,
   horizontalName,
@@ -33,31 +33,13 @@ export const NolanMap = ({
     className="flex w-full min-w-0 flex-col gap-3"
   >
     <div className="flex min-w-0 gap-3">
-      <div
-        data-testid="nolan-chart-map"
-        className="relative aspect-square min-w-0 flex-1 rounded-xl bg-white"
-      >
-        <QuadrantGrid
+      <div className="min-w-0 flex-1">
+        <CompassMap
           quadrants={quadrants}
-          filledQuadrant={
-            position && position.level !== "centre" ? position.quadrant : null
-          }
+          position={position}
+          otherOrientation={otherOrientation}
+          otherPosition={otherPosition}
         />
-        {position && (
-          <TakerDot
-            position={position}
-            isOnDarkFill={
-              position.level !== "centre" &&
-              isDarkFill(getQuadrantColor(quadrants, position))
-            }
-          />
-        )}
-        {otherPosition && (
-          <OrientationMarker
-            orientation={otherOrientation}
-            position={otherPosition}
-          />
-        )}
       </div>
       <div className="relative w-8 shrink-0">
         <AxisPill

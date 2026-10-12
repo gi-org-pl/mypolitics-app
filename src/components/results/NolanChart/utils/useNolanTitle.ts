@@ -1,12 +1,9 @@
 import { useLingui } from "@lingui/react/macro";
 
+import type { NolanPosition } from "@/types/results";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
-import type {
-  NolanPosition,
-  NolanQuadrants,
-  NolanTitle,
-} from "../NolanChart.types";
+import type { NolanQuadrants, NolanTitle } from "../NolanChart.types";
 import { getQuadrantColor } from "./getQuadrantColor";
 import { getQuadrantName } from "./getQuadrantName";
 

@@ -1,11 +1,11 @@
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
 import type { NolanAxis, NolanComparison } from "../NolanChart.types";
-import { getNolanPosition } from "../utils/getNolanPosition";
 import { NolanRows } from "./NolanRows";
 
 const createAxis = (name: string): NolanAxis => ({

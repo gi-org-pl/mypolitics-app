@@ -1,11 +1,8 @@
 import type { Orientation } from "@/types/orientation";
+import type { NolanAxisValues, NolanPoleSide } from "@/types/results";
 
 import { AxisRow } from "../../../AxisRow/AxisRow";
-import type {
-  NolanAxis,
-  NolanAxisValues,
-  NolanPoleSide,
-} from "../../NolanChart.types";
+import type { NolanAxis } from "../../NolanChart.types";
 import { getPoleName } from "../../utils/getPoleName";
 import { getRowComparison } from "../../utils/getRowComparison";
 import { getRowEntry } from "../../utils/getRowEntry";

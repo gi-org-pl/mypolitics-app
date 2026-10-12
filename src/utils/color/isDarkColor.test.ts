@@ -3,18 +3,13 @@ import { describe, expect, it } from "vitest";
 import { isDarkColor } from "./isDarkColor";
 
 describe("isDarkColor()", () => {
-  describe("given a dark colour", () => {
+  describe("given a dark hex colour", () => {
     it.each([
       "#000",
       "#192430",
       "#851c22",
       "#324c51",
       "#004554",
-      "rgb(25, 36, 48)",
-      "hsl(211 32% 14%)",
-      "hwb(211 10% 81%)",
-      "lab(14% 0 -10)",
-      "oklch(0.398 0.0331 213.7)",
     ])("returns true for %s", (color) => {
       expect(isDarkColor(color)).toBe(true);
     });
@@ -22,15 +17,9 @@ describe("isDarkColor()", () => {
     it("trims the surrounding whitespace", () => {
       expect(isDarkColor("  #192430\n")).toBe(true);
     });
-
-    it("counts a saturated oklab colour that the grey of its lightness would not be", () => {
-      expect(isDarkColor("oklab(0.47 0.03 -0.29)")).toBe(true);
-      expect(isDarkColor("oklch(0.47 0.2915 275.9)")).toBe(true);
-      expect(isDarkColor("oklab(0.47 0 0)")).toBe(false);
-    });
   });
 
-  describe("given a mid-tone or light colour", () => {
+  describe("given a mid-tone or light hex colour", () => {
     it.each([
       "#8443e9",
       "#eb5760",
@@ -39,17 +28,14 @@ describe("isDarkColor()", () => {
       "#9b51e0",
       "#fff176",
       "#fff",
-      "rgb(132, 67, 233)",
-      "oklch(0.6057 0.0122 211.04)",
     ])("returns false for %s", (color) => {
       expect(isDarkColor(color)).toBe(false);
     });
   });
 
-  describe("given a translucent colour", () => {
+  describe("given a translucent hex colour", () => {
     it("treats a dark colour that lets most of the white surface through as not dark", () => {
       expect(isDarkColor("#00000033")).toBe(false);
-      expect(isDarkColor("rgb(0 0 0 / 20%)")).toBe(false);
     });
 
     it("keeps a mostly opaque dark colour dark", () => {
@@ -63,6 +49,16 @@ describe("isDarkColor()", () => {
       expect(isDarkColor("#192430cc")).toBe(true);
       expect(isDarkColor("#19243080")).toBe(isDarkColor("#8c9197"));
       expect(isDarkColor("#19243080")).toBe(false);
+    });
+  });
+
+  describe("given a colour in another notation", () => {
+    it.each([
+      "rgb(25, 36, 48)",
+      "hsl(211 32% 14%)",
+      "oklch(0.25 0.03 250)",
+    ])("does not read %s", (color) => {
+      expect(isDarkColor(color)).toBe(false);
     });
   });
 

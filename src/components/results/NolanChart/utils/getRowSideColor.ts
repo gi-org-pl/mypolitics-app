@@ -1,6 +1,6 @@
+import type { NolanPoleSide } from "@/types/results";
+import { isDarkFill } from "@/utils/color/isDarkFill";
 import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
-import type { NolanPoleSide } from "../NolanChart.types";
-import { isDarkFill } from "./isDarkFill";
 
 export const getRowSideColor = (
   side: NolanPoleSide,

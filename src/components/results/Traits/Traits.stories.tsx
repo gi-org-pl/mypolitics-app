@@ -210,7 +210,7 @@ export const LightColor: Story = {
     traits: [
       { ...proChoice, color: "#ffe066" },
       { ...proEuro, color: "#ecf0f2" },
-      { ...anarchism, color: "oklch(0.9 0.08 150)" },
+      { ...anarchism, color: "#b9eec2" },
       proGun,
       monarchism,
     ],
