@@ -383,6 +383,105 @@ describe("<UniversalAxis />", () => {
     });
   });
 
+  describe("given a light orientation colour", () => {
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+    ])("writes the value inside a %s fill in the darkest text colour", (color) => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: { ...orientationA, color }, value: 70 }}
+        />,
+      );
+
+      const value = screen.getByText("70%");
+
+      expect(value).toHaveClass("text-gi-dark-primary");
+      expect(value).not.toHaveClass("text-white");
+    });
+
+    it.each([
+      "#fff176",
+      "#ecf0f2",
+    ])("writes the value after a %s fill in the dark text colour", (color) => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: { ...orientationA, color }, value: 5 }}
+        />,
+      );
+
+      const value = screen.getByTestId("universal-axis-value-start");
+
+      expect(value).toHaveClass("text-gi-primary");
+      expect(value).not.toHaveClass("text-(--axis-color)");
+    });
+
+    it("keeps the fill and the cap in the orientation colour", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{
+            orientation: { ...orientationA, color: "#fff176" },
+            value: 70,
+          }}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
+        "bg-(--axis-color)",
+        "from-black/20",
+      );
+      expect(screen.getByTestId("universal-axis-cap-start")).toHaveClass(
+        "bg-(--axis-color)",
+      );
+    });
+
+    it("decides for each side of a double-sided bar on its own", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{
+            orientation: { ...orientationA, color: "#fff176" },
+            value: 60,
+          }}
+          end={entryB(40)}
+        />,
+      );
+
+      expect(screen.getByText("60%")).toHaveClass("text-gi-dark-primary");
+      expect(screen.getByText("40%")).toHaveClass("text-white");
+    });
+  });
+
+  describe("given an orientation colour that is not light", () => {
+    it.each([
+      "#59b6a6",
+      "#192430",
+    ])("keeps the white value inside a %s fill", (color) => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: { ...orientationA, color }, value: 70 }}
+        />,
+      );
+
+      const value = screen.getByText("70%");
+
+      expect(value).toHaveClass("text-white");
+      expect(value).not.toHaveClass("text-gi-dark-primary");
+    });
+
+    it("keeps the white value inside a fill without a colour", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={{
+            orientation: { ...orientationA, color: undefined },
+            value: 70,
+          }}
+        />,
+      );
+
+      expect(screen.getByText("70%")).toHaveClass("text-white");
+    });
+  });
+
   describe("given an orientation without a colour", () => {
     it("falls back to the neutral colour", () => {
       renderWithI18n(

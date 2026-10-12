@@ -254,6 +254,28 @@ export const NoColor: Story = {
   },
 };
 
+export const LightColor: Story = {
+  args: {
+    start: {
+      orientation: { ...liberalism, imageUrl: undefined, color: "#fff176" },
+      value: 62,
+    },
+    end: {
+      orientation: { ...conservatism, imageUrl: undefined, color: "#ecf0f2" },
+      value: 38,
+    },
+  },
+};
+
+export const LightColorSmallValue: Story = {
+  args: {
+    start: {
+      orientation: { ...socialism, imageUrl: undefined, color: "#fff176" },
+      value: 5,
+    },
+  },
+};
+
 export const OutOfRangeValues: Story = {
   args: {
     start: { orientation: liberalism, value: 140 },
