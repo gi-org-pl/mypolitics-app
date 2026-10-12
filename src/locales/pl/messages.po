@@ -61,11 +61,11 @@ msgstr "{name}: {percent}%"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:148
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
@@ -78,8 +78,9 @@ msgctxt "checkpoint-position-puzzle-hit"
 msgid "{position} jest do Ciebie bardzo blisko na tym etapie quizu."
 msgstr "{position} jest do Ciebie bardzo blisko na tym etapie quizu."
 
-#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:42
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:48
 #: src/components/results/MultiAxisChart/utils/useGroupName.ts:15
+#: src/components/results/OrientationChip/OrientationChipName/OrientationChipNamePair/OrientationChipNamePair.tsx:18
 msgid "{startName} / {endName}"
 msgstr "{startName} / {endName}"
 
@@ -265,7 +266,7 @@ msgstr "Brak odpowiedzi"
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:178
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
@@ -297,11 +298,11 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 msgstr "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:45
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
@@ -355,7 +356,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Dookoła kompasu"
 msgstr "Dookoła kompasu"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:33
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 
@@ -799,11 +800,11 @@ msgstr "Pomiń"
 msgid "Poprzednie pytanie"
 msgstr "Poprzednie pytanie"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:155
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:168
 msgid "porównanie z {name}"
 msgstr "porównanie z {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:157
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:170
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
@@ -878,7 +879,11 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+#: src/components/results/DoubleAxisChart/utils/useDoubleAxisTitle.ts:41
+msgid "Remis"
+msgstr "Remis"
+
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:61
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
@@ -887,7 +892,7 @@ msgctxt "checkpoint-halfway"
 msgid "Reszta pytań zajmie ok. {minutes} min."
 msgstr "Reszta pytań zajmie ok. {minutes} min."
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:22
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.tsx:23
 msgid "Rodzaje quizów"
 msgstr "Rodzaje quizów"
 
@@ -895,7 +900,7 @@ msgstr "Rodzaje quizów"
 msgid "Rozdajemy 100 milionów"
 msgstr "Rozdajemy 100 milionów"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:39
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 
@@ -1104,7 +1109,7 @@ msgstr "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
 msgid "Twoja tożsamość"
 msgstr "Twoja tożsamość"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:41
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Twoje dane pozostaną całkowicie anonimowe."
 
@@ -1270,7 +1275,7 @@ msgstr "Zagadka trwa"
 msgid "Zaglądamy do teczek"
 msgstr "Zaglądamy do teczek"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 

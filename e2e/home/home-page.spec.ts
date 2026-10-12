@@ -37,6 +37,8 @@ const ALL_QUIZZES = [...ELECTORAL_QUIZZES, ...SOCIAL_QUIZZES];
 const QUIZ_DESCRIPTION = "Poznaj najbliższe sobie komitety wyborcze!";
 const WIDE_WINDOW = { width: 1280, height: 900 };
 const NARROW_WINDOW = { width: 360, height: 740 };
+// Twice the regular gap between two tabs: more than that is a hole in the row.
+const WIDEST_TAB_GAP = 16;
 
 // Opens the home page and waits for the pictures it displays as well: one
 // that arrives late moves everything below it, and a click made at that moment
@@ -61,6 +63,22 @@ const openHomePage = async (page: Page) => {
 
 const getTab = (page: Page, name: string) =>
   page.getByRole("tablist", { name: TAB_LIST_NAME }).getByRole("tab", { name });
+
+// The distance between every two neighbouring tabs that stand in one row.
+const getGapsBetweenTabsInARow = (page: Page) =>
+  page.getByRole("tablist", { name: TAB_LIST_NAME }).evaluate((tabList) => {
+    const boxes = Array.from(tabList.querySelectorAll("[role=tab]"), (tab) =>
+      tab.getBoundingClientRect(),
+    );
+
+    return boxes
+      .slice(1)
+      .flatMap((box, index) =>
+        Math.abs(box.top - boxes[index].top) < 1
+          ? [box.left - boxes[index].right]
+          : [],
+      );
+  });
 
 const getQuizCard = (page: Page, name: string): Locator =>
   page.getByRole("article").filter({
@@ -239,6 +257,13 @@ test.describe("Feature: Home page", () => {
         getQuizCard(page, FEATURED_QUIZ).getByText(FEATURED_LEAD),
       ).toBeVisible();
       await expect(page.getByRole("img", { name: BANNER_NAME })).toBeHidden();
+    });
+
+    await test.step("And the quiz tabs that share a row stand next to each other", async () => {
+      const gaps = await getGapsBetweenTabsInARow(page);
+
+      expect(gaps.length).toBeGreaterThan(0);
+      expect(Math.max(...gaps)).toBeLessThan(WIDEST_TAB_GAP);
     });
 
     await test.step("And every quiz is listed, collapsed to its name", async () => {

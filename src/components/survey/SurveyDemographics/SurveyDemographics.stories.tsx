@@ -93,7 +93,9 @@ export const DialogOpen: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "To znaczy?" }));
 
     await expect(
-      canvas.getByRole("dialog", { name: "Zakres wykorzystania danych" }),
+      within(canvasElement.ownerDocument.body).getByRole("dialog", {
+        name: "Zakres wykorzystania danych",
+      }),
     ).toBeVisible();
   },
 };

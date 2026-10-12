@@ -70,8 +70,50 @@ export const NoColor: Story = {
   },
 };
 
+export const LightColor: Story = {
+  args: {
+    color: "#fff176",
+  },
+};
+
 export const LongName: Story = {
   args: {
     name: "Radykalizm społeczno-gospodarczy z bardzo długą nazwą autorską, która nie mieści się w tytule",
+  },
+};
+
+export const TwoNames: Story = {
+  args: {
+    name: "Eurosceptycyzm",
+    secondName: "Federacjonizm",
+    shortName: "Remis",
+    look: "neutral",
+  },
+};
+
+export const TwoLongNames: Story = {
+  args: {
+    name: "Eurosceptycyzm z bardzo długą nazwą autorską, która nie mieści się w tytule",
+    secondName:
+      "Federacjonizm z równie długą nazwą autorską, która nie mieści się w tytule",
+    shortName: "Remis",
+    look: "neutral",
+  },
+};
+
+export const TwoUnevenNames: Story = {
+  args: {
+    name: "Wyjście",
+    secondName:
+      "Federacjonizm z bardzo długą nazwą autorską, która nie mieści się w tytule",
+    look: "neutral",
+  },
+};
+
+export const ShortName: Story = {
+  args: {
+    name: "Radykalizm społeczno-gospodarczy",
+    shortName: "Radykalizm",
+    imageUrl: undefined,
   },
 };

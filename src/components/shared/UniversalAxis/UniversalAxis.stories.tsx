@@ -113,6 +113,46 @@ export const ComparisonBehind: Story = {
   },
 };
 
+export const ComparisonBehindClearOfValue: Story = {
+  args: {
+    start: { orientation: socialism, value: 80 },
+    comparison: { orientation: friend, value: 45 },
+    marker: false,
+  },
+};
+
+export const ComparisonAtTheClearance: Story = {
+  args: {
+    start: { orientation: socialism, value: 100 },
+    comparison: { orientation: friend, value: 26 },
+    marker: false,
+  },
+};
+
+export const ComparisonSmallValue: Story = {
+  args: {
+    start: { orientation: socialism, value: 5 },
+    comparison: { orientation: friend, value: 60 },
+    marker: false,
+  },
+};
+
+export const ComparisonValueAtTheFitThreshold: Story = {
+  args: {
+    start: { orientation: socialism, value: 16 },
+    comparison: { orientation: friend, value: 60 },
+    marker: false,
+  },
+};
+
+export const ComparisonFromEnd: Story = {
+  args: {
+    end: { orientation: conservatism, value: 60 },
+    comparison: { orientation: friend, value: 30 },
+    marker: false,
+  },
+};
+
 export const ComparisonOnly: Story = {
   args: {
     comparison: { orientation: friend, value: 60 },
@@ -194,6 +234,26 @@ export const DoubleSidedComparison: Story = {
   },
 };
 
+export const DoubleSidedComparisonBothValues: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    comparison: { orientation: friend, value: 50 },
+    marker: false,
+    showLabels: true,
+  },
+};
+
+export const DoubleSidedComparisonNearStart: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    comparison: { orientation: friend, value: 10 },
+    marker: false,
+    showLabels: true,
+  },
+};
+
 export const CustomMarker: Story = {
   args: {
     start: { orientation: socialism, value: 25 },
@@ -250,6 +310,28 @@ export const NoColor: Story = {
     comparison: {
       orientation: { ...friend, imageUrl: undefined, color: undefined },
       value: 70,
+    },
+  },
+};
+
+export const LightColor: Story = {
+  args: {
+    start: {
+      orientation: { ...liberalism, imageUrl: undefined, color: "#fff176" },
+      value: 62,
+    },
+    end: {
+      orientation: { ...conservatism, imageUrl: undefined, color: "#ecf0f2" },
+      value: 38,
+    },
+  },
+};
+
+export const LightColorSmallValue: Story = {
+  args: {
+    start: {
+      orientation: { ...socialism, imageUrl: undefined, color: "#fff176" },
+      value: 5,
     },
   },
 };
@@ -313,6 +395,26 @@ export const MaskedWithLabels: Story = {
     start: { orientation: liberalism, value: 69 },
     end: { orientation: conservatism, value: 31 },
     isMasked: true,
+    showLabels: true,
+  },
+};
+
+export const MarkerOnFill: Story = {
+  args: {
+    start: { orientation: socialism, value: 80 },
+  },
+};
+
+export const LabelsWithDescendersAndAccents: Story = {
+  args: {
+    start: {
+      orientation: { ...liberalism, name: "Progresywizm" },
+      value: 69,
+    },
+    end: {
+      orientation: { ...conservatism, name: "Źródła tradycji" },
+      value: 31,
+    },
     showLabels: true,
   },
 };

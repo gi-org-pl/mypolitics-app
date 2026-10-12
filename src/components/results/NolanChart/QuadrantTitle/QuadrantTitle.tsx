@@ -1,3 +1,4 @@
+import { isLightColor } from "@/utils/color/isLightColor";
 import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
 
 import type { NolanTitle } from "../NolanChart.types";
@@ -7,10 +8,12 @@ const TEXT_CLASS_NAME = "min-w-0 truncate text-base leading-5 font-bold";
 const LOOK_CLASS_NAMES = {
   moderate: {
     colored: "bg-(--nolan-color)/10 text-(--nolan-color)",
+    light: "bg-(--nolan-color)/10 text-gi-primary",
     neutral: "bg-gi-dark-gray/10 text-gi-dark-gray",
   },
   extreme: {
     colored: "bg-(--nolan-color) text-white",
+    light: "bg-(--nolan-color) text-gi-primary",
     neutral: "bg-gi-dark-gray text-white",
   },
 };
@@ -28,7 +31,7 @@ export const QuadrantTitle = ({
   <div
     data-testid="nolan-chart-title"
     data-look={look}
-    className={`@container flex h-8 w-full min-w-0 items-center justify-center rounded-lg px-4 ${LOOK_CLASS_NAMES[look][color ? "colored" : "neutral"]}`}
+    className={`@container flex h-8 w-full min-w-0 items-center justify-center rounded-lg px-4 ${LOOK_CLASS_NAMES[look][isLightColor(color) ? "light" : color ? "colored" : "neutral"]}`}
     style={getNolanColorStyle(color)}
   >
     <span

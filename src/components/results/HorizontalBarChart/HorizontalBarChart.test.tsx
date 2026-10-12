@@ -480,7 +480,9 @@ describe("<HorizontalBarChart />", () => {
 
   describe("given a category without a name", () => {
     it("renders the leader alone and a control with a general name", () => {
-      renderChart({ categories: [{ entries: [entry("Alfa", 40)] }] });
+      renderChart({
+        categories: [{ entries: [entry("Alfa", 40), entry("Beta", 10)] }],
+      });
 
       expect(screen.getByRole("heading", { level: 3 }).textContent).toBe(
         "Alfa",
@@ -488,6 +490,69 @@ describe("<HorizontalBarChart />", () => {
       expect(
         screen.getByRole("button", { name: "Pokaż kategorię" }),
       ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a category with one entry", () => {
+    const SINGLE: RankedCategory = {
+      name: "Prawo",
+      entries: [entry("Gamma", 30)],
+    };
+
+    it("renders its heading and leader bar and no control to open it", () => {
+      renderChart({ categories: [SINGLE, ...CATEGORIES] });
+
+      const [law] = getCategories();
+
+      expect(
+        within(law).getByRole("heading", { name: "Prawo — Gamma" }),
+      ).toBeInTheDocument();
+      expect(
+        within(law).getByRole("img", { name: "Gamma: 30%" }),
+      ).toBeInTheDocument();
+      expect(within(law).queryByRole("button")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Pokaż kategorię: Prawo" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("keeps the control of every category that has more entries", () => {
+      renderChart({ categories: [SINGLE, ...CATEGORIES] });
+
+      expect(
+        screen.getByRole("button", { name: "Pokaż kategorię: Gospodarka" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Pokaż kategorię: Światopogląd" }),
+      ).toBeInTheDocument();
+    });
+
+    it("has no control when that entry has no result", () => {
+      renderChart({
+        categories: [{ name: "Prawo", entries: [entry("Gamma", 0)] }],
+      });
+
+      expect(
+        screen.getByRole("heading", { name: "Prawo — Brak wyniku" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /Pokaż kategorię/ }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("counts only the entries that are drawn", () => {
+      renderChart({
+        categories: [
+          { name: "Prawo", entries: [entry("Gamma", 30), hidden("Zulu", 90)] },
+        ],
+      });
+
+      expect(
+        screen.getByRole("heading", { name: "Prawo — Gamma" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /Pokaż kategorię/ }),
+      ).not.toBeInTheDocument();
     });
   });
 

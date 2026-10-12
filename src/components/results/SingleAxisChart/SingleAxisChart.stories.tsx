@@ -121,6 +121,13 @@ export const NoColor: Story = {
   },
 };
 
+export const LightColor: Story = {
+  args: {
+    orientation: { ...radicalism, color: "#fff176" },
+    value: 70,
+  },
+};
+
 export const LongName: Story = {
   args: {
     orientation: {
