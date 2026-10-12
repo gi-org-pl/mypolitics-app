@@ -1,8 +1,11 @@
 import {
   DEFAULT_MARKER_POSITION,
+  DOUBLE_SIDED_COMPARISON_CLEARANCE,
   DOUBLE_SIDED_FIT_THRESHOLD,
   MAX_AXIS_VALUE,
   MIN_AXIS_VALUE,
+  ONE_SIDED_COMPARISON_CLEARANCE,
+  ONE_SIDED_COMPARISON_FIT_THRESHOLD,
   ONE_SIDED_FIT_THRESHOLD,
 } from "@/constants/axis";
 import type {
@@ -44,13 +47,11 @@ const getPresentEntry = (
 const getEntryValue = (entry: AxisEntry): number =>
   hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
 
-const getValuePlacement = (
+const getOwnValuePlacement = (
   mode: AxisMode,
   width: number,
-  hasComparison: boolean,
-  showValues: boolean,
 ): AxisValuePlacement => {
-  if (!showValues || hasComparison || width <= MIN_AXIS_VALUE) return "hidden";
+  if (width <= MIN_AXIS_VALUE) return "hidden";
 
   if (mode === "double-sided") {
     return width >= DOUBLE_SIDED_FIT_THRESHOLD ? "inside" : "hidden";
@@ -59,11 +60,41 @@ const getValuePlacement = (
   return width >= ONE_SIDED_FIT_THRESHOLD ? "inside" : "outside";
 };
 
+// `comparisonDistance` is how far the other party is drawn from the cap this
+// side's number sits at, as a share of the track; null without a comparison.
+// Next to a comparison a number stays only inside its fill, and only when the
+// band and the other party's image cannot reach it - on a one-sided bar that
+// takes a fill a little wider than the usual threshold.
+const getValuePlacement = (
+  mode: AxisMode,
+  width: number,
+  comparisonDistance: number | null,
+  showValues: boolean,
+): AxisValuePlacement => {
+  if (!showValues) return "hidden";
+
+  const placement = getOwnValuePlacement(mode, width);
+
+  if (comparisonDistance === null) return placement;
+  if (placement !== "inside") return "hidden";
+
+  if (mode === "double-sided") {
+    return comparisonDistance >= DOUBLE_SIDED_COMPARISON_CLEARANCE
+      ? "inside"
+      : "hidden";
+  }
+
+  return width >= ONE_SIDED_COMPARISON_FIT_THRESHOLD &&
+    comparisonDistance >= ONE_SIDED_COMPARISON_CLEARANCE
+    ? "inside"
+    : "hidden";
+};
+
 const getSideLayout = (
   entry: AxisEntry,
   mode: AxisMode,
   width: number,
-  hasComparison: boolean,
+  comparisonDistance: number | null,
   showValues: boolean,
 ): AxisSideLayout => {
   const value = getEntryValue(entry);
@@ -76,7 +107,12 @@ const getSideLayout = (
     value,
     displayValue: Math.round(value),
     width,
-    valuePlacement: getValuePlacement(mode, width, hasComparison, showValues),
+    valuePlacement: getValuePlacement(
+      mode,
+      width,
+      comparisonDistance,
+      showValues,
+    ),
   };
 };
 
@@ -122,13 +158,40 @@ const getComparisonBand = (
   };
 };
 
+// Where the other party is drawn, measured from the left end of the track.
+const getComparisonPosition = (
+  comparison: AxisEntryWithValue,
+  hasStart: boolean,
+  hasEnd: boolean,
+): number => {
+  const value = clampAxisValue(comparison.value);
+
+  return !hasStart && hasEnd ? MAX_AXIS_VALUE - value : value;
+};
+
+// A track that is hatched whole leaves no number clear, whichever side it is.
+const getComparisonDistance = (
+  side: "start" | "end",
+  position: number | null,
+  isTrackHatched: boolean,
+): number | null => {
+  if (position === null) return null;
+  if (isTrackHatched) return MIN_AXIS_VALUE;
+
+  return side === "start" ? position : MAX_AXIS_VALUE - position;
+};
+
 const getComparisonLayout = (
   comparison: AxisEntryWithValue,
   start: AxisSideLayout | null,
   end: AxisSideLayout | null,
 ): AxisComparisonLayout => {
   const value = clampAxisValue(comparison.value);
-  const position = !start && end ? MAX_AXIS_VALUE - value : value;
+  const position = getComparisonPosition(
+    comparison,
+    start !== null,
+    end !== null,
+  );
 
   return {
     name: comparison.orientation.name ?? "",
@@ -170,7 +233,15 @@ export const getAxisLayout = ({
       ? comparison
       : null;
   const mode = getMode(presentStart !== null, presentEnd !== null);
-  const hasComparison = presentComparison !== null;
+  const taker = presentStart ?? presentEnd;
+  const isTrackHatched = taker === null || !hasEntryValue(taker);
+  const comparisonPosition = presentComparison
+    ? getComparisonPosition(
+        presentComparison,
+        presentStart !== null,
+        presentEnd !== null,
+      )
+    : null;
 
   const [startWidth, endWidth] = getSideWidths(
     presentStart && getEntryValue(presentStart),
@@ -178,10 +249,22 @@ export const getAxisLayout = ({
   );
 
   const startLayout = presentStart
-    ? getSideLayout(presentStart, mode, startWidth, hasComparison, showValues)
+    ? getSideLayout(
+        presentStart,
+        mode,
+        startWidth,
+        getComparisonDistance("start", comparisonPosition, isTrackHatched),
+        showValues,
+      )
     : null;
   const endLayout = presentEnd
-    ? getSideLayout(presentEnd, mode, endWidth, hasComparison, showValues)
+    ? getSideLayout(
+        presentEnd,
+        mode,
+        endWidth,
+        getComparisonDistance("end", comparisonPosition, isTrackHatched),
+        showValues,
+      )
     : null;
 
   return {
