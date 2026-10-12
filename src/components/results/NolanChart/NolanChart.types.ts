@@ -1,15 +1,11 @@
 import type { Orientation } from "@/types/orientation";
-import type { ResultEntry } from "@/types/results";
-
-export type NolanLevel = "centre" | "moderate" | "extreme";
-
-export type NolanPoleSide = "start" | "end";
-
-export type NolanQuadrantKey =
-  | "topLeft"
-  | "topRight"
-  | "bottomLeft"
-  | "bottomRight";
+import type {
+  NolanAxisValues,
+  NolanLevel,
+  NolanPoleSide,
+  NolanQuadrantKey,
+  ResultEntry,
+} from "@/types/results";
 
 export interface NolanLevelNames {
   moderate?: string;
@@ -39,11 +35,6 @@ export interface NolanQuadrant {
 
 export type NolanQuadrants = Record<NolanQuadrantKey, NolanQuadrant>;
 
-export interface NolanAxisValues {
-  start?: number;
-  end?: number;
-}
-
 export interface NolanComparison {
   orientation: Orientation;
   horizontal: NolanAxisValues;
@@ -53,15 +44,6 @@ export interface NolanComparison {
 export interface NolanAxisLevel {
   level: NolanLevel;
   pole: NolanPoleSide;
-}
-
-export interface NolanPosition {
-  x: number;
-  y: number;
-  r: number;
-  level: NolanLevel;
-  quadrant: NolanQuadrantKey;
-  poles: { horizontal: NolanPoleSide; vertical: NolanPoleSide };
 }
 
 export interface NolanName {

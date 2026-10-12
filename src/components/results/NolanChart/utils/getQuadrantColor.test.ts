@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { getNolanPosition } from "./getNolanPosition";
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
+
 import { getQuadrantColor } from "./getQuadrantColor";
 
 const POSITION = getNolanPosition(
