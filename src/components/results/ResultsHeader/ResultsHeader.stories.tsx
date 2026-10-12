@@ -166,3 +166,9 @@ export const LongWordBesideExtras: Story = {
     linkLabel: "Link Name",
   },
 };
+
+export const ImageFailsToLoad: Story = {
+  args: {
+    orientation: { ...orientation, imageUrl: "data:image/png;base64," },
+  },
+};

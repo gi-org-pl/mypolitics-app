@@ -1,12 +1,13 @@
+import { useUrlFailure } from "@/utils/url/useUrlFailure";
+
 import { LOGO_HEIGHT_CLASS_NAMES } from "./QuizCardLogo.constants";
 import type { QuizCardLogoProps } from "./QuizCardLogo.types";
-import { useLogoFailure } from "./utils/useLogoFailure";
 
 // A logo that fails to load gives way to the title as text: the alternative
 // text of a broken image is clipped by the logo's height in one browser and
 // not drawn at all in another.
 export const QuizCardLogo = ({ url, title, height }: QuizCardLogoProps) => {
-  const { hasFailed, markFailed } = useLogoFailure(url);
+  const { hasFailed, markFailed } = useUrlFailure(url);
 
   return hasFailed ? (
     title

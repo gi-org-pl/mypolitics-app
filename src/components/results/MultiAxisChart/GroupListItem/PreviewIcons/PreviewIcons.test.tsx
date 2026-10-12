@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { createAxisPair } from "@/utils/vitest/createAxisPair";
@@ -69,6 +69,33 @@ describe("<PreviewIcons />", () => {
       expect(getSources("multi-axis-chart-preview-start")).toEqual([
         "https://example.com/faith-start.svg",
       ]);
+    });
+  });
+
+  describe("given an icon that fails to load", () => {
+    it("leaves it out, as an orientation without an icon", () => {
+      render(<PreviewIcons axes={AXES} side="start" />);
+
+      const preview = screen.getByTestId("multi-axis-chart-preview-start");
+
+      fireEvent.error(preview.querySelectorAll("img")[0]);
+
+      expect(getSources("multi-axis-chart-preview-start")).toEqual([
+        "https://example.com/faith-start.svg",
+      ]);
+      expect(preview.children).toHaveLength(1);
+    });
+
+    it("leaves the row empty when every icon fails", () => {
+      render(<PreviewIcons axes={AXES} side="end" />);
+
+      const preview = screen.getByTestId("multi-axis-chart-preview-end");
+
+      for (const image of preview.querySelectorAll("img")) {
+        fireEvent.error(image);
+      }
+
+      expect(preview).toBeEmptyDOMElement();
     });
   });
 

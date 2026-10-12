@@ -226,3 +226,16 @@ export const ComparisonWithoutAvatar: Story = {
     },
   },
 };
+
+export const ImageFailsToLoad: Story = {
+  args: {
+    traits: exampleTraits.map((trait) => ({
+      ...trait,
+      imageUrl: "data:image/png;base64,",
+    })),
+    comparison: {
+      orientation: { ...friend, imageUrl: "data:image/png;base64," },
+      earnedIds: friendIds,
+    },
+  },
+};

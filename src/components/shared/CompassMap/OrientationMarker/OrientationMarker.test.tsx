@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
@@ -104,5 +104,17 @@ describe("<OrientationMarker />", () => {
       expect(getImage()).toHaveClass("bg-gi-dark-gray");
       expect(getImage().style.getPropertyValue("--nolan-color")).toBe("");
     });
+  });
+
+  it("leaves the mark empty when the image fails to load, as without an image", () => {
+    render(<OrientationMarker orientation={friend} position={at(0, 0)} />);
+
+    fireEvent.error(getImage().querySelector("img") as HTMLImageElement);
+
+    expect(getImage().querySelector("img")).toBeNull();
+    expect(getImage()).toHaveClass("[&>[aria-hidden=true]]:hidden");
+    expect(
+      getImage().querySelectorAll(":scope > [aria-hidden=true]"),
+    ).toHaveLength(getImage().children.length);
   });
 });

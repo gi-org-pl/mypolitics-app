@@ -495,3 +495,25 @@ export const LongNamesGroupOpen: Story = {
   args: LongNames.args,
   play: openFirstGroup,
 };
+
+export const ImageFailsToLoad: Story = {
+  args: {
+    groups: EXAMPLE_GROUPS.map((group) => ({
+      ...group,
+      axes: group.axes.map((axis, index) =>
+        index % 2 === 0 && axis.start
+          ? {
+              ...axis,
+              start: {
+                ...axis.start,
+                orientation: {
+                  ...axis.start.orientation,
+                  imageUrl: "data:image/png;base64,",
+                },
+              },
+            }
+          : axis,
+      ),
+    })),
+  },
+};

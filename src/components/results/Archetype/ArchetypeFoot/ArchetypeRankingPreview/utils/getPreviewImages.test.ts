@@ -52,4 +52,62 @@ describe("getPreviewImages()", () => {
   it("returns no images for an empty ranking", () => {
     expect(getPreviewImages([])).toEqual([]);
   });
+
+  describe("given addresses that failed to load", () => {
+    const ranking = ["a", "b", "c", "d", "e"].map((id) =>
+      archetype(id, `${id}.png`),
+    );
+
+    it("skips them before the preview is cut, so the next images take their place", () => {
+      expect(getPreviewImages(ranking, ["b.png"])).toEqual([
+        "a.png",
+        "c.png",
+        "d.png",
+      ]);
+      expect(getPreviewImages(ranking, ["a.png", "c.png"])).toEqual([
+        "b.png",
+        "d.png",
+        "e.png",
+      ]);
+    });
+
+    it("returns fewer images when not enough are left", () => {
+      expect(getPreviewImages(ranking, ["a.png", "b.png", "d.png"])).toEqual([
+        "c.png",
+        "e.png",
+      ]);
+      expect(
+        getPreviewImages(
+          ranking,
+          ranking.map(({ orientation }) => orientation.imageUrl as string),
+        ),
+      ).toEqual([]);
+    });
+
+    it("skips every entry that uses a failed address", () => {
+      expect(
+        getPreviewImages(
+          [archetype("a", "same.png"), archetype("b", "same.png"), ...ranking],
+          ["same.png"],
+        ),
+      ).toEqual(["a.png", "b.png", "c.png"]);
+    });
+
+    it("compares the address as it is drawn, without the surrounding whitespace", () => {
+      expect(
+        getPreviewImages(
+          [archetype("a", " a.png "), archetype("b", "b.png")],
+          ["a.png"],
+        ),
+      ).toEqual(["b.png"]);
+    });
+
+    it("ignores a failed address the ranking does not have", () => {
+      expect(getPreviewImages(ranking, ["z.png"])).toEqual([
+        "a.png",
+        "b.png",
+        "c.png",
+      ]);
+    });
+  });
 });

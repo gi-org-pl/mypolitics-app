@@ -190,6 +190,22 @@ export const ComparisonRanking: Story = {
   play: press("Ranking"),
 };
 
+export const RankingImageFailsToLoad: Story = {
+  args: {
+    archetypes: archetypes.map((archetype) =>
+      archetype.orientation.id === european.id
+        ? {
+            ...archetype,
+            orientation: {
+              ...archetype.orientation,
+              imageUrl: "data:image/png;base64,",
+            },
+          }
+        : archetype,
+    ),
+  },
+};
+
 export const LongNames: Story = {
   args: {
     archetypes: archetypes.map((archetype) => ({

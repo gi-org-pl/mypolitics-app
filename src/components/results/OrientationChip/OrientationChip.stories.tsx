@@ -45,6 +45,12 @@ export const NoImage: Story = {
   },
 };
 
+export const ImageFailsToLoad: Story = {
+  args: {
+    imageUrl: "data:image/png;base64,",
+  },
+};
+
 export const QuietNoImage: Story = {
   args: {
     imageUrl: undefined,

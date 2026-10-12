@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { RankedRowBadge } from "./RankedRowBadge";
@@ -43,6 +43,73 @@ describe("<RankedRowBadge />", () => {
       expect(badge).not.toHaveTextContent("Ignored");
       expect(badge.querySelector("img")).toHaveAttribute("src", ICON_URL);
       expect(badge.querySelector("img")).toHaveAttribute("alt", "");
+    });
+  });
+
+  describe("given an icon and a text, when the icon fails to load", () => {
+    it("keeps the text and drops the icon", () => {
+      render(
+        <RankedRowBadge
+          badge={{ iconUrl: ICON_URL, text: "Oficjalne", label: "Ignored" }}
+        />,
+      );
+
+      const badge = screen.getByTestId("ranked-row-badge");
+
+      fireEvent.error(badge.querySelector("img") as HTMLImageElement);
+
+      expect(badge).toHaveTextContent(/^Oficjalne$/);
+      expect(badge.querySelector("img")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given an icon alone, when the icon fails to load", () => {
+    it("says the label as text instead", () => {
+      render(
+        <RankedRowBadge
+          badge={{ iconUrl: ICON_URL, label: "Zweryfikowany" }}
+        />,
+      );
+
+      fireEvent.error(screen.getByRole("img", { name: "Zweryfikowany" }));
+
+      const badge = screen.getByTestId("ranked-row-badge");
+
+      expect(badge).toHaveTextContent(/^Zweryfikowany$/);
+      expect(badge.querySelector("img")).not.toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("renders nothing when there is no label to fall back on", () => {
+      const { container } = render(
+        <RankedRowBadge badge={{ iconUrl: ICON_URL }} />,
+      );
+
+      fireEvent.error(container.querySelector("img") as HTMLImageElement);
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("draws the icon again when its address changes", () => {
+      const { rerender } = render(
+        <RankedRowBadge
+          badge={{ iconUrl: ICON_URL, label: "Zweryfikowany" }}
+        />,
+      );
+
+      fireEvent.error(screen.getByRole("img", { name: "Zweryfikowany" }));
+      rerender(
+        <RankedRowBadge
+          badge={{
+            iconUrl: "https://example.org/other.svg",
+            label: "Zweryfikowany",
+          }}
+        />,
+      );
+
+      expect(
+        screen.getByRole("img", { name: "Zweryfikowany" }),
+      ).toHaveAttribute("src", "https://example.org/other.svg");
     });
   });
 

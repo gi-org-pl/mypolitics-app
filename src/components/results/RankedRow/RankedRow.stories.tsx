@@ -164,3 +164,23 @@ export const EmptyName: Story = {
     entry: { orientation: { ...orientation, name: "" }, value: 80 },
   },
 };
+
+export const ImageFailsToLoad: Story = {
+  args: {
+    entry: {
+      orientation,
+      value: 80,
+      badge: { iconUrl: "data:image/png;base64,", label: "Badge" },
+    },
+  },
+};
+
+export const TextBadgeImageFailsToLoad: Story = {
+  args: {
+    entry: {
+      orientation,
+      value: 80,
+      badge: { iconUrl: "data:image/png;base64,", text: "Badge Text" },
+    },
+  },
+};

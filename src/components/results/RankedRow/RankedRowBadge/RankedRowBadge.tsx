@@ -1,6 +1,7 @@
 import { Badge } from "@gi-org-pl/athena";
 
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import type { RankedBadge } from "../RankedRow.types";
 
@@ -12,8 +13,17 @@ const BADGE_CLASS_NAME =
   "gap-1 rounded-lg p-1 text-[11px] font-bold [&>[aria-hidden=true]]:size-3";
 
 export const RankedRowBadge = ({ badge }: RankedRowBadgeProps) => {
-  const iconUrl = toSingleLine(badge?.iconUrl);
-  const text = toSingleLine(badge?.text);
+  const authoredIconUrl = toSingleLine(badge?.iconUrl);
+  const authoredText = toSingleLine(badge?.text);
+  const { hasFailed, markFailed } = useUrlFailure(authoredIconUrl);
+
+  // An icon that fails to load is treated as no icon: the badge keeps its
+  // text, and a badge that was its icon alone says its label instead.
+  const iconUrl = hasFailed ? "" : authoredIconUrl;
+  const text =
+    hasFailed && authoredText === ""
+      ? toSingleLine(badge?.label)
+      : authoredText;
 
   if (iconUrl === "" && text === "") return null;
 
@@ -25,6 +35,7 @@ export const RankedRowBadge = ({ badge }: RankedRowBadgeProps) => {
             src={iconUrl}
             alt={toSingleLine(badge?.label)}
             className="size-3"
+            onError={markFailed}
           />
         </span>
       ) : (
@@ -33,7 +44,12 @@ export const RankedRowBadge = ({ badge }: RankedRowBadgeProps) => {
           className={BADGE_CLASS_NAME}
           LeftIcon={
             iconUrl === "" ? undefined : (
-              <img src={iconUrl} alt="" className="size-3" />
+              <img
+                src={iconUrl}
+                alt=""
+                className="size-3"
+                onError={markFailed}
+              />
             )
           }
         >

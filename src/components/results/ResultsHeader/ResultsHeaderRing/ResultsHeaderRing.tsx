@@ -1,5 +1,7 @@
 import { Avatar } from "@gi-org-pl/athena";
 
+import { AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME } from "@/constants/image";
+
 import {
   BAND_CLASS_NAME,
   RING_IMAGE_CLASS_NAME,
@@ -24,7 +26,7 @@ export const ResultsHeaderRing = ({
       <Avatar
         src={imageUrl}
         dataTestId="results-header-image"
-        className={`${RING_IMAGE_CLASS_NAME} bg-gi-dark-primary`}
+        className={`${RING_IMAGE_CLASS_NAME} bg-gi-dark-ash has-[>img]:bg-gi-dark-primary ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME}`}
       />
     ) : (
       <div

@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { isLightColor } from "@/utils/color/isLightColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import { LOOK_CLASS_NAMES } from "./OrientationChip.constants";
 import type { OrientationChipProps } from "./OrientationChip.types";
@@ -17,7 +18,9 @@ export const OrientationChip = ({
   shortName,
 }: OrientationChipProps) => {
   const displayName = toSingleLine(name);
-  const displayImageUrl = look === "neutral" ? undefined : imageUrl;
+  const { hasFailed, markFailed } = useUrlFailure(imageUrl);
+  const displayImageUrl =
+    look === "neutral" || hasFailed ? undefined : imageUrl;
 
   if (!displayName && !displayImageUrl) return null;
 
@@ -37,6 +40,7 @@ export const OrientationChip = ({
       {displayImageUrl && (
         <img
           data-testid="orientation-chip-image"
+          onError={markFailed}
           src={displayImageUrl}
           alt=""
           className={`-mx-2.5 size-8 shrink-0 object-cover ${look === "quiet" ? "opacity-20 brightness-0" : ""} ${isLight ? "brightness-0" : ""}`}
