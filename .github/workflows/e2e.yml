@@ -82,8 +82,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps --only-shell
 
-      # The Playwright configuration builds the app and serves the build.
+      # The Playwright configuration builds the app and serves the build. The
+      # time limit is on the step, not only on the job: a step that runs out of
+      # time fails, so the job ends as a failure and is reported like one. A
+      # job stopped by its own limit is marked cancelled instead.
       - name: Run Playwright tests
+        timeout-minutes: 25
         run: yarn e2e
 
       - name: Upload Playwright report
@@ -95,11 +99,10 @@ jobs:
           retention-days: 7
 
   # Reports every way a scheduled run can end without the suite having passed:
-  # the preflight did not succeed (the suite is then skipped), the suite
-  # failed, or the suite hit its time limit (GitHub marks that job cancelled).
-  # A run that was skipped on purpose is not reported. Neither is a run that
-  # somebody cancelled: the whole workflow is cancelled then, which
-  # `cancelled()` sees, while a job stopped by its time limit is not.
+  # the preflight did not succeed (the suite is then skipped), a scenario
+  # failed, or the suite ran out of time (its step fails then, see above). A
+  # run that was skipped on purpose is not reported. Neither is a run that
+  # somebody cancelled, which `cancelled()` sees.
   report:
     name: Report a failure
     needs: [changes, e2e]
@@ -131,7 +134,7 @@ jobs:
 
           body="The e2e run did not pass on \`$GITHUB_REF_NAME\` at [\`${GITHUB_SHA::7}\`]($COMMIT_URL) (trigger: $GITHUB_EVENT_NAME).
 
-          - Jobs: preflight \`$PREFLIGHT_RESULT\`, suite \`$SUITE_RESULT\`. On the suite, \`cancelled\` means it hit its time limit and \`skipped\` means the preflight did not get that far.
+          - Jobs: preflight \`$PREFLIGHT_RESULT\`, suite \`$SUITE_RESULT\`. On the suite, \`failure\` is a failed scenario or the 25 minute limit of the test step, and \`skipped\` means the preflight did not get that far.
           - Run: $RUN_URL
           - Playwright report: the \`playwright-report\` artifact of that run, kept for 7 days (there is none when the suite did not start).
 
