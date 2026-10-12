@@ -398,7 +398,8 @@ assumptions about the frame it was drawn in.
 
 - **Biome** (Rust-based) replaces ESLint + Prettier. Base ruleset + **Unicorn** overrides.
 - Lint runs on every commit and in CI.
-- CI pipeline jobs (build, lint, test, e2e) must all pass before merge.
+- CI pipeline jobs (build, lint, test) must all pass before merge. E2E is not one of them: the
+  author runs it locally, and the full suite runs once a day on `main` (§4.6).
 
 ### 4.6 Testing
 
@@ -414,12 +415,22 @@ assumptions about the frame it was drawn in.
     interactions (open/close, keyboard, focus) are covered by unit tests, and the PR description says
     "No e2e: not mounted on any route". The PR that first mounts it on a page adds the e2e.
   - Do not create a route or test-only page just to give a component an e2e spec.
-  - **Running e2e needs a running app, and the repo does not start one yet.** `yarn e2e` is only
-    `playwright test`: `playwright.config.ts` has `webServer` and `baseURL` commented out, the only
-    spec is the Playwright example, and the CI e2e job is switched off (`if: false`). The PR that
-    adds the first real spec therefore also configures `webServer` (the built app via
-    `yarn build && yarn preview`) and `baseURL` in `playwright.config.ts`, and enables the CI job —
-    so that `yarn e2e` works by itself locally and in CI. Until then, do not report e2e as run.
+- **Where e2e runs.** `yarn e2e` builds the app and serves the build by itself (`webServer` in
+  `playwright.config.ts`), in Chromium, Firefox and WebKit; `yarn e2e:local` does the same in
+  Chromium only.
+  - **Locally, by the author.** A PR that changes something reachable from a route is preceded by
+    `CI=1 yarn e2e:local` on the head that is pushed, and the run is repeated after every later
+    change that can affect a route. `CI=1` makes Playwright build and serve its own app instead of
+    reusing whatever answers on the port. The PR description states the result: the command, the
+    number of scenarios that passed, and the commit. Without that line such a PR is not ready for
+    review.
+  - **Not on pull requests.** The pull request workflow has no e2e job.
+  - **Once a day on `main`.** `.github/workflows/e2e.yml` runs the full suite, in all three browsers,
+    on a schedule. A run is skipped when `main` has no commit since the last one that passed, and
+    one can be started by hand on any branch from the Actions tab.
+  - **A failed scheduled run opens an issue** labelled `e2e-nightly`, with the commit and a link to
+    the run; while that issue is open, a later failure adds a comment to it. Whoever picks it up
+    fixes `main`, or finds the author of the change, and closes the issue once `main` passes.
 
 ### 4.7 Internationalisation (Lingui)
 
@@ -449,7 +460,7 @@ assumptions about the frame it was drawn in.
 - [ ] Component files hold one component: no `renderX()` functions, no helpers — subcomponents, local `utils/`, local hooks instead
 - [ ] Nothing imported from another component's `utils/`, constants or subcomponents; shared and general-purpose code promoted to src/utils, src/types, src/constants
 - [ ] Unit tests added/updated, BDD style, coverage ≥95% on changed files; every subcomponent, util and hook has its own test file
-- [ ] If the flow is reachable through a route: Playwright happy-path e2e added/updated (Gherkin); otherwise PR states "No e2e: not mounted on any route"
+- [ ] If the flow is reachable through a route: Playwright happy-path e2e added/updated (Gherkin) and run locally (`CI=1 yarn e2e:local`), with the command, the number of scenarios passed and the commit stated in the PR; otherwise PR states "No e2e: not mounted on any route"
 - [ ] Component fills its parent's width, height is automatic, no sizes copied from the Figma frame
 - [ ] Stories checked at 320 / 360 / 800px: no horizontal scroll, primary text wraps instead of truncating, data marks not clipped
 - [ ] Biome lint clean (no disabled rules without justification)
@@ -459,7 +470,7 @@ assumptions about the frame it was drawn in.
 - [ ] State escalation to Zustand justified in PR description (if applicable)
 - [ ] All user-visible strings wrapped in Lingui macros (`<Trans>`, `t`, `msg`) — no hardcoded literals
 - [ ] `yarn i18n:extract` run after adding/changing strings; `.po` files committed
-- [ ] CI green: build, lint, test (and e2e once the CI job is enabled, §4.6) — or, where CI did not run on the PR, local results listed in the PR
+- [ ] CI green: build, lint, test — or, where CI did not run on the PR, local results listed in the PR (e2e never runs on a PR, §4.6)
 - [ ] PR description lists decisions and deviations from the ticket/spec; only files belonging to the task are committed
 ```
 
@@ -551,8 +562,8 @@ assumptions about the frame it was drawn in.
     files), and the viewport widths you checked.
 - CI is only set up for PRs that target `main` or `develop`. A stacked PR (targeting another
   feature branch) may get no checks at all, so before opening it run `yarn lint`,
-  `yarn test:coverage` and `yarn build` locally (and `yarn e2e` when §4.6 requires a spec — see
-  there for what that needs) and state the results in the PR. Look at the PR's checks afterwards and
+  `yarn test:coverage` and `yarn build` locally and state the results in the PR. E2E is local for
+  every PR, stacked or not (§4.6). Look at the PR's checks afterwards and
   never describe a PR as "CI green" when CI did not run on it.
 
 ### 8.4 Review feedback

@@ -24,4 +24,5 @@ _Check if the code follows the standards_
 - [ ] No unused code / `console.log` / leftover comments
 - [ ] Resolved merge conflicts (if applicable)
 - [ ] Added / updated unit tests (if applicable)
+- [ ] Ran e2e locally (`CI=1 yarn e2e:local`) and stated the result above (if the change is reachable from a route)
 - [ ] Added / updated storybook stories (if applicable)
