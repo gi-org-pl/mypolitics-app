@@ -346,6 +346,16 @@ export const NoQuadrantColor: Story = {
   play: openCard,
 };
 
+export const DarkQuadrantColor: Story = {
+  args: {
+    quadrants: {
+      ...QUADRANTS,
+      bottomLeft: { ...QUADRANTS.bottomLeft, color: "#192430" },
+    },
+  },
+  play: openCard,
+};
+
 export const LightColorModerate: Story = {
   args: {
     quadrants: {

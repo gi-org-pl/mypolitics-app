@@ -118,6 +118,61 @@ describe("<CompassMap />", () => {
     });
   });
 
+  // The moderate position stands in the bottom left quadrant.
+  describe("given a filled quadrant that is dark or has no colour", () => {
+    it.each([
+      ["no colour", undefined],
+      ["a value that is not a colour", "url(javascript:alert(1))"],
+      ["a dark colour", "#192430"],
+      ["a dark colour that lets a little white through", "#192430cc"],
+    ])("rings the dot in white on a quadrant with %s", (_name, color) => {
+      renderMap({
+        quadrants: { ...quadrants, bottomLeft: { color } },
+      });
+
+      expect(getFilled()).toEqual(["nolan-chart-quadrant-bottomLeft"]);
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass(
+        "ring-2",
+        "ring-white",
+      );
+    });
+
+    it("rings the dot when no quadrants are given", () => {
+      render(<CompassMap position={EXTREME} />);
+
+      expect(screen.getByTestId("nolan-chart-dot")).toHaveClass("ring-white");
+    });
+  });
+
+  describe("given a filled quadrant in any other colour", () => {
+    it.each([
+      "#eb5760",
+      "#57bfeb",
+      "#36db8b",
+      "#8443e9",
+      "#fff176",
+    ])("draws the dot without a ring on %s", (color) => {
+      renderMap({
+        quadrants: { ...quadrants, bottomLeft: { color } },
+      });
+
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-white",
+      );
+    });
+  });
+
+  describe("given a position at the centre level on quadrants without a colour", () => {
+    it("draws the dot without a ring, because no quadrant is filled", () => {
+      renderMap({ quadrants: {}, position: CENTRE });
+
+      expect(getFilled()).toEqual([]);
+      expect(screen.getByTestId("nolan-chart-dot")).not.toHaveClass(
+        "ring-white",
+      );
+    });
+  });
+
   describe("given no position", () => {
     it("renders no dot and fills no quadrant", () => {
       renderMap({ position: null });
