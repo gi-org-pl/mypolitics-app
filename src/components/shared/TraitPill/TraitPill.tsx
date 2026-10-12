@@ -10,21 +10,32 @@ import { getPillHolder } from "./utils/getPillHolder";
 import { isLightColor } from "./utils/isLightColor";
 import { useTraitDescription } from "./utils/useTraitDescription";
 
-export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
-  const { orientation } = item;
+// One trait as a pill: its icon, then its name, on its colour. In a
+// comparison it also says whose the trait is - an avatar of the other side,
+// and hatching when only they hold it. It is a single item and not a list
+// item: a parent that draws several puts each in an item of its own list.
+export const TraitPill = ({
+  orientation,
+  holder = "taker",
+  otherOrientation,
+}: TraitPillProps) => {
   const name = toSingleLine(orientation.name);
-  const holder = getPillHolder(item.holder, otherOrientation);
-  const isTheirs = holder !== "taker";
-  const isHatched = holder === "other";
-  const description = useTraitDescription(name, holder, otherOrientation?.name);
+  const pillHolder = getPillHolder(holder, otherOrientation);
+  const isTheirs = pillHolder !== "taker";
+  const isHatched = pillHolder === "other";
+  const description = useTraitDescription(
+    name,
+    pillHolder,
+    otherOrientation?.name,
+  );
 
   const safeColor = getSafeColor(orientation.color);
   const isLight = isLightColor(safeColor);
 
   return (
-    <li
+    <div
       data-testid="trait-pill"
-      data-holder={item.holder}
+      data-holder={holder}
       className="flex max-w-full min-w-0 items-center"
     >
       <div
@@ -60,6 +71,6 @@ export const TraitPill = ({ item, otherOrientation }: TraitPillProps) => {
           className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash"
         />
       )}
-    </li>
+    </div>
   );
 };

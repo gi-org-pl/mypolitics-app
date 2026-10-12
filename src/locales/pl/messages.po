@@ -75,11 +75,11 @@ msgstr "{title}:"
 msgid "{title}. {xAxis}: {x}, {yAxis}: {y}"
 msgstr "{title}. {xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:18
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:18
 msgid "{trait} - tylko {name}"
 msgstr "{trait} - tylko {name}"
 
-#: src/components/results/Traits/TraitPill/utils/useTraitDescription.ts:19
+#: src/components/shared/TraitPill/utils/useTraitDescription.ts:19
 msgid "{trait} - wspólna z: {name}"
 msgstr "{trait} - wspólna z: {name}"
 
@@ -249,7 +249,7 @@ msgstr "Brak dopasowania"
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
-#: src/components/results/Traits/Traits.tsx:37
+#: src/components/results/Traits/Traits.tsx:39
 msgid "Brak zdobytych cech"
 msgstr "Brak zdobytych cech"
 

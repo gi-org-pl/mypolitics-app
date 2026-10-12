@@ -1,6 +1,6 @@
 import type { Orientation } from "@/types/orientation";
 
-import type { TraitHolder } from "../../Traits.types";
+import type { TraitHolder } from "../TraitPill.types";
 
 export const getPillHolder = (
   holder: TraitHolder,
