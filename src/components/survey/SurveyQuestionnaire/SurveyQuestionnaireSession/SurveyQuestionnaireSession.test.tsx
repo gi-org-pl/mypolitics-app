@@ -118,7 +118,7 @@ const chooseAge = (age: string) => {
 
   field.focus();
   fireEvent.keyDown(field, { key: "Enter" });
-  fireEvent.click(screen.getByRole("menuitem", { name: age }));
+  fireEvent.click(screen.getByRole("menuitemradio", { name: age }));
 };
 
 const getLockedElement = (container: HTMLElement) =>

@@ -35,7 +35,7 @@ export const SurveyDemographicsField = ({
         isDisabled={isBlocked}
         className={FIELD_CLASS_NAME}
       >
-        <ActionList items={getOptionItems(options, onChange)} />
+        <ActionList items={getOptionItems(options, onChange, value)} />
       </Select>
     </div>
   );

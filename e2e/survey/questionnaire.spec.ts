@@ -129,7 +129,7 @@ const openQuiz = async (page: Page) => {
 // the pick is over only then.
 const chooseOption = async (page: Page, field: string, option: string) => {
   await getButton(page, field).click();
-  await page.getByRole("menuitem", { name: option, exact: true }).click();
+  await page.getByRole("menuitemradio", { name: option, exact: true }).click();
   await expect(page.getByRole("menu")).toHaveCount(0);
   await expect(getButton(page, field)).toBeFocused();
   await expect(getButton(page, field)).toHaveAccessibleDescription(option);
