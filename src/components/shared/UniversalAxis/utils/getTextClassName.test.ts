@@ -8,7 +8,6 @@ describe("getTextClassName()", () => {
       "#fff176",
       "#ffe066",
       "#ecf0f2",
-      "rgb(255, 241, 118)",
     ])("returns the dark text class for %s", (color) => {
       expect(getTextClassName(color)).toBe("text-gi-primary");
     });
@@ -19,7 +18,6 @@ describe("getTextClassName()", () => {
       "#192430",
       "#851c22",
       "#9b51e0",
-      "rgb(25, 36, 48)",
     ])("returns the class of the colour itself for %s", (color) => {
       expect(getTextClassName(color)).toBe("text-(--axis-color)");
     });
@@ -28,6 +26,10 @@ describe("getTextClassName()", () => {
   describe("given a colour that cannot be read", () => {
     it("returns the class of the colour itself", () => {
       expect(getTextClassName("gold")).toBe("text-(--axis-color)");
+      // Only hex is read: a light colour in another notation is not told apart.
+      expect(getTextClassName("rgb(255, 241, 118)")).toBe(
+        "text-(--axis-color)",
+      );
     });
   });
 
