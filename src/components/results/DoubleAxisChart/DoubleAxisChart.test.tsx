@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import type { Orientation } from "@/types/orientation";
@@ -126,6 +126,26 @@ describe("<DoubleAxisChart />", () => {
       expect(
         screen.getByRole("region", { name: "Eurosceptycyzm / Federacjonizm" }),
       ).toBeInTheDocument();
+    });
+
+    it("gives the chip the word for a tie to show on a narrow card", () => {
+      renderChart(50, 50);
+
+      const shortName = screen.getByTestId("orientation-chip-short-name");
+
+      expect(getChip()).toContainElement(shortName);
+      expect(shortName).toHaveTextContent(/^Remis$/);
+      expect(shortName).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("keeps both poles for assistive technology on a narrow card", () => {
+      renderChart(50, 50);
+
+      const pair = screen.getByTestId("orientation-chip-name-pair");
+
+      expect(pair.textContent).toBe("Eurosceptycyzm / Federacjonizm");
+      expect(pair).toHaveClass("@max-[240px]:sr-only");
+      expect(pair).not.toHaveAttribute("aria-hidden");
     });
 
     it("is a tie when the values round to the same number", () => {
@@ -326,16 +346,35 @@ describe("<DoubleAxisChart />", () => {
   });
 
   describe("given a tie with a missing name", () => {
-    it("names the pole that has a name, without a separator", () => {
+    it("shows the word for a tie, never the pole that has a name", () => {
       renderChart(50, 50, { ...euroscepticism, name: "" });
 
-      expect(getChip()).toHaveTextContent(/^Federacjonizm$/);
+      expect(getChip()).toHaveAttribute("data-look", "neutral");
+      expect(getChip().textContent).toBe("Remis");
+      expect(screen.getByText("Remis")).not.toHaveAttribute("aria-hidden");
       expect(
-        screen.getByRole("region", { name: "Federacjonizm" }),
-      ).toBeInTheDocument();
+        screen.queryByTestId("orientation-chip-short-name"),
+      ).not.toBeInTheDocument();
     });
 
-    it("passes no title when both names are missing", () => {
+    it("names the card with the word for a tie", () => {
+      renderChart(50, 50, euroscepticism, { ...federalism, name: " " });
+
+      expect(screen.getByRole("region", { name: "Remis" })).toBeInTheDocument();
+      expect(
+        screen.queryByRole("region", { name: "Eurosceptycyzm" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("still names the pole that has a name under its cap", () => {
+      renderChart(50, 50, { ...euroscepticism, name: "" });
+
+      expect(screen.getByTestId("universal-axis-labels")).toHaveTextContent(
+        "Federacjonizm",
+      );
+    });
+
+    it("shows the word for a tie when both names are missing", () => {
       renderChart(
         50,
         50,
@@ -343,10 +382,11 @@ describe("<DoubleAxisChart />", () => {
         { ...federalism, name: "" },
       );
 
-      expect(screen.queryByTestId("orientation-chip")).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId("module-wrapper-title-slot"),
-      ).not.toBeInTheDocument();
+      expect(getChip().textContent).toBe("Remis");
+      expect(screen.getByTestId("module-wrapper-title-slot")).toContainElement(
+        getChip(),
+      );
+      expect(screen.getByRole("region", { name: "Remis" })).toBeInTheDocument();
       expect(screen.getByTestId("universal-axis-cap-end")).toBeInTheDocument();
     });
   });
@@ -390,7 +430,7 @@ describe("<DoubleAxisChart />", () => {
   });
 
   describe("given long names", () => {
-    it("truncates the title and the labels and keeps the full names for assistive technology", () => {
+    it("truncates the labels and keeps the full names for assistive technology", () => {
       renderChart(
         50,
         50,
@@ -398,14 +438,42 @@ describe("<DoubleAxisChart />", () => {
         { ...federalism, name: LONG_END_NAME },
       );
 
-      const fullName = `${LONG_START_NAME} / ${LONG_END_NAME}`;
+      const labels = within(screen.getByTestId("universal-axis-labels"));
 
-      expect(screen.getByText(fullName)).toHaveClass("truncate");
-      expect(screen.getByText(LONG_START_NAME)).toHaveClass("truncate");
-      expect(screen.getByText(LONG_END_NAME)).toHaveClass("truncate");
+      expect(labels.getByText(LONG_START_NAME)).toHaveClass("truncate");
+      expect(labels.getByText(LONG_END_NAME)).toHaveClass("truncate");
       expect(
-        screen.getByRole("region", { name: fullName }),
+        screen.getByRole("region", {
+          name: `${LONG_START_NAME} / ${LONG_END_NAME}`,
+        }),
       ).toBeInTheDocument();
+    });
+
+    it("truncates each name of a tie title on its own, so that both poles remain", () => {
+      renderChart(
+        50,
+        50,
+        { ...euroscepticism, name: LONG_START_NAME },
+        { ...federalism, name: LONG_END_NAME },
+      );
+
+      const pair = screen.getByTestId("orientation-chip-name-pair");
+
+      expect(within(pair).getByText(LONG_START_NAME)).toHaveClass("truncate");
+      expect(within(pair).getByText(LONG_END_NAME)).toHaveClass("truncate");
+      expect(pair).not.toHaveClass("truncate");
+      expect(pair.textContent).toBe(`${LONG_START_NAME} / ${LONG_END_NAME}`);
+    });
+
+    it("truncates a title with a lead as one text", () => {
+      renderChart(69, 31, { ...euroscepticism, name: LONG_START_NAME });
+
+      expect(within(getChip()).getByText(LONG_START_NAME)).toHaveClass(
+        "truncate",
+      );
+      expect(
+        screen.queryByTestId("orientation-chip-short-name"),
+      ).not.toBeInTheDocument();
     });
   });
 

@@ -38,8 +38,19 @@ export const useDoubleAxisTitle = (
 
   const startName = toSingleLine(start.orientation.name);
   const endName = toSingleLine(end.orientation.name);
-  const name =
-    startName && endName ? t`${startName} / ${endName}` : startName || endName;
+  const tieName = t`Remis`;
 
-  return { name, chip: name ? { name, look: "neutral" } : undefined };
+  if (!startName || !endName) {
+    return { name: tieName, chip: { name: tieName, look: "neutral" } };
+  }
+
+  return {
+    name: t`${startName} / ${endName}`,
+    chip: {
+      name: startName,
+      secondName: endName,
+      shortName: tieName,
+      look: "neutral",
+    },
+  };
 };
