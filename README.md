@@ -96,6 +96,7 @@ The app is configured at build time with Vite variables. Every variable is optio
 | ------------------------ | ------------------------------- | ------------ |
 | `VITE_API_URL`           | `https://api.mypolitics.pl/api` | Base address of the myPolitics API, without a trailing slash. The default is `DEFAULT_API_URL` in `src/constants/api.ts` |
 | `VITE_RESULTS_EMAIL_URL` | none - the e-mail card is off   | Full `https` address of the endpoint that e-mails a taker the link to their results; the request is posted to it as it is. With it, the questionnaire shows the e-mail card after demographics. Without it, or with a value that is not an `https` address, the card is left out and no request is made. Read into `RESULT_LINK_URL` in `src/constants/survey.ts` |
+| `VITE_ANSWER_COUNTS_URL` | none - the stats card is off    | Full `http` or `https` address of the source of answer counts for the stats chart checkpoint; it is asked with `GET` and the query parameter `surveyId`, once per quiz and page load. With it, the questionnaire can show the stats chart card after an answer on the rare side. Without it, or with a value that is not an absolute web address, nothing is requested and the card never appears. No endpoint serves the counts yet. Read in `getAnswerCounts` in `src/services/api/client/getAnswerCounts.ts` |
 
 Vite reads the variables when `yarn dev` or `yarn build` starts, so a change needs a restart or a new build. Set them in the environment of the command:
 
