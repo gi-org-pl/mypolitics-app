@@ -53,6 +53,13 @@ export const Label: Story = {
   },
 };
 
+export const PreviousLabel: Story = {
+  args: {
+    label: "Prawie koniec!",
+    previousLabel: "Wróć",
+  },
+};
+
 export const NumberChange: Story = {
   args: {
     categoryName: "Światopogląd",

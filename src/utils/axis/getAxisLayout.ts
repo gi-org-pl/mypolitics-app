@@ -33,6 +33,17 @@ const isPresentEntry = (entry?: AxisEntry): entry is AxisEntry =>
 const hasEntryValue = (entry: AxisEntry): entry is AxisEntryWithValue =>
   isNumber(entry.value);
 
+// The entry a side is laid out from. A masked bar keeps who the entry is and
+// drops its value, so that nothing in the layout can differ by a value.
+const getPresentEntry = (
+  entry: AxisEntry | undefined,
+  isMasked: boolean,
+): AxisEntry | null => {
+  if (!isPresentEntry(entry)) return null;
+
+  return isMasked ? { orientation: entry.orientation } : entry;
+};
+
 const getEntryValue = (entry: AxisEntry): number =>
   hasEntryValue(entry) ? clampAxisValue(entry.value) : MIN_AXIS_VALUE;
 
@@ -58,7 +69,10 @@ const getValuePlacement = (
   mode: AxisMode,
   width: number,
   comparisonDistance: number | null,
+  showValues: boolean,
 ): AxisValuePlacement => {
+  if (!showValues) return "hidden";
+
   const placement = getOwnValuePlacement(mode, width);
 
   if (comparisonDistance === null) return placement;
@@ -81,6 +95,7 @@ const getSideLayout = (
   mode: AxisMode,
   width: number,
   comparisonDistance: number | null,
+  showValues: boolean,
 ): AxisSideLayout => {
   const value = getEntryValue(entry);
 
@@ -92,7 +107,12 @@ const getSideLayout = (
     value,
     displayValue: Math.round(value),
     width,
-    valuePlacement: getValuePlacement(mode, width, comparisonDistance),
+    valuePlacement: getValuePlacement(
+      mode,
+      width,
+      comparisonDistance,
+      showValues,
+    ),
   };
 };
 
@@ -203,11 +223,15 @@ export const getAxisLayout = ({
   end,
   comparison,
   marker,
+  showValues = true,
+  isMasked = false,
 }: AxisLayoutInput): AxisLayout => {
-  const presentStart = isPresentEntry(start) ? start : null;
-  const presentEnd = isPresentEntry(end) ? end : null;
+  const presentStart = getPresentEntry(start, isMasked);
+  const presentEnd = getPresentEntry(end, isMasked);
   const presentComparison =
-    isPresentEntry(comparison) && hasEntryValue(comparison) ? comparison : null;
+    !isMasked && isPresentEntry(comparison) && hasEntryValue(comparison)
+      ? comparison
+      : null;
   const mode = getMode(presentStart !== null, presentEnd !== null);
   const taker = presentStart ?? presentEnd;
   const isTrackHatched = taker === null || !hasEntryValue(taker);
@@ -230,6 +254,7 @@ export const getAxisLayout = ({
         mode,
         startWidth,
         getComparisonDistance("start", comparisonPosition, isTrackHatched),
+        showValues,
       )
     : null;
   const endLayout = presentEnd
@@ -238,6 +263,7 @@ export const getAxisLayout = ({
         mode,
         endWidth,
         getComparisonDistance("end", comparisonPosition, isTrackHatched),
+        showValues,
       )
     : null;
 
@@ -245,9 +271,10 @@ export const getAxisLayout = ({
     mode,
     start: startLayout,
     end: endLayout,
-    marker: getMarker(marker),
+    marker: isMasked ? null : getMarker(marker),
     comparison: presentComparison
       ? getComparisonLayout(presentComparison, startLayout, endLayout)
       : null,
+    ...(isMasked ? { isMasked } : {}),
   };
 };
