@@ -1,8 +1,8 @@
 import { Trans } from "@lingui/react/macro";
 
 import { ModuleWrapper } from "@/components/shared/ModuleWrapper/ModuleWrapper";
+import { TraitPill } from "@/components/shared/TraitPill/TraitPill";
 
-import { TraitPill } from "./TraitPill/TraitPill";
 import type { TraitsProps } from "./Traits.types";
 import { getTraitItems } from "./utils/getTraitItems";
 
@@ -24,12 +24,14 @@ export const Traits = ({
     >
       {items.length > 0 ? (
         <ul className="flex min-w-0 flex-wrap gap-2.5">
-          {items.map((item) => (
-            <TraitPill
-              key={item.orientation.id}
-              item={item}
-              otherOrientation={comparison?.orientation}
-            />
+          {items.map(({ orientation, holder }) => (
+            <li key={orientation.id} className="flex max-w-full min-w-0">
+              <TraitPill
+                orientation={orientation}
+                holder={holder}
+                otherOrientation={comparison?.orientation}
+              />
+            </li>
           ))}
         </ul>
       ) : (

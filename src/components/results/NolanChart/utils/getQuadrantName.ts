@@ -1,10 +1,7 @@
+import type { NolanPosition } from "@/types/results";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
-import type {
-  NolanName,
-  NolanPosition,
-  NolanQuadrants,
-} from "../NolanChart.types";
+import type { NolanName, NolanQuadrants } from "../NolanChart.types";
 
 const NO_NAME: NolanName = { name: "", shortName: "" };
 
