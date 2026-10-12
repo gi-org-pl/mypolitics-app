@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -123,7 +123,7 @@ describe("<SurveyDemographicsField />", () => {
 
       open(field);
 
-      expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
+      expect(screen.queryByRole("menuitemradio")).not.toBeInTheDocument();
     });
   });
 
@@ -169,7 +169,7 @@ describe("<SurveyDemographicsField />", () => {
       open(field);
 
       expect(
-        screen.getAllByRole("menuitem").map((item) => item.textContent),
+        screen.getAllByRole("menuitemradio").map((item) => item.textContent),
       ).toEqual(["Mężczyzna", "Kobieta", "Inna płeć"]);
     });
 
@@ -182,12 +182,87 @@ describe("<SurveyDemographicsField />", () => {
     });
   });
 
+  describe("when opened with a value", () => {
+    it("exposes the chosen option as selected and no other", () => {
+      const { field } = renderField({ value: "female" });
+
+      open(field);
+
+      expect(
+        screen
+          .getAllByRole("menuitemradio")
+          .map((item) => [item.textContent, item.getAttribute("aria-checked")]),
+      ).toEqual([
+        ["Mężczyzna", "false"],
+        ["Kobieta", "true"],
+        ["Inna płeć", "false"],
+      ]);
+    });
+
+    it("starts with focus on the chosen option", async () => {
+      const { field } = renderField({ value: "other" });
+
+      open(field);
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "Inna płeć" }),
+        ).toHaveFocus(),
+      );
+    });
+  });
+
+  describe("when opened without a value", () => {
+    it("exposes no option as selected", () => {
+      const { field } = renderField();
+
+      open(field);
+
+      for (const item of screen.getAllByRole("menuitemradio")) {
+        expect(item).not.toBeChecked();
+      }
+    });
+
+    it("starts with focus on the first option", async () => {
+      const { field } = renderField();
+
+      open(field);
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "Mężczyzna" }),
+        ).toHaveFocus(),
+      );
+    });
+  });
+
+  describe("given two options with the value that is chosen", () => {
+    it("exposes the first of them as selected", () => {
+      const { field } = renderField({
+        options: [
+          { value: "same", label: "Pierwsza" },
+          { value: "same", label: "Druga" },
+        ],
+        value: "same",
+      });
+
+      open(field);
+
+      expect(
+        screen.getByRole("menuitemradio", { name: "Pierwsza" }),
+      ).toBeChecked();
+      expect(
+        screen.getByRole("menuitemradio", { name: "Druga" }),
+      ).not.toBeChecked();
+    });
+  });
+
   describe("when an option is activated", () => {
     it("calls its handler with the option value", () => {
       const { field, onChange } = renderField();
 
       open(field);
-      fireEvent.click(screen.getByRole("menuitem", { name: "Kobieta" }));
+      fireEvent.click(screen.getByRole("menuitemradio", { name: "Kobieta" }));
 
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith("female");
@@ -197,9 +272,9 @@ describe("<SurveyDemographicsField />", () => {
       const { field } = renderField();
 
       open(field);
-      fireEvent.click(screen.getByRole("menuitem", { name: "Kobieta" }));
+      fireEvent.click(screen.getByRole("menuitemradio", { name: "Kobieta" }));
 
-      expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
+      expect(screen.queryByRole("menuitemradio")).not.toBeInTheDocument();
     });
   });
 });

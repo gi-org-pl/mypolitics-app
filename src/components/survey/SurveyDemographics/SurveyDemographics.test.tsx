@@ -56,7 +56,7 @@ const choose = (fieldName: string, optionLabel: string) => {
 
   field.focus();
   fireEvent.keyDown(field, { key: "Enter" });
-  fireEvent.click(screen.getByRole("menuitem", { name: optionLabel }));
+  fireEvent.click(screen.getByRole("menuitemradio", { name: optionLabel }));
 };
 
 const openDialog = () => {
@@ -191,7 +191,7 @@ describe("<SurveyDemographics />", () => {
 
       choose("Płeć", "Kobieta");
 
-      expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
+      expect(screen.queryByRole("menuitemradio")).not.toBeInTheDocument();
     });
 
     it("keeps showing what the parent passes", () => {
@@ -249,7 +249,7 @@ describe("<SurveyDemographics />", () => {
       field.focus();
       fireEvent.keyDown(field, { key: "Enter" });
 
-      expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
+      expect(screen.queryByRole("menuitemradio")).not.toBeInTheDocument();
     });
 
     it('keeps "To znaczy?" working', () => {

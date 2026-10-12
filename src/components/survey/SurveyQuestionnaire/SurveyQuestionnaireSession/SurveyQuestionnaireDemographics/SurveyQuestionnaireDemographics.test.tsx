@@ -44,7 +44,7 @@ const choose = (fieldName: string, optionLabel: string) => {
 
   field.focus();
   fireEvent.keyDown(field, { key: "Enter" });
-  fireEvent.click(screen.getByRole("menuitem", { name: optionLabel }));
+  fireEvent.click(screen.getByRole("menuitemradio", { name: optionLabel }));
 };
 
 describe("<SurveyQuestionnaireDemographics />", () => {
@@ -83,7 +83,9 @@ describe("<SurveyQuestionnaireDemographics />", () => {
       fireEvent.keyDown(field, { key: "Enter" });
 
       expect(
-        screen.getAllByRole("menuitem").map((option) => option.textContent),
+        screen
+          .getAllByRole("menuitemradio")
+          .map((option) => option.textContent),
       ).toEqual(["Kobieta", "Mężczyzna", "Inna", "Wolę nie podawać"]);
     });
   });

@@ -25,6 +25,30 @@ describe("getOptionItems()", () => {
     });
   });
 
+  describe("given no value", () => {
+    it("marks every item as not selected", () => {
+      const items = getOptionItems(options, vi.fn());
+
+      expect(items.map((item) => item.isSelected)).toEqual([false, false]);
+    });
+  });
+
+  describe("given the value of an option", () => {
+    it("marks the item of that option as selected and no other", () => {
+      const items = getOptionItems(options, vi.fn(), "female");
+
+      expect(items.map((item) => item.isSelected)).toEqual([false, true]);
+    });
+  });
+
+  describe("given a value that matches no option", () => {
+    it("marks every item as not selected", () => {
+      const items = getOptionItems(options, vi.fn(), "unknown");
+
+      expect(items.map((item) => item.isSelected)).toEqual([false, false]);
+    });
+  });
+
   describe("when an item is activated", () => {
     it("calls the handler with the value of its option", () => {
       const onChange = vi.fn();
