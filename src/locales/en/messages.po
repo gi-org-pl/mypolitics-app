@@ -297,11 +297,11 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 msgstr "Four quadrants of the compass done, and the quiz is still on."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:45
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz {quizName} over? Your answers will not be saved."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Are you sure you want to start the quiz over? Your answers will not be saved."
 
@@ -355,7 +355,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Dookoła kompasu"
 msgstr "Around the compass"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:33
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Your answers in this section let us analyse results in the future, to improve the quiz and to prepare analyses on data.mypolitics.pl."
 
@@ -878,7 +878,7 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Terms"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:61
 msgid "Resetuj quiz"
 msgstr "Reset quiz"
 
@@ -895,7 +895,7 @@ msgstr "Kinds of quizzes"
 msgid "Rozdajemy 100 milionów"
 msgstr "Handing out 100 million"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:39
 msgid "Rozpocząć od nowa?"
 msgstr "Start over?"
 
@@ -1104,7 +1104,7 @@ msgstr "Your position has now visited each of the four quadrants."
 msgid "Twoja tożsamość"
 msgstr "Your identity"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:41
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Your data stays completely anonymous."
 
@@ -1270,7 +1270,7 @@ msgstr "The puzzle goes on"
 msgid "Zaglądamy do teczek"
 msgstr "Looking into the files"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
 

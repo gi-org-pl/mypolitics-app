@@ -297,11 +297,11 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 msgstr "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:41
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:45
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:40
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
@@ -355,7 +355,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Dookoła kompasu"
 msgstr "Dookoła kompasu"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:30
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:33
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 
@@ -878,7 +878,7 @@ msgstr "Ranking"
 msgid "Regulamin"
 msgstr "Regulamin"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:57
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:61
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
@@ -895,7 +895,7 @@ msgstr "Rodzaje quizów"
 msgid "Rozdajemy 100 milionów"
 msgstr "Rozdajemy 100 milionów"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:35
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:39
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 
@@ -1104,7 +1104,7 @@ msgstr "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
 msgid "Twoja tożsamość"
 msgstr "Twoja tożsamość"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:37
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:41
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Twoje dane pozostaną całkowicie anonimowe."
 
@@ -1270,7 +1270,7 @@ msgstr "Zagadka trwa"
 msgid "Zaglądamy do teczek"
 msgstr "Zaglądamy do teczek"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:21
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
