@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
+import { SurveyCheckpointAxisPuzzle } from "@/components/survey/SurveyCheckpointAxisPuzzle/SurveyCheckpointAxisPuzzle";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
@@ -45,5 +46,12 @@ describe("CHECKPOINT_CARDS", () => {
 
   it('makes "stats" one of the enabled types', () => {
     expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain("stats");
+  });
+
+  it('maps "axis-puzzle" to SurveyCheckpointAxisPuzzle', () => {
+    expect(CHECKPOINT_CARDS["axis-puzzle"]).toBe(SurveyCheckpointAxisPuzzle);
+    expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain(
+      "axis-puzzle",
+    );
   });
 });

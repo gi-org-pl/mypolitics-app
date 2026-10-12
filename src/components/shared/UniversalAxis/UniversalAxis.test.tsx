@@ -864,3 +864,247 @@ describe("<UniversalAxis /> - showValues and description", () => {
     });
   });
 });
+
+describe("<UniversalAxis /> - isMasked", () => {
+  describe("given isMasked and two entries", () => {
+    it("renders both caps and, with labels on, both names", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          isMasked
+          showLabels
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-cap-start")).toHaveClass(
+        "left-0",
+      );
+      expect(screen.getByTestId("universal-axis-cap-end")).toHaveClass(
+        "right-0",
+      );
+      expect(
+        screen
+          .getByTestId("universal-axis-cap-start")
+          .style.getPropertyValue("--axis-color"),
+      ).toBe("#59b6a6");
+      expect(screen.getByTestId("universal-axis-labels")).toHaveTextContent(
+        "Orientation A",
+      );
+      expect(screen.getByTestId("universal-axis-labels")).toHaveTextContent(
+        "Orientation B",
+      );
+    });
+
+    it("renders the mask over the track", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} isMasked />,
+      );
+
+      const track = screen.getByTestId("universal-axis-track");
+
+      expect(track).toContainElement(screen.getByTestId("universal-axis-mask"));
+      expect(track.children).toHaveLength(1);
+    });
+
+    it("covers the whole track with the hatch, which holds nothing and carries no style", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} isMasked />,
+      );
+
+      const mask = screen.getByTestId("universal-axis-mask");
+
+      expect(mask).toHaveClass("absolute", "inset-0");
+      expect(mask.className).toContain("repeating-linear-gradient");
+      expect(mask).toBeEmptyDOMElement();
+      expect(mask).not.toHaveAttribute("style");
+    });
+
+    it("renders no fill, no number and no marker", () => {
+      const { container } = renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(5)}
+          isMasked
+          showValues
+          marker={30}
+        />,
+      );
+
+      expect(screen.queryByTestId(/universal-axis-fill/)).toBeNull();
+      expect(screen.queryByTestId(/universal-axis-value/)).toBeNull();
+      expect(screen.queryByTestId("universal-axis-marker")).toBeNull();
+      expect(screen.queryByText(/%/)).toBeNull();
+      expect(container.innerHTML).not.toMatch(/69|width:|--axis-position/);
+    });
+
+    it("renders the same markup with values and without them", () => {
+      const { container, unmount } = renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(90)}
+          marker={30}
+          isMasked
+          showLabels
+        />,
+      );
+      const markup = container.innerHTML;
+
+      unmount();
+
+      const other = renderWithI18n(
+        <UniversalAxis
+          start={entryA(8)}
+          end={entryB(140)}
+          isMasked
+          showLabels
+        />,
+      );
+
+      expect(other.container.innerHTML).toBe(markup);
+
+      other.unmount();
+
+      const without = renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: orientationA }}
+          end={{ orientation: orientationB }}
+          isMasked
+          showLabels
+        />,
+      );
+
+      expect(without.container.innerHTML).toBe(markup);
+    });
+  });
+
+  describe("given isMasked and a comparison", () => {
+    it("renders no band and no image of the other party", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(40)}
+          comparison={friendEntry(70)}
+          isMasked
+        />,
+      );
+
+      expect(screen.queryByTestId("universal-axis-band")).toBeNull();
+      expect(screen.queryByTestId("universal-axis-comparison-line")).toBeNull();
+      expect(
+        screen.queryByTestId("universal-axis-comparison-image"),
+      ).toBeNull();
+      expect(screen.getByTestId("universal-axis-mask")).toBeInTheDocument();
+      expect(screen.getByRole("img")).toHaveAccessibleName("Orientation A");
+    });
+  });
+
+  describe("given isMasked in the one-sided and the empty mode", () => {
+    it("hatches the whole track and draws nothing else on it", () => {
+      const { unmount } = renderWithI18n(
+        <UniversalAxis end={entryB(64)} isMasked />,
+      );
+
+      expect(screen.getByTestId("universal-axis-track").children).toHaveLength(
+        1,
+      );
+      expect(screen.getByTestId("universal-axis-mask")).toBeInTheDocument();
+      expect(screen.getByTestId("universal-axis-cap-end")).toBeInTheDocument();
+      expect(screen.queryByTestId("universal-axis-cap-start")).toBeNull();
+
+      unmount();
+      renderWithI18n(<UniversalAxis isMasked />);
+
+      expect(screen.getByTestId("universal-axis-mask")).toBeInTheDocument();
+      expect(screen.getByTestId("universal-axis-socket")).toBeInTheDocument();
+      expect(screen.queryByTestId("universal-axis-marker")).toBeNull();
+    });
+  });
+
+  describe("given isMasked and a description", () => {
+    it("is one image named by that description", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          isMasked
+          showLabels
+          description="„Orientation A” i „Orientation B”: wynik ukryty"
+        />,
+      );
+
+      expect(screen.getAllByRole("img")).toHaveLength(1);
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "„Orientation A” i „Orientation B”: wynik ukryty",
+      );
+    });
+  });
+
+  describe("given isMasked and no description", () => {
+    it("is named by the names alone, with no number and nothing about a missing value", () => {
+      const { unmount } = renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(90)}
+          isMasked
+        />,
+      );
+
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A, Orientation B",
+      );
+
+      unmount();
+      renderWithI18n(
+        <UniversalAxis
+          start={{ orientation: orientationA }}
+          end={entryB(31)}
+          isMasked
+          showValues
+          description="  "
+        />,
+      );
+
+      expect(screen.getByRole("img")).toHaveAccessibleName(
+        "Orientation A, Orientation B",
+      );
+    });
+  });
+
+  describe("given isMasked is false", () => {
+    it("renders the bar as before", () => {
+      const { container } = renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(90)}
+          showLabels
+        />,
+      );
+      const markup = container.innerHTML;
+
+      renderWithI18n(
+        <UniversalAxis
+          start={entryA(69)}
+          end={entryB(31)}
+          comparison={friendEntry(90)}
+          showLabels
+          isMasked={false}
+        />,
+      );
+
+      expect(screen.getAllByRole("img")[1].parentElement?.innerHTML).toBe(
+        markup,
+      );
+      expect(screen.queryByTestId("universal-axis-mask")).toBeNull();
+      expect(screen.getAllByTestId("universal-axis-fill-start")[0]).toHaveStyle(
+        { width: "69%" },
+      );
+      expect(screen.getAllByTestId("universal-axis-marker")).toHaveLength(2);
+      expect(screen.getAllByRole("img")[0]).toHaveAccessibleName(
+        "Orientation A: 69%, Orientation B: 31%, porównanie z Ania: 90%",
+      );
+    });
+  });
+});

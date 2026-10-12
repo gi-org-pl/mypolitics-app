@@ -27,6 +27,11 @@ import {
   axisSurveyFixture,
 } from "./survey-axis.fixture";
 import {
+  AXIS_PUZZLE_POLES,
+  AXIS_PUZZLE_QUESTIONS,
+  axisPuzzleSurveyFixture,
+} from "./survey-axis-puzzle.fixture";
+import {
   CHECKPOINT_QUESTIONS,
   checkpointSurveyFixture,
 } from "./survey-checkpoint.fixture";
@@ -1275,6 +1280,108 @@ test.describe("Feature: Questionnaire checkpoints - stats chart", () => {
 
     await test.step("And the source was asked once", async () => {
       expect(api.countsRequests).toHaveLength(1);
+    });
+  });
+});
+
+// The single axis puzzle is the one card that takes "Dalej" away: a taker
+// who could not guess would be stuck. The quiz is a fixture of its own, with
+// two axes: the first gets the axis closeness card after the fifth answer,
+// and the puzzle is about the second, after the eleventh.
+test.describe("Feature: Questionnaire checkpoints - the single axis puzzle", () => {
+  const [START_POLE, END_POLE] = AXIS_PUZZLE_POLES;
+  const TWELFTH_QUESTION = AXIS_PUZZLE_QUESTIONS[11];
+
+  const answerNext = async (page: Page, from: number, count: number) => {
+    for (const question of AXIS_PUZZLE_QUESTIONS.slice(from, from + count)) {
+      await page
+        .getByRole("group", { name: question.text })
+        .getByRole("button", { name: "Zdecydowanie za", exact: true })
+        .click();
+    }
+  };
+
+  test.beforeEach(async ({ page }) => {
+    await mockSurveyApi(page, axisPuzzleSurveyFixture);
+  });
+
+  test("Scenario: A taker guesses an axis and sees the reading", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the sixteen-question quiz with two axes", async () => {
+      await openPage(page, QUIZ_PATH);
+      await expect(
+        page.getByRole("group", { name: AXIS_PUZZLE_QUESTIONS[0].text }),
+      ).toBeVisible();
+      await expect(getCategoryGroup(page)).toHaveCount(0);
+    });
+
+    await test.step('When they answer the first five questions "Zdecydowanie za"', async () => {
+      await answerNext(page, 0, 5);
+    });
+
+    await test.step('Then a region named "Checkpoint" is shown', async () => {
+      await expect(getCheckpoint(page)).toBeVisible();
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step('And they answer the next six questions "Zdecydowanie za"', async () => {
+      await answerNext(page, 5, 6);
+    });
+
+    await test.step(`Then a region named "Checkpoint" is shown with the buttons "${START_POLE}" and "${END_POLE}"`, async () => {
+      const options = getCheckpoint(page).getByRole("group");
+
+      await expect(getCheckpoint(page)).toBeVisible();
+      await expect(options.getByRole("button")).toHaveText([
+        START_POLE,
+        END_POLE,
+      ]);
+      await expect(getCheckpoint(page).getByRole("img")).toHaveAccessibleName(
+        `„${START_POLE}” i „${END_POLE}”: wynik ukryty`,
+      );
+      await expect(getCheckpoint(page)).not.toContainText(/[\d%]/);
+    });
+
+    await test.step('And it has no "Dalej" button', async () => {
+      await expect(getButton(page, "Dalej")).toHaveCount(0);
+      await expect(getButton(page, "Wyłącz checkpointy")).toBeVisible();
+    });
+
+    await test.step(`When they press "${END_POLE}"`, async () => {
+      await getButton(page, END_POLE).click();
+    });
+
+    await test.step("Then the two buttons are gone", async () => {
+      await expect(getButton(page, START_POLE)).toHaveCount(0);
+      await expect(getButton(page, END_POLE)).toHaveCount(0);
+    });
+
+    await test.step(`And the text of the card names "${END_POLE}"`, async () => {
+      const text = getCheckpoint(page).getByRole("paragraph");
+
+      await expect(text).toContainText(`„${END_POLE}”`);
+      await expect(text).toBeFocused();
+      await expect(getCheckpoint(page).getByRole("img")).toHaveAccessibleName(
+        `„${START_POLE}” i „${END_POLE}”: bliżej Ci do strony „${END_POLE}”`,
+      );
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the twelfth question", async () => {
+      await expect(
+        page.getByRole("group", { name: TWELFTH_QUESTION.text }),
+      ).toBeVisible();
+      await expect(
+        page.getByText(TWELFTH_QUESTION.text, { exact: true }),
+      ).toBeVisible();
+      await expect(getCheckpoint(page)).toHaveCount(0);
     });
   });
 });

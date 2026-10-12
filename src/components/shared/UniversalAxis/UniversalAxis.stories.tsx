@@ -297,3 +297,22 @@ export const WithDescription: Story = {
       "„Orientation A” i „Orientation B”: wyższy wynik po stronie „Orientation A”",
   },
 };
+
+// The bar of a puzzle while it asks: the whole track hatched, with nothing on
+// it that a value could be read from. It draws the same with any values.
+export const Masked: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    isMasked: true,
+  },
+};
+
+export const MaskedWithLabels: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    isMasked: true,
+    showLabels: true,
+  },
+};

@@ -11,6 +11,7 @@ export interface AxisLayoutInput {
   comparison?: AxisEntry;
   marker?: number | false;
   showValues?: boolean; // default true. false = no number is drawn on or next to any fill
+  isMasked?: boolean; // default false. true = the whole track is hatched and nothing else is drawn on it
 }
 
 export type AxisMode = "empty" | "one-sided" | "double-sided";
@@ -49,4 +50,5 @@ export interface AxisLayout {
   end: AxisSideLayout | null;
   marker: number | null;
   comparison: AxisComparisonLayout | null;
+  isMasked?: boolean; // true on a masked bar. Absent on every other one, whose layout is what it always was
 }
