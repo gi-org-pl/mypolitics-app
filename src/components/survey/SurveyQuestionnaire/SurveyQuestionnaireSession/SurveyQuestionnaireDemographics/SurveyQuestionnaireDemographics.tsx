@@ -7,8 +7,9 @@ import { toResultDemographics } from "@/utils/survey/demographics/toResultDemogr
 
 import { useDemographicsOptions } from "./utils/useDemographicsOptions";
 
-// The fourth phase: the four fields. "Zobacz wyniki" takes all four - by the
-// very rule the session leaves the phase by - and "Pomiń" always works.
+// The fourth phase: the four fields. The see-results button takes all four -
+// by the very rule the session leaves the phase by - and the skip button
+// always works.
 export const SurveyQuestionnaireDemographics = ({
   session: { session, setDemographics, leaveDemographics },
 }: SurveyPhaseContentProps) => {

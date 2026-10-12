@@ -22,8 +22,9 @@ import { useResultLink } from "./useResultLink";
 // keeps what it ended with.
 //
 // A run that is ready leaves through `onLeave`, once; when the link could not
-// be sent, the notice stands in for leaving and "Zobacz wyniki" leaves. The
-// session is never cleared and nothing is opened here: that is `onLeave`'s.
+// be sent, the notice stands in for leaving and the see-results button
+// leaves. The session is never cleared and nothing is opened here: that is
+// `onLeave`'s.
 export const useResultsCalculation = ({
   survey,
   session,

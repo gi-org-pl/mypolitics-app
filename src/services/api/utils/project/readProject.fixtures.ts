@@ -3,7 +3,7 @@
 // `createdAt`, `totalSolvedSurveys`, `surveys` (the versions of the quiz),
 // `defaultLanguage` and `supportedLanguages`.
 
-// "myPolitics Quiz Tożsamościowy": one survey, which is the latest.
+// The identity quiz of myPolitics: one survey, which is the latest.
 export const identityQuizProject = {
   id: "5ab50822-e95e-4c7c-a1d6-14aceb68f108",
   latestSurveyId: "60beb898-a4e4-4160-88c4-07a9931ab499",

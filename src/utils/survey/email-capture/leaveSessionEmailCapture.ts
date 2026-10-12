@@ -1,7 +1,7 @@
 import { SurveyResultState, type SurveySessionAction } from "@/types/survey";
 
-// "Wyślij i zobacz wyniki" (given) keeps the e-mail for the request that
-// follows the result; "Pomiń" drops it. Given with no e-mail held is a skip.
+// The send button (given) keeps the e-mail for the request that follows the
+// result; the skip button drops it. Given with no e-mail held is a skip.
 export const leaveSessionEmailCapture: SurveySessionAction<
   [isGiven: boolean]
 > = (_survey, session, isGiven) =>

@@ -267,19 +267,19 @@ export type SurveyVisibleCategory = SurveyCategory & { name: string };
 export interface SurveySessionApi {
   session: SurveySession;
   setCategories: (prioritizedCategoryIds: string[]) => void;
-  confirmCategories: () => void; // "Idziemy dalej"
-  skipCategories: () => void; // "Pomiń" on category select
+  confirmCategories: () => void; // the confirm button of category select
+  skipCategories: () => void; // the skip button of category select
   answer: (answerId: string, seconds?: number) => void;
-  skip: (seconds?: number) => void; // "Pomiń" under a question
+  skip: (seconds?: number) => void; // the skip button under a question
   back: () => void;
   showCheckpoint: (card: unknown) => void;
-  closeCheckpoint: () => void; // "Dalej"
-  turnCheckpointsOff: () => void; // "Wyłącz checkpointy"
+  closeCheckpoint: () => void; // the continue button of a card
+  turnCheckpointsOff: () => void; // the opt-out button of a card
   setCheckpointRecord: (record: SurveyCheckpointRecord) => void; // the record with a puzzle's reveal line in it
   setDemographics: (values: DemographicsValues) => void;
-  leaveDemographics: (isGiven: boolean) => void; // true = "Zobacz wyniki", false = "Pomiń"
+  leaveDemographics: (isGiven: boolean) => void; // true = the see-results button, false = the skip button
   setEmail: (email: SurveyEmail | null) => void;
-  leaveEmailCapture: (isGiven: boolean) => void; // true = "Wyślij i zobacz wyniki", false = "Pomiń"
+  leaveEmailCapture: (isGiven: boolean) => void; // true = the send button, false = the skip button
   setResultState: (resultState: SurveyResultState) => void;
   reset: () => void;
   leave: () => void; // the taker is sent to the results: the stored record is removed

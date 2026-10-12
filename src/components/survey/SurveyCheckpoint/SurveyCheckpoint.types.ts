@@ -6,9 +6,9 @@ export interface SurveyCheckpointProps {
   statement: string; // the finding, translated, its slots filled. Blank = the card is not drawn
   quote?: string; // a part of the statement to mark as a quotation - the stats card passes the thesis
   options?: ReactNode; // the rows a puzzle offers, stacked by the frame. Nothing to draw = no options
-  isContinueAvailable?: boolean; // default true. false = "Dalej" is not drawn at all. This is how a card withholds "Dalej"
-  onContinue: () => void; // "Dalej" was pressed. Also how a card that cannot be drawn leaves
-  onOptOut: () => void; // "Wyłącz checkpointy" was pressed
+  isContinueAvailable?: boolean; // default true. false = the continue button is not drawn at all. This is how a card withholds it
+  onContinue: () => void; // the continue button was pressed. Also how a card that cannot be drawn leaves
+  onOptOut: () => void; // the opt-out button was pressed
 }
 
 // The two requests a card can make, each let through once.

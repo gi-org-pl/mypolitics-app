@@ -3,5 +3,5 @@ export interface SurveyPhaseActionsProps {
   onPrimary: () => void;
   isPrimaryDisabled?: boolean; // default false
   primaryDisabledReason?: string; // read by assistive technology while the primary button is off
-  onSkip: () => void; // "Pomiń"
+  onSkip: () => void; // the skip button
 }

@@ -16,8 +16,8 @@ import { usePositionPuzzleDescription } from "./utils/usePositionPuzzleDescripti
 // The double axis puzzle: it shows how close the taker is to one archetype
 // without saying which, and asks them to pick it out of three. The bar is
 // true from the start - its length is the closeness of the closest archetype
-// - and only the name, the image and the colour are held back. "Dalej" is
-// there in every state: the guess can be passed over.
+// - and only the name, the image and the colour are held back. The continue
+// button is there in every state: the guess can be passed over.
 //
 // A hit uncovers the archetype in place: its name over the bar, its image on
 // the cap, the bar in the colour of its match band. A miss uncovers nothing,

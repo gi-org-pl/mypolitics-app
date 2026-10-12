@@ -8,11 +8,11 @@ import { SurveyQuestionnaireBoundary } from "./SurveyQuestionnaireBoundary/Surve
 import { useCheckpointCard } from "./utils/useCheckpointCard";
 
 // The Checkpoints phase: the card that is up, in place of the question, its
-// answers and "Pomiń". It draws the component registered for the type of the
-// card and hands it the card and the three things a card can ask for.
-// "Dalej" closes the card, "Wyłącz checkpointy" turns checkpoints off for the
-// session, and either way the next question follows. The bar, the pill, back
-// and reset of the phase are the screen's.
+// answers and the skip button. It draws the component registered for the type
+// of the card and hands it the card and the three things a card can ask for.
+// The continue button closes the card, the opt-out button turns checkpoints
+// off for the session, and either way the next question follows. The bar, the
+// pill, back and reset of the phase are the screen's.
 //
 // A card that fails to draw is closed as a whole, and with no card to put up
 // the phase draws nothing while the session is moved on.

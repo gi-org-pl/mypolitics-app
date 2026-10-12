@@ -3,12 +3,12 @@ import { SURVEY_ID } from "./survey.fixture";
 // A quiz with three archetypes, in the shape GET /v1/survey/{surveyId} sends
 // it: ten scale questions of one category and three orientations of type
 // identity, none hidden and none with an image. In every question the two
-// agreeing answers score the first archetype, "Częściowo przeciw" the second
-// and "Zdecydowanie przeciw" the third.
+// agreeing answers score the first archetype, the partly disagreeing answer
+// the second and the strongly disagreeing one the third.
 //
 // It has one visible category, so no categories are picked, and it has no axes
-// at all. After five answers of "Zdecydowanie za" the first archetype stands
-// at 100 and the other two at 0, and half the questions are done, so the
+// at all. After five strongly agreeing answers the first archetype stands at
+// 100 and the other two at 0, and half the questions are done, so the
 // double axis puzzle is due at that boundary. With no axes and no compass no
 // other personal card can fire there, and the halfway card, due at the same
 // boundary, loses to it. With three archetypes the rows are exactly these
@@ -51,7 +51,7 @@ const ARCHETYPES = [
 ];
 
 // The names of the three archetypes, in the order of the quiz. The first is
-// the one the answers "Zdecydowanie za" lead to.
+// the one the strongly agreeing answers lead to.
 export const ARCHETYPE_NAMES = ARCHETYPES.map(({ generalName }) => generalName);
 
 // The four answers of a scale question, each with its weight and the

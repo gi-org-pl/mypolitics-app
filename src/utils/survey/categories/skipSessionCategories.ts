@@ -1,6 +1,6 @@
 import type { SurveySessionAction } from "@/types/survey";
 
-// "Pomiń" on category select: whatever was picked is dropped.
+// The skip button of category select: whatever was picked is dropped.
 export const skipSessionCategories: SurveySessionAction = (_survey, session) =>
   session.phase === "category-select"
     ? {

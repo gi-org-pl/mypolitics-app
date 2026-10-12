@@ -5,5 +5,5 @@ export interface SurveyEmailCaptureProps {
   onAddressChange: (address: string) => void;
   onConsentChange: (hasConsent: boolean) => void;
   onSubmit: (address: string) => void; // a valid address was confirmed, by the button or by Enter - the address trimmed
-  onSkip: () => void; // "Pomiń"
+  onSkip: () => void; // the skip button
 }

@@ -279,7 +279,7 @@ msgctxt "checkpoint-new-trait"
 msgid "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 msgstr "Cecha „{trait}” jest od teraz Twoja. Dobrze to czy źle? Ocena należy do Ciebie."
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:68
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:69
 msgid "Checkpoint"
 msgstr "Checkpoint"
 
@@ -310,7 +310,7 @@ msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zosta
 msgid "Czytamy programy partii"
 msgstr "Czytamy programy partii"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:108
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:109
 msgid "Dalej"
 msgstr "Dalej"
 
@@ -1217,7 +1217,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Wszystkie ćwiartki kompasu są już za Tobą."
 msgstr "Wszystkie ćwiartki kompasu są już za Tobą."
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:29
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:30
 msgid "Wybierz wszystkie cztery pola albo pomiń"
 msgstr "Wybierz wszystkie cztery pola albo pomiń"
 
@@ -1233,7 +1233,7 @@ msgstr "Wyborczy 2023"
 msgid "Wykształcenie"
 msgstr "Wykształcenie"
 
-#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:120
+#: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:121
 msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
 
@@ -1313,7 +1313,7 @@ msgstr "Znasz siebie"
 msgid "Zobacz więcej"
 msgstr "Zobacz więcej"
 
-#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:27
+#: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.tsx:28
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:26
 msgid "Zobacz wyniki"
 msgstr "Zobacz wyniki"

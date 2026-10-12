@@ -1,6 +1,7 @@
 import type { SurveySessionAction } from "@/types/survey";
 
-// "Idziemy dalej": it takes at least one picked category.
+// The confirm button of category select: it takes at least one picked
+// category.
 export const confirmSessionCategories: SurveySessionAction = (
   _survey,
   session,

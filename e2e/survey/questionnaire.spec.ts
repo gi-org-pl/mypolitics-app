@@ -1289,10 +1289,10 @@ test.describe("Feature: Questionnaire checkpoints - stats chart", () => {
   });
 });
 
-// The single axis puzzle is the one card that takes "Dalej" away: a taker
-// who could not guess would be stuck. The quiz is a fixture of its own, with
-// two axes: the first gets the axis closeness card after the fifth answer,
-// and the puzzle is about the second, after the eleventh.
+// The single axis puzzle is the one card that takes the continue button
+// away: a taker who could not guess would be stuck. The quiz is a fixture of
+// its own, with two axes: the first gets the axis closeness card after the
+// fifth answer, and the puzzle is about the second, after the eleventh.
 test.describe("Feature: Questionnaire checkpoints - the single axis puzzle", () => {
   const [START_POLE, END_POLE] = AXIS_PUZZLE_POLES;
   const TWELFTH_QUESTION = AXIS_PUZZLE_QUESTIONS[11];
