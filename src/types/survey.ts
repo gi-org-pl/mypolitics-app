@@ -125,6 +125,28 @@ export interface SurveyResult {
   isCalculated: boolean;
 }
 
+export type ResultLinkLanguage = "pl" | "en";
+
+// What the request for the result link is made of. The address and the
+// consent come from the e-mail card; results calculation adds the rest.
+export interface ResultLinkInput {
+  email: string; // the address
+  resultId: string; // the session identifier - the result the link opens
+  marketingConsent: boolean; // SurveyEmail.hasConsent
+  language: ResultLinkLanguage;
+}
+
+// How the request for the result link ended.
+export const ResultLinkOutcome = {
+  Accepted: "accepted", // 202
+  Invalid: "invalid", // 400
+  Limited: "limited", // 429
+  Unavailable: "unavailable", // 503, any other reply, no connection, no reply in time, no endpoint configured
+} as const;
+
+export type ResultLinkOutcome =
+  (typeof ResultLinkOutcome)[keyof typeof ResultLinkOutcome];
+
 export type SurveyPhase =
   | "category-select"
   | "questions"

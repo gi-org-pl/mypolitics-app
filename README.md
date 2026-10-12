@@ -92,9 +92,10 @@ Open [http://localhost:5173](http://localhost:5173) with your browser to see the
 
 The app is configured at build time with Vite variables. Every variable is optional: a variable that is unset, empty or blank falls back to its default.
 
-| Variable       | Default                         | What it sets |
-| -------------- | ------------------------------- | ------------ |
-| `VITE_API_URL` | `https://api.mypolitics.pl/api` | Base address of the myPolitics API, without a trailing slash. The default is `DEFAULT_API_URL` in `src/constants/api.ts` |
+| Variable                 | Default                         | What it sets |
+| ------------------------ | ------------------------------- | ------------ |
+| `VITE_API_URL`           | `https://api.mypolitics.pl/api` | Base address of the myPolitics API, without a trailing slash. The default is `DEFAULT_API_URL` in `src/constants/api.ts` |
+| `VITE_RESULTS_EMAIL_URL` | none - the e-mail card is off   | Full `https` address of the endpoint that e-mails a taker the link to their results; the request is posted to it as it is. With it, the questionnaire shows the e-mail card after demographics. Without it, or with a value that is not an `https` address, the card is left out and no request is made. Read into `RESULT_LINK_URL` in `src/constants/survey.ts` |
 
 Vite reads the variables when `yarn dev` or `yarn build` starts, so a change needs a restart or a new build. Set them in the environment of the command:
 

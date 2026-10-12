@@ -161,3 +161,13 @@ export const demographicsComplete = createFixture(
     },
   }),
 );
+
+// The e-mail phase is part of a session only where sending is set up: the
+// story that shows it turns the switch on.
+export const emailCapture = createFixture(
+  createQuiz("email-capture"),
+  (survey) => ({
+    ...createStartedSession(survey, survey.questions.length),
+    phase: "email-capture",
+  }),
+);

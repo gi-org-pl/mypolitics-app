@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
+import { fn, spyOn } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
+
+import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { SurveyLoadStatus } from "@/types/survey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 
@@ -10,6 +12,7 @@ import {
   categorySelectAtLimit,
   demographics,
   demographicsComplete,
+  emailCapture,
   type QuestionnaireFixture,
   questions,
   questionsCustomAnswers,
@@ -68,3 +71,24 @@ export const QuestionsLongStatement: Story = toStory(questionsLongStatement);
 export const Demographics: Story = toStory(demographics);
 
 export const DemographicsComplete: Story = toStory(demographicsComplete);
+
+// The phase exists only in a build that has the address of the endpoint, so
+// the story reads the switch as on, and as it was again when the story is
+// left. The card makes no request.
+export const EmailCapture: Story = {
+  ...toStory(emailCapture),
+  beforeEach: () => {
+    const emailSwitch = spyOn(
+      SURVEY_SESSION_CONFIG,
+      "isEmailSendingSetUp",
+      "get",
+    ).mockReturnValue(true);
+
+    getSurveySessionStore(emailCapture.survey).setState(
+      emailCapture.session,
+      true,
+    );
+
+    return () => emailSwitch.mockRestore();
+  },
+};

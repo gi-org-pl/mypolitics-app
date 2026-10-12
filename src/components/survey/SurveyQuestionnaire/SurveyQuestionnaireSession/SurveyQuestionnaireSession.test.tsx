@@ -3,8 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
+import { requestResultLink } from "@/services/api/client/requestResultLink";
 import {
   CreateResultOutcome,
+  type DemographicsValues,
   type Survey,
   SurveyResultState,
   type SurveySession,
@@ -22,6 +24,7 @@ import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
 
 vi.mock("@/services/api/client/createResult");
+vi.mock("@/services/api/client/requestResultLink");
 vi.mock("@/utils/url/openAddress");
 
 // The acknowledgement of an answer: it reports the press when it has played.
@@ -31,6 +34,15 @@ const SECOND_STATEMENT = "Z czego Polska powinna czerpać energię?";
 const PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
 const WAITING = "Liczymy Twoje wyniki";
 const ALL_DONE = createSurvey().questions.length;
+const EMAIL_HEADING = "Zapisz swoje wyniki!";
+const CONSENT =
+  "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja.";
+const ADULT: DemographicsValues = {
+  age: "27",
+  gender: "female",
+  residenceAreaSize: "city_below_200k",
+  education: "higher",
+};
 
 // Fewer than two visible categories: such a quiz has no category select.
 const ONE_VISIBLE_CATEGORY = [
@@ -81,6 +93,28 @@ const getResetButton = () =>
   screen.getByRole("button", { name: "Zacznij od nowa" });
 
 const getSkipButton = () => screen.getByRole("button", { name: "Pomiń" });
+
+const getResultsButton = () =>
+  screen.getByRole("button", { name: "Zobacz wyniki" });
+
+const getEmailField = () =>
+  screen.getByRole("textbox", { name: "Adres e-mail" });
+
+const getConsentBox = () => screen.getByRole("checkbox", { name: CONSENT });
+
+const queryEmailCard = () =>
+  screen.queryByRole("heading", { name: EMAIL_HEADING });
+
+const typeAddress = (address: string) =>
+  fireEvent.change(getEmailField(), { target: { value: address } });
+
+const chooseAge = (age: string) => {
+  const field = screen.getByRole("button", { name: "Wiek" });
+
+  field.focus();
+  fireEvent.keyDown(field, { key: "Enter" });
+  fireEvent.click(screen.getByRole("menuitem", { name: age }));
+};
 
 const getLockedElement = (container: HTMLElement) =>
   container.firstElementChild as HTMLElement;
@@ -677,25 +711,289 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession().entries).toHaveLength(1);
       expect(screen.getByText(SECOND_STATEMENT)).toBeVisible();
     });
+  });
 
-    it("leaves an e-mail phase as skipped", async () => {
+  describe("given sending set up", () => {
+    beforeEach(() => {
       vi.spyOn(
         SURVEY_SESSION_CONFIG,
         "isEmailSendingSetUp",
         "get",
       ).mockReturnValue(true);
       vi.mocked(createResult).mockReturnValue(new Promise(() => undefined));
+    });
 
+    it("shows the e-mail card after demographics, given or skipped", () => {
+      const given = renderScreen(onQuestion(ALL_DONE, { demographics: ADULT }));
+
+      fireEvent.click(getResultsButton());
+
+      expect(given.getSession()).toMatchObject({
+        phase: "email-capture",
+        areDemographicsGiven: true,
+      });
+      expect(queryEmailCard()).toBeVisible();
+      expect(getEmailField()).toHaveValue("");
+      expect(getConsentBox()).not.toBeChecked();
+      expect(createResult).not.toHaveBeenCalled();
+
+      given.unmount();
+
+      const skipped = renderScreen(
+        onQuestion(ALL_DONE, { demographics: ADULT }),
+      );
+
+      fireEvent.click(getSkipButton());
+
+      expect(skipped.getSession()).toMatchObject({
+        phase: "email-capture",
+        areDemographicsGiven: false,
+      });
+      expect(queryEmailCard()).toBeVisible();
+      expect(createResult).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["13"],
+      ["16"],
+      ["17"],
+    ])("shows results calculation after demographics for a taker who picked an age under 18: %s", (age) => {
+      const given = renderScreen(
+        onQuestion(ALL_DONE, { demographics: { ...ADULT, age } }),
+      );
+
+      fireEvent.click(getResultsButton());
+
+      expect(given.getSession().phase).toBe("results-calculation");
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(screen.getByText(WAITING)).toBeVisible();
+
+      given.unmount();
+
+      // Whichever button demographics is left with.
+      const skipped = renderScreen(
+        onQuestion(ALL_DONE, { demographics: { age } }),
+      );
+
+      fireEvent.click(getSkipButton());
+
+      expect(skipped.getSession().phase).toBe("results-calculation");
+      expect(queryEmailCard()).not.toBeInTheDocument();
+    });
+
+    it("shows the card for a taker of 18", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, { demographics: { ...ADULT, age: "18" } }),
+      );
+
+      fireEvent.click(getResultsButton());
+
+      expect(getSession().phase).toBe("email-capture");
+      expect(queryEmailCard()).toBeVisible();
+    });
+
+    it("shows the card for a taker who skipped demographics with no age picked", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, { demographics: { gender: "male" } }),
+      );
+
+      fireEvent.click(getSkipButton());
+
+      expect(getSession().phase).toBe("email-capture");
+      expect(queryEmailCard()).toBeVisible();
+    });
+
+    it("drops a typed address when the taker goes back and picks an age under 18", () => {
       const { getSession } = renderScreen(
         onQuestion(ALL_DONE, {
           phase: "email-capture",
-          email: { address: "ktos@example.com", hasConsent: true },
+          demographics: ADULT,
+          areDemographicsGiven: true,
         }),
       );
 
-      expect(getSession().phase).toBe("results-calculation");
-      expect(getSession().email).toBeNull();
+      typeAddress("biuro@mypolitics.pl");
+      fireEvent.click(getConsentBox());
+
+      expect(getSession().email).toEqual({
+        address: "biuro@mypolitics.pl",
+        hasConsent: true,
+      });
+
+      fireEvent.click(getBackButton("Wróć"));
+      finishChange();
+
+      expect(getSession().phase).toBe("demographics");
+
+      chooseAge("17");
+      fireEvent.click(getResultsButton());
+
+      expect(getSession()).toMatchObject({
+        phase: "results-calculation",
+        email: null,
+        demographics: { ...ADULT, age: "17" },
+      });
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(requestResultLink).not.toHaveBeenCalled();
+    });
+
+    it('draws a full bar, "Prawie koniec!" and a back control named "Wróć" on the card', () => {
+      renderScreen(onQuestion(ALL_DONE, { phase: "email-capture" }));
+
+      expect(getBar()).toHaveAttribute("aria-valuenow", "100");
+      expect(screen.getAllByText("Prawie koniec!")[0]).toBeVisible();
+      expect(getBackButton("Wróć")).toBeEnabled();
+      expect(
+        screen.queryByRole("button", { name: "Poprzednie pytanie" }),
+      ).not.toBeInTheDocument();
+      expect(getResetButton()).toBeEnabled();
+      expect(queryEmailCard()).toBeVisible();
+    });
+
+    it("opens the card with the focus on the top of its content, not in the field", () => {
+      renderScreen(onQuestion(ALL_DONE));
+
+      fireEvent.click(getSkipButton());
+
+      expect(getContent(EMAIL_HEADING)).toHaveFocus();
+      expect(getEmailField()).not.toHaveFocus();
+      expect(getContent(EMAIL_HEADING)).toHaveAttribute(
+        "data-direction",
+        "forwards",
+      );
+    });
+
+    it("leads back to demographics, and forward again to the same text and the same tick", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, { demographics: ADULT }),
+      );
+
+      fireEvent.click(getResultsButton());
+      finishChange();
+      typeAddress("biuro@mypolitics.pl");
+      fireEvent.click(getConsentBox());
+      fireEvent.click(getBackButton("Wróć"));
+
+      expect(getSession().phase).toBe("demographics");
+      expect(
+        screen.getByRole("heading", { name: "Twoja tożsamość" }),
+      ).toBeVisible();
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Wiek" }),
+      ).toHaveAccessibleDescription("27");
+
+      finishChange();
+      fireEvent.click(getResultsButton());
+
+      expect(getEmailField()).toHaveValue("biuro@mypolitics.pl");
+      expect(getConsentBox()).toBeChecked();
+      expect(
+        screen.getByRole("button", { name: "Wyślij i zobacz wyniki" }),
+      ).toBeEnabled();
+    });
+
+    it("starts a new session with nothing typed or ticked when reset is confirmed", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, {
+          phase: "email-capture",
+          email: { address: "biuro@mypolitics.pl", hasConsent: true },
+        }),
+      );
+      const { id } = getSession();
+
+      expect(getEmailField()).toHaveValue("biuro@mypolitics.pl");
+
+      fireEvent.click(getResetButton());
+      fireEvent.click(screen.getByRole("button", { name: "Resetuj quiz" }));
+
+      expect(getSession().id).not.toBe(id);
+      expect(getSession()).toMatchObject({
+        phase: "category-select",
+        email: null,
+        entries: [],
+      });
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
+    });
+
+    it("hands the result in without the address when the card is left with one", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, { phase: "email-capture" }),
+      );
+
+      typeAddress("biuro@mypolitics.pl");
+      fireEvent.click(
+        screen.getByRole("button", { name: "Wyślij i zobacz wyniki" }),
+      );
+
+      expect(getSession()).toMatchObject({
+        phase: "results-calculation",
+        email: { address: "biuro@mypolitics.pl", hasConsent: false },
+      });
       expect(screen.getByText(WAITING)).toBeVisible();
+      expect(createResult).toHaveBeenCalledTimes(1);
+      expect(JSON.stringify(vi.mocked(createResult).mock.calls)).not.toContain(
+        "biuro",
+      );
+      expect(requestResultLink).not.toHaveBeenCalled();
+    });
+
+    it("hands the result in with no e-mail held when the card is skipped", () => {
+      const { getSession } = renderScreen(
+        onQuestion(ALL_DONE, {
+          phase: "email-capture",
+          email: { address: "biuro@mypolitics", hasConsent: true },
+        }),
+      );
+
+      fireEvent.click(getSkipButton());
+
+      expect(getSession()).toMatchObject({
+        phase: "results-calculation",
+        email: null,
+      });
+      expect(createResult).toHaveBeenCalledTimes(1);
+      expect(requestResultLink).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("given sending not set up", () => {
+    it("shows results calculation right after demographics", () => {
+      vi.mocked(createResult).mockReturnValue(new Promise(() => undefined));
+
+      const given = renderScreen(onQuestion(ALL_DONE, { demographics: ADULT }));
+
+      fireEvent.click(getResultsButton());
+
+      expect(given.getSession().phase).toBe("results-calculation");
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(screen.getByText(WAITING)).toBeVisible();
+
+      given.unmount();
+
+      const skipped = renderScreen(onQuestion(ALL_DONE));
+
+      fireEvent.click(getSkipButton());
+
+      expect(skipped.getSession().phase).toBe("results-calculation");
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(requestResultLink).not.toHaveBeenCalled();
+    });
+
+    it("never shows the card, even for a session that was left on it", () => {
+      renderScreen(
+        onQuestion(ALL_DONE, {
+          phase: "email-capture",
+          email: { address: "biuro@mypolitics.pl", hasConsent: true },
+        }),
+      );
+
+      expect(queryEmailCard()).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: "Twoja tożsamość" }),
+      ).toBeVisible();
+      expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
     });
   });
 
