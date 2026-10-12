@@ -1,4 +1,5 @@
 import { ModuleWrapper } from "@/components/shared/ModuleWrapper/ModuleWrapper";
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 
 import type { NolanChartProps } from "./NolanChart.types";
@@ -7,7 +8,6 @@ import { NolanRows } from "./NolanRows/NolanRows";
 import { OpenControl } from "./OpenControl/OpenControl";
 import { QuadrantTitle } from "./QuadrantTitle/QuadrantTitle";
 import { getAxisValues } from "./utils/getAxisValues";
-import { getNolanPosition } from "./utils/getNolanPosition";
 import { getQuadrantColor } from "./utils/getQuadrantColor";
 import { useMapDescription } from "./utils/useMapDescription";
 import { useNolanTitle } from "./utils/useNolanTitle";
