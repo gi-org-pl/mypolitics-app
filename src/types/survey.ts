@@ -1,3 +1,5 @@
+import type { StoreApi } from "zustand";
+
 import type { DeclaredGender, QuizOrientation } from "@/types/orientation";
 
 export type SurveyQuestionAnswerType =
@@ -273,6 +275,7 @@ export interface SurveySessionApi {
   showCheckpoint: (card: unknown) => void;
   closeCheckpoint: () => void; // "Dalej"
   turnCheckpointsOff: () => void; // "Wyłącz checkpointy"
+  setCheckpointRecord: (record: SurveyCheckpointRecord) => void; // the record with a puzzle's reveal line in it
   setDemographics: (values: DemographicsValues) => void;
   leaveDemographics: (isGiven: boolean) => void; // true = "Zobacz wyniki", false = "Pomiń"
   setEmail: (email: SurveyEmail | null) => void;
@@ -284,6 +287,15 @@ export interface SurveySessionApi {
 }
 
 export type SurveySessionActions = Omit<SurveySessionApi, "session">;
+
+// The store of the session of one quiz.
+export interface SurveySessionStore extends StoreApi<SurveySession> {
+  // The session the store started with, when it was read from the storage of
+  // the tab. Absent for a session created on this page. While the store still
+  // holds this very session, the page was loaded onto it and nothing has
+  // happened since.
+  restoredSession?: SurveySession;
+}
 
 // What every phase of the questionnaire screen is given. The content of a
 // phase is a component that takes exactly this.

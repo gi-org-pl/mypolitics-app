@@ -1,16 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { PHASE_FOCUS_ATTRIBUTE } from "@/constants/focus";
+
 import { usePhaseFocus } from "./usePhaseFocus";
 
 const scrollIntoView = vi.fn();
+const FOCUS_TARGET_PROPS = { [PHASE_FOCUS_ATTRIBUTE]: true };
 
 const Screen = ({
   contentKey,
   hasContent = true,
+  hasMarkedText = false,
 }: {
   contentKey: string;
   hasContent?: boolean;
+  hasMarkedText?: boolean;
 }) => {
   const { topRef, contentRef } = usePhaseFocus(contentKey);
 
@@ -19,6 +24,11 @@ const Screen = ({
       <div ref={topRef} data-testid="top" />
       {hasContent && (
         <div ref={contentRef} tabIndex={-1} data-testid="content">
+          {hasMarkedText && (
+            <p tabIndex={-1} {...FOCUS_TARGET_PROPS}>
+              Tekst karty
+            </p>
+          )}
           <button type="button">Dalej</button>
         </div>
       )}
@@ -73,6 +83,25 @@ describe("usePhaseFocus()", () => {
       rerender(<Screen contentKey="first" />);
 
       expect(scrollIntoView).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe("when the new content marks an element of its own for the focus", () => {
+    it("puts the focus on that element, without scrolling to it", () => {
+      const { rerender } = render(<Screen contentKey="first" />);
+
+      rerender(<Screen contentKey="second" hasMarkedText />);
+
+      const text = screen.getByText("Tekst karty");
+
+      expect(text).toHaveFocus();
+      expect(scrollIntoView.mock.contexts).toEqual([screen.getByTestId("top")]);
+    });
+
+    it("leaves it alone when the screen appears with it", () => {
+      render(<Screen contentKey="first" hasMarkedText />);
+
+      expect(document.body).toHaveFocus();
     });
   });
 

@@ -1,4 +1,5 @@
 import type { MessageDescriptor } from "@lingui/core";
+import type { ComponentType } from "react";
 
 import type { AxisEntry } from "@/types/axis";
 import type { Orientation } from "@/types/orientation";
@@ -269,6 +270,23 @@ export interface CheckpointShownCard {
 export interface CheckpointRecord extends SurveyCheckpointRecord {
   cardsShown: CheckpointShownCard[]; // oldest first. The last one is the card that is up, when one is
 }
+
+// What every card component receives. A card component reads nothing but
+// these: everything it draws is in `card`.
+export interface CheckpointCardProps<
+  Type extends CheckpointType = CheckpointType,
+> {
+  card: Extract<CheckpointCard, { type: Type }>; // its own member of the union, frozen
+  onReveal: (outcome: CheckpointOutcome) => CheckpointLine | undefined; // a puzzle calls it on the guess and gets its hit or miss line
+  onContinue: () => void; // pass to the frame unchanged
+  onOptOut: () => void; // pass to the frame unchanged
+}
+
+// The card component of each type that has one. A type with no entry is never
+// handed to the engine, so it is never selected and never shown.
+export type CheckpointCardRegistry = {
+  [Type in CheckpointType]?: ComponentType<CheckpointCardProps<Type>>;
+};
 
 // How takers answered one question. The source reads and checks the response; the engine does the adding up.
 export interface CheckpointAnswerCounts {
