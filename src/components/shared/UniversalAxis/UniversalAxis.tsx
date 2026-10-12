@@ -125,10 +125,20 @@ export const UniversalAxis = ({
   end,
   comparison,
   marker,
+  showValues = true,
+  isMasked = false,
   showLabels = false,
+  description,
 }: UniversalAxisProps) => {
   const { t } = useLingui();
-  const layout = getAxisLayout({ start, end, comparison, marker });
+  const layout = getAxisLayout({
+    start,
+    end,
+    comparison,
+    marker,
+    showValues,
+    isMasked,
+  });
 
   const hasStartAnchor = layout.mode === "empty" || layout.start !== null;
   const hasEndAnchor = layout.end !== null;
@@ -142,12 +152,18 @@ export const UniversalAxis = ({
 
     const { name, displayValue: value } = entry;
 
+    // Without numbers the bar is described by its names alone, and so is a
+    // masked bar, whatever `showValues` says.
+    if (!showValues || layout.isMasked) return name.trim() === "" ? null : name;
+
     return entry.hasValue ? t`${name}: ${value}%` : t`${name}: brak wyniku`;
   };
   const describeComparison = (comparisonLayout: AxisLayout["comparison"]) => {
     if (!comparisonLayout) return null;
 
     const { name, displayValue: value } = comparisonLayout;
+
+    if (!showValues) return name.trim() === "" ? null : t`porównanie z ${name}`;
 
     return t`porównanie z ${name}: ${value}%`;
   };
@@ -156,11 +172,15 @@ export const UniversalAxis = ({
     describeEntry(layout.end),
     describeComparison(layout.comparison),
   ].filter((part) => part !== null);
-  const description =
+  const ownDescription =
     descriptionParts.length > 0 ? descriptionParts.join(", ") : t`Brak wyniku`;
 
   return (
-    <div role="img" aria-label={description} className="w-full min-w-0">
+    <div
+      role="img"
+      aria-label={description?.trim() ? description : ownDescription}
+      className="w-full min-w-0"
+    >
       <div className="relative h-8">
         <div
           data-testid="universal-axis-track"
@@ -172,6 +192,12 @@ export const UniversalAxis = ({
             renderOutsideValue("start", layout.start)}
           {layout.end?.valuePlacement === "outside" &&
             renderOutsideValue("end", layout.end)}
+          {layout.isMasked && (
+            <div
+              data-testid="universal-axis-mask"
+              className={`absolute inset-0 ${HATCH_CLASS_NAME}`}
+            />
+          )}
         </div>
 
         {layout.marker !== null && (
