@@ -428,8 +428,9 @@ assumptions about the frame it was drawn in.
   - **Once a day on `main`.** `.github/workflows/e2e.yml` runs the full suite, in all three browsers,
     on a schedule. A run is skipped when `main` has no commit since the last one that passed, and
     one can be started by hand on any branch from the Actions tab.
-  - **A failed scheduled run opens an issue** labelled `e2e-nightly`, with the commit and a link to
-    the run; while that issue is open, a later failure adds a comment to it. Whoever picks it up
+  - **A scheduled run that does not pass opens an issue** labelled `e2e-nightly` - a failed
+    scenario, a suite that hit its time limit, or a run that could not start - with the commit and a
+    link to the run; while that issue is open, a later failure adds a comment to it. Whoever picks it up
     fixes `main`, or finds the author of the change, and closes the issue once `main` passes.
 
 ### 4.7 Internationalisation (Lingui)

@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       report_failure:
-        description: "Open or update the failure issue if this run fails (a scheduled run always does)"
+        description: "Open or update the failure issue if this run does not pass (a scheduled run always does)"
         type: boolean
         default: false
 
@@ -92,10 +92,22 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  # Reports every way a scheduled run can end without the suite having passed:
+  # the preflight did not succeed (the suite is then skipped), the suite
+  # failed, or the suite hit its time limit (GitHub marks that job cancelled).
+  # A run that was skipped on purpose is not reported. Neither is a run that
+  # somebody cancelled: the whole workflow is cancelled then, which
+  # `cancelled()` sees, while a job stopped by its time limit is not.
   report:
     name: Report a failure
-    needs: e2e
-    if: ${{ always() && needs.e2e.result == 'failure' && (github.event_name == 'schedule' || inputs.report_failure) }}
+    needs: [changes, e2e]
+    if: >-
+      ${{
+        !cancelled() &&
+        (github.event_name == 'schedule' || inputs.report_failure) &&
+        (needs.changes.result != 'success' ||
+          (needs.e2e.result != 'success' && needs.e2e.result != 'skipped'))
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -109,14 +121,17 @@ jobs:
           LABEL: e2e-nightly
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          PREFLIGHT_RESULT: ${{ needs.changes.result }}
+          SUITE_RESULT: ${{ needs.e2e.result }}
         run: |
           gh label create "$LABEL" --repo "$GITHUB_REPOSITORY" --color B60205 \
-            --description "The scheduled e2e run failed" 2>/dev/null || true
+            --description "The scheduled e2e run did not pass" 2>/dev/null || true
 
-          body="The e2e suite failed on \`$GITHUB_REF_NAME\` at [\`${GITHUB_SHA::7}\`]($COMMIT_URL) (trigger: $GITHUB_EVENT_NAME).
+          body="The e2e run did not pass on \`$GITHUB_REF_NAME\` at [\`${GITHUB_SHA::7}\`]($COMMIT_URL) (trigger: $GITHUB_EVENT_NAME).
 
+          - Jobs: preflight \`$PREFLIGHT_RESULT\`, suite \`$SUITE_RESULT\`. On the suite, \`cancelled\` means it hit its time limit and \`skipped\` means the preflight did not get that far.
           - Run: $RUN_URL
-          - Playwright report: the \`playwright-report\` artifact of that run, kept for 7 days.
+          - Playwright report: the \`playwright-report\` artifact of that run, kept for 7 days (there is none when the suite did not start).
 
           Reproduce locally with \`CI=1 yarn e2e\`. Close this issue once \`main\` passes again."
 
@@ -127,5 +142,5 @@ jobs:
             gh issue comment "$open" --repo "$GITHUB_REPOSITORY" --body "$body"
           else
             gh issue create --repo "$GITHUB_REPOSITORY" --label "$LABEL" \
-              --title "The scheduled e2e run failed" --body "$body"
+              --title "The scheduled e2e run did not pass" --body "$body"
           fi
