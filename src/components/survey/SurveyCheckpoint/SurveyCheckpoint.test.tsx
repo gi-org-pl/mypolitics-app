@@ -41,8 +41,9 @@ const renderCard = (props: Partial<SurveyCheckpointProps> = {}) => {
 };
 
 // A card that changes in place, as a puzzle does on a guess: the visual, the
-// text and the options are swapped, and "Dalej" comes back.
-const Puzzle = () => {
+// text and the options are swapped, and "Dalej" comes back - or was there all
+// along, for a puzzle whose guess can be passed over.
+const Puzzle = ({ isContinueKept = false }: { isContinueKept?: boolean }) => {
   const [isRevealed, setIsRevealed] = useState(false);
 
   return (
@@ -61,7 +62,7 @@ const Puzzle = () => {
           </button>
         )
       }
-      isContinueAvailable={isRevealed}
+      isContinueAvailable={isContinueKept || isRevealed}
       onContinue={vi.fn()}
       onOptOut={vi.fn()}
     />
@@ -74,8 +75,15 @@ const getText = () => within(getRegion()).getByRole("paragraph");
 
 const getButton = (name: string) => screen.getByRole("button", { name });
 
-// The box that moves its height: the second of the three parts of the frame.
-const getBox = () => getRegion().children[1] as HTMLElement;
+// What stands between the panel and "Wyłącz checkpointy": the second of the
+// three parts of the frame.
+const getBody = () => getRegion().children[1] as HTMLElement;
+
+// The boxes that move their height, in the order of the body: the text, the
+// options, "Dalej".
+const getBoxes = () => [...getBody().children] as HTMLElement[];
+
+const BOX_CLASS_NAME = "data-[animating=true]:overflow-y-clip";
 
 const queryButton = (name: string) => screen.queryByRole("button", { name });
 
@@ -334,50 +342,90 @@ describe("<SurveyCheckpoint />", () => {
       expect(getButtonNames()).toEqual([CONTINUE, OPT_OUT]);
     });
 
-    it('keeps the text, the options and "Dalej" in one box that moves its height', () => {
+    it('keeps the text, the options and "Dalej" each in a box of its own that moves its height', () => {
       renderWithI18n(<Puzzle />);
 
-      const box = getBox();
+      const boxes = getBoxes();
+      const [textBox, optionsBox, continueBox] = boxes;
 
-      expect(box).toHaveClass("data-[animating=true]:overflow-y-clip");
-      expect(box).toContainElement(getText());
-      expect(box).toContainElement(getButton("Wolny rynek"));
+      expect(boxes).toHaveLength(3);
+
+      for (const box of boxes) expect(box).toHaveClass(BOX_CLASS_NAME);
+
+      expect(textBox).toContainElement(getText());
+      expect(optionsBox).toContainElement(getButton("Wolny rynek"));
+      expect(continueBox.firstElementChild).toBeEmptyDOMElement();
 
       fireEvent.click(getButton("Wolny rynek"));
 
-      expect(getBox()).toBe(box);
-      expect(box).toContainElement(getText());
-      expect(box).toContainElement(getButton(CONTINUE));
+      expect(getBoxes()).toEqual(boxes);
+      expect(textBox).toContainElement(getText());
+      expect(optionsBox.firstElementChild).toBeEmptyDOMElement();
+      expect(continueBox).toContainElement(getButton(CONTINUE));
     });
 
-    it('leaves the visual above that box and "Wyłącz checkpointy" under it', () => {
-      renderWithI18n(<Puzzle />);
+    it('leaves "Dalej" in its own box when the options above it go, so it moves up with their box', () => {
+      renderWithI18n(<Puzzle isContinueKept />);
 
-      const box = getBox();
+      const [, optionsBox, continueBox] = getBoxes();
+      const next = getButton(CONTINUE);
+
+      expect(optionsBox).toContainElement(getButton("Wolny rynek"));
+      expect(optionsBox).not.toContainElement(next);
+      expect(continueBox).toContainElement(next);
+
+      fireEvent.click(getButton("Wolny rynek"));
+
+      expect(getButton(CONTINUE)).toBe(next);
+      expect(getBoxes()[2]).toBe(continueBox);
+      expect(continueBox).toContainElement(next);
+      expect(optionsBox.firstElementChild).toBeEmptyDOMElement();
+    });
+
+    it('leaves the visual above the boxes and "Wyłącz checkpointy" under them', () => {
+      renderWithI18n(<Puzzle />);
 
       expect(getRegion().children).toHaveLength(3);
       expect(getRegion().firstElementChild).toContainElement(
         screen.getByText("?"),
       );
+      expect(getRegion().firstElementChild).not.toHaveClass(BOX_CLASS_NAME);
       expect(getRegion().lastElementChild).toBe(getButton(OPT_OUT));
-      expect(box).not.toContainElement(screen.getByText("?"));
+      expect(getBody()).not.toContainElement(screen.getByText("?"));
+      expect(getBody()).not.toContainElement(getButton(OPT_OUT));
     });
 
-    it("stacks what is in the box with the gap of the frame", () => {
+    it('keeps the gap of the frame above the options and above "Dalej" inside their boxes', () => {
       renderCard({ options: OPTIONS });
 
-      const body = getText().parentElement;
+      const [, optionsBox, continueBox] = getBoxes();
+      const optionsStack = optionsBox.firstElementChild?.firstElementChild;
+      const continueRow = continueBox.firstElementChild?.firstElementChild;
 
-      expect(body).toHaveClass(
+      expect(getBody()).toHaveClass("flex", "w-full", "min-w-0", "flex-col");
+      expect(getBody()).not.toHaveClass("gap-4");
+      expect(optionsStack).toHaveClass(
         "flex",
         "w-full",
         "min-w-0",
         "flex-col",
-        "gap-4",
+        "gap-2",
+        "pt-4",
       );
-      expect(body).toContainElement(getButton("Interwencjonizm"));
-      expect(body).toContainElement(getButton(CONTINUE));
+      expect(optionsStack).toContainElement(getButton("Interwencjonizm"));
+      expect(continueRow).toHaveClass("w-full", "pt-4");
+      expect(continueRow).toContainElement(getButton(CONTINUE));
       expect(getRegion()).toHaveClass("flex", "flex-col", "gap-4");
+    });
+
+    it("gives a part that is not there no room", () => {
+      renderCard();
+
+      const [textBox, optionsBox, continueBox] = getBoxes();
+
+      expect(textBox).toContainElement(getText());
+      expect(optionsBox.firstElementChild).toBeEmptyDOMElement();
+      expect(continueBox).toContainElement(getButton(CONTINUE));
     });
   });
 

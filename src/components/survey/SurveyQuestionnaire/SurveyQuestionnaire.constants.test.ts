@@ -4,6 +4,7 @@ import { SurveyCheckpointAxisPuzzle } from "@/components/survey/SurveyCheckpoint
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
+import { SurveyCheckpointPositionPuzzle } from "@/components/survey/SurveyCheckpointPositionPuzzle/SurveyCheckpointPositionPuzzle";
 import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
 import { getEnabledCheckpointTypes } from "@/utils/checkpoint/engine/getEnabledCheckpointTypes";
 
@@ -52,6 +53,15 @@ describe("CHECKPOINT_CARDS", () => {
     expect(CHECKPOINT_CARDS["axis-puzzle"]).toBe(SurveyCheckpointAxisPuzzle);
     expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain(
       "axis-puzzle",
+    );
+  });
+
+  it('maps "position-puzzle" to SurveyCheckpointPositionPuzzle', () => {
+    expect(CHECKPOINT_CARDS["position-puzzle"]).toBe(
+      SurveyCheckpointPositionPuzzle,
+    );
+    expect(getEnabledCheckpointTypes(CHECKPOINT_CARDS)).toContain(
+      "position-puzzle",
     );
   });
 });

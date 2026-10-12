@@ -3,6 +3,7 @@ import { SurveyCheckpointAxisPuzzle } from "@/components/survey/SurveyCheckpoint
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
+import { SurveyCheckpointPositionPuzzle } from "@/components/survey/SurveyCheckpointPositionPuzzle/SurveyCheckpointPositionPuzzle";
 import { SurveyCheckpointStats } from "@/components/survey/SurveyCheckpointStats/SurveyCheckpointStats";
 import type { CheckpointCardRegistry } from "@/types/checkpoint";
 
@@ -22,4 +23,5 @@ export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
   "nolan-path": SurveyCheckpointNolanPath,
   stats: SurveyCheckpointStats,
   "axis-puzzle": SurveyCheckpointAxisPuzzle,
+  "position-puzzle": SurveyCheckpointPositionPuzzle,
 };

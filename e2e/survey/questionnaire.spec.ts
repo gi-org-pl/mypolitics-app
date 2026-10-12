@@ -22,6 +22,11 @@ import {
   SURVEY_ID,
 } from "./survey.fixture";
 import {
+  ARCHETYPE_NAMES,
+  ARCHETYPE_QUESTIONS,
+  archetypesSurveyFixture,
+} from "./survey-archetypes.fixture";
+import {
   AXIS_ORIENTATIONS,
   AXIS_QUESTIONS,
   axisSurveyFixture,
@@ -1380,6 +1385,101 @@ test.describe("Feature: Questionnaire checkpoints - the single axis puzzle", () 
       ).toBeVisible();
       await expect(
         page.getByText(TWELFTH_QUESTION.text, { exact: true }),
+      ).toBeVisible();
+      await expect(getCheckpoint(page)).toHaveCount(0);
+    });
+  });
+});
+
+// The double axis puzzle is the one card on which a press names a political
+// identity. The quiz is a fixture of its own, with three archetypes and no
+// axes: after five answers for the first archetype it is the closest by far,
+// and the card asks which of the three it is. The rows follow the seed of
+// the session, so they are found by name and not by place.
+test.describe("Feature: Questionnaire checkpoints - the double axis puzzle", () => {
+  const [LEADER, SECOND_ARCHETYPE, THIRD_ARCHETYPE] = ARCHETYPE_NAMES;
+  const SIXTH_QUESTION = ARCHETYPE_QUESTIONS[5];
+
+  const getQuestion = (page: Page, text: string) =>
+    page.getByRole("group", { name: text });
+
+  test.beforeEach(async ({ page }) => {
+    await mockSurveyApi(page, archetypesSurveyFixture);
+  });
+
+  test("Scenario: A taker picks the closest character out of three", async ({
+    page,
+  }) => {
+    await test.step("Given a user opened the ten-question quiz with three archetypes", async () => {
+      await openPage(page, QUIZ_PATH);
+      await expect(
+        getQuestion(page, ARCHETYPE_QUESTIONS[0].text),
+      ).toBeVisible();
+      await expect(getCategoryGroup(page)).toHaveCount(0);
+    });
+
+    await test.step('When they answer the first five questions "Zdecydowanie za"', async () => {
+      for (const { text } of ARCHETYPE_QUESTIONS.slice(0, 5)) {
+        await getQuestion(page, text)
+          .getByRole("button", { name: "Zdecydowanie za", exact: true })
+          .click();
+      }
+    });
+
+    await test.step(`Then a region named "Checkpoint" is shown with the buttons "${LEADER}", "${SECOND_ARCHETYPE}" and "${THIRD_ARCHETYPE}"`, async () => {
+      const options = getCheckpoint(page).getByRole("group");
+
+      await expect(getCheckpoint(page)).toBeVisible();
+      await expect(options.getByRole("button")).toHaveCount(3);
+
+      for (const name of ARCHETYPE_NAMES) {
+        await expect(
+          options.getByRole("button", { name, exact: true }),
+        ).toBeVisible();
+      }
+
+      await expect(getCheckpoint(page).getByRole("img")).toHaveAccessibleName(
+        "Ukryta postać jest blisko Ciebie",
+      );
+      await expect(getCheckpoint(page)).not.toContainText(/[\d%]/);
+    });
+
+    await test.step('And it has a "Dalej" button', async () => {
+      await expect(getButton(page, "Dalej")).toBeVisible();
+      await expect(getButton(page, "Wyłącz checkpointy")).toBeVisible();
+    });
+
+    await test.step(`When they press "${LEADER}"`, async () => {
+      await getButton(page, LEADER).click();
+    });
+
+    await test.step("Then the three buttons are gone", async () => {
+      for (const name of ARCHETYPE_NAMES) {
+        await expect(getButton(page, name)).toHaveCount(0);
+      }
+    });
+
+    await test.step(`And the card shows "${LEADER}" over its bar and names it in its text`, async () => {
+      const text = getCheckpoint(page).getByRole("paragraph");
+      const bar = getCheckpoint(page).getByRole("img");
+
+      await expect(
+        getCheckpoint(page).getByText(LEADER, { exact: true }),
+      ).toBeVisible();
+      await expect(bar).toHaveAccessibleName(`${LEADER} jest blisko Ciebie`);
+      await expect(text).toContainText(LEADER);
+      await expect(text).toBeFocused();
+      await expect(getCheckpoint(page)).not.toContainText(/[\d%]/);
+    });
+
+    await test.step('When they press "Dalej"', async () => {
+      await getButton(page, "Dalej").click();
+    });
+
+    await test.step("Then they see the sixth question", async () => {
+      await expect(getQuestion(page, SIXTH_QUESTION.text)).toBeVisible();
+      await expect(
+        page.getByText(SIXTH_QUESTION.text, { exact: true }),
       ).toBeVisible();
       await expect(getCheckpoint(page)).toHaveCount(0);
     });
