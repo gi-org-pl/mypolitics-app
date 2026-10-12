@@ -116,3 +116,149 @@ export interface SurveyResult {
   id: string; // the identifier the result was asked for by
   isCalculated: boolean;
 }
+
+export type SurveyPhase =
+  | "category-select"
+  | "questions"
+  | "checkpoints"
+  | "demographics"
+  | "email-capture"
+  | "results-calculation"
+  | "short-results"; // the results module's phase: part of the contract, never entered here
+
+export interface SurveyAnswerEntry {
+  questionId: string;
+  answerId?: string; // absent = the question was skipped
+}
+
+// The five kinds a question can produce. Each is also a valid
+// `SurveyAnswerType` of the answer button.
+export type SurveyAnswerKind =
+  | "strongly-agree"
+  | "agree"
+  | "disagree"
+  | "strongly-disagree"
+  | "custom";
+
+export interface SurveyAnswerToDraw {
+  id: string; // identifier of the possible answer
+  label: string;
+  kind: SurveyAnswerKind;
+}
+
+export type DemographicsFieldId =
+  | "age"
+  | "gender"
+  | "residenceAreaSize"
+  | "education";
+
+export type DemographicsValues = Partial<Record<DemographicsFieldId, string>>;
+
+export interface SurveyEmail {
+  address: string;
+  hasConsent: boolean;
+}
+
+// How far the hand-in got, and how it ended. An enum, like SurveyLoadStatus.
+export const SurveyResultState = {
+  NotSent: "not-sent",
+  Sending: "sending",
+  Created: "created",
+  Calculated: "calculated",
+  Failed: "failed",
+} as const;
+
+export type SurveyResultState =
+  (typeof SurveyResultState)[keyof typeof SurveyResultState];
+
+export interface SurveyTimeSample {
+  questionId: string;
+  seconds: number; // how long that done question was on screen
+}
+
+export interface SurveyCheckpointRecord {
+  cardsShown: unknown[]; // the cards put on screen, oldest first. Their shape is survey-checkpoint-engine's
+  timeSamples: SurveyTimeSample[]; // at most one per done question; a question that was not timed has none
+}
+
+export interface SurveySession {
+  id: string; // random UUID v4: the session, the seed of every seeded draw, and the result identifier
+  surveyId: string;
+  entries: SurveyAnswerEntry[]; // one per done question: always the first questions of the quiz, in order, no gap
+  prioritizedCategoryIds: string[]; // the categories picked in category select, in the order picked
+  areCategoriesConfirmed: boolean;
+  phase: SurveyPhase;
+  areCheckpointsOff: boolean;
+  demographics: DemographicsValues;
+  areDemographicsGiven: boolean;
+  checkpointRecord: SurveyCheckpointRecord;
+  email: SurveyEmail | null; // memory only - never stored
+  resultState: SurveyResultState; // memory only - never stored
+}
+
+// What is written to the storage of the tab.
+export type StoredSurveySession = Omit<SurveySession, "email" | "resultState">;
+
+// A session whose parts are of the right kind but whose content is not checked
+// against the quiz yet: what storage held, or a session that fitted an earlier
+// reading of the quiz. A `SurveySession` is always one of these.
+export interface UnfittedSurveySession
+  extends Omit<
+    SurveySession,
+    | "entries"
+    | "prioritizedCategoryIds"
+    | "phase"
+    | "demographics"
+    | "checkpointRecord"
+  > {
+  entries: readonly (SurveyAnswerEntry | undefined)[]; // `undefined` = an entry that could not be read
+  prioritizedCategoryIds: readonly unknown[];
+  phase?: SurveyPhase;
+  demographics: Record<string, unknown>;
+  checkpointRecord: {
+    cardsShown: unknown[];
+    timeSamples: readonly (SurveyTimeSample | undefined)[];
+  };
+}
+
+export interface SurveySessionConfig {
+  isEmailSendingSetUp: boolean;
+}
+
+export interface SurveyProgress {
+  done: number; // answered + skipped
+  all: number; // questions of the quiz
+}
+
+export type SurveyVisibleCategory = SurveyCategory & { name: string };
+
+export interface SurveySessionApi {
+  session: SurveySession;
+  setCategories: (prioritizedCategoryIds: string[]) => void;
+  confirmCategories: () => void; // "Idziemy dalej"
+  skipCategories: () => void; // "Pomiń" on category select
+  answer: (answerId: string, seconds?: number) => void;
+  skip: (seconds?: number) => void; // "Pomiń" under a question
+  back: () => void;
+  showCheckpoint: (card: unknown) => void;
+  closeCheckpoint: () => void; // "Dalej"
+  turnCheckpointsOff: () => void; // "Wyłącz checkpointy"
+  setDemographics: (values: DemographicsValues) => void;
+  leaveDemographics: (isGiven: boolean) => void; // true = "Zobacz wyniki", false = "Pomiń"
+  setEmail: (email: SurveyEmail | null) => void;
+  leaveEmailCapture: (isGiven: boolean) => void; // true = "Wyślij i zobacz wyniki", false = "Pomiń"
+  setResultState: (resultState: SurveyResultState) => void;
+  reset: () => void;
+  leave: () => void; // the taker is sent to the results: the stored record is removed
+  startOver: () => void; // a brand-new session, nothing carried over
+}
+
+export type SurveySessionActions = Omit<SurveySessionApi, "session">;
+
+// What an event makes of a session. It returns the very session it was handed
+// when the event does not apply at that moment.
+export type SurveySessionAction<Arguments extends unknown[] = []> = (
+  survey: Survey,
+  session: SurveySession,
+  ...actionArguments: Arguments
+) => SurveySession;

@@ -75,7 +75,7 @@ describe("createResult()", () => {
       expect(getSentBodies()[1]).not.toHaveProperty("demographics");
     });
 
-    it("sends an empty list of topics and of answers as they are", async () => {
+    it("sends an empty list of categories and of answers as they are", async () => {
       adapter.mockImplementationOnce(createApiReply(201));
 
       await createResult({ ...input, prioritizedCategories: [], answers: [] });

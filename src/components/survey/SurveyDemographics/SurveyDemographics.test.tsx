@@ -1,13 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import type { DemographicsValues } from "@/types/survey";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import { SurveyDemographics } from "./SurveyDemographics";
-import type {
-  DemographicsValues,
-  SurveyDemographicsProps,
-} from "./SurveyDemographics.types";
+import type { SurveyDemographicsProps } from "./SurveyDemographics.types";
 
 const FIELD_NAMES = [
   "Wiek",
