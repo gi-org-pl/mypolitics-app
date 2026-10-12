@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import type { NolanPosition } from "../NolanChart.types";
+import type { NolanPosition } from "@/types/results";
 
 const toPercent = (share: number): string => `${share * 100}%`;
 

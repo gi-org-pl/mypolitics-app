@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { SurveySession } from "@/types/survey";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getResultLinkInput } from "./getResultLinkInput";
 

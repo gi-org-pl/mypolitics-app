@@ -6,7 +6,7 @@ import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { openAddress } from "@/utils/url/openAddress";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useLeave } from "./useLeave";
 

@@ -8,8 +8,8 @@ import {
 } from "@/types/survey";
 import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCategories";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";
 

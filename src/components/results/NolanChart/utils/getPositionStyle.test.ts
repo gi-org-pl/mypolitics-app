@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { NolanPosition } from "../NolanChart.types";
+import type { NolanPosition } from "@/types/results";
+
 import { getPositionStyle } from "./getPositionStyle";
 
 const at = (x: number, y: number) =>

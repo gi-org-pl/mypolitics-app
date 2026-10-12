@@ -3,8 +3,8 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
 import { CreateResultOutcome, type ResultInput } from "@/types/survey";
-import { createApiError } from "@/utils/vitest/createApiError";
-import { createApiReply } from "@/utils/vitest/createApiReply";
+import { createApiError } from "@/utils/vitest/api/createApiError";
+import { createApiReply } from "@/utils/vitest/api/createApiReply";
 
 import { apiClient } from "./apiClient";
 import { createResult } from "./createResult";

@@ -4,8 +4,8 @@ import { setSessionCategories } from "@/utils/survey/categories/setSessionCatego
 import { setSessionDemographics } from "@/utils/survey/demographics/setSessionDemographics";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getContentKey } from "./getContentKey";
 

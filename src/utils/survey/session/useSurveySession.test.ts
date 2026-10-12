@@ -7,8 +7,8 @@ import {
   type Survey,
   SurveyResultState,
 } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 
 import { getSessionStorageKey } from "./getSessionStorageKey";
 import { getSurveySessionStore } from "./getSurveySessionStore";

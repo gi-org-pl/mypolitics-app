@@ -15,9 +15,9 @@ import { leaveSessionEmailCapture } from "@/utils/survey/email-capture/leaveSess
 import { setSessionEmail } from "@/utils/survey/email-capture/setSessionEmail";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 import { createSession } from "./createSession";
 import { fitSession } from "./fitSession";
 

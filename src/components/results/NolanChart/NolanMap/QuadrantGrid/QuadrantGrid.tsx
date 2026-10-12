@@ -1,7 +1,8 @@
+import type { NolanQuadrantKey } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 
 import { MAP_CLIP_CLASS_NAME, QUADRANT_KEYS } from "../../NolanChart.constants";
-import type { NolanQuadrantKey, NolanQuadrants } from "../../NolanChart.types";
+import type { NolanQuadrants } from "../../NolanChart.types";
 import { getColorStyle } from "../../utils/getColorStyle";
 
 const DIVIDER_CLASS_NAME = "absolute bg-gi-dark-ash";

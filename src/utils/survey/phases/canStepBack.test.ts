@@ -5,8 +5,8 @@ import { setSessionCategories } from "@/utils/survey/categories/setSessionCatego
 import { showSessionCheckpoint } from "@/utils/survey/checkpoints/showSessionCheckpoint";
 import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { canStepBack } from "./canStepBack";
 
 const RESULT_STATES: SurveyResultState[] = [

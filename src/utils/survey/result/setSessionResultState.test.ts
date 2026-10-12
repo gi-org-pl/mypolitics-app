@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { SurveyResultState } from "@/types/survey";
 import { leaveSessionDemographics } from "@/utils/survey/demographics/leaveSessionDemographics";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { setSessionResultState } from "./setSessionResultState";
 
 const RESULT_STATES: SurveyResultState[] = [

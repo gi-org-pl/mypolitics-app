@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import type { NolanPosition } from "../../NolanChart.types";
+import type { NolanPosition } from "@/types/results";
+
 import { TakerDot } from "./TakerDot";
 
 const at = (x: number, y: number) => ({ x, y }) as NolanPosition;

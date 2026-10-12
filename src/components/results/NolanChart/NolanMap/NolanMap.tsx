@@ -1,6 +1,7 @@
 import type { Orientation } from "@/types/orientation";
+import type { NolanPosition } from "@/types/results";
 
-import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
+import type { NolanQuadrants } from "../NolanChart.types";
 import { AxisPill } from "./AxisPill/AxisPill";
 import { OrientationMarker } from "./OrientationMarker/OrientationMarker";
 import { QuadrantGrid } from "./QuadrantGrid/QuadrantGrid";

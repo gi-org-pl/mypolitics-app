@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useSurvey } from "./useSurvey";
 

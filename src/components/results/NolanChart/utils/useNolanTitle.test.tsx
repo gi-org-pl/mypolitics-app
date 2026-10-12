@@ -4,8 +4,10 @@ import { renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
-import type { NolanPosition, NolanQuadrants } from "../NolanChart.types";
-import { getNolanPosition } from "./getNolanPosition";
+import type { NolanPosition } from "@/types/results";
+import { getNolanPosition } from "@/utils/results/getNolanPosition";
+
+import type { NolanQuadrants } from "../NolanChart.types";
 import { useNolanTitle } from "./useNolanTitle";
 
 const wrapper = ({ children }: { children: ReactNode }) => (

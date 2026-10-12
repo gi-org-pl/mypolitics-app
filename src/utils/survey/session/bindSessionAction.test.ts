@@ -4,8 +4,8 @@ import { createStore } from "zustand";
 import type { SurveySession, SurveySessionAction } from "@/types/survey";
 import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { bindSessionAction } from "./bindSessionAction";
 
 describe("bindSessionAction()", () => {

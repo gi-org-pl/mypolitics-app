@@ -7,8 +7,8 @@ import { answerQuestion } from "@/utils/survey/questions/answerQuestion";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
 import { createSession } from "@/utils/survey/session/createSession";
 import { resetSession } from "@/utils/survey/session/resetSession";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getPhaseKey } from "./getPhaseKey";
 

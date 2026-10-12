@@ -2,9 +2,9 @@ import { fireEvent, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import type { DemographicsValues, Survey } from "@/types/survey";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { renderPhaseContent } from "@/utils/vitest/renderPhaseContent";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 
 import { SurveyQuestionnaireDemographics } from "./SurveyQuestionnaireDemographics";
 

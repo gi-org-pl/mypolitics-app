@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import type { Survey } from "@/types/survey";
-import { createSurvey } from "@/utils/vitest/createSurvey";
-import { createSurveyCategory } from "@/utils/vitest/createSurveyCategory";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
 
 import { getCategoryLimit } from "./getCategoryLimit";
 

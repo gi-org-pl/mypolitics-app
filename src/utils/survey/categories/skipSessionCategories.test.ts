@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { setSessionCategories } from "./setSessionCategories";
 import { skipSessionCategories } from "./skipSessionCategories";
 

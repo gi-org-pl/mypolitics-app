@@ -1,20 +1,20 @@
 import { MAX_AXIS_VALUE, MIN_AXIS_VALUE } from "@/constants/axis";
-import { clamp } from "@/utils/number/clamp";
-import { isNumber } from "@/utils/number/isNumber";
-import { getAxisLead } from "@/utils/results/getAxisLead";
-
 import {
   LEVEL_TOLERANCE,
   MAP_EXTREME_RADIUS,
   MAP_MODERATE_RADIUS,
   QUADRANT_BY_POLES,
-} from "../NolanChart.constants";
+} from "@/constants/results";
 import type {
   NolanAxisValues,
   NolanLevel,
   NolanPoleSide,
   NolanPosition,
-} from "../NolanChart.types";
+} from "@/types/results";
+import { clamp } from "@/utils/number/clamp";
+import { isNumber } from "@/utils/number/isNumber";
+
+import { getAxisLead } from "./getAxisLead";
 
 const getCoordinate = (start: number, end: number): number =>
   (clamp(end, MIN_AXIS_VALUE, MAX_AXIS_VALUE) -

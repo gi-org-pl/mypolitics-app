@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import type { NolanPosition } from "@/types/results";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 
-import type { NolanPosition } from "../../NolanChart.types";
 import { OrientationMarker } from "./OrientationMarker";
 
 const at = (x: number, y: number) => ({ x, y }) as NolanPosition;

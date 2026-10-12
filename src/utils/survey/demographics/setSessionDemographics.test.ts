@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import type { DemographicsValues } from "@/types/survey";
 import { stepBack } from "@/utils/survey/phases/stepBack";
-import { createStartedSession } from "@/utils/vitest/createStartedSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 import { leaveSessionDemographics } from "./leaveSessionDemographics";
 import { setSessionDemographics } from "./setSessionDemographics";
 

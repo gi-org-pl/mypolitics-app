@@ -7,7 +7,7 @@ import { skipSessionCategories } from "@/utils/survey/categories/skipSessionCate
 import { stepBack } from "@/utils/survey/phases/stepBack";
 import { skipQuestion } from "@/utils/survey/questions/skipQuestion";
 import { createSession } from "@/utils/survey/session/createSession";
-import { createSurvey } from "@/utils/vitest/createSurvey";
+import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { getContentKey } from "./getContentKey";
 import { useContentChange } from "./useContentChange";
