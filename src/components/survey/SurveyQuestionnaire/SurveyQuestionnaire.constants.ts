@@ -1,4 +1,5 @@
 import { SurveyCheckpointAxisCloseness } from "@/components/survey/SurveyCheckpointAxisCloseness/SurveyCheckpointAxisCloseness";
+import { SurveyCheckpointAxisPuzzle } from "@/components/survey/SurveyCheckpointAxisPuzzle/SurveyCheckpointAxisPuzzle";
 import { SurveyCheckpointHalfway } from "@/components/survey/SurveyCheckpointHalfway/SurveyCheckpointHalfway";
 import { SurveyCheckpointNewTrait } from "@/components/survey/SurveyCheckpointNewTrait/SurveyCheckpointNewTrait";
 import { SurveyCheckpointNolanPath } from "@/components/survey/SurveyCheckpointNolanPath/SurveyCheckpointNolanPath";
@@ -20,4 +21,5 @@ export const CHECKPOINT_CARDS: CheckpointCardRegistry = {
   "new-trait": SurveyCheckpointNewTrait,
   "nolan-path": SurveyCheckpointNolanPath,
   stats: SurveyCheckpointStats,
+  "axis-puzzle": SurveyCheckpointAxisPuzzle,
 };
