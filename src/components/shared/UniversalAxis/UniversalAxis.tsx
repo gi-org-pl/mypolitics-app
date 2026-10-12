@@ -113,10 +113,12 @@ export const UniversalAxis = ({
   end,
   comparison,
   marker,
+  showValues = true,
   showLabels = false,
+  description,
 }: UniversalAxisProps) => {
   const { t } = useLingui();
-  const layout = getAxisLayout({ start, end, comparison, marker });
+  const layout = getAxisLayout({ start, end, comparison, marker, showValues });
 
   const hasStartAnchor = layout.mode === "empty" || layout.start !== null;
   const hasEndAnchor = layout.end !== null;
@@ -130,12 +132,17 @@ export const UniversalAxis = ({
 
     const { name, displayValue: value } = entry;
 
+    // Without numbers the bar is described by its names alone.
+    if (!showValues) return name.trim() === "" ? null : name;
+
     return entry.hasValue ? t`${name}: ${value}%` : t`${name}: brak wyniku`;
   };
   const describeComparison = (comparisonLayout: AxisLayout["comparison"]) => {
     if (!comparisonLayout) return null;
 
     const { name, displayValue: value } = comparisonLayout;
+
+    if (!showValues) return name.trim() === "" ? null : t`porównanie z ${name}`;
 
     return t`porównanie z ${name}: ${value}%`;
   };
@@ -144,11 +151,15 @@ export const UniversalAxis = ({
     describeEntry(layout.end),
     describeComparison(layout.comparison),
   ].filter((part) => part !== null);
-  const description =
+  const ownDescription =
     descriptionParts.length > 0 ? descriptionParts.join(", ") : t`Brak wyniku`;
 
   return (
-    <div role="img" aria-label={description} className="w-full min-w-0">
+    <div
+      role="img"
+      aria-label={description?.trim() ? description : ownDescription}
+      className="w-full min-w-0"
+    >
       <div className="relative h-8">
         <div
           data-testid="universal-axis-track"

@@ -261,3 +261,39 @@ export const OutOfRangeValues: Story = {
     comparison: { orientation: friend, value: -20 },
   },
 };
+
+// The bar of a checkpoint card: no number on or next to a fill, and none in
+// the description.
+export const OneSidedWithoutValues: Story = {
+  args: {
+    start: { orientation: socialism, value: 64 },
+    showValues: false,
+  },
+};
+
+export const OneSidedSmallValueWithoutValues: Story = {
+  args: {
+    start: { orientation: socialism, value: 5 },
+    showValues: false,
+  },
+};
+
+export const DoubleSidedWithoutValues: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    showValues: false,
+    showLabels: true,
+  },
+};
+
+// The description is the one passed in; the numbers are still drawn.
+export const WithDescription: Story = {
+  args: {
+    start: { orientation: liberalism, value: 69 },
+    end: { orientation: conservatism, value: 31 },
+    showLabels: true,
+    description:
+      "„Orientation A” i „Orientation B”: wyższy wynik po stronie „Orientation A”",
+  },
+};
