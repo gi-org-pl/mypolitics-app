@@ -261,7 +261,7 @@ const candidateQuiz: Survey = createSurvey({
       position: 1,
       title: "Kandydaci",
       orientationIds: candidateIds,
-      visibleRows: candidateIds.length,
+      params: { visibleRows: candidateIds.length },
     }),
     createResultModule("candidate-president", "archetype", {
       position: 2,
@@ -276,7 +276,7 @@ const candidateQuiz: Survey = createSurvey({
       column: "end",
       title: "Kategorie",
       orientationIds: candidateIds,
-      groupBy: "category",
+      params: { groupBy: "category" },
     }),
   ],
 });

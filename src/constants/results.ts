@@ -1,11 +1,15 @@
-import { DEFAULT_MARKER_POSITION } from "@/constants/axis";
+import {
+  DEFAULT_MARKER_POSITION,
+  MAX_AXIS_VALUE,
+  MIN_AXIS_VALUE,
+} from "@/constants/axis";
 import type {
   NolanPoleSide,
   NolanQuadrantKey,
   ResultModule,
   ResultModuleColumn,
-  ResultModuleGrouping,
-  ResultModuleSelection,
+  ResultModuleParamDefinition,
+  ResultModuleParamName,
   ResultModuleSlots,
   ResultModuleType,
 } from "@/types/results";
@@ -73,24 +77,59 @@ export const RESULT_MODULE_COLUMNS = [
   "end",
 ] as const satisfies readonly ResultModuleColumn[];
 
-export const RESULT_MODULE_SELECTIONS = [
-  "all",
-  "linked_to_leader",
-] as const satisfies readonly ResultModuleSelection[];
-
-export const RESULT_MODULE_GROUPINGS = [
-  "none",
-  "category",
-] as const satisfies readonly ResultModuleGrouping[];
-
 // What a field of a record holds when it is missing or cannot be read.
 export const RESULT_MODULE_DEFAULTS = {
   column: "start",
-  selection: "all",
-  groupBy: "none",
-  marker: DEFAULT_MARKER_POSITION,
-  visibleRows: DEFAULT_VISIBLE_ROWS,
 } as const satisfies Partial<ResultModule>;
+
+// The parameters of a record. Two tables hold everything about one: what its
+// name may hold, and which module types read it. A new parameter is an entry
+// in the first and its name in the second, and nothing else about a record
+// changes: not its type, not the way it is read from the API.
+
+// What each name may hold, and what it is when a record leaves it out or
+// holds anything else. The same for every type that reads the name.
+export const RESULT_MODULE_PARAM_DEFINITIONS = {
+  // Which of its orientations the module shows.
+  selection: {
+    kind: "choice",
+    values: ["all", "linked_to_leader"],
+    fallback: "all",
+  },
+  // Whether its rows are one list or one list per category.
+  groupBy: { kind: "choice", values: ["none", "category"], fallback: "none" },
+  // The reference line on every bar of the module. Nothing switches it off.
+  marker: {
+    kind: "number",
+    min: MIN_AXIS_VALUE,
+    max: MAX_AXIS_VALUE,
+    whole: false,
+    nullable: true,
+    fallback: DEFAULT_MARKER_POSITION,
+  },
+  // How many rows a list shows before its fold.
+  visibleRows: {
+    kind: "number",
+    min: 1,
+    max: Number.MAX_SAFE_INTEGER,
+    whole: true,
+    nullable: false,
+    fallback: DEFAULT_VISIBLE_ROWS,
+  },
+} as const satisfies Record<string, ResultModuleParamDefinition>;
+
+// The names each module type reads. A name that is not listed for a type is
+// never read from a record of that type.
+export const RESULT_MODULE_PARAMS = {
+  header: [],
+  single_axis: ["marker"],
+  double_axis: ["marker"],
+  multi_axis: ["groupBy", "marker"],
+  horizontal_bar: ["selection", "groupBy", "visibleRows"],
+  nolan_chart: [],
+  archetype: [],
+  traits: [],
+} as const satisfies Record<ResultModuleType, readonly ResultModuleParamName[]>;
 
 // The one type that stands outside the order of the modules, and the slot of
 // the label of its link.

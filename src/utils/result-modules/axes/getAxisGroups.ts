@@ -24,7 +24,7 @@ const GROUPINGS: Record<
 // axis that lacks a side is left out of its group, and a group left empty is
 // not a group.
 export const getAxisGroups = (
-  record: Pick<ResultModule, "axisIds" | "groupBy">,
+  record: Pick<ResultModule, "axisIds"> & { groupBy: ResultModuleGrouping },
   context: Pick<ResolutionContext, "survey" | "result" | "gender">,
 ): ResolvedAxisGroup[] =>
   GROUPINGS[record.groupBy](
