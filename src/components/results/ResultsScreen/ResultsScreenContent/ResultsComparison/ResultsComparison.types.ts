@@ -37,7 +37,7 @@ export type FriendRefusal = (typeof FriendRefusal)[keyof typeof FriendRefusal];
 // other tab of the screen.
 export const ComparisonView = {
   Results: "compared-results", // the modules of the taker with the other side laid over them
-  Questions: "compared-questions", // the questions with the answers of both sides. Not drawn yet: no comparison lists it
+  Questions: "compared-questions", // the questions with the answers of both sides
 } as const;
 
 export type ComparisonView =
@@ -70,7 +70,7 @@ export interface ComparingState {
   score?: number; // the agreement score, 0-100. Absent = no question agrees or disagrees
   modules?: ResolvedModule[]; // the result of a friend, resolved as the modules of the taker are. Absent for an orientation
   views: ComparisonView[]; // what this comparison can show, in the order of the switch
-  view?: ComparisonView; // the view shown. Absent = this comparison has none
+  view?: ComparisonView; // the view shown. Absent = this comparison has no view
 }
 
 // One state at a time: what the tab draws follows from it alone.

@@ -14,6 +14,9 @@ import type { ComparisonViewsProps } from "./ComparisonViews.types";
 // has a switch above it - a tab list - and a line that reaches both edges of
 // the sheet under the switch, as the design draws it; a comparison with one
 // view shows it with no switch, and one with none shows nothing.
+//
+// Only the chosen view is in the page: what a view keeps for itself - a
+// search, an opened row - lasts while that view is shown.
 export const ComparisonViews = ({
   comparison,
   onViewChange,
@@ -50,7 +53,7 @@ export const ComparisonViews = ({
         aria-labelledby={hasSwitch ? labelledBy : undefined}
         className="min-w-0"
       >
-        {View && <View {...taker} comparison={comparison} />}
+        <View {...taker} comparison={comparison} />
       </div>
     </div>
   );
