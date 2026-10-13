@@ -98,7 +98,7 @@ const resultModules = [
       AXIS_IDS.greenEconomy,
       AXIS_IDS.economicSolidarity,
     ],
-    groupBy: "category",
+    params: { groupBy: "category" },
   },
   {
     id: "identity-compass",
@@ -131,7 +131,7 @@ const resultModules = [
     description:
       "W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
     orientationIds: Object.values(PARTY_IDS),
-    selection: "linked_to_leader",
+    params: { selection: "linked_to_leader" },
   },
 ];
 

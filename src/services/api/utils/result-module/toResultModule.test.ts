@@ -43,10 +43,12 @@ describe("toResultModule()", () => {
           description: "Partie najbliższe twojej tożsamości.",
           orientationIds: ["right", "left"],
           axisIds: ["society"],
-          selection: "linked_to_leader",
-          groupBy: "category",
-          marker: 65,
-          visibleRows: 5,
+          params: {
+            selection: "linked_to_leader",
+            groupBy: "category",
+            marker: 65,
+            visibleRows: 5,
+          },
           labels: {},
           colors: {},
         }),
@@ -59,10 +61,12 @@ describe("toResultModule()", () => {
         description: "Partie najbliższe twojej tożsamości.",
         orientationIds: ["right", "left"],
         axisIds: ["society"],
-        selection: "linked_to_leader",
-        groupBy: "category",
-        marker: 65,
-        visibleRows: 5,
+        params: {
+          selection: "linked_to_leader",
+          groupBy: "category",
+          marker: 65,
+          visibleRows: 5,
+        },
         labels: {},
         colors: {},
       });
@@ -80,10 +84,7 @@ describe("toResultModule()", () => {
         column: "start",
         orientationIds: [],
         axisIds: [],
-        selection: "all",
-        groupBy: "none",
-        marker: 50,
-        visibleRows: 3,
+        params: {},
         labels: {},
         colors: {},
       });
@@ -92,14 +93,26 @@ describe("toResultModule()", () => {
     });
   });
 
-  describe("given a marker", () => {
-    it("keeps a number as sent, the two ends included", () => {
-      expect(read({ marker: 0 }).marker).toBe(0);
-      expect(read({ marker: 100 }).marker).toBe(100);
+  describe("given parameters", () => {
+    it("keeps them as saved, whatever the type of the record reads", () => {
+      const params = {
+        marker: null,
+        selection: "nobody",
+        visibleRows: 0,
+        sortBy: ["name", 1, true, null],
+      };
+
+      expect(read({ params }).params).toEqual(params);
+      expect(read({ type: "header", params }).params).toEqual(params);
     });
 
-    it("reads null as no reference line", () => {
-      expect(read({ marker: null }).marker).toBe(false);
+    it("leaves out a name whose value could not be read", () => {
+      expect(
+        read({ params: { marker: 20, bounds: { min: 1 } } }).params,
+      ).toEqual({ marker: 20 });
+      expect(read({ params: { bounds: {} } }).params).not.toHaveProperty(
+        "bounds",
+      );
     });
   });
 
