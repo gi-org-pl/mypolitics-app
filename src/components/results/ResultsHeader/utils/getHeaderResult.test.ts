@@ -76,3 +76,38 @@ describe("getHeaderResult()", () => {
     });
   });
 });
+
+describe("getHeaderResult()", () => {
+  describe("given a header set to name an orientation below a partial match", () => {
+    it("returns the orientation in the band of no match, with its confidence", () => {
+      expect(getHeaderResult(orientation, 43.67, "named")).toEqual({
+        name: "Liberalizm",
+        imageUrl: "https://example.org/liberalism.png",
+        confidence: 43.67,
+        band: "none",
+      });
+      expect(getHeaderResult(orientation, 0, "named")?.band).toBe("none");
+    });
+
+    it("changes nothing from a partial match up", () => {
+      expect(getHeaderResult(orientation, 50, "named")).toEqual(
+        getHeaderResult(orientation, 50),
+      );
+      expect(getHeaderResult(orientation, 86.6, "named")).toEqual(
+        getHeaderResult(orientation, 86.6),
+      );
+    });
+
+    it("still returns null without an orientation or a confidence", () => {
+      expect(getHeaderResult(undefined, 40, "named")).toBeNull();
+      expect(getHeaderResult(orientation, undefined, "named")).toBeNull();
+      expect(getHeaderResult(orientation, Number.NaN, "named")).toBeNull();
+    });
+  });
+
+  describe("given a header set to say that nothing matches", () => {
+    it("returns null below a partial match, as with no setting at all", () => {
+      expect(getHeaderResult(orientation, 43.67, "no_match")).toBeNull();
+    });
+  });
+});

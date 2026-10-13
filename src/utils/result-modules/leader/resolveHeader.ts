@@ -10,9 +10,11 @@ import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 import { getTopEntry } from "./getTopEntry";
 
 // What the header is given: of the header record's shown orientations the one
-// with the highest value, that value as the confidence, and the label of the
-// link. When none of them has a value the header has no orientation, and
-// shows no match. A quiz with no header record has no header.
+// with the highest value, that value as the confidence, the label of the
+// link, and what the record says of a leader below a partial match: whether
+// the header names it all the same, and what it says under it then. When none
+// of them has a value the header has no orientation, and shows no match. A
+// quiz with no header record has no header.
 export const resolveHeader = (
   context: Pick<ResolutionContext, "survey" | "result" | "gender">,
 ): ResolvedHeader | undefined => {
@@ -24,10 +26,13 @@ export const resolveHeader = (
   if (!record) return undefined;
 
   const top = getTopEntry(getRecordEntries(record, context));
+  const values = getModuleValues(record);
 
   return {
     orientation: top?.orientation,
     confidence: top?.value,
-    linkLabel: getModuleValues(record)["label.link"],
+    linkLabel: values["label.link"],
+    lowMatch: values.lowMatch,
+    lowMatchLabel: values["label.lowMatch"],
   };
 };

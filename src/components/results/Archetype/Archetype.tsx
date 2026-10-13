@@ -11,12 +11,13 @@ import { useArchetypeView } from "./utils/useArchetypeView";
 export const Archetype = ({
   title,
   archetypes,
+  lowMatch,
   comparison,
   onStatsClick,
   onInfoClick,
 }: ArchetypeProps) => {
   const { leader, rest } = getArchetypeRanking(archetypes);
-  const content = getArchetypeContent(leader, rest);
+  const content = getArchetypeContent(leader, rest, lowMatch);
   const { openView, toggleView } = useArchetypeView(content);
 
   return (

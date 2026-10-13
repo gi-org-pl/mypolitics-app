@@ -136,6 +136,19 @@ export const noMatchResults = toContent(identityQuiz, {
   answers: [],
 });
 
+// The same quiz for a taker whose closest identity stays below a partial
+// match: the scores of the green progressive's taker at 44 % of what they
+// are. The quiz names that identity all the same, under a notice, and links
+// no party to it.
+export const lowMatchResults = toContent(identityQuiz, {
+  ...identityQuizResult,
+  scores: Object.fromEntries(
+    Object.entries(identityQuizResult.scores).map(
+      ([id, { points, maximum }]) => [id, { points: points * 0.44, maximum }],
+    ),
+  ),
+});
+
 const CANDIDATES: [id: string, name: string, color: string][] = [
   ["candidate-1", "Anna Kowalska", "#dc2626"],
   ["candidate-2", "Jan Nowak", "#be123c"],

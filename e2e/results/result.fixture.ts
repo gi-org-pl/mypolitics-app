@@ -4,17 +4,30 @@ import { SURVEY_ID } from "../survey/survey.fixture";
 // GET /v1/survey/{surveyId} and GET /v1/result/{resultId} send them.
 //
 // The quiz sends its own list of result modules, so the screen is composed
-// from the API's list: the header over the two identities, the ideologies
+// from the API's list: the header over the three identities, the ideologies
 // and the parties of the leader in the start column, the identity in the end
 // column. It has two visible categories and two scale questions, so a taker
 // can be led through it in a few steps.
 //
 // In the result the green progressive leads with 90 of 100, which makes its
-// two parties the ones the ranking shows.
+// two parties the ones the ranking shows. In a second result it is the
+// closest identity with 40 of 100 only: the list names it all the same, under
+// a notice, and says that there is no closest party.
 
 export const RESULT_ID = "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11";
 // The result of a made-up friend who took the same quiz.
 export const FRIEND_RESULT_ID = "5218cde2-beac-4234-a0a7-c72f46e979a8";
+// The result of a taker whose closest identity stays below a partial match.
+export const LOW_MATCH_RESULT_ID = "8d1f6c0e-2b7a-4c39-9e54-61a0c3d7f2b4";
+export const LOW_MATCH_NOTICE =
+  "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).";
+export const NO_PARTY_LABEL = "Brak najbliższej partii";
+// The identities of the quiz: what a result can be compared with.
+export const IDENTITY_NAMES = [
+  "Zielony postępowiec",
+  "Narodowy konserwatysta",
+  "Pragmatyczny centrysta",
+];
 export const RESULT_QUIZ_NAME = "Quiz Tożsamościowy próbny";
 export const LEADER_NAME = "Zielony postępowiec";
 export const PARTIES_DESCRIPTION =
@@ -35,6 +48,7 @@ const IDS = {
   market: "a1b2c3d4-0007-4e5f-8a9b-0c1d2e3f4a5b",
   progress: "a1b2c3d4-0008-4e5f-8a9b-0c1d2e3f4a5b",
   tradition: "a1b2c3d4-0009-4e5f-8a9b-0c1d2e3f4a5b",
+  centrist: "a1b2c3d4-0010-4e5f-8a9b-0c1d2e3f4a5b",
 };
 
 const AXIS_IDS = {
@@ -96,13 +110,13 @@ export const RESULT_QUESTIONS = [
     CATEGORY_IDS.economy,
     "Państwo powinno inwestować w transport publiczny.",
     [IDS.green, IDS.intervention],
-    [IDS.conservative, IDS.market],
+    [IDS.conservative, IDS.market, IDS.centrist],
   ),
   toQuestion(
     "result-q2",
     CATEGORY_IDS.worldview,
     "Związki partnerskie powinny być uznawane przez państwo.",
-    [IDS.green, IDS.progress],
+    [IDS.green, IDS.progress, IDS.centrist],
     [IDS.conservative, IDS.tradition],
   ),
 ];
@@ -131,6 +145,14 @@ export const resultSurveyFixture = {
       "Narodowy konserwatysta",
       "#2c3e50",
       [IDS.right],
+    ),
+    // An identity no result of this file scores: it is in the quiz to be
+    // compared with. It stands against the first question and for the second.
+    toOrientation(
+      IDS.centrist,
+      "IDENTITY",
+      "Pragmatyczny centrysta",
+      "#7f8c8d",
     ),
     toOrientation(IDS.greens, "PARTY", "Zieloni", "#249668"),
     toOrientation(IDS.newLeft, "PARTY", "Nowa Lewica", "#a01846"),
@@ -180,8 +202,11 @@ export const resultSurveyFixture = {
       id: "result-header",
       type: "header",
       position: 0,
-      orientationIds: [IDS.green, IDS.conservative],
-      values: [],
+      orientationIds: [IDS.green, IDS.conservative, IDS.centrist],
+      values: [
+        { key: "lowMatch", value: "named" },
+        { key: "label.lowMatch", value: LOW_MATCH_NOTICE },
+      ],
     },
     {
       id: "result-ideologies",
@@ -200,7 +225,10 @@ export const resultSurveyFixture = {
       position: 2,
       column: "end",
       orientationIds: [IDS.green, IDS.conservative],
-      values: [{ key: "title", value: "Tożsamość" }],
+      values: [
+        { key: "title", value: "Tożsamość" },
+        { key: "lowMatch", value: "named" },
+      ],
     },
     {
       id: "result-parties",
@@ -212,6 +240,7 @@ export const resultSurveyFixture = {
         { key: "title", value: "Partie" },
         { key: "description", value: PARTIES_DESCRIPTION },
         { key: "selection", value: "linked_to_leader" },
+        { key: "label.empty", value: NO_PARTY_LABEL },
       ],
     },
   ],
@@ -253,6 +282,18 @@ export const createResultResponse = (
   createdAt: "2026-10-08T09:59:58.000Z",
   calculatedAt: "2026-10-08T10:00:00.000Z",
 });
+
+// The result of a taker who chose the same answers and is close to no
+// identity: the green progressive is the closest, with 40 of 100.
+export const createLowMatchResultResponse = () =>
+  createResultResponse(LOW_MATCH_RESULT_ID, undefined, [
+    toScore(IDS.green, 4),
+    toScore(IDS.conservative, 2),
+    toScore(IDS.intervention, 7),
+    toScore(IDS.market, 3),
+    toScore(IDS.progress, 8),
+    toScore(IDS.tradition, 2),
+  ]);
 
 // The result of the friend: a national conservative, who chose the same
 // answer of the first question as the taker and another one of the second,

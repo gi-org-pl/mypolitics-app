@@ -34,7 +34,7 @@ const FIELDS_BEFORE = [
 ];
 
 // The keys that are settings: the ones the old result pages had in code.
-const SETTINGS = ["selection", "groupBy", "marker", "visibleRows"];
+const SETTINGS = ["selection", "groupBy", "marker", "visibleRows", "lowMatch"];
 
 // What a record of a list holds under a key.
 const findValue = (record: OwnResultModule, key: string) =>
@@ -68,11 +68,55 @@ describe("OWN_RESULT_MODULES", () => {
         ]),
       ).toEqual([
         ["header", undefined, undefined],
-        ["archetype", "end", { pl: "Tożsamość", en: "Identity" }],
         ["multi_axis", "start", { pl: "Ideologie", en: "Ideologies" }],
+        ["archetype", "end", { pl: "Tożsamość", en: "Identity" }],
         ["nolan_chart", "end", undefined],
-        ["horizontal_bar", "start", { pl: "Partie", en: "Parties" }],
+        ["horizontal_bar", "end", { pl: "Partie", en: "Parties" }],
       ]);
+    });
+
+    // The old page drew the axes first, then the identity, the compass and
+    // the parties: that is the order on a narrow screen, and on a wide one
+    // the axes fill the first column and the other three the second.
+    it("is written in the order it is drawn in, which is the order of the old page", () => {
+      const positions = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].map(
+        ({ position }) => position,
+      );
+
+      expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    });
+
+    it("names the closest identity below a partial match as well, in the header with a notice and on the identity card", () => {
+      const [header, , archetype] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID];
+
+      expect(findValue(header, "lowMatch")).toBe("named");
+      expect(findValue(header, "label.lowMatch")).toEqual({
+        pl: "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+        en: "Your views are not similar enough to any identity (less than 50% confidence).",
+      });
+      expect(findValue(archetype, "lowMatch")).toBe("named");
+    });
+
+    it("says that there is no closest party when no party is linked to a leader", () => {
+      const parties = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].at(-1);
+
+      expect(parties && findValue(parties, "label.empty")).toEqual({
+        pl: "Brak najbliższej partii",
+        en: "No closest party",
+      });
+    });
+
+    it("explains the axes and the parties as the old page did", () => {
+      const [, axes, , , parties] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID];
+
+      expect(findValue(axes, "description")).toMatchObject({
+        pl: expect.stringMatching(/^Oś określa bliskość do ideologii\. /),
+      });
+      expect(findValue(parties, "description")).toMatchObject({
+        pl: expect.stringMatching(
+          /^Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich\. /,
+        ),
+      });
     });
   });
 
@@ -190,7 +234,9 @@ describe("OWN_RESULT_MODULES", () => {
         ),
       ),
     ).toEqual([
+      ["identity-header", "lowMatch", "named"],
       ["identity-ideologies", "groupBy", "category"],
+      ["identity-archetype", "lowMatch", "named"],
       ["identity-parties", "selection", "linked_to_leader"],
       ["presidential-candidates", "visibleRows", 13],
       ["presidential-categories", "groupBy", "category"],
@@ -198,10 +244,10 @@ describe("OWN_RESULT_MODULES", () => {
   });
 
   // Nothing a taker sees depends on the shape a record is saved in: the lists
-  // resolve to what they resolved to while the settings were fields.
+  // resolve to what is written out for them, value by value.
   describe.each(
     OWN_LIST_RESULTS,
-  )("given the list of %s and a result of that quiz", (_, survey, result, resolvedBefore) => {
+  )("given the list of %s and a result of that quiz", (_, survey, result, expected) => {
     const resolved = resolveResult(survey, result);
 
     it("resolves the app's own list, with every record of it", () => {
@@ -210,8 +256,8 @@ describe("OWN_RESULT_MODULES", () => {
       );
     });
 
-    it("gives the header and every module what they were given before the settings became parameters", () => {
-      expect(withOrientationIds(resolved)).toEqual(resolvedBefore);
+    it("gives the header and every module what the list is written to give them", () => {
+      expect(withOrientationIds(resolved)).toEqual(expected);
     });
   });
 

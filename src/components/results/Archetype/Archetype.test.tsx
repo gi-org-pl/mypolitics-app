@@ -863,3 +863,61 @@ describe("<Archetype />", () => {
     });
   });
 });
+
+// The identity card of the old site named the closest identity whatever its
+// match. A card does that when it is set to.
+describe("<Archetype />", () => {
+  describe("given a card set to name a leader below a partial match", () => {
+    it("names the leader, with its match on the bar in the colour of the band of no match", () => {
+      renderArchetype({ archetypes: NO_MATCH, lowMatch: "named" });
+
+      expect(screen.getByTestId("archetype-leader-name")).toHaveTextContent(
+        "Alfa",
+      );
+      expect(screen.getByTestId("archetype-leader-name")).toHaveClass(
+        "text-gi-primary",
+      );
+      expect(
+        screen.getByRole("img", { name: "Alfa: 45%" }),
+      ).toBeInTheDocument();
+      expect(
+        screen
+          .getAllByTestId("universal-axis-fill-start")[0]
+          .style.getPropertyValue("--axis-color"),
+      ).toBe(MATCH_BAND_COLORS.none);
+      expect(screen.queryByText("Brak dopasowania")).not.toBeInTheDocument();
+    });
+
+    it("shows the short description of the leader, and opens the full one", () => {
+      renderArchetype({ archetypes: NO_MATCH, lowMatch: "named" });
+
+      expect(screen.getByText(SHORT)).toBeVisible();
+
+      fireEvent.click(screen.getByRole("button", { name: "Pełny opis" }));
+
+      expect(screen.getByText(/Pierwszy akapit\./)).toBeVisible();
+    });
+
+    it("ranks the others without the leader", () => {
+      renderArchetype({ archetypes: NO_MATCH, lowMatch: "named" });
+
+      fireEvent.click(screen.getByRole("button", { name: "Ranking" }));
+
+      expect(
+        screen
+          .getAllByTestId("ranked-row-name")
+          .map((name) => name.textContent),
+      ).toEqual(["Beta", "Delta"]);
+    });
+  });
+
+  describe("given a card set to say that nothing matches", () => {
+    it("shows the no match wording for a leader below a partial match", () => {
+      renderArchetype({ archetypes: NO_MATCH, lowMatch: "no_match" });
+
+      expect(screen.getByTestId("archetype-leader-name")).toHaveTextContent(
+        "Brak dopasowania",
+      );
+    });
+  });
+});
