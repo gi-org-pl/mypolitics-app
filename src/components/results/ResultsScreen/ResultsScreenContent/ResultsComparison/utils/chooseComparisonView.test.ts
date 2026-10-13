@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   choosingFriend,
   friendComparison,
-  twoViewComparison,
+  orientationComparison,
 } from "../ResultsComparison.fixtures";
 import { ComparisonView } from "../ResultsComparison.types";
 import { chooseComparisonView } from "./chooseComparisonView";
@@ -12,20 +12,20 @@ describe("chooseComparisonView()", () => {
   describe("given a view the comparison has", () => {
     it("shows it", () => {
       expect(
-        chooseComparisonView(twoViewComparison, ComparisonView.Questions),
-      ).toEqual({ ...twoViewComparison, view: ComparisonView.Questions });
+        chooseComparisonView(friendComparison, ComparisonView.Questions),
+      ).toEqual({ ...friendComparison, view: ComparisonView.Questions });
     });
 
     it("keeps everything else of the comparison", () => {
       const state = chooseComparisonView(
-        twoViewComparison,
+        friendComparison,
         ComparisonView.Questions,
       );
 
       expect(state).toMatchObject({
-        other: twoViewComparison.other,
-        score: twoViewComparison.score,
-        views: twoViewComparison.views,
+        other: friendComparison.other,
+        score: friendComparison.score,
+        views: friendComparison.views,
       });
     });
   });
@@ -33,8 +33,8 @@ describe("chooseComparisonView()", () => {
   describe("given a view the comparison does not have", () => {
     it("changes nothing", () => {
       expect(
-        chooseComparisonView(friendComparison, ComparisonView.Questions),
-      ).toBe(friendComparison);
+        chooseComparisonView(orientationComparison, ComparisonView.Results),
+      ).toBe(orientationComparison);
     });
   });
 

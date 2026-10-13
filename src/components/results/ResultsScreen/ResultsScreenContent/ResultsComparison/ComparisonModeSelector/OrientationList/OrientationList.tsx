@@ -1,11 +1,9 @@
-import { Input } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 
-import searchIcon from "@/assets/icons/search.svg";
+import { SearchField } from "@/components/results/SearchField/SearchField";
 import { containsText } from "@/utils/text/containsText";
 
-import { SEARCH_FIELD_CLASS_NAME } from "./OrientationList.constants";
 import type { OrientationListProps } from "./OrientationList.types";
 import { OrientationListItem } from "./OrientationListItem/OrientationListItem";
 
@@ -23,14 +21,9 @@ export const OrientationList = ({
 
   return (
     <div className="flex w-full min-w-0 flex-col gap-2 rounded-2xl border border-gi-ash p-3">
-      <Input
-        role="searchbox"
-        autoComplete="off"
-        aria-label={t`Szukaj po nazwie`}
-        placeholder={t`Szukaj po nazwie`}
+      <SearchField
+        label={t`Szukaj po nazwie`}
         value={search}
-        LeftIcon={<img src={searchIcon} alt="" />}
-        className={SEARCH_FIELD_CLASS_NAME}
         onChange={setSearch}
       />
       <ul className="flex min-w-0 flex-col gap-2 empty:hidden">
