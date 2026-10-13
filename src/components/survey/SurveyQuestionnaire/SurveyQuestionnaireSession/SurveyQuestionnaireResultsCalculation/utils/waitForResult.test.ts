@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getResult } from "@/services/api/client/getResult";
 import type { SurveyResult } from "@/types/survey";
+import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 
 import {
   RESULT_READ_INTERVAL_MS,
@@ -12,8 +13,8 @@ import { waitForResult } from "./waitForResult";
 vi.mock("@/services/api/client/getResult");
 
 const RESULT_ID = "0b9f3c1e-5a7d-4e2b-9c41-7f6a2d8e1b35";
-const NOT_CALCULATED: SurveyResult = { id: RESULT_ID, isCalculated: false };
-const CALCULATED: SurveyResult = { id: RESULT_ID, isCalculated: true };
+const NOT_CALCULATED = createSurveyResult({ id: RESULT_ID });
+const CALCULATED = createSurveyResult({ id: RESULT_ID, isCalculated: true });
 
 const getResultMock = vi.mocked(getResult);
 

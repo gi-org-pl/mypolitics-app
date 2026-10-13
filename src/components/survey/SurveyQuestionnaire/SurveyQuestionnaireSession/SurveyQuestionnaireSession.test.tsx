@@ -20,6 +20,7 @@ import { openAddress } from "@/utils/url/openAddress";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import { QUESTION_SLIDE_MS } from "./SurveyQuestionnaireQuestions/SurveyQuestionSlide/SurveyQuestionSlide.constants";
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
@@ -169,7 +170,9 @@ describe("<SurveyQuestionnaireSession />", () => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
     vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
-    vi.mocked(getResult).mockResolvedValue({ id: "", isCalculated: true });
+    vi.mocked(getResult).mockResolvedValue(
+      createSurveyResult({ isCalculated: true }),
+    );
   });
 
   afterEach(() => {
@@ -1059,7 +1062,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       onQuestion(ALL_DONE, { phase: "results-calculation", ...overrides });
 
     it('draws no bar, "Prawie gotowe", back off and reset off while a run is under way', async () => {
-      vi.mocked(getResult).mockResolvedValue({ id: "", isCalculated: false });
+      vi.mocked(getResult).mockResolvedValue(createSurveyResult());
 
       const { getSession } = renderScreen(inCalculation());
 

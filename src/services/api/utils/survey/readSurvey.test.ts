@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  IDENTITY_SURVEY_ID,
+  LIVE_QUIZ_IDS,
+  PRESIDENTIAL_SURVEY_ID,
+} from "@/constants/result-modules.fixtures";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
+import { getOwnResultModules } from "@/services/api/utils/result-module/getOwnResultModules";
 import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
 import { type Survey, SurveyLoadStatus } from "@/types/survey";
 
@@ -13,7 +19,9 @@ import {
   presidentialQuizSurvey,
 } from "./readSurvey.fixtures";
 
-const SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
+// A survey the app keeps no list of result modules for.
+const SURVEY_ID = "96032c50-f243-4d2c-86a5-9088dd077417";
+const LANGUAGE = "pl";
 
 const createQuestion = (
   id: string,
@@ -26,10 +34,15 @@ const createQuestion = (
   ...overrides,
 });
 
-const read = (response: Record<string, unknown>): Survey => {
+const read = (
+  response: Record<string, unknown>,
+  surveyId = SURVEY_ID,
+  language = LANGUAGE,
+): Survey => {
   const result = readSurvey(
     { questions: [createQuestion("q1")], ...response },
-    SURVEY_ID,
+    surveyId,
+    language,
   );
 
   if (result.status !== SurveyLoadStatus.Ready) {
@@ -60,7 +73,7 @@ describe("readSurvey()", () => {
       [{ questions: "questions" }],
       [{ message: "Survey with given ID not found.", statusCode: 404 }],
     ])("returns failed for %j", (response) => {
-      expect(readSurvey(response, SURVEY_ID)).toEqual({
+      expect(readSurvey(response, SURVEY_ID, LANGUAGE)).toEqual({
         status: SurveyLoadStatus.Failed,
       });
     });
@@ -320,13 +333,13 @@ describe("readSurvey()", () => {
       });
     });
 
-    describe("given a reply without the field", () => {
+    describe("given a reply without the field, for a survey the app keeps no list for", () => {
       it("holds an empty list", () => {
         expect(read(quiz).resultModules).toEqual([]);
       });
     });
 
-    describe("given a field that is not a list", () => {
+    describe("given a field that is not a list, for a survey the app keeps no list for", () => {
       it.each([
         [null],
         [""],
@@ -335,6 +348,91 @@ describe("readSurvey()", () => {
         [{}],
       ])("holds an empty list for %j", (resultModules) => {
         expect(read({ ...quiz, resultModules }).resultModules).toEqual([]);
+      });
+    });
+
+    describe.each([
+      ["the identity quiz", IDENTITY_SURVEY_ID, 5],
+      ["the presidential quiz", PRESIDENTIAL_SURVEY_ID, 4],
+    ])("given %s, which the app keeps a list for", (_, surveyId, count) => {
+      const liveQuiz = {
+        orientations: LIVE_QUIZ_IDS[surveyId].orientationIds.map((id) => ({
+          id,
+        })),
+        axis: LIVE_QUIZ_IDS[surveyId].axisIds.map((id) => ({ id })),
+      };
+      const known = {
+        orientationIds: new Set(LIVE_QUIZ_IDS[surveyId].orientationIds),
+        axisIds: new Set(LIVE_QUIZ_IDS[surveyId].axisIds),
+      };
+
+      it("holds the app's own list when the reply has none, read with readResultModules", () => {
+        const { resultModules } = read(liveQuiz, surveyId);
+
+        expect(resultModules).toHaveLength(count);
+        expect(resultModules).toEqual(
+          readResultModules(getOwnResultModules(surveyId, LANGUAGE), known),
+        );
+      });
+
+      it.each([
+        [null],
+        [[]],
+        ["resultModules"],
+        [{}],
+        [[{ id: "radar", type: "radar", position: 0 }]],
+      ])("holds the app's own list when the reply's is %j", (resultModules) => {
+        expect(
+          read({ ...liveQuiz, resultModules }, surveyId).resultModules,
+        ).toHaveLength(count);
+      });
+
+      it("holds its texts in the language the quiz was asked for", () => {
+        const [polish, english] = [LANGUAGE, "en"].map((language) =>
+          read(liveQuiz, surveyId, language).resultModules.map(
+            ({ title }) => title,
+          ),
+        );
+
+        expect(english).toEqual(
+          readResultModules(getOwnResultModules(surveyId, "en"), known).map(
+            ({ title }) => title,
+          ),
+        );
+        expect(english).not.toEqual(polish);
+      });
+
+      it("holds its texts in Polish when the quiz was asked for in a language the list is not written in", () => {
+        expect(read(liveQuiz, surveyId, "de").resultModules).toEqual(
+          read(liveQuiz, surveyId, LANGUAGE).resultModules,
+        );
+      });
+
+      it("lets a list of the reply win", () => {
+        const resultModules = [
+          { id: "api-traits", type: "traits", position: 0 },
+        ];
+
+        expect(
+          read({ ...liveQuiz, resultModules }, surveyId).resultModules,
+        ).toEqual(readResultModules(resultModules, known));
+      });
+
+      it("keeps only the orientations and axes that were read", () => {
+        const [header] = getOwnResultModules(surveyId, LANGUAGE);
+        const [orientationId] = header.orientationIds ?? [];
+        const { resultModules } = read(
+          { orientations: [{ id: orientationId }] },
+          surveyId,
+        );
+
+        expect(resultModules).toHaveLength(count);
+        expect([
+          ...new Set(
+            resultModules.flatMap(({ orientationIds }) => orientationIds),
+          ),
+        ]).toEqual([orientationId]);
+        expect(resultModules.flatMap(({ axisIds }) => axisIds)).toEqual([]);
       });
     });
   });
@@ -598,7 +696,7 @@ describe("readSurvey()", () => {
     });
 
     it("returns not-found when no question is left", () => {
-      expect(readSurvey({ questions: [] }, SURVEY_ID)).toEqual({
+      expect(readSurvey({ questions: [] }, SURVEY_ID, LANGUAGE)).toEqual({
         status: SurveyLoadStatus.NotFound,
       });
       expect(
@@ -614,6 +712,7 @@ describe("readSurvey()", () => {
             ],
           },
           SURVEY_ID,
+          LANGUAGE,
         ),
       ).toEqual({ status: SurveyLoadStatus.NotFound });
     });
@@ -641,7 +740,9 @@ describe("readSurvey()", () => {
         }),
       ];
 
-      expect(() => readSurvey({ questions }, SURVEY_ID)).not.toThrow();
+      expect(() =>
+        readSurvey({ questions }, SURVEY_ID, LANGUAGE),
+      ).not.toThrow();
       expect(read({ questions }).questions).toEqual([
         {
           id: "c",
@@ -663,7 +764,7 @@ describe("readSurvey()", () => {
         questions: [createQuestion("a")],
       };
 
-      expect(() => readSurvey(response, SURVEY_ID)).not.toThrow();
+      expect(() => readSurvey(response, SURVEY_ID, LANGUAGE)).not.toThrow();
       expect(read(response)).toMatchObject({
         orientations: [],
         categories: [],
@@ -761,8 +862,38 @@ describe("readSurvey()", () => {
     it.each([
       ["the identity quiz", identityQuizSurvey],
       ["the presidential quiz", presidentialQuizSurvey],
-    ])("has no result modules for %s, which does not send the list yet", (_, response) => {
+    ])("has no result modules for %s under another identifier: the API does not send the list yet", (_, response) => {
       expect(read(response).resultModules).toEqual([]);
+    });
+
+    it.each([
+      [
+        "the identity quiz",
+        identityQuizSurvey,
+        IDENTITY_SURVEY_ID,
+        [
+          "identity-header",
+          "identity-archetype",
+          "identity-ideologies",
+          "identity-compass",
+          "identity-parties",
+        ],
+      ],
+      [
+        "the presidential quiz",
+        presidentialQuizSurvey,
+        PRESIDENTIAL_SURVEY_ID,
+        [
+          "presidential-header",
+          "presidential-candidates",
+          "presidential-identity",
+          "presidential-categories",
+        ],
+      ],
+    ])("holds the app's own list for %s under its own identifier", (_, response, surveyId, ids) => {
+      expect(
+        read(response, surveyId).resultModules.map(({ id }) => id),
+      ).toEqual(ids);
     });
 
     it("reads the identity quiz: 102 questions, 5 plain categories, 18 axes with packed names", () => {

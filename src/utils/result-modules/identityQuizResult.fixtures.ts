@@ -1,3 +1,4 @@
+import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { QuizResult } from "@/types/results";
 import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
@@ -141,6 +142,7 @@ export const identityResultQuiz = (
       resultModules,
     },
     IDENTITY_QUIZ_ID,
+    DEFAULT_LANGUAGE,
   ) as Extract<SurveyLoadResult, { status: typeof SurveyLoadStatus.Ready }>
 ).survey;
 

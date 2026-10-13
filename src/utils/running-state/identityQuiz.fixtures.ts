@@ -1,3 +1,4 @@
+import { DEFAULT_LANGUAGE } from "@/constants/common";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 
@@ -1248,8 +1249,9 @@ export const identityQuizResponse = {
 
 // The quiz as the app reads it.
 export const identityQuiz = (
-  readSurvey(identityQuizResponse, IDENTITY_QUIZ_ID) as Extract<
-    SurveyLoadResult,
-    { status: typeof SurveyLoadStatus.Ready }
-  >
+  readSurvey(
+    identityQuizResponse,
+    IDENTITY_QUIZ_ID,
+    DEFAULT_LANGUAGE,
+  ) as Extract<SurveyLoadResult, { status: typeof SurveyLoadStatus.Ready }>
 ).survey;
