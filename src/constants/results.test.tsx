@@ -11,6 +11,8 @@ import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import {
   DEFAULT_COMPASS_QUADRANTS,
   DEFAULT_VISIBLE_ROWS,
+  HEADER_LINK_SLOT,
+  HEADER_MODULE_TYPE,
   MATCH_BAND_COLORS,
   RESULT_MODULE_COLUMNS,
   RESULT_MODULE_DEFAULTS,
@@ -177,6 +179,21 @@ const NOLAN_CHART_LABELS = [
     LEVELS.flatMap((level) => [`${corner}${level}`, `${corner}${level}Short`]),
   ),
 ];
+
+describe("HEADER_MODULE_TYPE", () => {
+  it("is the header, one of the types the API sends", () => {
+    expect(HEADER_MODULE_TYPE).toBe("header");
+    expect(RESULT_MODULE_TYPES).toContain(HEADER_MODULE_TYPE);
+  });
+});
+
+describe("HEADER_LINK_SLOT", () => {
+  it("is the one label slot of the header", () => {
+    expect(RESULT_MODULE_SLOTS[HEADER_MODULE_TYPE].labels).toEqual([
+      HEADER_LINK_SLOT,
+    ]);
+  });
+});
 
 describe("RESULT_MODULE_SLOTS", () => {
   it("has the slots of every type", () => {

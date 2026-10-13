@@ -92,6 +92,11 @@ export const RESULT_MODULE_DEFAULTS = {
   visibleRows: DEFAULT_VISIBLE_ROWS,
 } as const satisfies Partial<ResultModule>;
 
+// The one type that stands outside the order of the modules, and the slot of
+// the label of its link.
+export const HEADER_MODULE_TYPE = "header" satisfies ResultModuleType;
+export const HEADER_LINK_SLOT = "link";
+
 const NO_SLOTS: ResultModuleSlots = { labels: [], colors: [] };
 
 // The names on the map: its middle, a lean along each axis by pole and level,
@@ -135,7 +140,7 @@ const NOLAN_CHART_COLOR_SLOTS = [
 // read.
 export const RESULT_MODULE_SLOTS: Record<ResultModuleType, ResultModuleSlots> =
   {
-    header: { labels: ["link"], colors: [] },
+    header: { labels: [HEADER_LINK_SLOT], colors: [] },
     single_axis: NO_SLOTS,
     double_axis: NO_SLOTS,
     multi_axis: NO_SLOTS,
