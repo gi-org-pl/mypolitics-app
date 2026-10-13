@@ -51,8 +51,70 @@ describe("resolveNolanChart()", () => {
       const colors = { topLeft: "#ff0000" };
 
       expect(
-        resolve({ axisIds: ["compass-x", "compass-y"], labels, colors }),
+        resolve({
+          axisIds: ["compass-x", "compass-y"],
+          values: {
+            "label.centre": "Centrum",
+            "label.topLeftModerate": "Lewica",
+            "color.topLeft": "#ff0000",
+          },
+        }),
       ).toMatchObject({ labels, colors });
+    });
+
+    it("returns each label and each colour by the name behind the prefix of its key, and no other", () => {
+      const resolved = resolve({
+        axisIds: ["compass-x", "compass-y"],
+        values: {
+          description: "Dwie osie.",
+          title: "Kompas",
+          marker: 20,
+          "label.link": "Strona",
+          "label.centre": "  Centrum\n",
+          "label.topLeftExtremeShort": "Aut. lewica",
+          "label.note": "Uwaga",
+          "color.topLeft": " #ff0000 ",
+          "color.bottomRight": "#7c3aed",
+          "color.centre": "#000000",
+        },
+      });
+
+      expect(resolved?.labels).toStrictEqual({
+        centre: "Centrum",
+        topLeftExtremeShort: "Aut. lewica",
+      });
+      expect(resolved?.colors).toStrictEqual({
+        topLeft: "#ff0000",
+        bottomRight: "#7c3aed",
+      });
+    });
+
+    it("leaves out a label that is blank or is not a text, and a colour that does not pass the colour check", () => {
+      const resolved = resolve({
+        axisIds: ["compass-x", "compass-y"],
+        values: {
+          "label.centre": " \n ",
+          "label.topLeftModerate": 7,
+          "label.topRightModerate": null,
+          "label.bottomLeftModerate": "Lewica wolnościowa",
+          "color.topLeft": "red",
+          "color.topRight": "var(--gi-red)",
+          "color.bottomLeft": 7,
+          "color.bottomRight": "#7c3aed",
+        },
+      });
+
+      expect(resolved?.labels).toStrictEqual({
+        bottomLeftModerate: "Lewica wolnościowa",
+      });
+      expect(resolved?.colors).toStrictEqual({ bottomRight: "#7c3aed" });
+    });
+
+    it("returns no label and no colour for a record that sets none", () => {
+      const resolved = resolve({ axisIds: ["compass-x", "compass-y"] });
+
+      expect(resolved?.labels).toStrictEqual({});
+      expect(resolved?.colors).toStrictEqual({});
     });
 
     it("does not use an axis of the record that is not a compass axis", () => {
