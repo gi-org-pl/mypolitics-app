@@ -241,7 +241,7 @@ describe("resolveHorizontalBar()", () => {
       expect(
         resolve({
           orientationIds: PARTY_IDS,
-          values: { selection: "leader", groupBy: true, visibleRows: 0 },
+          values: { selection: "leader", groupBy: "yes", visibleRows: 0 },
         }),
       ).toEqual(resolved);
     });

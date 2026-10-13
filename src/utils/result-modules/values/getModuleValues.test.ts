@@ -27,7 +27,7 @@ const SET = {
     title: "Ideologie",
     description: "Wszystkie osie.",
     groupBy: "category",
-    marker: 35.5,
+    marker: 35,
   },
   horizontal_bar: {
     title: "Partie",
@@ -198,8 +198,6 @@ describe("getModuleValues()", () => {
       ["NAMED"],
       [""],
       [1],
-      [true],
-      [null],
     ])("reads %j as its default, saying that nothing matches", (lowMatch) => {
       expect(readHeader({ lowMatch })).toMatchObject({ lowMatch: "no_match" });
     });
@@ -227,9 +225,6 @@ describe("getModuleValues()", () => {
       [""],
       [" \n\t "],
       [7],
-      [true],
-      [false],
-      [null],
     ])("reads %j as if the key were left out", (text) => {
       expect(readBar({ title: text, description: text })).toStrictEqual(
         readBar({}),
@@ -250,13 +245,11 @@ describe("getModuleValues()", () => {
     });
 
     it.each([
-      [null],
       [""],
       ["linked"],
       ["linked-to-leader"],
       ["ALL"],
       [7],
-      [true],
     ])("returns the default for %j, which is not allowed", (selection) => {
       expect(readBar({ selection }).selection).toBe("all");
     });
@@ -269,41 +262,43 @@ describe("getModuleValues()", () => {
     });
 
     it.each([
-      [null],
       [""],
       ["axis"],
       ["Category"],
       [0],
-      [true],
     ])("returns the default for %j, which is not allowed", (groupBy) => {
       expect(readBar({ groupBy }).groupBy).toBe("none");
       expect(readAxes({ groupBy }).groupBy).toBe("none");
     });
   });
 
-  describe("given a marker that is a number from 0 to 100", () => {
-    it.each([[0], [37.5], [62.5], [100]])("returns %j", (marker) => {
+  describe("given a marker that is a whole number from 0 to 100", () => {
+    it.each([[0], [37], [62], [100]])("returns %j", (marker) => {
       expect(readAxes({ marker }).marker).toBe(marker);
     });
   });
 
-  describe("given a marker that is null", () => {
+  describe("given a marker that is the string none", () => {
     it("returns false: no reference line", () => {
-      expect(readAxes({ marker: null }).marker).toBe(false);
+      expect(readAxes({ marker: "none" }).marker).toBe(false);
     });
   });
 
-  describe("given a marker that is outside 0 to 100 or is not a number", () => {
+  describe("given a marker that is a fraction, outside 0 to 100, or another string", () => {
     it.each([
+      [37.5],
+      [62.5],
       [-1],
       [-0.1],
+      [101],
       [100.1],
       [100.5],
       [Number.NaN],
       [Number.POSITIVE_INFINITY],
       ["60"],
-      [true],
-      [false],
+      ["None"],
+      ["off"],
+      [""],
     ])("returns 50 for %j", (marker) => {
       expect(readAxes({ marker }).marker).toBe(50);
     });
@@ -323,8 +318,6 @@ describe("getModuleValues()", () => {
       [Number.NaN],
       [Number.POSITIVE_INFINITY],
       ["4"],
-      [null],
-      [true],
     ])("returns 3 for %j", (visibleRows) => {
       expect(readBar({ visibleRows }).visibleRows).toBe(3);
     });
@@ -347,8 +340,6 @@ describe("getModuleValues()", () => {
       ["#12345"],
       [""],
       [7],
-      [true],
-      [null],
     ])("reads %j as if the key were left out", (color) => {
       expect(
         readMap({ "color.topLeft": color, "color.bottomRight": color }),

@@ -34,9 +34,6 @@ describe("toSingleLanguageValue()", () => {
       ["an empty text", ""],
       ["a number", 13],
       ["zero", 0],
-      ["yes", true],
-      ["no", false],
-      ["nothing", null],
     ])("returns %s as it is, whatever the language", (_, value) => {
       expect(toSingleLanguageValue(value, "pl")).toBe(value);
       expect(toSingleLanguageValue(value, "en")).toBe(value);

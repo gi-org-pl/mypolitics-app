@@ -177,7 +177,7 @@ describe("resultModuleResponseSchema", () => {
     it("leaves the items of the list as sent: they are read pair by pair", () => {
       const values = [
         { key: "title", value: "Partie" },
-        { key: "marker", value: null },
+        { key: "marker", value: "none" },
         { key: "sortBy", value: { by: "name" } },
         { value: "bez klucza" },
         null,
@@ -226,11 +226,9 @@ describe("resultModulePairSchema", () => {
     it.each([
       ["a text", "linked_to_leader"],
       ["an empty text", ""],
-      ["a number", 37.5],
+      ["a whole number", 37],
       ["zero", 0],
-      ["yes", true],
-      ["no", false],
-      ["nothing", null],
+      ["a negative whole number", -4],
     ])("accepts %s as sent", (_, value) => {
       expect(resultModulePairSchema.parse({ key: "name", value })).toEqual({
         key: "name",
@@ -249,7 +247,7 @@ describe("resultModulePairSchema", () => {
         { key: "marker", value: 250 },
         { key: "selection", value: 7 },
         { key: "sortBy", value: "name" },
-        { key: "label.topLeftModerate", value: false },
+        { key: "label.topLeftModerate", value: 7 },
         { key: "__proto__", value: "x" },
       ]) {
         expect(resultModulePairSchema.parse(pair)).toEqual(pair);
@@ -268,13 +266,17 @@ describe("resultModulePairSchema", () => {
     });
   });
 
-  describe("given a value that is not a text, a number, a boolean or null", () => {
+  describe("given a value that is not a string or a whole number", () => {
     it.each([
       ["no value", undefined],
       ["an object", { min: 1 }],
       ["a text per language", { pl: "Partie", en: "Parties" }],
       ["a list", ["a", "b"]],
       ["an empty list", []],
+      ["a fraction", 37.5],
+      ["a boolean", true],
+      ["false", false],
+      ["null", null],
       ["a number that is not one", Number.NaN],
       ["an endless number", Number.POSITIVE_INFINITY],
     ])("does not accept %s", (_, value) => {
