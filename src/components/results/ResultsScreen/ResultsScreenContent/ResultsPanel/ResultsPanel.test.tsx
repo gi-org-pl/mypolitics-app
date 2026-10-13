@@ -32,6 +32,15 @@ describe("<ResultsPanel />", () => {
       expect(panel).toBeVisible();
     });
 
+    it("draws the line that closes the tabs above it", () => {
+      renderPanel();
+
+      expect(screen.getByRole("tabpanel")).toHaveClass(
+        "border-t",
+        "border-gi-dark-ash",
+      );
+    });
+
     it("takes the identity of the tab it is given", () => {
       renderPanel({ tab: "comparison" });
 
@@ -60,6 +69,7 @@ describe("<ResultsPanel />", () => {
       expect(screen.queryByRole("tabpanel")).not.toBeInTheDocument();
       expect(panel).not.toHaveAttribute("id");
       expect(panel).not.toHaveAttribute("aria-labelledby");
+      expect(panel).not.toHaveClass("border-t");
       expect(panel).toBeVisible();
     });
   });
