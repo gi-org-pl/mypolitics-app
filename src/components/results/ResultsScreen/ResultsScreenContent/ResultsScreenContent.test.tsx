@@ -7,6 +7,7 @@ import { ResultsScreenContent } from "./ResultsScreenContent";
 import {
   candidateResults,
   identityResults,
+  longCornerNameResults,
   noMatchResults,
 } from "./ResultsScreenContent.fixtures";
 import type { ResultsScreenContentProps } from "./ResultsScreenContent.types";
@@ -64,7 +65,7 @@ describe("<ResultsScreenContent />", () => {
         );
 
       expect(getColumnRegions("start")).toEqual(["Ideologie", "Partie"]);
-      expect(getColumnRegions("end")).toEqual(["Tożsamość", "Centrowy"]);
+      expect(getColumnRegions("end")).toEqual(["Tożsamość", "Lewicowy"]);
     });
 
     it("shows the name of the quiz under the modules", () => {
@@ -83,6 +84,21 @@ describe("<ResultsScreenContent />", () => {
       expect(
         screen.getByText("Porównanie będzie dostępne wkrótce."),
       ).not.toBeVisible();
+    });
+  });
+
+  describe("given a taker who stands in another corner of the map", () => {
+    it("names the map by that corner", () => {
+      renderContent(longCornerNameResults);
+
+      expect(
+        screen.getByRole("region", {
+          name: "Lewicowy gospodarczo, prawicowy światopoglądowo",
+        }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("region", { name: "Lewicowy" }),
+      ).not.toBeInTheDocument();
     });
   });
 

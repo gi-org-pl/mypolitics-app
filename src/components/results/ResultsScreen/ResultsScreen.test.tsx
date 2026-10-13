@@ -327,7 +327,7 @@ describe("<ResultsScreen />", () => {
         );
 
       expect(getColumn("start")).toEqual(["Ideologie", "Partie"]);
-      expect(getColumn("end")).toEqual(["Tożsamość", "Centrowy"]);
+      expect(getColumn("end")).toEqual(["Tożsamość", "Lewicowy"]);
     });
 
     it("shows the name of the quiz, and titles the document with it", async () => {

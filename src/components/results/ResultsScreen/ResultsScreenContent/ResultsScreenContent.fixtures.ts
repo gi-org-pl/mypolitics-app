@@ -70,6 +70,41 @@ const identityQuiz: Survey = {
 // end column.
 export const identityResults = toContent(identityQuiz, identityQuizResult);
 
+// The scores of the orientations of one side of an axis, each at the given
+// share of its maximum.
+const toSideScores = (
+  orientationIds: string[],
+  share: number,
+): QuizResult["scores"] =>
+  Object.fromEntries(
+    orientationIds.map((id) => {
+      const { maximum } = identityQuizResult.scores[id];
+
+      return [id, { points: maximum * share, maximum }];
+    }),
+  );
+
+const socialAxes = identityQuiz.axes.filter(
+  ({ type }) => type === "compass_y_axis",
+);
+
+// The same quiz for a taker who stands on the economic left and the social
+// right: the corner of the map with the longest name.
+export const longCornerNameResults = toContent(identityQuiz, {
+  ...identityQuizResult,
+  scores: {
+    ...identityQuizResult.scores,
+    ...toSideScores(
+      socialAxes.flatMap((axis) => axis.negativeOrientationIds),
+      0,
+    ),
+    ...toSideScores(
+      socialAxes.flatMap((axis) => axis.positiveOrientationIds),
+      1,
+    ),
+  },
+});
+
 // The same quiz for a taker who answered nothing: no leader, and no value in
 // any module.
 export const noMatchResults = toContent(identityQuiz, {

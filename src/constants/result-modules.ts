@@ -131,6 +131,38 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
           pl: "Prawicowy światopoglądowo",
           en: "Socially right-wing",
         },
+        bottomLeftModerate: {
+          pl: "Lewicowy",
+          en: "Left-wing",
+        },
+        bottomLeftExtreme: {
+          pl: "Lewicowy",
+          en: "Left-wing",
+        },
+        topRightModerate: {
+          pl: "Prawicowy",
+          en: "Right-wing",
+        },
+        topRightExtreme: {
+          pl: "Prawicowy",
+          en: "Right-wing",
+        },
+        topLeftModerate: {
+          pl: "Lewicowy gospodarczo, prawicowy światopoglądowo",
+          en: "Economically left-wing, socially right-wing",
+        },
+        topLeftExtreme: {
+          pl: "Lewicowy gospodarczo, prawicowy światopoglądowo",
+          en: "Economically left-wing, socially right-wing",
+        },
+        bottomRightModerate: {
+          pl: "Prawicowy gospodarczo, lewicowy światopoglądowo",
+          en: "Economically right-wing, socially left-wing",
+        },
+        bottomRightExtreme: {
+          pl: "Prawicowy gospodarczo, lewicowy światopoglądowo",
+          en: "Economically right-wing, socially left-wing",
+        },
       },
       description: {
         pl: "Kompas dwuosiowy to forma prezentacji Twoich poglądów na wykresie dwuosiowym. Oś pozioma to poglądy gospodarcze (lewica-prawica), a pionowa to poglądy obyczajowe (lewica na dole, prawica na górze).",

@@ -5,6 +5,7 @@ import { ResultsScreenContent } from "./ResultsScreenContent";
 import {
   candidateResults,
   identityResults,
+  longCornerNameResults,
   longNamesResults,
   noMatchResults,
   oneColumnResults,
@@ -32,6 +33,10 @@ export const IdentityQuiz: Story = {};
 
 export const CandidateQuiz: Story = {
   args: candidateResults,
+};
+
+export const LongCornerName: Story = {
+  args: longCornerNameResults,
 };
 
 export const NoMatch: Story = {
