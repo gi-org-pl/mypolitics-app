@@ -10,6 +10,7 @@ import { OWN_RESULT_MODULES } from "./result-modules";
 import {
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
+  OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
 } from "./result-modules.fixtures";
 import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
@@ -56,6 +57,51 @@ describe("OWN_RESULT_MODULES", () => {
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
     ]);
+  });
+
+  // The back-end will send a UUID for a record, so the lists hold one too:
+  // the same ones the product's copy of the lists holds.
+  it("gives every record a UUID, and each list the records it is written to have, in order", () => {
+    const ids = Object.values(OWN_RESULT_MODULES).map((records) =>
+      records.map(({ id }) => id),
+    );
+
+    for (const id of ids.flat()) {
+      expect(id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      );
+    }
+
+    expect(new Set(ids.flat()).size).toBe(ids.flat().length);
+    expect(ids).toEqual([
+      [
+        OWN_RECORD_IDS.identityHeader,
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
+      ],
+      [
+        OWN_RECORD_IDS.presidentialHeader,
+        OWN_RECORD_IDS.presidentialCandidates,
+        OWN_RECORD_IDS.presidentialIdentity,
+        OWN_RECORD_IDS.presidentialCategories,
+      ],
+    ]);
+  });
+
+  it("names the records for the tests by the identifiers the product's copy of the lists holds", () => {
+    expect(OWN_RECORD_IDS).toEqual({
+      identityHeader: "e7a3dbe2-b263-444a-b686-f7c801c17879",
+      identityArchetype: "b9f37f04-1b35-4423-ba31-90d523a09664",
+      identityIdeologies: "34247794-ee0f-451b-9e48-b8685067c8de",
+      identityCompass: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b",
+      identityParties: "2c5ba77b-959e-421a-8079-edf2d948a01c",
+      presidentialHeader: "1046adae-2298-4fa2-a20c-023b67fc1e23",
+      presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
+      presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
+      presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+    });
   });
 
   describe("given the list of the identity quiz", () => {
@@ -234,12 +280,12 @@ describe("OWN_RESULT_MODULES", () => {
         ),
       ),
     ).toEqual([
-      ["identity-header", "lowMatch", "named"],
-      ["identity-ideologies", "groupBy", "category"],
-      ["identity-archetype", "lowMatch", "named"],
-      ["identity-parties", "selection", "linked_to_leader"],
-      ["presidential-candidates", "visibleRows", 13],
-      ["presidential-categories", "groupBy", "category"],
+      [OWN_RECORD_IDS.identityHeader, "lowMatch", "named"],
+      [OWN_RECORD_IDS.identityIdeologies, "groupBy", "category"],
+      [OWN_RECORD_IDS.identityArchetype, "lowMatch", "named"],
+      [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
+      [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
+      [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
     ]);
   });
 
