@@ -1,10 +1,6 @@
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { QuizResult } from "@/types/results";
-import type {
-  SurveyLoadResult,
-  SurveyLoadStatus,
-  SurveyPossibleAnswer,
-} from "@/types/survey";
+import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import {
   IDENTITY_QUIZ_ID,
   identityQuizResponse,
@@ -148,20 +144,15 @@ export const identityResultQuiz = (
   ) as Extract<SurveyLoadResult, { status: typeof SurveyLoadStatus.Ready }>
 ).survey;
 
-// How much an answer gives the green progressive.
-const getSupport = ({
-  weight,
-  orientationIds,
-}: SurveyPossibleAnswer): number =>
-  orientationIds.includes(IDENTITY_IDS.greenProgressive) ? weight : 0;
-
 // A taker who answers every question the way that gives the green progressive
-// the most.
+// the most. Every question of the quiz has an answer that supports it.
 const answers = identityResultQuiz.questions.map(({ id, possibleAnswers }) => ({
   questionId: id,
-  answerId: [...possibleAnswers].sort(
-    (first, second) => getSupport(second) - getSupport(first),
-  )[0].id,
+  answerId: possibleAnswers
+    .filter(({ orientationIds }) =>
+      orientationIds.includes(IDENTITY_IDS.greenProgressive),
+    )
+    .sort((first, second) => second.weight - first.weight)[0].id,
 }));
 
 // The scores are the ones the back-end counts for those answers: over the
