@@ -2,14 +2,8 @@ import { useLingui } from "@lingui/react/macro";
 
 import infoIcon from "@/assets/icons/info.svg";
 
-import type { FriendNotice } from "../FriendForm.types";
 import { FRIEND_NOTICE_TEXTS } from "./FriendFormNotice.constants";
-
-interface FriendFormNoticeProps {
-  id: string; // what the field is described by
-  notice: FriendNotice;
-  isError: boolean; // the notice says that the text of the field cannot be used
-}
+import type { FriendFormNoticeProps } from "./FriendFormNotice.types";
 
 // The line under the field of the friend: the info mark and one sentence.
 // The hint is quiet, as the design draws it; what the field has to say about

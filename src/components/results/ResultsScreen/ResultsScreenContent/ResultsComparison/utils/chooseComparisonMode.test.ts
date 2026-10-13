@@ -8,7 +8,7 @@ import {
   fetchingFriend,
   friendComparison,
   refusedOwn,
-  TAKER_ID,
+  refusedUnreadable,
 } from "../ResultsComparison.fixtures";
 import { ComparisonStatus } from "../ResultsComparison.types";
 import { chooseComparisonMode } from "./chooseComparisonMode";
@@ -33,14 +33,31 @@ describe("chooseComparisonMode()", () => {
   });
 
   describe("after a refusal", () => {
-    it("shows the mode that was picked, without the refusal", () => {
+    it("shows the mode that was picked, without the refusal and without the identifier it was about", () => {
       expect(
         chooseComparisonMode(refusedOwn, ComparisonMode.Orientation),
       ).toEqual({
         status: ComparisonStatus.Choosing,
         mode: ComparisonMode.Orientation,
-        friendId: TAKER_ID,
+        friendId: "",
       });
+    });
+
+    it("empties the field when the friend mode is picked again as well", () => {
+      expect(
+        chooseComparisonMode(refusedUnreadable, ComparisonMode.Friend),
+      ).toEqual(choosingFriend);
+    });
+
+    it("leaves no refused identifier to come back to", () => {
+      const away = chooseComparisonMode(
+        refusedUnreadable,
+        ComparisonMode.Orientation,
+      );
+
+      expect(chooseComparisonMode(away, ComparisonMode.Friend)).toEqual(
+        choosingFriend,
+      );
     });
   });
 

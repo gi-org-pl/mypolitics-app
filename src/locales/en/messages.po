@@ -980,7 +980,7 @@ msgstr "The “{orientation}” scale: a high score"
 msgid "Skopiowano identyfikator."
 msgstr "Identifier copied."
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormIdentifier/FriendFormIdentifier.tsx:36
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormIdentifier/FriendFormIdentifier.tsx:33
 msgid "Skopiuj identyfikator"
 msgstr "Copy the identifier"
 
