@@ -37,6 +37,20 @@ describe("pickTranslation()", () => {
     });
   });
 
+  describe("given a text that falls back to Polish", () => {
+    it("returns the Polish text without the space around it", () => {
+      expect(pickTranslation({ pl: " Partie " }, "en")).toBe("Partie");
+    });
+
+    it.each([
+      [""],
+      ["   "],
+    ])("returns nothing when the Polish text is %j", (pl) => {
+      expect(pickTranslation({ pl }, "en")).toBeUndefined();
+      expect(pickTranslation({ pl }, "pl")).toBeUndefined();
+    });
+  });
+
   describe("given no text", () => {
     it("returns nothing", () => {
       expect(pickTranslation(undefined, "pl")).toBeUndefined();
