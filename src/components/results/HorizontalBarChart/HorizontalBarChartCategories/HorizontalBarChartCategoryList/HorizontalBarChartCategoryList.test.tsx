@@ -263,21 +263,45 @@ describe("<HorizontalBarChartCategoryList />", () => {
   });
 
   describe("given a comparison", () => {
-    it("passes it to each leader bar", () => {
+    it("passes the comparison of each category to its leader bar", () => {
+      const ania = createOrientation("ania", "Ania", { type: "person" });
+      const [economy, views] = CATEGORIES;
+
       renderWithI18n(
         <HorizontalBarChartCategoryList
-          categories={CATEGORIES}
-          comparison={{
-            orientation: { id: "ania", type: "person", name: "Ania" },
-            values: { delta: 10 },
-          }}
+          categories={[
+            {
+              ...economy,
+              comparison: { orientation: ania, values: { beta: 40 } },
+            },
+            {
+              ...views,
+              comparison: { orientation: ania, values: { delta: 10 } },
+            },
+          ]}
           onOpen={vi.fn()}
         />,
       );
 
       expect(
+        screen.getByRole("img", { name: "Beta: 65%, porównanie z Ania: 40%" }),
+      ).toBeInTheDocument();
+      expect(
         screen.getByRole("img", { name: "Delta: 75%, porównanie z Ania: 10%" }),
       ).toBeInTheDocument();
+    });
+
+    it("draws a category without one with no overlay", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategoryList
+          categories={CATEGORIES}
+          onOpen={vi.fn()}
+        />,
+      );
+
+      expect(
+        screen.queryByTestId("universal-axis-comparison-image"),
+      ).not.toBeInTheDocument();
     });
   });
 });

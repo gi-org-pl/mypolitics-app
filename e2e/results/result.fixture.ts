@@ -13,6 +13,8 @@ import { SURVEY_ID } from "../survey/survey.fixture";
 // two parties the ones the ranking shows.
 
 export const RESULT_ID = "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11";
+// The result of a made-up friend who took the same quiz.
+export const FRIEND_RESULT_ID = "5218cde2-beac-4234-a0a7-c72f46e979a8";
 export const RESULT_QUIZ_NAME = "Quiz Tożsamościowy próbny";
 export const LEADER_NAME = "Zielony postępowiec";
 export const PARTIES_DESCRIPTION =
@@ -216,6 +218,15 @@ const toScore = (id: string, points: number) => ({
   maxPossible: 10,
 });
 
+const TAKER_SCORES = [
+  toScore(IDS.green, 9),
+  toScore(IDS.conservative, 2),
+  toScore(IDS.intervention, 7),
+  toScore(IDS.market, 3),
+  toScore(IDS.progress, 8),
+  toScore(IDS.tradition, 2),
+];
+
 // The result of a taker of that quiz, once it is calculated.
 export const createResultResponse = (
   resultId: string,
@@ -223,6 +234,7 @@ export const createResultResponse = (
     { questionId: "result-q1", answerId: "result-q1-a1" },
     { questionId: "result-q2", answerId: "result-q2-a2" },
   ],
+  orientations: unknown[] = TAKER_SCORES,
 ) => ({
   id: resultId,
   surveyId: SURVEY_ID,
@@ -230,16 +242,32 @@ export const createResultResponse = (
   results: {
     algorithm: "default",
     calculatedAt: "2026-10-08T10:00:00.000Z",
-    orientations: [
-      toScore(IDS.green, 9),
-      toScore(IDS.conservative, 2),
-      toScore(IDS.intervention, 7),
-      toScore(IDS.market, 3),
-      toScore(IDS.progress, 8),
-      toScore(IDS.tradition, 2),
-    ],
+    orientations,
   },
   answers,
   createdAt: "2026-10-08T09:59:58.000Z",
   calculatedAt: "2026-10-08T10:00:00.000Z",
 });
+
+// The result of the friend: a national conservative, who chose the same
+// answer of the first question as the taker and another one of the second,
+// so the two agree on one question of two. Unlike the taker's, it scores the
+// two parties of the taker's identity.
+export const createFriendResultResponse = () =>
+  createResultResponse(
+    FRIEND_RESULT_ID,
+    [
+      { questionId: "result-q1", answerId: "result-q1-a1" },
+      { questionId: "result-q2", answerId: "result-q2-a4" },
+    ],
+    [
+      toScore(IDS.green, 4),
+      toScore(IDS.conservative, 8),
+      toScore(IDS.greens, 5),
+      toScore(IDS.newLeft, 3),
+      toScore(IDS.intervention, 6),
+      toScore(IDS.market, 4),
+      toScore(IDS.progress, 2),
+      toScore(IDS.tradition, 8),
+    ],
+  );

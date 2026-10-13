@@ -63,6 +63,47 @@ describe("getCategoryItems()", () => {
     });
   });
 
+  describe("given a comparison", () => {
+    const ania = { id: "ania", type: "person" as const, name: "Ania" };
+
+    it("gives every item the comparison when it has no values by category", () => {
+      const comparison = { orientation: ania, values: { a: 10 } };
+      const items = getCategoryItems(
+        [category("Prawo", "law"), category("Gospodarka", "economy")],
+        comparison,
+      );
+
+      expect(items.map((item) => item.comparison)).toEqual([
+        comparison,
+        comparison,
+      ]);
+    });
+
+    it("gives every item the values of its own category", () => {
+      const items = getCategoryItems(
+        [category("Prawo", "law"), category("Gospodarka", "economy")],
+        {
+          orientation: ania,
+          values: { a: 10 },
+          categoryValues: { economy: { a: 70 } },
+        },
+      );
+
+      expect(items.map((item) => item.comparison?.values)).toEqual([
+        {},
+        { a: 70 },
+      ]);
+    });
+  });
+
+  describe("given no comparison", () => {
+    it("gives no item one", () => {
+      expect(
+        getCategoryItems([category("Prawo")])[0].comparison,
+      ).toBeUndefined();
+    });
+  });
+
   describe("given an empty list", () => {
     it("returns an empty list", () => {
       expect(getCategoryItems([])).toEqual([]);

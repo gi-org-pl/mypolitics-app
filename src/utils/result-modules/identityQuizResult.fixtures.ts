@@ -154,24 +154,37 @@ export const identityResultQuiz = (
   ) as Extract<SurveyLoadResult, { status: typeof SurveyLoadStatus.Ready }>
 ).survey;
 
-// A taker who answers every question the way that gives the green progressive
-// the most. Every question of the quiz has an answer that supports it.
-const answers = identityResultQuiz.questions.map(({ id, possibleAnswers }) => ({
-  questionId: id,
-  answerId: possibleAnswers
-    .filter(({ orientationIds }) =>
-      orientationIds.includes(IDENTITY_IDS.greenProgressive),
-    )
-    .sort((first, second) => second.weight - first.weight)[0].id,
-}));
+// The answers of a taker who answers every question the way that gives one
+// identity the most. A question with no answer that supports the identity is
+// answered with its last answer.
+const answerFor = (identityId: string): QuizResult["answers"] =>
+  identityResultQuiz.questions.map(({ id, possibleAnswers }) => {
+    const [best = possibleAnswers[possibleAnswers.length - 1]] = possibleAnswers
+      .filter(({ orientationIds }) => orientationIds.includes(identityId))
+      .sort((first, second) => second.weight - first.weight);
 
-// The scores are the ones the back-end counts for those answers: over the
+    return { questionId: id, answerId: best.id };
+  });
+
+// The scores are the ones the back-end counts for the answers: over the
 // whole quiz, with no category prioritised.
-export const identityQuizResult: QuizResult = {
+const toResult = (answers: QuizResult["answers"]): QuizResult => ({
   scores: getRunningScores(
     identityResultQuiz,
     getDoneQuestions(identityResultQuiz, answers),
     [],
   ),
   answers,
-};
+});
+
+// A taker who answers every question the way that gives the green progressive
+// the most. Every question of the quiz has an answer that supports it.
+export const identityQuizResult: QuizResult = toResult(
+  answerFor(IDENTITY_IDS.greenProgressive),
+);
+
+// A second result of the quiz, for a comparison: a made-up friend who answers
+// the way that gives the conservative libertarian the most.
+export const identityFriendResult: QuizResult = toResult(
+  answerFor(IDENTITY_IDS.conservativeLibertarian),
+);

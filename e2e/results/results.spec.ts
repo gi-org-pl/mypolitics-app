@@ -5,6 +5,8 @@ import { mockSurveyApi } from "../survey/mockSurveyApi";
 import { SURVEY_ID } from "../survey/survey.fixture";
 import { mockResultRead, mockResultsApi } from "./mockResultsApi";
 import {
+  createResultResponse,
+  FRIEND_RESULT_ID,
   LEADER_NAME,
   PARTIES_DESCRIPTION,
   RESULT_ID,
@@ -24,6 +26,21 @@ const getModule = (page: Page, name: string) =>
 
 const getButton = (page: Page, name: string) =>
   page.getByRole("main").getByRole("button", { name, exact: true });
+
+const getAgreementBar = (page: Page) =>
+  page.getByRole("main").getByRole("region", { name: "Zgodność", exact: true });
+
+const getModeTab = (page: Page, name: string) =>
+  page
+    .getByRole("tablist", { name: "Tryb porównania", exact: true })
+    .getByRole("tab", { name, exact: true });
+
+// The marks of the friend on the bars of a module.
+const getFriendMarks = (page: Page, module: string) =>
+  getModule(page, module).getByRole("img", { name: /porównanie z Znajomy/ });
+
+const getFriendRequests = (requests: string[]) =>
+  requests.filter((address) => address.includes(FRIEND_RESULT_ID));
 
 const getBox = async (locator: Locator) => {
   const box = await locator.boundingBox();
@@ -164,13 +181,176 @@ test.describe("Feature: Results", () => {
       await page.getByRole("tab", { name: "Tryb porównania" }).click();
     });
 
-    await test.step("Then they read that comparison is coming, in place of the modules", async () => {
-      await expect(
-        page
-          .getByRole("tabpanel", { name: "Tryb porównania" })
-          .getByText("Porównanie będzie dostępne wkrótce."),
-      ).toBeVisible();
+    await test.step("Then they see the mode selector with their own result identifier, in place of the modules", async () => {
+      const panel = page.getByRole("tabpanel", {
+        name: "Tryb porównania",
+        exact: true,
+      });
+
+      await expect(getModeTab(page, "Ze znajomym")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      await expect(panel.getByText(RESULT_ID, { exact: true })).toBeVisible();
       await expect(getModule(page, "Ideologie")).toHaveCount(0);
+      await expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
+    });
+  });
+
+  test("Scenario: A user compares their result with a friend's", async ({
+    page,
+  }) => {
+    const api = await mockResultsApi(page);
+
+    await test.step("Given a user is on their result and has a friend's result identifier of the same quiz", async () => {
+      await openPage(page, RESULT_PATH);
+      await expectResult(page);
+    });
+
+    await test.step('When they open "Tryb porównania" and paste it', async () => {
+      await page
+        .getByRole("tab", { name: "Tryb porównania", exact: true })
+        .click();
+      await page
+        .getByRole("textbox", {
+          name: "Identyfikator wyników znajomego",
+          exact: true,
+        })
+        .fill(` ${FRIEND_RESULT_ID} `);
+    });
+
+    await test.step("Then they see the agreement bar: the friend, how much the two agree, and the way out", async () => {
+      const bar = getAgreementBar(page);
+
+      await expect(bar).toBeVisible();
+      await expect(bar).toContainText("Zgodność — Znajomy");
+      // The two chose the same answer of one question of two.
+      await expect(
+        bar.getByRole("img", { name: "Znajomy: 50%", exact: true }),
+      ).toBeVisible();
+      await expect(getButton(page, "Cofnij porównanie")).toBeVisible();
+    });
+
+    await test.step("And every module with the friend's marks", async () => {
+      for (const name of ["Ideologie", "Tożsamość", "Partie"]) {
+        await expect(getModule(page, name)).toBeVisible();
+        await expect(getFriendMarks(page, name).first()).toBeVisible();
+      }
+
+      await expect(getFriendMarks(page, "Ideologie")).toHaveCount(2);
+      // The parties stay the ones of the taker's identity, with the friend's
+      // values for them.
+      await expect(
+        getModule(page, "Partie").getByRole("img", {
+          name: "porównanie z Znajomy: 50%",
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(getModule(page, "Partie").getByText("Prawica")).toHaveCount(
+        0,
+      );
+    });
+
+    await test.step("And the friend's result was asked for once, and is not in the address", async () => {
+      expect(getFriendRequests(api.requests)).toHaveLength(1);
+      await expect(page).toHaveURL(RESULT_PATH);
+    });
+
+    await test.step('When they go to "Twoje wyniki" and back', async () => {
+      await page
+        .getByRole("tab", { name: "Twoje wyniki", exact: true })
+        .click();
+      await expect(getFriendMarks(page, "Ideologie")).toHaveCount(0);
+      await page
+        .getByRole("tab", { name: "Tryb porównania", exact: true })
+        .click();
+    });
+
+    await test.step("Then the comparison is still running, and nothing was asked for again", async () => {
+      await expect(getAgreementBar(page)).toBeVisible();
+      await expect(getFriendMarks(page, "Ideologie")).toHaveCount(2);
+      expect(getFriendRequests(api.requests)).toHaveLength(1);
+    });
+
+    await test.step("When they end the comparison", async () => {
+      await getButton(page, "Cofnij porównanie").click();
+    });
+
+    await test.step("Then they see the mode selector again, on the friend mode, with an empty field", async () => {
+      await expect(getAgreementBar(page)).toHaveCount(0);
+      await expect(getModeTab(page, "Ze znajomym")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      await expect(
+        page.getByRole("textbox", {
+          name: "Identyfikator wyników znajomego",
+          exact: true,
+        }),
+      ).toHaveValue("");
+    });
+  });
+
+  test("Scenario: A user compares their result with an orientation of the quiz", async ({
+    page,
+  }) => {
+    const api = await mockResultsApi(page);
+
+    await test.step("Given a user is on the comparison tab of their result", async () => {
+      await openPage(page, RESULT_PATH);
+      await expectResult(page);
+      await page
+        .getByRole("tab", { name: "Tryb porównania", exact: true })
+        .click();
+    });
+
+    await test.step('When they choose "Z orientacją" and search for an orientation by name', async () => {
+      await getModeTab(page, "Z orientacją").click();
+      await page
+        .getByRole("searchbox", { name: "Szukaj po nazwie", exact: true })
+        .fill("INTER");
+    });
+
+    await test.step("Then the list is narrowed to it", async () => {
+      await expect(page.getByRole("main").getByRole("listitem")).toHaveText([
+        "Interwencjonizm",
+      ]);
+    });
+
+    await test.step("When they pick it", async () => {
+      await getButton(page, "Interwencjonizm").click();
+    });
+
+    await test.step("Then they see the agreement bar with the orientation and the score, and nothing was asked of the API", async () => {
+      const bar = getAgreementBar(page);
+
+      // The taker's answer lists the orientation in the one question whose
+      // answers list it at all.
+      await expect(
+        bar.getByRole("img", { name: "Interwencjonizm: 100%", exact: true }),
+      ).toBeVisible();
+      await expect(getButton(page, "Cofnij porównanie")).toBeVisible();
+      expect(api.requests).toHaveLength(2);
+    });
+
+    await test.step("When they end the comparison", async () => {
+      await getButton(page, "Cofnij porównanie").click();
+    });
+
+    await test.step("Then they see the mode selector again, on the orientation mode", async () => {
+      await expect(getModeTab(page, "Z orientacją")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      await expect(
+        page.getByRole("searchbox", { name: "Szukaj po nazwie", exact: true }),
+      ).toBeVisible();
     });
   });
 
@@ -186,7 +366,9 @@ test.describe("Feature: Results", () => {
     await mockResultRead(page, (resultId) =>
       api.results.some(
         (result) => (result as { sessionId: string }).sessionId === resultId,
-      ),
+      )
+        ? createResultResponse(resultId)
+        : undefined,
     );
 
     await test.step("Given a user answers the last question of a quiz", async () => {

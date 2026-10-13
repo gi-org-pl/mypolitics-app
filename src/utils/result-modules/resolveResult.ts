@@ -3,7 +3,7 @@ import type { QuizResult, ResolvedResult } from "@/types/results";
 import type { Survey } from "@/types/survey";
 import { getLeader } from "@/utils/result-modules/leader/getLeader";
 import { resolveHeader } from "@/utils/result-modules/leader/resolveHeader";
-import { resolveModule } from "@/utils/result-modules/resolvers/resolveModule";
+import { resolveModules } from "@/utils/result-modules/resolveModules";
 
 // What the result screen draws for one result of a quiz: what the header is
 // given, the leader the other modules may be tied to, and what every module
@@ -12,7 +12,8 @@ import { resolveModule } from "@/utils/result-modules/resolvers/resolveModule";
 //
 // It is derived: the same quiz, result and gender always give the same
 // answer, and nothing here fetches, stores or throws. A second result - a
-// friend's, in a comparison - is resolved by a second call.
+// friend's, in a comparison - that is laid over this one has its modules
+// resolved by `resolveModules`, against the leader of this one.
 export const resolveResult = (
   survey: Survey,
   result: QuizResult,
@@ -20,13 +21,10 @@ export const resolveResult = (
 ): ResolvedResult => {
   const header = resolveHeader({ survey, result, gender });
   const leader = getLeader(header);
-  const context = { survey, result, gender, leader };
 
   return {
     leader,
     header,
-    modules: survey.resultModules.flatMap(
-      (record) => resolveModule(record, context) ?? [],
-    ),
+    modules: resolveModules({ survey, result, gender, leader }),
   };
 };
