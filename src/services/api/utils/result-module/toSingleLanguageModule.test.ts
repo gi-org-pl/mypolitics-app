@@ -13,7 +13,7 @@ const record: OwnResultModule = {
   values: [
     { key: "title", value: { pl: "Kompas", en: "Compass" } },
     { key: "description", value: { pl: "Dwie osie.", en: "Two axes." } },
-    { key: "marker", value: null },
+    { key: "marker", value: "none" },
     { key: "label.centre", value: { pl: "Centrowy", en: "Centrist" } },
     {
       key: "label.horizontalStartModerate",
@@ -63,7 +63,7 @@ describe("toSingleLanguageModule()", () => {
         values: [
           { key: "title", value: "Compass" },
           { key: "description", value: "Two axes." },
-          { key: "marker", value: null },
+          { key: "marker", value: "none" },
           { key: "label.centre", value: "Centrist" },
           {
             key: "label.horizontalStartModerate",
