@@ -1,10 +1,14 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
-import { AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME } from "@/constants/image";
+import {
+  AVATAR_IMAGE_FIT_CLASS_NAMES,
+  AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME,
+} from "@/constants/image";
 import type { Orientation } from "@/types/orientation";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
+import { getImageKind } from "@/utils/url/getImageKind";
 
 import { MAP_CLIP_CLASS_NAME } from "../CompassMap.constants";
 import type { CompassMapPoint } from "../CompassMap.types";
@@ -35,7 +39,7 @@ export const OrientationMarker = ({
             size="small"
             src={orientation.imageUrl}
             dataTestId="nolan-chart-comparison-image"
-            className={`${imageClassName} ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME}`}
+            className={`${imageClassName} ${AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME} ${AVATAR_IMAGE_FIT_CLASS_NAMES[getImageKind(orientation.imageUrl)]}`}
             style={imageStyle}
           />
         ) : (

@@ -173,6 +173,8 @@ export type ResultModuleSelection = ResultModuleValues["selection"];
 
 export type ResultModuleGrouping = ResultModuleValues["groupBy"];
 
+export type ResultModuleLowMatch = ResultModuleValues["lowMatch"];
+
 // A result as its modules are resolved from it.
 
 // An answer of a result: the question and the possible answer chosen for it.
@@ -221,8 +223,9 @@ export type ResolvedModuleContent =
     }
   | {
       type: "horizontal_bar";
-      entries: ResolvedRankedEntry[];
+      entries: ResolvedRankedEntry[]; // none = the selection left nothing, and the record has a text for that
       visibleRows: number;
+      emptyLabel?: string;
     }
   | {
       type: "horizontal_bar";
@@ -236,7 +239,11 @@ export type ResolvedModuleContent =
       labels: Record<string, string>; // by slot, as read
       colors: Record<string, string>; // by slot, as read
     }
-  | { type: "archetype"; entries: ResultEntry[] }
+  | {
+      type: "archetype";
+      entries: ResultEntry[];
+      lowMatch: ResultModuleLowMatch;
+    }
   | { type: "traits"; traits: Orientation[]; earnedIds: string[] };
 
 interface ResolvedModuleBase {
@@ -253,6 +260,8 @@ export interface ResolvedHeader {
   orientation?: Orientation; // the highest of the header record's orientations. Absent = no match
   confidence?: number; // its value
   linkLabel?: string;
+  lowMatch: ResultModuleLowMatch; // what the header does with it below a partial match
+  lowMatchLabel?: string; // what it says under one it names all the same
 }
 
 export interface ResolvedResult {

@@ -120,8 +120,8 @@ describe("getSurvey()", () => {
     });
 
     it.each([
-      ["pl", ["Tożsamość", "Ideologie", "Partie"]],
-      ["en", ["Identity", "Ideologies", "Parties"]],
+      ["pl", ["Ideologie", "Tożsamość", "Partie"]],
+      ["en", ["Ideologies", "Identity", "Parties"]],
     ])("holds the app's own result modules of a quiz the API sends none for, in the language asked for: %s", async (language, titles) => {
       adapter.mockImplementationOnce(createApiReply(200, surveyResponse));
 
@@ -209,8 +209,8 @@ describe("getSurvey()", () => {
         survey: {
           resultModules: [
             { id: "identity-header" },
-            { id: "identity-archetype", values: { title: "Identity" } },
             { id: "identity-ideologies", values: { title: "Ideologies" } },
+            { id: "identity-archetype", values: { title: "Identity" } },
             { id: "identity-compass" },
             { id: "identity-parties", values: { title: "Parties" } },
           ],

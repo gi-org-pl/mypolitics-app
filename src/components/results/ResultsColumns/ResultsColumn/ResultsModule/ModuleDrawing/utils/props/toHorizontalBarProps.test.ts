@@ -80,3 +80,20 @@ describe("toHorizontalBarProps()", () => {
     });
   });
 });
+
+describe("toHorizontalBarProps()", () => {
+  describe("given a resolved ranking left with nothing to rank, and a text for that", () => {
+    it("hands over no rows and the text", () => {
+      expect(
+        toHorizontalBarProps(
+          {
+            ...findModule("horizontal_bar"),
+            entries: [],
+            emptyLabel: "Brak najbliższej partii",
+          },
+          MODULE_TEXTS,
+        ),
+      ).toMatchObject({ entries: [], emptyLabel: "Brak najbliższej partii" });
+    });
+  });
+});

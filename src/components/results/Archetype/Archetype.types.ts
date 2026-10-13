@@ -1,5 +1,5 @@
 import type { Orientation } from "@/types/orientation";
-import type { RankedComparison } from "@/types/results";
+import type { RankedComparison, ResultModuleLowMatch } from "@/types/results";
 
 export interface ArchetypeEntry {
   orientation: Orientation;
@@ -9,6 +9,9 @@ export interface ArchetypeEntry {
 export interface ArchetypeProps {
   title?: string;
   archetypes: ArchetypeEntry[];
+  // What the card does with a leader below a partial match: it says that
+  // nothing matches, or names the leader with its match and its descriptions.
+  lowMatch?: ResultModuleLowMatch;
   comparison?: RankedComparison;
   onStatsClick?: () => void;
   onInfoClick?: () => void;

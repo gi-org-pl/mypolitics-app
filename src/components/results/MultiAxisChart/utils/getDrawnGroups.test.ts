@@ -40,3 +40,36 @@ describe("getDrawnGroups()", () => {
     });
   });
 });
+
+describe("getDrawnGroups()", () => {
+  describe("given a group whose axes behind the headline have no colour of their own", () => {
+    it("returns them in the colours of the headline axis", () => {
+      const headline = createAxisPair("main", "Progresywizm", "Tradycjonalizm");
+      const bare = createAxisPair("peace", "Pacyfizm", "Militaryzm");
+      const [group] = getDrawnGroups([
+        {
+          name: "Światopogląd",
+          axes: [
+            headline,
+            {
+              ...bare,
+              start: {
+                orientation: { ...bare.start.orientation, color: undefined },
+              },
+              end: {
+                orientation: { ...bare.end.orientation, color: undefined },
+              },
+            },
+          ],
+        },
+      ]);
+
+      expect(group.axes[1].start.orientation.color).toBe(
+        headline.start.orientation.color,
+      );
+      expect(group.axes[1].end.orientation.color).toBe(
+        headline.end.orientation.color,
+      );
+    });
+  });
+});

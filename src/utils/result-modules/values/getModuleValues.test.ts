@@ -15,7 +15,12 @@ import { getModuleValues } from "./getModuleValues";
 // is added to a type, or taken from it, has to be added here or taken from
 // here before this file compiles.
 const SET = {
-  header: { description: "Kto jest najbliżej.", "label.link": "Program" },
+  header: {
+    description: "Kto jest najbliżej.",
+    lowMatch: "named",
+    "label.link": "Program",
+    "label.lowMatch": "Żadna tożsamość nie jest wystarczająco blisko.",
+  },
   single_axis: { description: "Jedna oś.", marker: 20 },
   double_axis: { description: "Dwie strony osi.", marker: 80 },
   multi_axis: {
@@ -30,6 +35,7 @@ const SET = {
     selection: "linked_to_leader",
     groupBy: "category",
     visibleRows: 7,
+    "label.empty": "Brak najbliższej partii",
   },
   nolan_chart: {
     description: "Dwie osie na jednej mapie.",
@@ -63,7 +69,11 @@ const SET = {
     "color.bottomLeft": "rgb(16 185 129)",
     "color.bottomRight": "#7c3aed",
   },
-  archetype: { title: "Tożsamość", description: "Typ, do którego ci blisko." },
+  archetype: {
+    title: "Tożsamość",
+    description: "Typ, do którego ci blisko.",
+    lowMatch: "named",
+  },
   traits: { title: "Cechy", description: "Cechy, które zdobywasz." },
 } satisfies { [Type in ResultModuleType]: ResultModuleValuesOf<Type> };
 
@@ -73,6 +83,7 @@ const DEFAULTS: Record<string, unknown> = {
   groupBy: "none",
   marker: 50,
   visibleRows: 3,
+  lowMatch: "no_match",
 };
 
 // What a type is given when its record sets nothing.
@@ -139,13 +150,14 @@ describe("getModuleValues()", () => {
 
   // The rows of "Reading a key".
   describe("given a key that is left out", () => {
-    it("returns its default: selection all, groupBy none, marker 50, visibleRows 3", () => {
+    it("returns its default: selection all, groupBy none, marker 50, visibleRows 3, lowMatch no_match", () => {
       expect(readBar({})).toMatchObject({
         selection: "all",
         groupBy: "none",
         visibleRows: 3,
       });
       expect(readAxes({})).toMatchObject({ groupBy: "none", marker: 50 });
+      expect(readHeader({})).toMatchObject({ lowMatch: "no_match" });
     });
 
     it("returns no title, no description, no label and no colour", () => {
@@ -155,7 +167,9 @@ describe("getModuleValues()", () => {
       });
       expect(readHeader({})).toStrictEqual({
         description: undefined,
+        lowMatch: "no_match",
         "label.link": undefined,
+        "label.lowMatch": undefined,
       });
       expect(
         Object.values(readMap({})).filter((value) => value !== undefined),
@@ -169,7 +183,25 @@ describe("getModuleValues()", () => {
         selection: "all",
         groupBy: "none",
         visibleRows: 7,
+        "label.empty": undefined,
       });
+    });
+  });
+
+  describe("given what a module does with a leader below a partial match", () => {
+    it.each([["no_match"], ["named"]])("returns %s as it is", (lowMatch) => {
+      expect(readHeader({ lowMatch })).toMatchObject({ lowMatch });
+    });
+
+    it.each([
+      ["leader"],
+      ["NAMED"],
+      [""],
+      [1],
+      [true],
+      [null],
+    ])("reads %j as its default, saying that nothing matches", (lowMatch) => {
+      expect(readHeader({ lowMatch })).toMatchObject({ lowMatch: "no_match" });
     });
   });
 
@@ -380,6 +412,7 @@ describe("getModuleValues()", () => {
         selection: "all",
         groupBy: "none",
         visibleRows: 7,
+        "label.empty": undefined,
       });
       expect(values).not.toHaveProperty("marker");
       expect(values).not.toHaveProperty("label.centre");
@@ -433,6 +466,7 @@ describe("getModuleValues()", () => {
         selection: "all" | "linked_to_leader";
         groupBy: "none" | "category";
         visibleRows: number;
+        "label.empty": string | undefined;
       }>();
       expectTypeOf(axes).toEqualTypeOf<{
         title: string | undefined;
@@ -450,7 +484,9 @@ describe("getModuleValues()", () => {
       }>();
       expectTypeOf(header).toEqualTypeOf<{
         description: string | undefined;
+        lowMatch: "no_match" | "named";
         "label.link": string | undefined;
+        "label.lowMatch": string | undefined;
       }>();
       expectTypeOf(traits).toEqualTypeOf<{
         title: string | undefined;

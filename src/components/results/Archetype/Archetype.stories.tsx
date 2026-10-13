@@ -231,3 +231,15 @@ export const MarkupInDescription: Story = {
     ],
   },
 };
+
+// A card set to name its leader below a partial match: the leader with its
+// match in the colour of that band, its description, and the others behind
+// the ranking control.
+export const LowMatchNamed: Story = {
+  args: { ...NoMatch.args, lowMatch: "named" },
+};
+
+export const LowMatchNamedRanking: Story = {
+  args: LowMatchNamed.args,
+  play: press("Ranking"),
+};

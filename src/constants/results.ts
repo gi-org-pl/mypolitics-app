@@ -190,8 +190,20 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
     nullable: false,
     fallback: DEFAULT_VISIBLE_ROWS,
   },
+  // What a module does with a leader below a partial match: says that
+  // nothing matches, or names it with its value all the same.
+  lowMatch: {
+    kind: "choice",
+    choices: ["no_match", "named"],
+    fallback: "no_match",
+  },
   // The label of the link to the website of the header's orientation.
   "label.link": LOCALIZED_TEXT,
+  // What the header says under a leader it names below a partial match.
+  "label.lowMatch": LOCALIZED_TEXT,
+  // What a ranking says when its selection leaves nothing to rank. With it
+  // the card is drawn; without it there is no card.
+  "label.empty": LOCALIZED_TEXT,
   // A name on the map, and the colour of a corner of it.
   ...toValueDefinitions(NOLAN_CHART_LABEL_KEYS, LOCALIZED_TEXT),
   ...toValueDefinitions(NOLAN_CHART_COLOR_KEYS, COLOR),
@@ -200,7 +212,7 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
 // The keys each module type reads. A key that is not listed for a type is
 // never read from a record of that type. Every type reads `description`.
 export const RESULT_MODULE_KEYS = {
-  header: ["description", "label.link"],
+  header: ["description", "lowMatch", "label.link", "label.lowMatch"],
   single_axis: ["description", "marker"],
   double_axis: ["description", "marker"],
   multi_axis: ["title", "description", "groupBy", "marker"],
@@ -210,12 +222,13 @@ export const RESULT_MODULE_KEYS = {
     "selection",
     "groupBy",
     "visibleRows",
+    "label.empty",
   ],
   nolan_chart: [
     "description",
     ...NOLAN_CHART_LABEL_KEYS,
     ...NOLAN_CHART_COLOR_KEYS,
   ],
-  archetype: ["title", "description"],
+  archetype: ["title", "description", "lowMatch"],
   traits: ["title", "description"],
 } as const satisfies Record<ResultModuleType, readonly ResultModuleKey[]>;

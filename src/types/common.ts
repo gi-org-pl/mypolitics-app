@@ -13,3 +13,8 @@ export const CopyOutcome = {
 } as const;
 
 export type CopyOutcome = (typeof CopyOutcome)[keyof typeof CopyOutcome];
+
+// What the image of an orientation is drawn as. A picture - a portrait, a
+// logo, a photograph - fills the place it is given. A glyph - an icon - has a
+// size of its own and keeps it.
+export type ImageKind = "picture" | "glyph";

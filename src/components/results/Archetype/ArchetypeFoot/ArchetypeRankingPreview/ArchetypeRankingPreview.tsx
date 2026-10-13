@@ -1,7 +1,9 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import plusIcon from "@/assets/icons/plus.svg";
+import { AVATAR_IMAGE_FIT_CLASS_NAMES } from "@/constants/image";
 import { withKeys } from "@/utils/array/withKeys";
+import { getImageKind } from "@/utils/url/getImageKind";
 
 import type { ArchetypeEntry } from "../../Archetype.types";
 import { usePreviewImages } from "./utils/usePreviewImages";
@@ -32,7 +34,7 @@ export const ArchetypeRankingPreview = ({
           src={item}
           alt=""
           dataTestId="archetype-ranking-preview-image"
-          className={ITEM_CLASS_NAME}
+          className={`${ITEM_CLASS_NAME} ${AVATAR_IMAGE_FIT_CLASS_NAMES[getImageKind(item)]}`}
           onErrorCapture={() => markFailed(item)}
         />
       ))}

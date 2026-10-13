@@ -51,9 +51,9 @@ describe("readSurveyResultModules()", () => {
     });
 
     it.each([
-      ["pl", ["Tożsamość", "Ideologie", "Partie"]],
-      ["en", ["Identity", "Ideologies", "Parties"]],
-      ["de", ["Tożsamość", "Ideologie", "Partie"]],
+      ["pl", ["Ideologie", "Tożsamość", "Partie"]],
+      ["en", ["Ideologies", "Identity", "Parties"]],
+      ["de", ["Ideologie", "Tożsamość", "Partie"]],
     ])("holds its texts in the language asked for, or in Polish: %s", (language, titles) => {
       expect(
         readSurveyResultModules(
@@ -80,8 +80,8 @@ describe("readSurveyResultModules()", () => {
         ).map(({ id }) => id),
       ).toEqual([
         "identity-header",
-        "identity-archetype",
         "identity-ideologies",
+        "identity-archetype",
         "identity-compass",
         "identity-parties",
       ]);
@@ -105,10 +105,11 @@ describe("readSurveyResultModules()", () => {
       );
 
       expect(modules).toHaveLength(5);
+      // The header, the axes, the identity card, the map and the parties.
       expect(modules.map(({ orientationIds }) => orientationIds)).toEqual([
         [identity],
-        [identity],
         [],
+        [identity],
         [],
         [],
       ]);

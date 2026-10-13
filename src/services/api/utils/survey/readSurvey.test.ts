@@ -863,8 +863,8 @@ describe("readSurvey()", () => {
         IDENTITY_SURVEY_ID,
         [
           "identity-header",
-          "identity-archetype",
           "identity-ideologies",
+          "identity-archetype",
           "identity-compass",
           "identity-parties",
         ],

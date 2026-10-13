@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import personAvatar from "@/assets/icons/person-avatar.svg";
-
+import { GLYPHS } from "@/constants/image.fixtures";
 import { OrientationAvatar } from "./OrientationAvatar";
 
 const glyphUrl = `data:image/svg+xml,${encodeURIComponent(
@@ -39,4 +39,14 @@ export const NoColour: Story = {
 // A person: the default avatar covers the disc.
 export const Person: Story = {
   args: { color: undefined, imageUrl: personAvatar, size: "regular" },
+};
+
+// The widest icon of a quiz in use, 21 by 19 px: drawn whole on the small
+// disc and on the regular one.
+export const GlyphOfAQuiz: Story = {
+  args: { imageUrl: GLYPHS.widest },
+};
+
+export const GlyphOfAQuizRegular: Story = {
+  args: { imageUrl: GLYPHS.widest, size: "regular" },
 };

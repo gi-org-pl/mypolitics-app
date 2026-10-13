@@ -2,7 +2,11 @@ import type { OwnResultModule } from "@/types/results";
 
 // The API sends no result modules yet. Until it does, the app keeps the list
 // of each quiz it knows, by the identifier of the survey: the identity quiz
-// first, the presidential quiz second. A record is written as the API would
+// first, the presidential quiz second. Each list says what the result page of
+// the old site showed for its quiz: which cards, in which order, with which
+// explanations, and what happens below a partial match - the identity quiz
+// named the closest identity all the same, with a notice, and said that there
+// is no closest party; the presidential quiz said that nobody is close. A record is written as the API would
 // send it - its values a list of pairs of a key and a value - except that a
 // text is a value that holds each language. A list from the API wins over the
 // one here.
@@ -30,37 +34,16 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
         "010a5a3d-0729-4315-b231-c9dd081d0d55",
       ],
       axisIds: [],
-      values: [],
-    },
-    {
-      id: "identity-archetype",
-      type: "archetype",
-      position: 1,
-      column: "end",
-      orientationIds: [
-        "f108a0b0-1ac7-4111-88cb-a4bbfe7f059b",
-        "99681a0e-6851-4967-8fcc-cf77ac4717a5",
-        "14fc7ded-e9c0-447c-aa18-380d7241be00",
-        "5f733105-050f-4d65-8d1c-5f387212ea0b",
-        "296019ab-8963-4590-896e-51426517d11b",
-        "90e1762d-9e22-4f32-8130-e7828595ea1f",
-        "6f1cb5a4-232a-41b5-a848-f2329406d12d",
-        "59d45ff8-6e4c-47b8-895e-1846a2d0fe94",
-        "322b9b00-b131-4d8b-9eb5-c38ba552dc93",
-        "4cf08882-e9f9-4f5d-a27c-eac3f24e3a77",
-        "8625fa1f-e39e-4183-8a37-5d78fa6c3c85",
-        "4a1c3bef-42fc-49d2-b8c7-279a446aa9e3",
-        "a6ef4109-7141-4b0b-9924-b87a700d90b5",
-        "2e46f89d-913e-4d82-85a6-70a8c25902f5",
-        "010a5a3d-0729-4315-b231-c9dd081d0d55",
-      ],
-      axisIds: [],
       values: [
         {
-          key: "title",
+          key: "lowMatch",
+          value: "named",
+        },
+        {
+          key: "label.lowMatch",
           value: {
-            pl: "Tożsamość",
-            en: "Identity",
+            pl: "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+            en: "Your views are not similar enough to any identity (less than 50% confidence).",
           },
         },
       ],
@@ -68,7 +51,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
     {
       id: "identity-ideologies",
       type: "multi_axis",
-      position: 2,
+      position: 1,
       column: "start",
       axisIds: [
         "6c2611c8-2989-48a9-ab9f-dbf45dbb3496",
@@ -98,8 +81,52 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
           },
         },
         {
+          key: "description",
+          value: {
+            pl: "Oś określa bliskość do ideologii. Dodatkowe osie opisują Twoje poglądy na węższych płaszczyznach niż osie główne (widoczne domyślnie). Ich zadaniem jest opisać Twoje poglądy w bardziej precyzyjny sposób.",
+            en: "An axis shows how close you are to an ideology. The additional axes describe your views on narrower planes than the main axes (the ones shown by default). Their job is to describe your views more precisely.",
+          },
+        },
+        {
           key: "groupBy",
           value: "category",
+        },
+      ],
+    },
+    {
+      id: "identity-archetype",
+      type: "archetype",
+      position: 2,
+      column: "end",
+      orientationIds: [
+        "f108a0b0-1ac7-4111-88cb-a4bbfe7f059b",
+        "99681a0e-6851-4967-8fcc-cf77ac4717a5",
+        "14fc7ded-e9c0-447c-aa18-380d7241be00",
+        "5f733105-050f-4d65-8d1c-5f387212ea0b",
+        "296019ab-8963-4590-896e-51426517d11b",
+        "90e1762d-9e22-4f32-8130-e7828595ea1f",
+        "6f1cb5a4-232a-41b5-a848-f2329406d12d",
+        "59d45ff8-6e4c-47b8-895e-1846a2d0fe94",
+        "322b9b00-b131-4d8b-9eb5-c38ba552dc93",
+        "4cf08882-e9f9-4f5d-a27c-eac3f24e3a77",
+        "8625fa1f-e39e-4183-8a37-5d78fa6c3c85",
+        "4a1c3bef-42fc-49d2-b8c7-279a446aa9e3",
+        "a6ef4109-7141-4b0b-9924-b87a700d90b5",
+        "2e46f89d-913e-4d82-85a6-70a8c25902f5",
+        "010a5a3d-0729-4315-b231-c9dd081d0d55",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Tożsamość",
+            en: "Identity",
+          },
+        },
+        {
+          key: "lowMatch",
+          value: "named",
         },
       ],
     },
@@ -246,7 +273,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       id: "identity-parties",
       type: "horizontal_bar",
       position: 4,
-      column: "start",
+      column: "end",
       orientationIds: [
         "a3356612-5554-4510-a867-71b03bc63980",
         "c00d6c51-7ab2-450d-b779-8a01ab269965",
@@ -272,13 +299,20 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
         {
           key: "description",
           value: {
-            pl: "W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
-            en: "The identity quiz does not match parties to your answers. It first finds your closest identity, and then how that identity would probably vote.",
+            pl: "Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich. W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
+            en: "These parties are usually chosen by people with views similar to yours. The identity quiz does not match parties to your answers. It first finds your closest identity, and then how that identity would probably vote.",
           },
         },
         {
           key: "selection",
           value: "linked_to_leader",
+        },
+        {
+          key: "label.empty",
+          value: {
+            pl: "Brak najbliższej partii",
+            en: "No closest party",
+          },
         },
       ],
     },

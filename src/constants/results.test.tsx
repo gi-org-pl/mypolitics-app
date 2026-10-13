@@ -231,6 +231,19 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
     expect(DEFAULT_VISIBLE_ROWS).toBe(3);
   });
 
+  it("defines what a module does with a leader below a partial match, with saying that nothing matches as its default", () => {
+    expect(RESULT_MODULE_VALUE_DEFINITIONS.lowMatch).toStrictEqual({
+      kind: "choice",
+      choices: ["no_match", "named"],
+      fallback: "no_match",
+    });
+  });
+
+  it("defines a text per language for what the header says under a leader named below a partial match, and for what a ranking says when it has nothing to rank", () => {
+    expect(DEFINITIONS["label.lowMatch"]).toStrictEqual(LOCALIZED_TEXT);
+    expect(DEFINITIONS["label.empty"]).toStrictEqual(LOCALIZED_TEXT);
+  });
+
   it("defines a text per language for the name of the middle, of a lean along each axis and of each corner of the map", () => {
     expect(NOLAN_CHART_LABEL_KEYS).toHaveLength(25);
 
@@ -260,7 +273,10 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
         "groupBy",
         "marker",
         "visibleRows",
+        "lowMatch",
         "label.link",
+        "label.lowMatch",
+        "label.empty",
         ...NOLAN_CHART_LABEL_KEYS,
         ...NOLAN_CHART_COLOR_KEYS,
       ].sort(),
@@ -310,7 +326,7 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
 describe("RESULT_MODULE_KEYS", () => {
   it("lists the keys each module type reads, as the spec does", () => {
     expect(RESULT_MODULE_KEYS).toEqual({
-      header: ["description", "label.link"],
+      header: ["description", "lowMatch", "label.link", "label.lowMatch"],
       single_axis: ["description", "marker"],
       double_axis: ["description", "marker"],
       multi_axis: ["title", "description", "groupBy", "marker"],
@@ -320,9 +336,10 @@ describe("RESULT_MODULE_KEYS", () => {
         "selection",
         "groupBy",
         "visibleRows",
+        "label.empty",
       ],
       nolan_chart: expect.any(Array),
-      archetype: ["title", "description"],
+      archetype: ["title", "description", "lowMatch"],
       traits: ["title", "description"],
     });
     expect([...RESULT_MODULE_KEYS.nolan_chart].sort()).toEqual(
