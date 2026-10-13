@@ -142,3 +142,74 @@ describe("getArchetypeContent()", () => {
     });
   });
 });
+
+describe("getArchetypeContent()", () => {
+  describe("given a card set to name a leader below a partial match", () => {
+    const leader = archetype("a", 43.67, {
+      description: "Krótki.",
+      fullDescription: "Pełny.",
+    });
+
+    it("treats the leader as matched: both descriptions, and the rest alone as the ranking", () => {
+      expect(getArchetypeContent(leader, REST, "named")).toEqual({
+        isMatched: true,
+        shortDescription: "Krótki.",
+        fullDescription: "Pełny.",
+        ranking: REST,
+        hasDescription: true,
+        hasRanking: true,
+      });
+    });
+
+    it("does so for a leader at zero as well", () => {
+      expect(
+        getArchetypeContent(archetype("a", 0), REST, "named").isMatched,
+      ).toBe(true);
+    });
+
+    it("has nothing matched without a leader", () => {
+      expect(getArchetypeContent(null, [], "named")).toMatchObject({
+        isMatched: false,
+        ranking: [],
+      });
+    });
+  });
+
+  describe("given a card set to say that nothing matches", () => {
+    it("leaves a leader below a partial match unnamed, in the ranking with the rest", () => {
+      const leader = archetype("a", 43.67, { description: "Krótki." });
+
+      expect(getArchetypeContent(leader, REST, "no_match")).toMatchObject({
+        isMatched: false,
+        shortDescription: "",
+        ranking: [leader, ...REST],
+      });
+    });
+  });
+});
+
+describe("getArchetypeContent()", () => {
+  describe("given a card set to name a leader below a partial match, and a leader with no match of its own", () => {
+    const leader = archetype("a", 0, {
+      description: "Krótki.",
+      fullDescription: "Pełny.",
+    });
+
+    it("names nobody: no descriptions, and the first archetype in the ranking with the rest", () => {
+      expect(getArchetypeContent(leader, REST, "named", false)).toEqual({
+        isMatched: false,
+        shortDescription: "",
+        fullDescription: "",
+        ranking: [leader, ...REST],
+        hasDescription: false,
+        hasRanking: true,
+      });
+    });
+
+    it("still names a leader that is scored, whatever its match", () => {
+      expect(getArchetypeContent(leader, REST, "named", true).isMatched).toBe(
+        true,
+      );
+    });
+  });
+});

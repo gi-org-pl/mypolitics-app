@@ -258,6 +258,8 @@ describe("<ResultsComparison />", () => {
     });
 
     describe("given the orientation mode", () => {
+      // The header of the quiz is pointed at the two identities, so they are what
+      // a result is compared with: no ideology and no trait is offered.
       it("shows a search field and the offered orientations as a list, in the order of the quiz", () => {
         renderComparison();
 
@@ -268,25 +270,22 @@ describe("<ResultsComparison />", () => {
         ).toBeVisible();
         expect(
           screen.getAllByRole("listitem").map((item) => item.textContent),
-        ).toEqual([
-          "Socjalista",
-          "Liberał",
-          "Interwencjonizm",
-          "Wolny rynek",
-          "Postęp",
-          "Tradycja",
-          "Ekologia",
-          "Odwaga",
-          "Spokój",
-        ]);
+        ).toEqual(["Socjalista", "Liberał"]);
       });
 
-      it("offers no hidden orientation, and none that no answer lists", () => {
+      it("offers no hidden orientation, none that no answer lists, and none the header is not pointed at", () => {
         renderComparison();
 
         fireEvent.click(getTab("Z orientacją"));
 
-        for (const name of ["Anarchista", "Ukryta", "Lewica", "Zieloni"]) {
+        for (const name of [
+          "Anarchista",
+          "Ukryta",
+          "Lewica",
+          "Zieloni",
+          "Wolny rynek",
+          "Odwaga",
+        ]) {
           expect(
             screen.queryByRole("button", { name }),
           ).not.toBeInTheDocument();
@@ -298,12 +297,12 @@ describe("<ResultsComparison />", () => {
 
         fireEvent.click(getTab("Z orientacją"));
         fireEvent.change(screen.getByRole("searchbox"), {
-          target: { value: "WOL" },
+          target: { value: "LIB" },
         });
 
         expect(
           screen.getAllByRole("listitem").map((item) => item.textContent),
-        ).toEqual(["Wolny rynek"]);
+        ).toEqual(["Liberał"]);
       });
     });
 
@@ -311,7 +310,7 @@ describe("<ResultsComparison />", () => {
       it("starts the comparison, and asks for nothing", () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
 
         expect(queryBar()).toBeVisible();
         expect(getResultMock).not.toHaveBeenCalled();
@@ -417,23 +416,24 @@ describe("<ResultsComparison />", () => {
       it("shows the agreement bar with the name of the orientation and the score", () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
 
         const bar = within(queryBar() as HTMLElement);
 
-        // The taker chose the answer that lists the other side of q1 and q2.
+        // Four questions have an answer that lists the liberal, and the taker
+        // chose that answer in one of them, q4.
         expect(
-          bar.getByRole("img", { name: "Wolny rynek: 0%" }),
+          bar.getByRole("img", { name: "Liberał: 25%" }),
         ).toBeInTheDocument();
         expect(screen.getByTestId("ranked-row-name")).toHaveTextContent(
-          "Zgodność — Wolny rynek",
+          "Zgodność — Liberał",
         );
       });
 
       it("shows the questions only, with no choice of view, and no module", () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
 
         expect(screen.getAllByRole("region")).toEqual([queryBar()]);
         expect(screen.queryByRole("tab")).not.toBeInTheDocument();
@@ -445,12 +445,10 @@ describe("<ResultsComparison />", () => {
       it("shows the answers the orientation stands for beside the answer of the taker, when a question is opened", () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
         fireEvent.click(getQuestionRows()[0]);
 
-        expect(
-          screen.getByRole("group", { name: "Wolny rynek" }),
-        ).toBeVisible();
+        expect(screen.getByRole("group", { name: "Liberał" })).toBeVisible();
         expect(screen.getByRole("group", { name: "Ty" })).toBeVisible();
       });
     });
@@ -461,7 +459,7 @@ describe("<ResultsComparison />", () => {
           result: { ...moduleTaker.result, answers: [] },
         });
 
-        pick("Wolny rynek");
+        pick("Liberał");
 
         expect(
           within(queryBar() as HTMLElement).getByRole("img", {
@@ -475,7 +473,7 @@ describe("<ResultsComparison />", () => {
       it("shows the mode selector again, with the mode last used", () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
         fireEvent.click(
           screen.getByRole("button", { name: "Cofnij porównanie" }),
         );
@@ -500,7 +498,7 @@ describe("<ResultsComparison />", () => {
       it("lets another comparison be started, which is the only one that runs", async () => {
         renderComparison();
 
-        pick("Wolny rynek");
+        pick("Liberał");
         fireEvent.click(
           screen.getByRole("button", { name: "Cofnij porównanie" }),
         );

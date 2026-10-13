@@ -31,15 +31,15 @@ describe("getOwnResultModules()", () => {
     it("holds the texts of the identity quiz in Polish and in English", () => {
       expect(getTitles(IDENTITY_SURVEY_ID, "pl")).toEqual([
         undefined,
-        "Tożsamość",
         "Ideologie",
+        "Tożsamość",
         undefined,
         "Partie",
       ]);
       expect(getTitles(IDENTITY_SURVEY_ID, "en")).toEqual([
         undefined,
-        "Identity",
         "Ideologies",
+        "Identity",
         undefined,
         "Parties",
       ]);

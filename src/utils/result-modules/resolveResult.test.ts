@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { PARTIAL_MATCH_FROM } from "@/constants/results";
 import type {
   QuizResult,
@@ -11,7 +11,6 @@ import type { Survey } from "@/types/survey";
 import { createResultModule } from "@/utils/vitest/results/createResultModule";
 import { createSurveyAxis } from "@/utils/vitest/survey/createSurveyAxis";
 import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
-
 import {
   AXIS_IDS,
   IDENTITY_IDS,
@@ -82,6 +81,7 @@ describe("resolveResult()", () => {
         orientation: expect.objectContaining({ id: "socialist" }),
         confidence: 100,
         linkLabel: "Zobacz stronę",
+        lowMatch: "no_match",
       });
       expect(resolved.leader).toEqual({
         orientation: expect.objectContaining({ id: "socialist" }),
@@ -203,6 +203,7 @@ describe("resolveResult()", () => {
             value: 100,
           },
         ],
+        lowMatch: "no_match",
       });
     });
 
@@ -618,6 +619,22 @@ describe("resolveResult()", () => {
       ).toBeUndefined();
     });
 
+    it("draws a horizontal bar record whose selection leaves nothing when it has a text for that: no rows, and the text", () => {
+      expect(
+        resolveRecord("horizontal_bar", {
+          orientationIds: ["party-right"],
+          values: {
+            selection: "linked_to_leader",
+            "label.empty": "Brak najbliższej partii",
+          },
+        }),
+      ).toMatchObject({
+        type: "horizontal_bar",
+        entries: [],
+        emptyLabel: "Brak najbliższej partii",
+      });
+    });
+
     it("leaves out a horizontal bar record whose grouping leaves no category", () => {
       const control = createSurveyCategory("control", { isHidden: true });
 
@@ -727,7 +744,10 @@ describe("resolveResult()", () => {
       });
 
       expect(resolved.leader).toBeUndefined();
-      expect(resolved.header).toEqual({ linkLabel: "Zobacz stronę" });
+      expect(resolved.header).toEqual({
+        linkLabel: "Zobacz stronę",
+        lowMatch: "no_match",
+      });
       // The parties are linked to a leader, and there is none.
       expect(resolved.modules.map(({ id }) => id)).toEqual([
         "identity",
@@ -796,7 +816,7 @@ describe("resolveResult()", () => {
 
     it("leads with the top identity", () => {
       const identities = resolved.modules.find(
-        ({ id }) => id === "identity-archetype",
+        ({ id }) => id === OWN_RECORD_IDS.identityArchetype,
       );
 
       expect(resolved.leader).toMatchObject({
@@ -830,7 +850,7 @@ describe("resolveResult()", () => {
 
     it("shows the parties linked to the top identity, in its order and with no values", () => {
       const parties = resolved.modules.find(
-        ({ id }) => id === "identity-parties",
+        ({ id }) => id === OWN_RECORD_IDS.identityParties,
       );
 
       expect(parties).toMatchObject({
@@ -852,7 +872,9 @@ describe("resolveResult()", () => {
 
     it("groups the axes by the categories of the quiz, in the quiz's order", () => {
       expect(
-        resolved.modules.find(({ id }) => id === "identity-ideologies"),
+        resolved.modules.find(
+          ({ id }) => id === OWN_RECORD_IDS.identityIdeologies,
+        ),
       ).toMatchObject({
         type: "multi_axis",
         groups: [
@@ -888,7 +910,7 @@ describe("resolveResult()", () => {
 
     it("finds the two compass axes, each side with one value for its several orientations", () => {
       const compass = resolved.modules.find(
-        ({ id }) => id === "identity-compass",
+        ({ id }) => id === OWN_RECORD_IDS.identityCompass,
       );
       const { scores } = identityQuizResult;
       // The start side of the horizontal axis is "Interwencjonizm" and "Solidaryzm ekonomiczny".
@@ -921,16 +943,16 @@ describe("resolveResult()", () => {
 
     it("draws the four modules in the order of their positions", () => {
       expect(resolved.modules.map(({ id }) => id)).toEqual([
-        "identity-archetype",
-        "identity-ideologies",
-        "identity-compass",
-        "identity-parties",
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
       ]);
     });
   });
 
   describe("given the identity quiz and a result with no answer", () => {
-    it("has a header that carries the first identity at 0, no leader and no parties", () => {
+    it("has a header that carries the first identity at 0, no leader, and a parties card with no party but the line for that", () => {
       const doneNothing = {
         scores: Object.fromEntries(
           Object.entries(identityQuizResult.scores).map(([id, { maximum }]) => [
@@ -948,10 +970,15 @@ describe("resolveResult()", () => {
       });
       expect(resolved.leader).toBeUndefined();
       expect(resolved.modules.map(({ id }) => id)).toEqual([
-        "identity-archetype",
-        "identity-ideologies",
-        "identity-compass",
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
       ]);
+      expect(resolved.modules.at(-1)).toMatchObject({
+        entries: [],
+        emptyLabel: "Brak najbliższej partii",
+      });
     });
   });
 });

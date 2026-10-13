@@ -1,4 +1,5 @@
 import { DEFAULT_LANGUAGE } from "@/constants/common";
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { QuizResult } from "@/types/results";
 import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
@@ -73,24 +74,23 @@ const identityIds = Object.values(IDENTITY_IDS);
 
 const resultModules = [
   {
-    id: "identity-header",
+    id: OWN_RECORD_IDS.identityHeader,
     type: "header",
     position: 0,
     orientationIds: identityIds,
-    values: [],
+    values: [
+      { key: "lowMatch", value: "named" },
+      {
+        key: "label.lowMatch",
+        value:
+          "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+      },
+    ],
   },
   {
-    id: "identity-archetype",
-    type: "archetype",
-    position: 1,
-    column: "end",
-    orientationIds: identityIds,
-    values: [{ key: "title", value: "Tożsamość" }],
-  },
-  {
-    id: "identity-ideologies",
+    id: OWN_RECORD_IDS.identityIdeologies,
     type: "multi_axis",
-    position: 2,
+    position: 1,
     column: "start",
     axisIds: [
       AXIS_IDS.climate,
@@ -100,11 +100,27 @@ const resultModules = [
     ],
     values: [
       { key: "title", value: "Ideologie" },
+      {
+        key: "description",
+        value:
+          "Oś określa bliskość do ideologii. Dodatkowe osie opisują Twoje poglądy na węższych płaszczyznach niż osie główne (widoczne domyślnie). Ich zadaniem jest opisać Twoje poglądy w bardziej precyzyjny sposób.",
+      },
       { key: "groupBy", value: "category" },
     ],
   },
   {
-    id: "identity-compass",
+    id: OWN_RECORD_IDS.identityArchetype,
+    type: "archetype",
+    position: 2,
+    column: "end",
+    orientationIds: identityIds,
+    values: [
+      { key: "title", value: "Tożsamość" },
+      { key: "lowMatch", value: "named" },
+    ],
+  },
+  {
+    id: OWN_RECORD_IDS.identityCompass,
     type: "nolan_chart",
     position: 3,
     column: "end",
@@ -132,19 +148,20 @@ const resultModules = [
     ],
   },
   {
-    id: "identity-parties",
+    id: OWN_RECORD_IDS.identityParties,
     type: "horizontal_bar",
     position: 4,
-    column: "start",
+    column: "end",
     orientationIds: Object.values(PARTY_IDS),
     values: [
       { key: "title", value: "Partie" },
       {
         key: "description",
         value:
-          "W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
+          "Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich. W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
       },
       { key: "selection", value: "linked_to_leader" },
+      { key: "label.empty", value: "Brak najbliższej partii" },
     ],
   },
 ];

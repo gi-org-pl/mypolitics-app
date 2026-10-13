@@ -6,6 +6,20 @@
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
 
+// The identifiers of the records of the app's own lists, by what each record
+// is: a test names a record, and does not repeat its identifier.
+export const OWN_RECORD_IDS = {
+  identityHeader: "e7a3dbe2-b263-444a-b686-f7c801c17879",
+  identityArchetype: "b9f37f04-1b35-4423-ba31-90d523a09664",
+  identityIdeologies: "34247794-ee0f-451b-9e48-b8685067c8de",
+  identityCompass: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b",
+  identityParties: "2c5ba77b-959e-421a-8079-edf2d948a01c",
+  presidentialHeader: "1046adae-2298-4fa2-a20c-023b67fc1e23",
+  presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
+  presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
+  presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+} as const;
+
 export const LIVE_QUIZ_IDS: Record<
   string,
   { orientationIds: string[]; axisIds: string[] }

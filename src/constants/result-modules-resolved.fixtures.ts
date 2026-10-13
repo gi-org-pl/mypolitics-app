@@ -17,14 +17,16 @@ import { getRunningScores } from "@/utils/running-state/scores/getRunningScores"
 import { PRESIDENTIAL_SURVEY_ID } from "./result-modules.fixtures";
 
 // The two quizzes the app keeps a list of result modules for, each with a
-// result of it, and what the app's own list resolved to against that result
-// BEFORE the settings of a record became parameters.
+// result of it, and what the app's own list resolves to against that result.
 //
 // The expected values were written out by the code of commit 4bb6605, where
 // `selection`, `groupBy`, `marker` and `visibleRows` were still fields of a
-// record, and are kept here unchanged. Whatever shape a record is saved in,
-// the header and the modules of these two results have to stay what they
-// were.
+// record: whatever shape a record is saved in, the header and the modules of
+// these two results stay what they were. They were changed by hand once
+// since, for what the lists were made to say when they were set against the
+// result page of the old site: the order and the column of the identity
+// quiz's cards, the explanations of its axes and of its parties, and what a
+// header and an identity card do with a leader below a partial match.
 //
 // An orientation is written as its identifier: it is the quiz's own, and
 // nothing about it comes from a record. A field with no value is left out.
@@ -68,7 +70,7 @@ const answerFirst = (survey: Survey): QuizResult => {
   };
 };
 
-const RESOLVED_BEFORE = {
+const RESOLVED = {
   identity: {
     leader: {
       orientation: "99681a0e-6851-4967-8fcc-cf77ac4717a5",
@@ -77,82 +79,18 @@ const RESOLVED_BEFORE = {
     header: {
       orientation: "99681a0e-6851-4967-8fcc-cf77ac4717a5",
       confidence: 100,
+      lowMatch: "named",
+      lowMatchLabel:
+        "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
     },
     modules: [
       {
-        id: "identity-archetype",
+        id: "34247794-ee0f-451b-9e48-b8685067c8de", // its axes
         position: 1,
-        column: "end",
-        title: "Tożsamość",
-        type: "archetype",
-        entries: [
-          {
-            orientation: "f108a0b0-1ac7-4111-88cb-a4bbfe7f059b",
-            value: 80.110_497_237_569_05,
-          },
-          {
-            orientation: "99681a0e-6851-4967-8fcc-cf77ac4717a5",
-            value: 100,
-          },
-          {
-            orientation: "14fc7ded-e9c0-447c-aa18-380d7241be00",
-            value: 62.650_602_409_638_56,
-          },
-          {
-            orientation: "5f733105-050f-4d65-8d1c-5f387212ea0b",
-            value: 50.660_792_951_541_86,
-          },
-          {
-            orientation: "296019ab-8963-4590-896e-51426517d11b",
-            value: 64.768_683_274_021_36,
-          },
-          {
-            orientation: "90e1762d-9e22-4f32-8130-e7828595ea1f",
-            value: 39.814_814_814_814_82,
-          },
-          {
-            orientation: "6f1cb5a4-232a-41b5-a848-f2329406d12d",
-            value: 51.428_571_428_571_42,
-          },
-          {
-            orientation: "59d45ff8-6e4c-47b8-895e-1846a2d0fe94",
-            value: 33.232_628_398_791_54,
-          },
-          {
-            orientation: "322b9b00-b131-4d8b-9eb5-c38ba552dc93",
-            value: 13.090_909_090_909_092,
-          },
-          {
-            orientation: "4cf08882-e9f9-4f5d-a27c-eac3f24e3a77",
-            value: 30.824_372_759_856_633,
-          },
-          {
-            orientation: "8625fa1f-e39e-4183-8a37-5d78fa6c3c85",
-            value: 10.561_056_105_610_561,
-          },
-          {
-            orientation: "4a1c3bef-42fc-49d2-b8c7-279a446aa9e3",
-            value: 13.191_489_361_702_127,
-          },
-          {
-            orientation: "a6ef4109-7141-4b0b-9924-b87a700d90b5",
-            value: 8.305_647_840_531_561,
-          },
-          {
-            orientation: "2e46f89d-913e-4d82-85a6-70a8c25902f5",
-            value: 12.5,
-          },
-          {
-            orientation: "010a5a3d-0729-4315-b231-c9dd081d0d55",
-            value: 8.426_966_292_134_832,
-          },
-        ],
-      },
-      {
-        id: "identity-ideologies",
-        position: 2,
         column: "start",
         title: "Ideologie",
+        description:
+          "Oś określa bliskość do ideologii. Dodatkowe osie opisują Twoje poglądy na węższych płaszczyznach niż osie główne (widoczne domyślnie). Ich zadaniem jest opisać Twoje poglądy w bardziej precyzyjny sposób.",
         type: "multi_axis",
         groups: [
           {
@@ -364,7 +302,77 @@ const RESOLVED_BEFORE = {
         marker: 50,
       },
       {
-        id: "identity-compass",
+        id: "b9f37f04-1b35-4423-ba31-90d523a09664", // its identity card
+        position: 2,
+        column: "end",
+        title: "Tożsamość",
+        type: "archetype",
+        lowMatch: "named",
+        entries: [
+          {
+            orientation: "f108a0b0-1ac7-4111-88cb-a4bbfe7f059b",
+            value: 80.110_497_237_569_05,
+          },
+          {
+            orientation: "99681a0e-6851-4967-8fcc-cf77ac4717a5",
+            value: 100,
+          },
+          {
+            orientation: "14fc7ded-e9c0-447c-aa18-380d7241be00",
+            value: 62.650_602_409_638_56,
+          },
+          {
+            orientation: "5f733105-050f-4d65-8d1c-5f387212ea0b",
+            value: 50.660_792_951_541_86,
+          },
+          {
+            orientation: "296019ab-8963-4590-896e-51426517d11b",
+            value: 64.768_683_274_021_36,
+          },
+          {
+            orientation: "90e1762d-9e22-4f32-8130-e7828595ea1f",
+            value: 39.814_814_814_814_82,
+          },
+          {
+            orientation: "6f1cb5a4-232a-41b5-a848-f2329406d12d",
+            value: 51.428_571_428_571_42,
+          },
+          {
+            orientation: "59d45ff8-6e4c-47b8-895e-1846a2d0fe94",
+            value: 33.232_628_398_791_54,
+          },
+          {
+            orientation: "322b9b00-b131-4d8b-9eb5-c38ba552dc93",
+            value: 13.090_909_090_909_092,
+          },
+          {
+            orientation: "4cf08882-e9f9-4f5d-a27c-eac3f24e3a77",
+            value: 30.824_372_759_856_633,
+          },
+          {
+            orientation: "8625fa1f-e39e-4183-8a37-5d78fa6c3c85",
+            value: 10.561_056_105_610_561,
+          },
+          {
+            orientation: "4a1c3bef-42fc-49d2-b8c7-279a446aa9e3",
+            value: 13.191_489_361_702_127,
+          },
+          {
+            orientation: "a6ef4109-7141-4b0b-9924-b87a700d90b5",
+            value: 8.305_647_840_531_561,
+          },
+          {
+            orientation: "2e46f89d-913e-4d82-85a6-70a8c25902f5",
+            value: 12.5,
+          },
+          {
+            orientation: "010a5a3d-0729-4315-b231-c9dd081d0d55",
+            value: 8.426_966_292_134_832,
+          },
+        ],
+      },
+      {
+        id: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b", // its compass
         position: 3,
         column: "end",
         description:
@@ -416,12 +424,12 @@ const RESOLVED_BEFORE = {
         colors: {},
       },
       {
-        id: "identity-parties",
+        id: "2c5ba77b-959e-421a-8079-edf2d948a01c", // its parties
         position: 4,
-        column: "start",
+        column: "end",
         title: "Partie",
         description:
-          "W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
+          "Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich. W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.",
         type: "horizontal_bar",
         entries: [
           {
@@ -446,10 +454,11 @@ const RESOLVED_BEFORE = {
       orientation: "565946a2-6622-4fb6-8eee-196408544e9a",
       confidence: 100,
       linkLabel: "Program",
+      lowMatch: "no_match",
     },
     modules: [
       {
-        id: "presidential-candidates",
+        id: "26585cf4-cfb5-4755-b6f6-f997764b60c5", // its candidates
         position: 1,
         column: "start",
         title: "Kandydaci",
@@ -469,11 +478,12 @@ const RESOLVED_BEFORE = {
         visibleRows: 13,
       },
       {
-        id: "presidential-identity",
+        id: "a9fabbef-3b68-4121-ac03-174016fd849a", // its presidential identity
         position: 2,
         column: "end",
         title: "Prezydent",
         type: "archetype",
+        lowMatch: "no_match",
         entries: [
           {
             orientation: "c28e9896-ff92-4881-a650-0e7f828ec381",
@@ -482,7 +492,7 @@ const RESOLVED_BEFORE = {
         ],
       },
       {
-        id: "presidential-categories",
+        id: "31a5619f-c941-4802-ac9b-4a477f5a2a90", // its candidates by category
         position: 3,
         column: "end",
         title: "Kategorie",
@@ -573,18 +583,13 @@ export const OWN_LIST_RESULTS: [
   name: string,
   survey: Survey,
   result: QuizResult,
-  resolvedBefore: unknown,
+  resolved: unknown,
 ][] = [
-  [
-    "the identity quiz",
-    identityQuiz,
-    identityQuizResult,
-    RESOLVED_BEFORE.identity,
-  ],
+  ["the identity quiz", identityQuiz, identityQuizResult, RESOLVED.identity],
   [
     "the presidential quiz",
     presidentialQuiz,
     answerFirst(presidentialQuiz),
-    RESOLVED_BEFORE.presidential,
+    RESOLVED.presidential,
   ],
 ];

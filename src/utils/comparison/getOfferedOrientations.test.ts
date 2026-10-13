@@ -41,6 +41,7 @@ describe("getOfferedOrientations()", () => {
           },
         ],
         questions: [createScoredQuestion("q1", [[1, ["socialist"]]])],
+        resultModules: [],
       });
 
       expect(offered).toEqual({
@@ -58,8 +59,64 @@ describe("getOfferedOrientations()", () => {
         getOfferedOrientations({
           orientations: comparisonQuiz.orientations,
           questions: [createScoredQuestion("q1", [[1, []]])],
+          resultModules: [],
         }),
       ).toEqual([]);
+    });
+  });
+
+  describe("given a quiz whose header is pointed at orientations", () => {
+    const withHeader = (orientationIds: string[]) => ({
+      ...comparisonQuiz,
+      resultModules: [
+        {
+          id: "header",
+          type: "header" as const,
+          position: 0,
+          column: "start" as const,
+          orientationIds,
+          axisIds: [],
+          values: {},
+        },
+      ],
+    });
+
+    it("offers only those of them an answer lists, in the order of the quiz", () => {
+      expect(toIds(getOfferedOrientations(withHeader(["right"])))).toEqual([
+        "right",
+      ]);
+      expect(
+        toIds(getOfferedOrientations(withHeader(["right", "left"]))),
+      ).toEqual(["left", "right"]);
+    });
+
+    it("still offers no hidden orientation and none that no answer lists", () => {
+      expect(
+        toIds(getOfferedOrientations(withHeader(["hidden", "centre"]))),
+      ).toEqual([]);
+    });
+  });
+
+  describe("given a quiz whose header is pointed at nothing", () => {
+    it("offers every orientation an answer lists", () => {
+      expect(
+        toIds(
+          getOfferedOrientations({
+            ...comparisonQuiz,
+            resultModules: [
+              {
+                id: "header",
+                type: "header",
+                position: 0,
+                column: "start",
+                orientationIds: [],
+                axisIds: [],
+                values: {},
+              },
+            ],
+          }),
+        ),
+      ).toEqual(["left", "right"]);
     });
   });
 });

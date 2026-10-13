@@ -3,8 +3,10 @@ import type { Page } from "@playwright/test";
 import { CORS_HEADERS } from "../survey/mockSurveyApi";
 import {
   createFriendResultResponse,
+  createLowMatchResultResponse,
   createResultResponse,
   FRIEND_RESULT_ID,
+  LOW_MATCH_RESULT_ID,
   RESULT_ID,
   resultSurveyFixture,
 } from "./result.fixture";
@@ -21,10 +23,12 @@ const getLastPart = (address: string): string =>
   decodeURIComponent(new URL(address).pathname.split("/").at(-1) ?? "");
 
 // The results the mocked API of the result screen holds, by identifier: the
-// taker's, and the one of a friend who took the same quiz.
+// taker's, the one of a friend who took the same quiz, and the one of a
+// taker who is close to no identity.
 const RESULT_RESPONSES: Record<string, () => unknown> = {
   [RESULT_ID]: () => createResultResponse(RESULT_ID),
   [FRIEND_RESULT_ID]: createFriendResultResponse,
+  [LOW_MATCH_RESULT_ID]: createLowMatchResultResponse,
 };
 
 // Stands in for the read of a result: the calculated result it is told of
