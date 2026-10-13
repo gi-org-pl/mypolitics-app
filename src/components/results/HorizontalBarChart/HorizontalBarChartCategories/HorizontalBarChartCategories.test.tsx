@@ -90,6 +90,55 @@ describe("<HorizontalBarChartCategories />", () => {
     });
   });
 
+  describe("given a comparison", () => {
+    const ania = createOrientation("ania", "Ania", { type: "person" });
+
+    it("draws every category with it when it has no values by category", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategories
+          categories={[ECONOMY, VIEWS]}
+          comparison={{ orientation: ania, values: { beta: 20, delta: 40 } }}
+        />,
+      );
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 65%, porównanie z Ania: 20%" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Delta: 75%, porównanie z Ania: 40%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("draws a category with its own values, in the list and when opened", () => {
+      renderWithI18n(
+        <HorizontalBarChartCategories
+          categories={[
+            { ...ECONOMY, id: "economy" },
+            { ...VIEWS, id: "views" },
+          ]}
+          comparison={{
+            orientation: ania,
+            values: { alfa: 99 },
+            categoryValues: { views: { delta: 10, alfa: 55 } },
+          }}
+        />,
+      );
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 65%" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Delta: 75%, porównanie z Ania: 10%" }),
+      ).toBeInTheDocument();
+
+      press("Pokaż kategorię: Światopogląd");
+
+      expect(
+        screen.getByRole("img", { name: "Alfa: 10%, porównanie z Ania: 55%" }),
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("when a category is opened", () => {
     it("renders that category alone and moves focus to the return control", () => {
       renderWithI18n(

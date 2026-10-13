@@ -18,11 +18,14 @@ import type { ResultsScreenContentProps } from "./ResultsScreenContent.types";
 // Results for the stories and the tests of the screen. Nothing here is read
 // from the API, and the people of the candidate quiz are made up.
 
+export const RESULT_ID = "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11";
+
 const toContent = (
   survey: Survey,
   result: QuizResult,
 ): ResultsScreenContentProps => ({
   survey,
+  result: { ...result, id: RESULT_ID, isCalculated: true, surveyId: survey.id },
   resolved: resolveResult(survey, result),
 });
 
