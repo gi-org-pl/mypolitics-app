@@ -110,6 +110,27 @@ describe("<AgreementBar />", () => {
         getBar().getByRole("img", { name: `Znajomy: ${score}%` }),
       ).toBeInTheDocument();
     });
+
+    it("tells a score of 0 from no score by the cap: the other side still caps the bar", () => {
+      const { unmount } = renderWithI18n(
+        <AgreementBar other={friend} score={0} onEnd={vi.fn()} />,
+      );
+
+      expect(
+        screen.getByTestId("universal-axis-cap-start"),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("universal-axis-socket"),
+      ).not.toBeInTheDocument();
+
+      unmount();
+      renderBar({ score: undefined });
+
+      expect(
+        screen.queryByTestId("universal-axis-cap-start"),
+      ).not.toBeInTheDocument();
+      expect(screen.getByTestId("universal-axis-socket")).toBeInTheDocument();
+    });
   });
 
   describe("when the control that ends the comparison is pressed", () => {
