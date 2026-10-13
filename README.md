@@ -138,6 +138,23 @@ This project uses Vite and React Router for building and serving the application
 
 Build the project with `yarn build` and preview the production build locally with `yarn preview`.
 
+## Dev site
+
+`main` is published to <https://dev.mypolitics.pl> with GitHub Pages by `.github/workflows/deploy-dev.yml`. It is the place to test the app while `mypolitics.pl` still serves the old product. It is not for search engines: the published copy carries a `robots.txt` that disallows everything.
+
+- **When** - on every push to `main`. To publish something else, start the workflow by hand from the Actions tab on `main` and give it a branch, a tag or a commit in the `ref` field: the dev site then shows that code until the next deployment.
+- **What** - the static build of `yarn build`, with a copy of the entry page as `404.html`, so an address the build has no file for (a quiz, a result) opens the app.
+- **Where it points** - the build takes its addresses from repository variables (Settings, Secrets and variables, Actions, Variables): `DEV_API_URL`, `DEV_RESULTS_EMAIL_URL` and `DEV_ANSWER_COUNTS_URL` become `VITE_API_URL`, `VITE_RESULTS_EMAIL_URL` and `VITE_ANSWER_COUNTS_URL`. Unset, each has the default of the [table above](#environment-variables).
+- **One site** - Pages has one site per repository, built for the root of a domain. There is no preview per pull request, and the app does not work under `gi-org-pl.github.io/mypolitics-app/`.
+
+Set up once, outside this repository, by an administrator:
+
+| Where | What |
+| ----- | ---- |
+| Repository settings, Pages | Source: "GitHub Actions". Custom domain: `dev.mypolitics.pl` (a `CNAME` file in the build is ignored for this kind of deployment). "Enforce HTTPS" once the certificate is issued |
+| DNS of `mypolitics.pl` | `dev` as a `CNAME` to `gi-org-pl.github.io`, not proxied |
+| The API | `https://dev.mypolitics.pl` among the origins the API allows. Without it the browser refuses the API's answers and no quiz loads |
+
 ## Testing
 
 This project includes both unit testing and end-to-end testing:
