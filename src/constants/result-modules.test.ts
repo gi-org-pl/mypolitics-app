@@ -48,16 +48,8 @@ describe("OWN_RESULT_MODULES", () => {
     it.each([
       ["bottomLeft", "Lewicowy", "Left-wing"],
       ["topRight", "Prawicowy", "Right-wing"],
-      [
-        "topLeft",
-        "Lewicowy gospodarczo, prawicowy światopoglądowo",
-        "Economically left-wing, socially right-wing",
-      ],
-      [
-        "bottomRight",
-        "Prawicowy gospodarczo, lewicowy światopoglądowo",
-        "Economically right-wing, socially left-wing",
-      ],
+      ["topLeft", "Mieszany", "Mixed"],
+      ["bottomRight", "Mieszany", "Mixed"],
     ])("names the %s corner, the same at both levels and in both languages", (corner, pl, en) => {
       expect(labels[`${corner}Moderate`]).toEqual({ pl, en });
       expect(labels[`${corner}Extreme`]).toEqual({ pl, en });

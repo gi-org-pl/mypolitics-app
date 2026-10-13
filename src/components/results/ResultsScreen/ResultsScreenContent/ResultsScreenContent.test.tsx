@@ -7,6 +7,7 @@ import { ResultsScreenContent } from "./ResultsScreenContent";
 import {
   candidateResults,
   identityResults,
+  LONG_CORNER_NAME,
   longCornerNameResults,
   noMatchResults,
 } from "./ResultsScreenContent.fixtures";
@@ -88,13 +89,11 @@ describe("<ResultsScreenContent />", () => {
   });
 
   describe("given a taker who stands in another corner of the map", () => {
-    it("names the map by that corner", () => {
+    it("names the map by that corner, in full, however long its name is", () => {
       renderContent(longCornerNameResults);
 
       expect(
-        screen.getByRole("region", {
-          name: "Lewicowy gospodarczo, prawicowy światopoglądowo",
-        }),
+        screen.getByRole("region", { name: LONG_CORNER_NAME }),
       ).toBeInTheDocument();
       expect(
         screen.queryByRole("region", { name: "Lewicowy" }),

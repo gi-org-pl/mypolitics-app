@@ -148,20 +148,20 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
           en: "Right-wing",
         },
         topLeftModerate: {
-          pl: "Lewicowy gospodarczo, prawicowy światopoglądowo",
-          en: "Economically left-wing, socially right-wing",
+          pl: "Mieszany",
+          en: "Mixed",
         },
         topLeftExtreme: {
-          pl: "Lewicowy gospodarczo, prawicowy światopoglądowo",
-          en: "Economically left-wing, socially right-wing",
+          pl: "Mieszany",
+          en: "Mixed",
         },
         bottomRightModerate: {
-          pl: "Prawicowy gospodarczo, lewicowy światopoglądowo",
-          en: "Economically right-wing, socially left-wing",
+          pl: "Mieszany",
+          en: "Mixed",
         },
         bottomRightExtreme: {
-          pl: "Prawicowy gospodarczo, lewicowy światopoglądowo",
-          en: "Economically right-wing, socially left-wing",
+          pl: "Mieszany",
+          en: "Mixed",
         },
       },
       description: {

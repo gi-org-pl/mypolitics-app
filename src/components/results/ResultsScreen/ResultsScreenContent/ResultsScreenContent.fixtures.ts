@@ -88,9 +88,30 @@ const socialAxes = identityQuiz.axes.filter(
   ({ type }) => type === "compass_y_axis",
 );
 
-// The same quiz for a taker who stands on the economic left and the social
-// right: the corner of the map with the longest name.
-export const longCornerNameResults = toContent(identityQuiz, {
+export const LONG_CORNER_NAME =
+  "Lewicowy gospodarczo, prawicowy światopoglądowo";
+
+// The identity quiz with a long name written for one corner of its map.
+const longCornerNameQuiz: Survey = {
+  ...identityQuiz,
+  resultModules: identityQuiz.resultModules.map((record) =>
+    record.type === "nolan_chart"
+      ? {
+          ...record,
+          labels: {
+            ...record.labels,
+            topLeftModerate: LONG_CORNER_NAME,
+            topLeftExtreme: LONG_CORNER_NAME,
+          },
+        }
+      : record,
+  ),
+};
+
+// That quiz for a taker who stands on the economic left and the social
+// right: in the corner with the long name. The card of the map writes the
+// name on one line, so it shows how a long one is cut.
+export const longCornerNameResults = toContent(longCornerNameQuiz, {
   ...identityQuizResult,
   scores: {
     ...identityQuizResult.scores,
