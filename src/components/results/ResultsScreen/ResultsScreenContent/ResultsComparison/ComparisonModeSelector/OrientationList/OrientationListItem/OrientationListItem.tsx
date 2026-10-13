@@ -1,15 +1,11 @@
 import type { CSSProperties } from "react";
 
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
-import type { Orientation } from "@/types/orientation";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
 import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
-interface OrientationListItemProps {
-  orientation: Orientation;
-  onPick: (orientationId: string) => void;
-}
+import type { OrientationListItemProps } from "./OrientationListItem.types";
 
 // One orientation of the list: its mark - a disc in its colour with its image
 // on it - and its name, as a control that picks it. The name is written in

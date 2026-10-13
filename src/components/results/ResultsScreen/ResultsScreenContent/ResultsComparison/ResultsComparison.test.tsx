@@ -208,6 +208,38 @@ describe("<ResultsComparison />", () => {
       });
     });
 
+    describe("when another mode is chosen after a refusal, and then the friend mode again", () => {
+      it("shows an empty field with the hint: the refused identifier is not kept as if it were fine", () => {
+        renderComparison();
+
+        enterId(TAKER_ID);
+        fireEvent.click(getTab("Z orientacją"));
+        fireEvent.click(getTab("Ze znajomym"));
+
+        expect(getField()).toHaveValue("");
+        expect(getField()).toBeValid();
+        expect(
+          screen.queryByText("To jest Twój identyfikator."),
+        ).not.toBeInTheDocument();
+        expect(screen.getByText(/^Wymień się identyfikatorami/)).toBeVisible();
+      });
+
+      it("asks for the result again when the same identifier is entered again", async () => {
+        getResultMock.mockResolvedValueOnce({
+          status: ResultLoadStatus.Failed,
+        });
+        renderComparison();
+
+        enterId(FRIEND_ID);
+        await screen.findByText("Nie znaleźliśmy takiego wyniku.");
+        fireEvent.click(getTab("Z orientacją"));
+        fireEvent.click(getTab("Ze znajomym"));
+        await compareWithFriend();
+
+        expect(getResultMock).toHaveBeenCalledTimes(2);
+      });
+    });
+
     describe("when the text is not an identifier in form", () => {
       it("makes no request, and the field says it is not an identifier", () => {
         renderComparison();

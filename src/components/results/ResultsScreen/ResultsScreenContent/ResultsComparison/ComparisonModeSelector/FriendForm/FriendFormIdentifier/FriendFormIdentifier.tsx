@@ -9,10 +9,7 @@ import {
   COPY_STATUS_CLASS_NAME,
   DEFAULT_COPY_ICON,
 } from "./FriendFormIdentifier.constants";
-
-interface FriendFormIdentifierProps {
-  identifier: string; // the result identifier that is shown and copied
-}
+import type { FriendFormIdentifierProps } from "./FriendFormIdentifier.types";
 
 // The identifier of the taker's own result, with the control that copies it.
 // It is written out in full, on as many lines as it takes, and selected whole
