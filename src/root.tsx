@@ -1,7 +1,7 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import type { ReactNode } from "react";
-import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import { messages as enMessages } from "../src/locales/en/messages";
 import { messages as plMessages } from "../src/locales/pl/messages";
@@ -17,7 +17,9 @@ i18n.activate(DEFAULT_LANGUAGE);
 /**
  * The HTML document. React Router renders this export around the app and
  * around its loading fallback, so the built `index.html` already links the
- * stylesheet and sets the viewport before any script runs.
+ * stylesheet and sets the viewport before any script runs. What a route asks
+ * of the document through its `meta` - not to be indexed, for one - is put
+ * into the head here.
  */
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -26,6 +28,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>mypolitics</title>
+        <Meta />
         <Links />
       </head>
       <body>

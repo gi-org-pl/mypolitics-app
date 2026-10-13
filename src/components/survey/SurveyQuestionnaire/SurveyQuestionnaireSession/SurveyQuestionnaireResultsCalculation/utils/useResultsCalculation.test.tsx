@@ -3,31 +3,33 @@ import { I18nProvider } from "@lingui/react";
 import { act, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { SURVEY_SESSION_CONFIG } from "@/constants/survey";
+import {
+  RESULT_READ_INTERVAL_MS,
+  RESULT_WAIT_MS,
+  SURVEY_SESSION_CONFIG,
+} from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
 import { requestResultLink } from "@/services/api/client/requestResultLink";
 import {
   CreateResultOutcome,
   ResultLinkOutcome,
+  type ResultLoadResult,
   type Survey,
   type SurveyEmail,
-  type SurveyResult,
   SurveyResultState,
   type SurveySession,
 } from "@/types/survey";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
-import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import {
   LINE_INTERVAL_MS,
   MAX_LINES,
   MIN_LINES,
-  RESULT_READ_INTERVAL_MS,
-  RESULT_WAIT_MS,
   RESULTS_CALCULATION_POOL,
 } from "../SurveyQuestionnaireResultsCalculation.constants";
 import { getLoaderLines } from "./getLoaderLines";
@@ -47,8 +49,8 @@ const createResultMock = vi.mocked(createResult);
 const getResultMock = vi.mocked(getResult);
 const requestResultLinkMock = vi.mocked(requestResultLink);
 
-const toResult = (isCalculated: boolean): SurveyResult =>
-  createSurveyResult({ isCalculated });
+const toResult = (isCalculated: boolean): ResultLoadResult =>
+  createResultLoad({ isCalculated });
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <I18nProvider i18n={i18n}>{children}</I18nProvider>

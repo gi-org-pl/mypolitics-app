@@ -19,8 +19,6 @@ export const QUIZ_PROJECT_IDS: Record<string, string> = {
   prezydencki2025: "69ef6c38-7292-4096-a9ef-a58e682dbfde",
 };
 
-export const RESULTS_URL = "https://mypolitics.pl/results";
-
 // The seven phases of a session, in their fixed order.
 export const SURVEY_PHASES: readonly SurveyPhase[] = [
   "category-select",
@@ -154,6 +152,12 @@ export const EMAIL_MAX_LENGTH = 254;
 export const SURVEY_SESSION_CONFIG: SurveySessionConfig = {
   isEmailSendingSetUp: RESULT_LINK_URL !== undefined,
 };
+
+// Reading a result until it is calculated: the pause between the answer to
+// one read and the next read, and how long the reads go on before the wait
+// gives up.
+export const RESULT_READ_INTERVAL_MS = 1000;
+export const RESULT_WAIT_MS = 30_000;
 
 // The record of a quiz is kept under `${key}:${surveyId}`.
 export const SURVEY_SESSION_STORAGE_KEY = "mypolitics:survey-session";

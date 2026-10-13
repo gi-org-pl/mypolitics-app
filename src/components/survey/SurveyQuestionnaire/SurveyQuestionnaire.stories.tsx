@@ -41,6 +41,7 @@ const meta = {
   args: {
     load: { status: SurveyLoadStatus.Loading },
     onRetry: fn(),
+    onResultOpen: fn(),
   },
 } satisfies Meta<typeof SurveyQuestionnaire>;
 
