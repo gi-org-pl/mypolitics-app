@@ -8,7 +8,17 @@ import { CompassMap } from "@/components/shared/CompassMap/CompassMap";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
-import { DEFAULT_COMPASS_QUADRANTS, MATCH_BAND_COLORS } from "./results";
+import {
+  DEFAULT_COMPASS_QUADRANTS,
+  DEFAULT_VISIBLE_ROWS,
+  MATCH_BAND_COLORS,
+  RESULT_MODULE_COLUMNS,
+  RESULT_MODULE_DEFAULTS,
+  RESULT_MODULE_GROUPINGS,
+  RESULT_MODULE_SELECTIONS,
+  RESULT_MODULE_SLOTS,
+  RESULT_MODULE_TYPES,
+} from "./results";
 
 const TOKENS = {
   none: "--gi-red",
@@ -111,5 +121,99 @@ describe("DEFAULT_COMPASS_QUADRANTS", () => {
     expect(
       DEFAULT_COMPASS_QUADRANTS[corner as keyof typeof QUADRANT_TOKENS].color,
     ).toBe(getPaletteValue(token));
+  });
+});
+
+describe("RESULT_MODULE_TYPES", () => {
+  it("lists the eight types as the API sends them", () => {
+    expect(RESULT_MODULE_TYPES).toEqual([
+      "header",
+      "single_axis",
+      "double_axis",
+      "multi_axis",
+      "horizontal_bar",
+      "nolan_chart",
+      "archetype",
+      "traits",
+    ]);
+  });
+});
+
+describe("RESULT_MODULE_DEFAULTS", () => {
+  it("holds what the spec gives a field that is left out", () => {
+    expect(RESULT_MODULE_DEFAULTS).toEqual({
+      column: "start",
+      selection: "all",
+      groupBy: "none",
+      marker: 50,
+      visibleRows: 3,
+    });
+    expect(DEFAULT_VISIBLE_ROWS).toBe(3);
+  });
+
+  it("holds a value the field may have", () => {
+    expect(RESULT_MODULE_COLUMNS).toEqual(["start", "end"]);
+    expect(RESULT_MODULE_SELECTIONS).toEqual(["all", "linked_to_leader"]);
+    expect(RESULT_MODULE_GROUPINGS).toEqual(["none", "category"]);
+    expect(RESULT_MODULE_COLUMNS).toContain(RESULT_MODULE_DEFAULTS.column);
+    expect(RESULT_MODULE_SELECTIONS).toContain(
+      RESULT_MODULE_DEFAULTS.selection,
+    );
+    expect(RESULT_MODULE_GROUPINGS).toContain(RESULT_MODULE_DEFAULTS.groupBy);
+  });
+});
+
+const LEVELS = ["Moderate", "Extreme"];
+const CORNERS = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
+const NOLAN_CHART_LABELS = [
+  "centre",
+  ...["horizontal", "vertical"].flatMap((axis) =>
+    ["Start", "End"].flatMap((pole) =>
+      LEVELS.map((level) => `${axis}${pole}${level}`),
+    ),
+  ),
+  ...CORNERS.flatMap((corner) =>
+    LEVELS.flatMap((level) => [`${corner}${level}`, `${corner}${level}Short`]),
+  ),
+];
+
+describe("RESULT_MODULE_SLOTS", () => {
+  it("has the slots of every type", () => {
+    expect(Object.keys(RESULT_MODULE_SLOTS).sort()).toEqual(
+      [...RESULT_MODULE_TYPES].sort(),
+    );
+  });
+
+  it("gives the header the label of its link and no colour", () => {
+    expect(RESULT_MODULE_SLOTS.header).toEqual({
+      labels: ["link"],
+      colors: [],
+    });
+  });
+
+  it("gives the Nolan chart the names of the middle, of a lean along each axis and of each corner", () => {
+    const { labels } = RESULT_MODULE_SLOTS.nolan_chart;
+
+    expect(labels).toHaveLength(25);
+    expect([...labels].sort()).toEqual([...NOLAN_CHART_LABELS].sort());
+  });
+
+  it("gives the Nolan chart a colour for each corner", () => {
+    expect(RESULT_MODULE_SLOTS.nolan_chart.colors).toEqual(CORNERS);
+    expect([...RESULT_MODULE_SLOTS.nolan_chart.colors].sort()).toEqual(
+      Object.keys(DEFAULT_COMPASS_QUADRANTS).sort(),
+    );
+  });
+
+  it.each([
+    ["single_axis"],
+    ["double_axis"],
+    ["multi_axis"],
+    ["horizontal_bar"],
+    ["archetype"],
+    ["traits"],
+  ] as const)("gives %s no slot", (type) => {
+    expect(RESULT_MODULE_SLOTS[type]).toEqual({ labels: [], colors: [] });
   });
 });
