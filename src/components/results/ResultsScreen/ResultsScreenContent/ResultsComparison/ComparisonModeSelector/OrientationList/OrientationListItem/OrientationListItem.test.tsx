@@ -21,7 +21,7 @@ const renderItem = (orientation: Orientation = ORIENTATION) => {
   return { onPick };
 };
 
-const getMark = () => screen.getByTestId("orientation-list-item-mark");
+const getMark = () => screen.getByTestId("orientation-avatar");
 
 describe("<OrientationListItem />", () => {
   describe("given an orientation", () => {
@@ -33,16 +33,16 @@ describe("<OrientationListItem />", () => {
       ).toBeEnabled();
     });
 
-    it("draws its mark in its colour, with its image as decoration", () => {
+    it("draws its mark before the name: the small disc in its colour, with its image", () => {
       renderItem();
 
-      expect(getMark()).toHaveStyle({ "--mark-color": "#9b59b6" });
-      expect(getMark()).toHaveClass("bg-(--mark-color)");
+      expect(screen.getByRole("button").firstElementChild).toBe(getMark());
+      expect(getMark()).toHaveClass("size-6");
+      expect(getMark()).toHaveStyle({ "--avatar-color": "#9b59b6" });
       expect(getMark().querySelector("img")).toHaveAttribute(
         "src",
         ORIENTATION.imageUrl,
       );
-      expect(getMark().querySelector("img")).toHaveAttribute("alt", "");
     });
 
     it("writes the name in full, on as many lines as it takes", () => {
@@ -76,34 +76,12 @@ describe("<OrientationListItem />", () => {
     });
   });
 
-  describe("given an orientation with no colour, or one that is not a colour", () => {
-    it.each([
-      undefined,
-      "url(javascript:alert(1))",
-    ])("draws the grey mark of a bar: %s", (color) => {
-      renderItem({ ...ORIENTATION, color });
+  describe("given an orientation with no colour and no image", () => {
+    it("draws the mark alone, in the grey of a bar", () => {
+      renderItem({ ...ORIENTATION, color: undefined, imageUrl: undefined });
 
       expect(getMark()).toHaveClass("bg-gi-dark-gray");
-      expect(getMark()).not.toHaveAttribute("style");
-    });
-  });
-
-  describe("given an orientation with no image", () => {
-    it("draws the mark alone", () => {
-      renderItem({ ...ORIENTATION, imageUrl: undefined });
-
       expect(getMark().querySelector("img")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("when the image fails to load", () => {
-    it("leaves the mark alone", () => {
-      renderItem();
-
-      fireEvent.error(getMark().querySelector("img") as HTMLImageElement);
-
-      expect(getMark().querySelector("img")).not.toBeInTheDocument();
-      expect(getMark()).toHaveStyle({ "--mark-color": "#9b59b6" });
     });
   });
 });

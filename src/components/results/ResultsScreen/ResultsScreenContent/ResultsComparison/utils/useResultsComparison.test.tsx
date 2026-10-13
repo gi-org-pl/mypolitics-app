@@ -270,7 +270,7 @@ describe("useResultsComparison()", () => {
       expect(getResultMock).toHaveBeenCalledTimes(1);
     });
 
-    it("shows a view the comparison has, and no other", async () => {
+    it("shows the view that is chosen, of the two a friend has", async () => {
       const { result } = renderComparison();
 
       act(() => result.current.enterFriendId(FRIEND_ID));
@@ -280,8 +280,26 @@ describe("useResultsComparison()", () => {
 
       act(() => result.current.chooseView(ComparisonView.Questions));
 
+      expect(result.current.state).toEqual({
+        ...friendComparison,
+        view: ComparisonView.Questions,
+      });
+
+      act(() => result.current.chooseView(ComparisonView.Results));
+
+      expect(result.current.state).toEqual(friendComparison);
+    });
+
+    it("shows no view the comparison does not have: an orientation has the questions alone", () => {
+      const { result } = renderComparison();
+
+      act(() => result.current.chooseMode(ComparisonMode.Orientation));
+      act(() => result.current.pickOrientation(moduleOrientations[0].id));
+      act(() => result.current.chooseView(ComparisonView.Results));
+
       expect(result.current.state).toMatchObject({
-        view: ComparisonView.Results,
+        views: [ComparisonView.Questions],
+        view: ComparisonView.Questions,
       });
     });
   });
