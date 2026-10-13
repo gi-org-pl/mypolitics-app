@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { DEFAULT_COMPASS_QUADRANTS } from "@/constants/results";
 import { findModule } from "@/utils/result-modules/resolvedModules.fixtures";
 import { toNolanChartProps } from "./toNolanChartProps";
 
@@ -42,7 +43,9 @@ describe("toNolanChartProps()", () => {
         "bottomRight",
       ]);
       expect(props.quadrants.topLeft.color).toBe("#ff0000");
-      expect(props.quadrants.topRight.color).toBeUndefined();
+      expect(props.quadrants.topRight.color).toBe(
+        DEFAULT_COMPASS_QUADRANTS.topRight.color,
+      );
       expect(props.quadrants.bottomLeft.names?.moderate).toBe(
         "Lewica wolnościowa",
       );
@@ -54,7 +57,7 @@ describe("toNolanChartProps()", () => {
   });
 
   describe("given a record with no label and no colour", () => {
-    it("leaves every name and colour to the map", () => {
+    it("leaves every name to the map, and draws the corners in the default colours", () => {
       const props = toNolanChartProps({
         ...findModule("nolan_chart"),
         labels: {},
@@ -63,7 +66,7 @@ describe("toNolanChartProps()", () => {
 
       expect(props.centreName).toBeUndefined();
       expect(props.quadrants.bottomRight).toEqual({
-        color: undefined,
+        color: DEFAULT_COMPASS_QUADRANTS.bottomRight.color,
         names: {
           moderate: undefined,
           extreme: undefined,
