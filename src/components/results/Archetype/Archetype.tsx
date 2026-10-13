@@ -16,8 +16,8 @@ export const Archetype = ({
   onStatsClick,
   onInfoClick,
 }: ArchetypeProps) => {
-  const { leader, rest } = getArchetypeRanking(archetypes);
-  const content = getArchetypeContent(leader, rest, lowMatch);
+  const { leader, rest, isLeaderScored } = getArchetypeRanking(archetypes);
+  const content = getArchetypeContent(leader, rest, lowMatch, isLeaderScored);
   const { openView, toggleView } = useArchetypeView(content);
 
   return (

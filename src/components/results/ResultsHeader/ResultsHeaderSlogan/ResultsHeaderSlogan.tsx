@@ -1,8 +1,6 @@
 import megaphoneIcon from "@/assets/icons/megaphone.svg";
 
-interface ResultsHeaderSloganProps {
-  text: string;
-}
+import type { ResultsHeaderSloganProps } from "./ResultsHeaderSlogan.types";
 
 // The slogan of the orientation the header names, as a chip. It is that
 // orientation's own line, so it wraps and is never cut: quizzes in use have

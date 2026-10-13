@@ -187,3 +187,29 @@ describe("getArchetypeContent()", () => {
     });
   });
 });
+
+describe("getArchetypeContent()", () => {
+  describe("given a card set to name a leader below a partial match, and a leader with no match of its own", () => {
+    const leader = archetype("a", 0, {
+      description: "Krótki.",
+      fullDescription: "Pełny.",
+    });
+
+    it("names nobody: no descriptions, and the first archetype in the ranking with the rest", () => {
+      expect(getArchetypeContent(leader, REST, "named", false)).toEqual({
+        isMatched: false,
+        shortDescription: "",
+        fullDescription: "",
+        ranking: [leader, ...REST],
+        hasDescription: false,
+        hasRanking: true,
+      });
+    });
+
+    it("still names a leader that is scored, whatever its match", () => {
+      expect(getArchetypeContent(leader, REST, "named", true).isMatched).toBe(
+        true,
+      );
+    });
+  });
+});

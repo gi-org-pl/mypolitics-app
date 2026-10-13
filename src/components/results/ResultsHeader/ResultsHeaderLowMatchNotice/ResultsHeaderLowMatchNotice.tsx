@@ -1,8 +1,6 @@
 import { BAND_CLASS_NAME } from "../ResultsHeader.constants";
 
-interface ResultsHeaderLowMatchNoticeProps {
-  text: string;
-}
+import type { ResultsHeaderLowMatchNoticeProps } from "./ResultsHeaderLowMatchNotice.types";
 
 // What the header says under an orientation it names below a partial match:
 // the author's line, in the colour of that band on a tint of it. It is the
