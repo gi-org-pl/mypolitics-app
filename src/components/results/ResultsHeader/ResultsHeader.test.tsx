@@ -249,12 +249,13 @@ describe("<ResultsHeader />", () => {
       );
     });
 
-    it("truncates a long slogan to one line and keeps it complete", () => {
+    it("wraps a long slogan and never cuts it", () => {
       renderHeader({ orientation: withSlogan(LONG_TEXT) });
 
       const text = screen.getByText(LONG_TEXT);
 
-      expect(text).toHaveClass("truncate");
+      expect(text).toHaveClass("wrap-break-word");
+      expect(text).not.toHaveClass("truncate");
       expect(text).toHaveTextContent(LONG_TEXT);
     });
 

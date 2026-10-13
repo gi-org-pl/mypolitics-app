@@ -178,13 +178,15 @@ const LOW_MATCH_NOTICE =
 
 // A header set to name its orientation below a partial match: the name, the
 // confidence in the colour of that band, the slogan, and the line for it.
+// The name and the slogan are the longest pair of the identity quiz: 25 and
+// 42 characters, which neither line holds at a narrow width.
 export const LowMatchNamed: Story = {
   globals: narrow,
   args: {
     orientation: {
       ...orientation,
-      name: "Społeczny patriota",
-      slogan: "Solidarnie ku lepszej przyszłości!",
+      name: "Międzynarodowy socjalista",
+      slogan: "Pracownicy wszystkich narodów łączcie się!",
     },
     confidence: 43.67,
     lowMatch: "named",
