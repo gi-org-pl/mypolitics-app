@@ -18,6 +18,7 @@ import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession/SurveyQ
 export const SurveyQuestionnaire = ({
   load,
   onRetry,
+  onResultOpen,
 }: SurveyQuestionnaireProps) => (
   <div className="@container w-full">
     <div className="w-full overflow-x-clip rounded-4xl bg-gi-ash p-3 @xs:p-4 @sm:p-6">
@@ -28,7 +29,11 @@ export const SurveyQuestionnaire = ({
         <SurveyQuestionnaireLoadError onRetry={onRetry} />
       )}
       {load.status === SurveyLoadStatus.Ready && (
-        <SurveyQuestionnaireSession key={load.survey.id} survey={load.survey} />
+        <SurveyQuestionnaireSession
+          key={load.survey.id}
+          survey={load.survey}
+          onResultOpen={onResultOpen}
+        />
       )}
     </div>
   </div>

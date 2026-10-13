@@ -28,7 +28,11 @@ const renderRoot = () => {
       Component: Root,
       children: [
         { index: true, Component: RouteContent },
-        { path: PATHS.terms, Component: NextRouteContent },
+        {
+          path: PATHS.terms,
+          Component: NextRouteContent,
+          meta: () => [{ name: "robots", content: "noindex" }],
+        },
       ],
     },
   ]);
@@ -131,6 +135,26 @@ describe("root Layout", () => {
     it("titles the document", () => {
       renderRoot();
 
+      expect(document.title).toBe("mypolitics");
+    });
+
+    it("asks nothing of search engines for a route that asks nothing", () => {
+      renderRoot();
+
+      expect(document.head.querySelector('meta[name="robots"]')).toBeNull();
+    });
+  });
+
+  describe("given a route that asks not to be indexed", () => {
+    it("puts that into the head of the document, and keeps the title", async () => {
+      renderRoot();
+
+      fireEvent.click(screen.getByRole("link", { name: "Regulamin" }));
+
+      expect(await screen.findByText(NEXT_ROUTE_CONTENT)).toBeVisible();
+      expect(
+        document.head.querySelector('meta[name="robots"]'),
+      ).toHaveAttribute("content", "noindex");
       expect(document.title).toBe("mypolitics");
     });
   });

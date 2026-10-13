@@ -1,0 +1,243 @@
+import { expect, type Locator, type Page, test } from "@playwright/test";
+
+import { openPage } from "../layout/openPage";
+import { mockSurveyApi } from "../survey/mockSurveyApi";
+import { SURVEY_ID } from "../survey/survey.fixture";
+import { mockResultRead, mockResultsApi } from "./mockResultsApi";
+import {
+  LEADER_NAME,
+  PARTIES_DESCRIPTION,
+  RESULT_ID,
+  RESULT_QUESTIONS,
+  RESULT_QUIZ_NAME,
+  resultSurveyFixture,
+} from "./result.fixture";
+
+const RESULT_PATH = `/results/${RESULT_ID}`;
+const QUIZ_PATH = "/quizzes/mypolitics";
+const NARROW_VIEWPORT = { width: 360, height: 800 };
+// Longer than the stay of the loader, 6 seconds.
+const LEAVE_TIMEOUT_MS = 20_000;
+
+const getModule = (page: Page, name: string) =>
+  page.getByRole("main").getByRole("region", { name, exact: true });
+
+const getButton = (page: Page, name: string) =>
+  page.getByRole("main").getByRole("button", { name, exact: true });
+
+const getBox = async (locator: Locator) => {
+  const box = await locator.boundingBox();
+
+  if (!box) throw new Error("The element is not drawn");
+
+  return box;
+};
+
+const expectResult = async (page: Page) => {
+  await expect(
+    page.getByRole("heading", { level: 1, name: LEADER_NAME, exact: true }),
+  ).toBeVisible();
+
+  for (const name of ["Ideologie", "Tożsamość", "Partie"]) {
+    await expect(getModule(page, name)).toBeVisible();
+  }
+};
+
+const answer = async (
+  page: Page,
+  question: (typeof RESULT_QUESTIONS)[number],
+  text: string,
+) => {
+  const answers = page.getByRole("group", { name: question.text });
+
+  await expect(answers).toBeVisible();
+  await answers.getByRole("button", { name: text, exact: true }).click();
+};
+
+test.describe("Feature: Results", () => {
+  test("Scenario: A user opens the address of a calculated result", async ({
+    page,
+  }) => {
+    const api = await mockResultsApi(page);
+
+    await test.step("Given a calculated result of the identity quiz", async () => {
+      // The mocked API holds the result and the quiz it names.
+    });
+
+    await test.step("When the user opens its address", async () => {
+      await openPage(page, RESULT_PATH);
+    });
+
+    await test.step('Then they see the leading identity in the header and the modules "Ideologie", "Tożsamość" and "Partie"', async () => {
+      await expectResult(page);
+      await expect(page.getByText("90% pewności")).toBeVisible();
+      await expect(
+        getModule(page, "Partie").getByText("Zieloni"),
+      ).toBeVisible();
+      await expect(
+        getModule(page, "Partie").getByText("Nowa Lewica"),
+      ).toBeVisible();
+      await expect(getModule(page, "Partie").getByText("Prawica")).toHaveCount(
+        0,
+      );
+    });
+
+    await test.step("And the name of the quiz stands under the modules and titles the document", async () => {
+      await expect(
+        page.getByRole("main").getByText(RESULT_QUIZ_NAME, { exact: true }),
+      ).toBeVisible();
+      await expect(page).toHaveTitle(RESULT_QUIZ_NAME);
+    });
+
+    await test.step("And the page asks search engines not to index it", async () => {
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+        "content",
+        "noindex",
+      );
+    });
+
+    await test.step("And the result was asked for first, then the survey it names, and nothing else", async () => {
+      expect(api.requests).toHaveLength(2);
+      expect(api.requests[0]).toContain(`/v1/result/${RESULT_ID}`);
+      expect(api.requests[1]).toContain(`/v1/survey/${SURVEY_ID}`);
+      expect(api.requests[1]).toContain("lang=pl");
+    });
+
+    await test.step("And on a wide screen the modules stand in two columns of equal width, each by position", async () => {
+      const ideologies = await getBox(getModule(page, "Ideologie"));
+      const identity = await getBox(getModule(page, "Tożsamość"));
+      const parties = await getBox(getModule(page, "Partie"));
+
+      expect(identity.y).toBe(ideologies.y);
+      expect(identity.x).toBeGreaterThan(ideologies.x + ideologies.width);
+      expect(identity.width).toBe(ideologies.width);
+      expect(parties.x).toBe(ideologies.x);
+      expect(parties.y).toBeGreaterThan(ideologies.y + ideologies.height);
+    });
+
+    await test.step('When they use the info action of "Partie"', async () => {
+      await getButton(page, "Informacje: Partie").click();
+    });
+
+    await test.step("Then a dialog shows the title and the description of the module", async () => {
+      const dialog = page.getByRole("dialog", { name: "Partie" });
+
+      await expect(dialog).toBeVisible();
+      await expect(dialog.getByText(PARTIES_DESCRIPTION)).toBeVisible();
+    });
+
+    await test.step("When they close the dialog", async () => {
+      await page
+        .getByRole("dialog")
+        .getByRole("button", { name: "Zamknij", exact: true })
+        .click();
+    });
+
+    await test.step("Then the dialog is gone and the focus is back on the info action", async () => {
+      await expect(page.getByRole("dialog")).toHaveCount(0);
+      await expect(getButton(page, "Informacje: Partie")).toBeFocused();
+    });
+
+    await test.step("When the screen is narrow", async () => {
+      await page.setViewportSize(NARROW_VIEWPORT);
+    });
+
+    await test.step("Then every module stands in one column, by position, with no sideways scroll", async () => {
+      const ideologies = await getBox(getModule(page, "Ideologie"));
+      const identity = await getBox(getModule(page, "Tożsamość"));
+      const parties = await getBox(getModule(page, "Partie"));
+
+      expect(identity.x).toBe(ideologies.x);
+      expect(parties.x).toBe(ideologies.x);
+      expect(identity.y).toBeGreaterThan(ideologies.y + ideologies.height);
+      expect(parties.y).toBeGreaterThan(identity.y + identity.height);
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
+    });
+
+    await test.step('When they choose the tab "Tryb porównania"', async () => {
+      await page.getByRole("tab", { name: "Tryb porównania" }).click();
+    });
+
+    await test.step("Then they read that comparison is coming, in place of the modules", async () => {
+      await expect(
+        page
+          .getByRole("tabpanel", { name: "Tryb porównania" })
+          .getByText("Porównanie będzie dostępne wkrótce."),
+      ).toBeVisible();
+      await expect(getModule(page, "Ideologie")).toHaveCount(0);
+    });
+  });
+
+  test("Scenario: A taker answers the last question of a quiz and reads the result in the app", async ({
+    page,
+  }) => {
+    // The scenario waits out the stay of the loader.
+    test.setTimeout(60_000);
+
+    const api = await mockSurveyApi(page, resultSurveyFixture);
+
+    // The result of a session is calculated as soon as it is stored.
+    await mockResultRead(page, (resultId) =>
+      api.results.some(
+        (result) => (result as { sessionId: string }).sessionId === resultId,
+      ),
+    );
+
+    await test.step("Given a user answers the last question of a quiz", async () => {
+      const [firstQuestion, lastQuestion] = RESULT_QUESTIONS;
+
+      await openPage(page, QUIZ_PATH);
+      await getButton(page, "Pomiń").click();
+      await answer(page, firstQuestion, "Zdecydowanie za");
+      await answer(page, lastQuestion, "Częściowo za");
+    });
+
+    await test.step("And they skip demographics and the e-mail card", async () => {
+      await expect(
+        page.getByRole("heading", { name: "Twoja tożsamość" }),
+      ).toBeVisible();
+      await getButton(page, "Pomiń").click();
+      await expect(
+        page.getByRole("heading", { name: "Zapisz swoje wyniki!" }),
+      ).toBeVisible();
+      await getButton(page, "Pomiń").click();
+    });
+
+    await test.step("When the result is calculated", async () => {
+      await expect.poll(() => api.results).toHaveLength(1);
+    });
+
+    await test.step("Then they are on the result's address in the app", async () => {
+      const { sessionId } = api.results[0] as { sessionId: string };
+
+      await expect(page).toHaveURL(`/results/${sessionId}`, {
+        timeout: LEAVE_TIMEOUT_MS,
+      });
+    });
+
+    await test.step("And they see their result", async () => {
+      await expectResult(page);
+      await expect(page).toHaveTitle(RESULT_QUIZ_NAME);
+    });
+
+    await test.step("When they go back in the browser", async () => {
+      await page.goBack();
+    });
+
+    await test.step("Then the quiz starts over with a new session", async () => {
+      await expect(page).toHaveURL(QUIZ_PATH);
+      await expect(
+        page.getByRole("group", {
+          name: "Wybierz 1 najważniejszy dla Ciebie temat.",
+        }),
+      ).toBeVisible();
+      expect(api.results).toHaveLength(1);
+    });
+  });
+});

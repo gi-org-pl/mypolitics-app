@@ -49,7 +49,7 @@ import { singleCategorySurveyFixture } from "./survey-single-category.fixture";
 const HOME_PATH = "/";
 const QUIZ_PATH = "/quizzes/mypolitics";
 const UNKNOWN_QUIZ_PATH = "/quizzes/nie-ma-takiego-quizu";
-const RESULTS_ADDRESS = "https://mypolitics.pl/results/";
+const RESULTS_PATH = "/results/";
 const FEATURED_QUIZ = "myPolitics";
 const CATEGORIES_PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
 const NOT_FOUND_HEADING = /To jest błąd 404/;
@@ -204,13 +204,17 @@ const expectLoader = async (page: Page) => {
 };
 
 // The loader stays for the time of five lines, 6 seconds, however fast the
-// result is. Nothing shortens that for the tests: the wait for the results
-// page covers it.
+// result is. Nothing shortens that for the tests: the wait for the result
+// screen covers it. The result is read inside the app, at the address that
+// ends with the identifier of the session. The quiz of these scenarios has no
+// orientations, so nobody leads its result: the header says so.
 const expectResultsPage = async (page: Page, sessionId: string) => {
-  await expect(page).toHaveURL(`${RESULTS_ADDRESS}${sessionId}`, {
+  await expect(page).toHaveURL(`${RESULTS_PATH}${sessionId}`, {
     timeout: LEAVE_TIMEOUT_MS,
   });
-  await expect(page.getByRole("heading", { name: "Wyniki" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Brak dopasowania" }),
+  ).toBeVisible();
 };
 
 // The storage of a tab is kept per site, so it is read from a page of the app
@@ -393,7 +397,11 @@ test.describe("Feature: Questionnaire", () => {
       expect(api.results).toHaveLength(1);
       expect(api.repeatedResults).toHaveLength(0);
       expect(api.linkRequests).toHaveLength(0);
-      expect(api.surveyRequests).toHaveLength(1);
+    });
+
+    await test.step("And the result screen asked for the quiz the result names", async () => {
+      expect(api.surveyRequests).toHaveLength(2);
+      expect(api.surveyRequests[1]).toContain(`/v1/survey/${SURVEY_ID}`);
     });
 
     await test.step("And nothing of the session is left in the tab's storage", async () => {
