@@ -44,10 +44,7 @@ describe("readResultModules()", () => {
           description: "Tożsamość, do której jest ci najbliżej.",
           orientationIds: ["socialist", "liberal", "conservative"],
           axisIds: [],
-          selection: "all",
-          groupBy: "none",
-          marker: 50,
-          visibleRows: 3,
+          params: {},
           labels: { link: "Zobacz stronę" },
           colors: {},
         },
@@ -58,10 +55,7 @@ describe("readResultModules()", () => {
           column: "start",
           orientationIds: ["green"],
           axisIds: [],
-          selection: "all",
-          groupBy: "none",
-          marker: 60,
-          visibleRows: 3,
+          params: { marker: 60 },
           labels: {},
           colors: {},
         },
@@ -73,10 +67,7 @@ describe("readResultModules()", () => {
           description: "Jak blisko ci do każdej ze stron osi.",
           orientationIds: [],
           axisIds: ["economy"],
-          selection: "all",
-          groupBy: "none",
-          marker: false,
-          visibleRows: 3,
+          params: { marker: null },
           labels: {},
           colors: {},
         },
@@ -88,10 +79,7 @@ describe("readResultModules()", () => {
           title: "Ideologie",
           orientationIds: [],
           axisIds: ["economy", "society"],
-          selection: "all",
-          groupBy: "category",
-          marker: 50,
-          visibleRows: 3,
+          params: { groupBy: "category" },
           labels: {},
           colors: {},
         },
@@ -104,10 +92,7 @@ describe("readResultModules()", () => {
           description: "Partie powiązane z twoją tożsamością.",
           orientationIds: ["party-left", "party-right"],
           axisIds: [],
-          selection: "linked_to_leader",
-          groupBy: "none",
-          marker: 50,
-          visibleRows: 5,
+          params: { selection: "linked_to_leader", visibleRows: 5 },
           labels: {},
           colors: {},
         },
@@ -118,10 +103,7 @@ describe("readResultModules()", () => {
           column: "start",
           orientationIds: [],
           axisIds: ["compass-x", "compass-y"],
-          selection: "all",
-          groupBy: "none",
-          marker: 50,
-          visibleRows: 3,
+          params: {},
           labels: {
             centre: "Centrum",
             horizontalStartModerate: "Umiarkowany socjalizm",
@@ -145,10 +127,7 @@ describe("readResultModules()", () => {
           title: "Tożsamość",
           orientationIds: ["socialist", "liberal", "conservative"],
           axisIds: [],
-          selection: "all",
-          groupBy: "none",
-          marker: 50,
-          visibleRows: 3,
+          params: {},
           labels: {},
           colors: {},
         },
@@ -160,10 +139,7 @@ describe("readResultModules()", () => {
           title: "Cechy",
           orientationIds: ["green", "hidden"],
           axisIds: [],
-          selection: "all",
-          groupBy: "none",
-          marker: 50,
-          visibleRows: 3,
+          params: {},
           labels: {},
           colors: {},
         },
@@ -334,83 +310,72 @@ describe("readResultModules()", () => {
       });
     });
 
-    describe("given a selection that is missing or unknown", () => {
-      it.each([
-        [undefined],
-        [null],
-        [""],
-        ["linked"],
-        ["linked-to-leader"],
-        [7],
-      ])("reads %j as all", (selection) => {
-        expect(readOne({ selection }).selection).toBe("all");
+    describe("given parameters that are an object", () => {
+      it("keeps them as sent, name by name", () => {
+        const params = {
+          selection: "linked_to_leader",
+          marker: null,
+          visibleRows: 5,
+          isFolded: true,
+          tags: ["a", 2, false, null],
+        };
+
+        expect(readOne({ params }).params).toEqual(params);
       });
 
-      it("keeps linked_to_leader", () => {
-        expect(readOne({ selection: "linked_to_leader" }).selection).toBe(
-          "linked_to_leader",
+      it.each([
+        ["an object", { from: 1 }],
+        ["a list that holds an object", ["a", {}]],
+        ["a list that holds a list", [["a"]]],
+      ])("drops a value that is %s and keeps the others", (_, value) => {
+        expect(readOne({ params: { marker: 20, name: value } }).params).toEqual(
+          { marker: 20 },
         );
       });
     });
 
-    describe("given a grouping that is missing or unknown", () => {
+    describe("given parameters that are missing or are not an object", () => {
       it.each([
         [undefined],
         [null],
         [""],
-        ["axis"],
-        ["Category"],
+        ["marker"],
+        [7],
         [true],
-      ])("reads %j as none", (groupBy) => {
-        expect(readOne({ groupBy }).groupBy).toBe("none");
-      });
-
-      it("keeps category", () => {
-        expect(readOne({ groupBy: "category" }).groupBy).toBe("category");
+        [[["marker", 20]]],
+      ])("reads %j as no parameters", (params) => {
+        expect(readOne({ params }).params).toEqual({});
       });
     });
 
-    describe("given a marker that is missing, not a number and not null, or outside 0 to 100", () => {
-      it.each([
-        [undefined],
-        ["60"],
-        [true],
-        [{}],
-        [Number.NaN],
-        [Number.POSITIVE_INFINITY],
-        [-1],
-        [100.5],
-      ])("reads %j as 50", (marker) => {
-        expect(readOne({ marker }).marker).toBe(50);
-      });
+    describe("given a name the type of the record does not read, or one the app does not know", () => {
+      it("keeps it on the record, and checks no value against its name", () => {
+        const params = { marker: 250, selection: "nobody", sortBy: "name" };
 
-      it.each([[0], [62.5], [100]])("keeps %j as sent", (marker) => {
-        expect(readOne({ marker }).marker).toBe(marker);
+        expect(readOne({ type: "horizontal_bar", params }).params).toEqual(
+          params,
+        );
+        expect(readOne({ type: "header", params }).params).toEqual(params);
       });
     });
 
-    describe("given a marker that is null", () => {
-      it("reads it as false", () => {
-        expect(readOne({ marker: null }).marker).toBe(false);
-      });
-    });
+    describe("given a record that sends its settings as fields, as the first version of the contract had them", () => {
+      const fields = {
+        selection: "linked_to_leader",
+        groupBy: "category",
+        marker: null,
+        visibleRows: 5,
+      };
 
-    describe("given a number of visible rows that is missing, below 1 or not a whole number", () => {
-      it.each([
-        [undefined],
-        [null],
-        [0],
-        [-2],
-        [2.5],
-        ["4"],
-        [Number.NaN],
-        [Number.POSITIVE_INFINITY],
-      ])("reads %j as 3", (visibleRows) => {
-        expect(readOne({ visibleRows }).visibleRows).toBe(3);
+      it("does not read them when it sends no parameters", () => {
+        expect(readOne(fields)).toEqual(readOne({}));
+        expect(readOne(fields).params).toEqual({});
       });
 
-      it.each([[1], [8]])("keeps %j as sent", (visibleRows) => {
-        expect(readOne({ visibleRows }).visibleRows).toBe(visibleRows);
+      it("does not read them beside its parameters: only the parameters count", () => {
+        const params = { groupBy: "none", visibleRows: 2 };
+
+        expect(readOne({ ...fields, params })).toEqual(readOne({ params }));
       });
     });
 
@@ -617,10 +582,7 @@ describe("readResultModules()", () => {
             column: "start",
             orientationIds: [],
             axisIds: [],
-            selection: "all",
-            groupBy: "none",
-            marker: 50,
-            visibleRows: 3,
+            params: {},
             labels: {},
             colors: {},
           },

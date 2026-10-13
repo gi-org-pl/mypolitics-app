@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createResultModule } from "./createResultModule";
 
 describe("createResultModule()", () => {
-  it("builds a record of the type given, with every other field at its default", () => {
+  it("builds a record of the type given, with no parameter set and every other field at its default", () => {
     expect(createResultModule("ranking", "horizontal_bar")).toEqual({
       id: "ranking",
       type: "horizontal_bar",
@@ -11,10 +11,7 @@ describe("createResultModule()", () => {
       column: "start",
       orientationIds: [],
       axisIds: [],
-      selection: "all",
-      groupBy: "none",
-      marker: 50,
-      visibleRows: 3,
+      params: {},
       labels: {},
       colors: {},
     });
@@ -24,8 +21,8 @@ describe("createResultModule()", () => {
     const record = createResultModule("header", "header", {
       position: 4,
       column: "end",
-      marker: false,
       orientationIds: ["left"],
+      params: { marker: null },
       labels: { link: "Strona" },
     });
 
@@ -34,10 +31,19 @@ describe("createResultModule()", () => {
       type: "header",
       position: 4,
       column: "end",
-      marker: false,
       orientationIds: ["left"],
+      params: { marker: null },
       labels: { link: "Strona" },
     });
-    expect(record.visibleRows).toBe(3);
+    expect(record.axisIds).toEqual([]);
+  });
+
+  it("keeps the identifier and the type given, whatever the overrides hold", () => {
+    expect(
+      createResultModule("ranking", "horizontal_bar", {
+        id: "other",
+        type: "traits",
+      }),
+    ).toMatchObject({ id: "ranking", type: "horizontal_bar" });
   });
 });

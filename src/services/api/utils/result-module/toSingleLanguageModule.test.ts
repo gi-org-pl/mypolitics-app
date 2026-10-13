@@ -12,7 +12,7 @@ const record: OwnResultModule = {
   title: { pl: "Kompas", en: "Compass" },
   description: { pl: "Dwie osie.", en: "Two axes." },
   axisIds: ["economy", "society"],
-  marker: null,
+  params: { marker: null },
   labels: {
     centre: { pl: "Centrowy", en: "Centrist" },
     horizontalStartModerate: { pl: "Lewicowy gospodarczo" },
@@ -58,7 +58,7 @@ describe("toSingleLanguageModule()", () => {
         title: "Compass",
         description: "Two axes.",
         axisIds: ["economy", "society"],
-        marker: null,
+        params: { marker: null },
         labels: {
           centre: "Centrist",
           horizontalStartModerate: "Lewicowy gospodarczo",
