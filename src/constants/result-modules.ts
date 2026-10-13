@@ -6,14 +6,16 @@ import type { OwnResultModule } from "@/types/results";
 // the old site showed for its quiz: which cards, in which order, with which
 // explanations, and what happens below a partial match - the identity quiz
 // named the closest identity all the same, with a notice, and said that there
-// is no closest party; the presidential quiz said that nobody is close. A record is written as the API would
-// send it - its values a list of pairs of a key and a value - except that a
-// text is a value that holds each language. A list from the API wins over the
-// one here.
+// is no closest party; the presidential quiz said that nobody is close.
+//
+// A record is written as the API would send it - its identifier a UUID, its
+// values a list of pairs of a key and a value - except that a text is a value
+// that holds each language. The comment beside an identifier says which
+// record it is. A list from the API wins over the one here.
 export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
   "60beb898-a4e4-4160-88c4-07a9931ab499": [
     {
-      id: "identity-header",
+      id: "e7a3dbe2-b263-444a-b686-f7c801c17879", // the header of the identity quiz
       type: "header",
       position: 0,
       orientationIds: [
@@ -49,7 +51,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "identity-ideologies",
+      id: "34247794-ee0f-451b-9e48-b8685067c8de", // its axes
       type: "multi_axis",
       position: 1,
       column: "start",
@@ -94,7 +96,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "identity-archetype",
+      id: "b9f37f04-1b35-4423-ba31-90d523a09664", // its identity card
       type: "archetype",
       position: 2,
       column: "end",
@@ -131,7 +133,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "identity-compass",
+      id: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b", // its compass
       type: "nolan_chart",
       position: 3,
       column: "end",
@@ -270,7 +272,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "identity-parties",
+      id: "2c5ba77b-959e-421a-8079-edf2d948a01c", // its parties
       type: "horizontal_bar",
       position: 4,
       column: "end",
@@ -319,7 +321,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
   ],
   "270f6c12-6551-4661-bfcf-52635a703928": [
     {
-      id: "presidential-header",
+      id: "1046adae-2298-4fa2-a20c-023b67fc1e23", // the header of the presidential quiz
       type: "header",
       position: 0,
       orientationIds: [
@@ -349,7 +351,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "presidential-candidates",
+      id: "26585cf4-cfb5-4755-b6f6-f997764b60c5", // its candidates
       type: "horizontal_bar",
       position: 1,
       column: "start",
@@ -384,7 +386,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "presidential-identity",
+      id: "a9fabbef-3b68-4121-ac03-174016fd849a", // its presidential identity
       type: "archetype",
       position: 2,
       column: "end",
@@ -412,7 +414,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
     {
-      id: "presidential-categories",
+      id: "31a5619f-c941-4802-ac9b-4a477f5a2a90", // its candidates by category
       type: "horizontal_bar",
       position: 3,
       column: "end",

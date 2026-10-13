@@ -1,4 +1,5 @@
 import { DEFAULT_LANGUAGE } from "@/constants/common";
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { QuizResult } from "@/types/results";
 import type { SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
@@ -73,7 +74,7 @@ const identityIds = Object.values(IDENTITY_IDS);
 
 const resultModules = [
   {
-    id: "identity-header",
+    id: OWN_RECORD_IDS.identityHeader,
     type: "header",
     position: 0,
     orientationIds: identityIds,
@@ -87,7 +88,7 @@ const resultModules = [
     ],
   },
   {
-    id: "identity-ideologies",
+    id: OWN_RECORD_IDS.identityIdeologies,
     type: "multi_axis",
     position: 1,
     column: "start",
@@ -108,7 +109,7 @@ const resultModules = [
     ],
   },
   {
-    id: "identity-archetype",
+    id: OWN_RECORD_IDS.identityArchetype,
     type: "archetype",
     position: 2,
     column: "end",
@@ -119,7 +120,7 @@ const resultModules = [
     ],
   },
   {
-    id: "identity-compass",
+    id: OWN_RECORD_IDS.identityCompass,
     type: "nolan_chart",
     position: 3,
     column: "end",
@@ -147,7 +148,7 @@ const resultModules = [
     ],
   },
   {
-    id: "identity-parties",
+    id: OWN_RECORD_IDS.identityParties,
     type: "horizontal_bar",
     position: 4,
     column: "end",

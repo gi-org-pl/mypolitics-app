@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { PARTIAL_MATCH_FROM } from "@/constants/results";
 import type {
   QuizResult,
@@ -11,7 +11,6 @@ import type { Survey } from "@/types/survey";
 import { createResultModule } from "@/utils/vitest/results/createResultModule";
 import { createSurveyAxis } from "@/utils/vitest/survey/createSurveyAxis";
 import { createSurveyCategory } from "@/utils/vitest/survey/createSurveyCategory";
-
 import {
   AXIS_IDS,
   IDENTITY_IDS,
@@ -817,7 +816,7 @@ describe("resolveResult()", () => {
 
     it("leads with the top identity", () => {
       const identities = resolved.modules.find(
-        ({ id }) => id === "identity-archetype",
+        ({ id }) => id === OWN_RECORD_IDS.identityArchetype,
       );
 
       expect(resolved.leader).toMatchObject({
@@ -851,7 +850,7 @@ describe("resolveResult()", () => {
 
     it("shows the parties linked to the top identity, in its order and with no values", () => {
       const parties = resolved.modules.find(
-        ({ id }) => id === "identity-parties",
+        ({ id }) => id === OWN_RECORD_IDS.identityParties,
       );
 
       expect(parties).toMatchObject({
@@ -873,7 +872,9 @@ describe("resolveResult()", () => {
 
     it("groups the axes by the categories of the quiz, in the quiz's order", () => {
       expect(
-        resolved.modules.find(({ id }) => id === "identity-ideologies"),
+        resolved.modules.find(
+          ({ id }) => id === OWN_RECORD_IDS.identityIdeologies,
+        ),
       ).toMatchObject({
         type: "multi_axis",
         groups: [
@@ -909,7 +910,7 @@ describe("resolveResult()", () => {
 
     it("finds the two compass axes, each side with one value for its several orientations", () => {
       const compass = resolved.modules.find(
-        ({ id }) => id === "identity-compass",
+        ({ id }) => id === OWN_RECORD_IDS.identityCompass,
       );
       const { scores } = identityQuizResult;
       // The start side of the horizontal axis is "Interwencjonizm" and "Solidaryzm ekonomiczny".
@@ -942,10 +943,10 @@ describe("resolveResult()", () => {
 
     it("draws the four modules in the order of their positions", () => {
       expect(resolved.modules.map(({ id }) => id)).toEqual([
-        "identity-ideologies",
-        "identity-archetype",
-        "identity-compass",
-        "identity-parties",
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
       ]);
     });
   });
@@ -969,10 +970,10 @@ describe("resolveResult()", () => {
       });
       expect(resolved.leader).toBeUndefined();
       expect(resolved.modules.map(({ id }) => id)).toEqual([
-        "identity-ideologies",
-        "identity-archetype",
-        "identity-compass",
-        "identity-parties",
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
       ]);
       expect(resolved.modules.at(-1)).toMatchObject({
         entries: [],

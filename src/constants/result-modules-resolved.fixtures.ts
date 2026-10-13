@@ -85,7 +85,7 @@ const RESOLVED = {
     },
     modules: [
       {
-        id: "identity-ideologies",
+        id: "34247794-ee0f-451b-9e48-b8685067c8de", // its axes
         position: 1,
         column: "start",
         title: "Ideologie",
@@ -302,7 +302,7 @@ const RESOLVED = {
         marker: 50,
       },
       {
-        id: "identity-archetype",
+        id: "b9f37f04-1b35-4423-ba31-90d523a09664", // its identity card
         position: 2,
         column: "end",
         title: "Tożsamość",
@@ -372,7 +372,7 @@ const RESOLVED = {
         ],
       },
       {
-        id: "identity-compass",
+        id: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b", // its compass
         position: 3,
         column: "end",
         description:
@@ -424,7 +424,7 @@ const RESOLVED = {
         colors: {},
       },
       {
-        id: "identity-parties",
+        id: "2c5ba77b-959e-421a-8079-edf2d948a01c", // its parties
         position: 4,
         column: "end",
         title: "Partie",
@@ -458,7 +458,7 @@ const RESOLVED = {
     },
     modules: [
       {
-        id: "presidential-candidates",
+        id: "26585cf4-cfb5-4755-b6f6-f997764b60c5", // its candidates
         position: 1,
         column: "start",
         title: "Kandydaci",
@@ -478,7 +478,7 @@ const RESOLVED = {
         visibleRows: 13,
       },
       {
-        id: "presidential-identity",
+        id: "a9fabbef-3b68-4121-ac03-174016fd849a", // its presidential identity
         position: 2,
         column: "end",
         title: "Prezydent",
@@ -492,7 +492,7 @@ const RESOLVED = {
         ],
       },
       {
-        id: "presidential-categories",
+        id: "31a5619f-c941-4802-ac9b-4a477f5a2a90", // its candidates by category
         position: 3,
         column: "end",
         title: "Kategorie",

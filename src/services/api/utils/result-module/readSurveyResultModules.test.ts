@@ -4,9 +4,9 @@ import { OWN_RESULT_MODULES } from "@/constants/result-modules";
 import {
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
+  OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
 } from "@/constants/result-modules.fixtures";
-
 import { getOwnResultModules } from "./getOwnResultModules";
 import { readResultModules } from "./readResultModules";
 import { readSurveyResultModules } from "./readSurveyResultModules";
@@ -79,11 +79,11 @@ describe("readSurveyResultModules()", () => {
           known,
         ).map(({ id }) => id),
       ).toEqual([
-        "identity-header",
-        "identity-ideologies",
-        "identity-archetype",
-        "identity-compass",
-        "identity-parties",
+        OWN_RECORD_IDS.identityHeader,
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
       ]);
     });
 
