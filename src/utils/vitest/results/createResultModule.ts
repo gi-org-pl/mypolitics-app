@@ -6,8 +6,8 @@ import type {
 } from "@/types/results";
 
 // A record of a result module for a test quiz: placed first, pointed at
-// nothing, with no parameter set and every other field at its default. The
-// record is of the type given, whatever the overrides hold.
+// nothing, with no value set and every other field at its default. The record
+// is of the type given, whatever the overrides hold.
 export const createResultModule = <Type extends ResultModuleType>(
   id: string,
   type: Type,
@@ -16,9 +16,7 @@ export const createResultModule = <Type extends ResultModuleType>(
   position: 0,
   orientationIds: [],
   axisIds: [],
-  params: {},
-  labels: {},
-  colors: {},
+  values: {},
   ...RESULT_MODULE_DEFAULTS,
   ...overrides,
   id,

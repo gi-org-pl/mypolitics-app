@@ -2,7 +2,7 @@ import type { ModuleResolver } from "@/types/results";
 import { getRankedCategories } from "@/utils/result-modules/orientations/getRankedCategories";
 import { getRankedEntries } from "@/utils/result-modules/orientations/getRankedEntries";
 import { getSelectedOrientations } from "@/utils/result-modules/orientations/getSelectedOrientations";
-import { getModuleParams } from "@/utils/result-modules/params/getModuleParams";
+import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 // A horizontal bar ranks the orientations its record selects: as one list
 // with their values in the result, or as one list per category with their
@@ -12,7 +12,7 @@ export const resolveHorizontalBar: ModuleResolver<"horizontal_bar"> = (
   record,
   context,
 ) => {
-  const { selection, groupBy, visibleRows } = getModuleParams(record);
+  const { selection, groupBy, visibleRows } = getModuleValues(record);
   const orientations = getSelectedOrientations(
     { orientationIds: record.orientationIds, selection },
     context,
