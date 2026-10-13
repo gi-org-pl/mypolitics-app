@@ -76,7 +76,7 @@ describe("resolveHeader()", () => {
       const header = resolveWith([
         toHeader({
           orientationIds: ["party-left", "party-right"],
-          labels: { link: "Zobacz stronę" },
+          values: { "label.link": "Zobacz stronę" },
         }),
       ]);
 

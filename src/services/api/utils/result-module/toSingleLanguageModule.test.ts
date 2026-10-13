@@ -9,81 +9,101 @@ const record: OwnResultModule = {
   type: "nolan_chart",
   position: 3,
   column: "end",
-  title: { pl: "Kompas", en: "Compass" },
-  description: { pl: "Dwie osie.", en: "Two axes." },
   axisIds: ["economy", "society"],
-  params: { marker: null },
-  labels: {
-    centre: { pl: "Centrowy", en: "Centrist" },
-    horizontalStartModerate: { pl: "Lewicowy gospodarczo" },
-  },
-  colors: { topLeft: "#ff0000" },
+  values: [
+    { key: "title", value: { pl: "Kompas", en: "Compass" } },
+    { key: "description", value: { pl: "Dwie osie.", en: "Two axes." } },
+    { key: "marker", value: null },
+    { key: "label.centre", value: { pl: "Centrowy", en: "Centrist" } },
+    {
+      key: "label.horizontalStartModerate",
+      value: { pl: "Lewicowy gospodarczo" },
+    },
+    { key: "color.topLeft", value: "#ff0000" },
+    { key: "note", value: { pl: "Uwaga", en: "Note" } },
+  ],
 };
+
+const getValue = (language: string, key: string) =>
+  toSingleLanguageModule(record, language).values.find(
+    (pair) => pair.key === key,
+  )?.value;
 
 describe("toSingleLanguageModule()", () => {
   describe("given a record with its texts in two languages", () => {
-    it("holds each text in the language asked for", () => {
-      expect(toSingleLanguageModule(record, "en")).toMatchObject({
-        title: "Compass",
-        description: "Two axes.",
-        labels: { centre: "Centrist" },
-      });
-      expect(toSingleLanguageModule(record, "pl")).toMatchObject({
-        title: "Kompas",
-        description: "Dwie osie.",
-        labels: { centre: "Centrowy" },
-      });
+    it.each([
+      ["en", "Compass", "Two axes.", "Centrist"],
+      ["pl", "Kompas", "Dwie osie.", "Centrowy"],
+    ])("holds each text in the language asked for: %s", (language, title, description, centre) => {
+      expect(getValue(language, "title")).toBe(title);
+      expect(getValue(language, "description")).toBe(description);
+      expect(getValue(language, "label.centre")).toBe(centre);
+    });
+
+    it("turns a value that holds each language into one text whatever its key, a key the app does not know included", () => {
+      expect(getValue("en", "note")).toBe("Note");
+      expect(getValue("pl", "note")).toBe("Uwaga");
     });
 
     it("falls back to Polish for a text that is not written in that language", () => {
-      expect(
-        toSingleLanguageModule(record, "en").labels.horizontalStartModerate,
-      ).toBe("Lewicowy gospodarczo");
-      expect(toSingleLanguageModule(record, "de")).toMatchObject({
-        title: "Kompas",
-        description: "Dwie osie.",
-        labels: {
-          centre: "Centrowy",
-          horizontalStartModerate: "Lewicowy gospodarczo",
-        },
-      });
+      expect(getValue("en", "label.horizontalStartModerate")).toBe(
+        "Lewicowy gospodarczo",
+      );
+      expect(getValue("de", "title")).toBe("Kompas");
+      expect(getValue("de", "label.centre")).toBe("Centrowy");
     });
 
-    it("leaves every other field as written", () => {
-      expect(toSingleLanguageModule(record, "en")).toEqual({
+    it("leaves a plain value, the order of the pairs and every other field as written", () => {
+      expect(toSingleLanguageModule(record, "en")).toStrictEqual({
         id: "compass",
         type: "nolan_chart",
         position: 3,
         column: "end",
-        title: "Compass",
-        description: "Two axes.",
         axisIds: ["economy", "society"],
-        params: { marker: null },
-        labels: {
-          centre: "Centrist",
-          horizontalStartModerate: "Lewicowy gospodarczo",
-        },
-        colors: { topLeft: "#ff0000" },
+        values: [
+          { key: "title", value: "Compass" },
+          { key: "description", value: "Two axes." },
+          { key: "marker", value: null },
+          { key: "label.centre", value: "Centrist" },
+          {
+            key: "label.horizontalStartModerate",
+            value: "Lewicowy gospodarczo",
+          },
+          { key: "color.topLeft", value: "#ff0000" },
+          { key: "note", value: "Note" },
+        ],
       });
+    });
+
+    it("leaves the record it was given as it is", () => {
+      const before = structuredClone(record);
+
+      toSingleLanguageModule(record, "en");
+
+      expect(record).toStrictEqual(before);
     });
   });
 
-  describe("given a record without texts", () => {
-    it("has no title, no description and no labels", () => {
-      const module = toSingleLanguageModule(
-        { id: "header", type: "header", position: 0, orientationIds: ["a"] },
-        "pl",
-      );
-
-      expect(module).toEqual({
+  describe("given a record without values", () => {
+    it("has none", () => {
+      expect(
+        toSingleLanguageModule(
+          {
+            id: "header",
+            type: "header",
+            position: 0,
+            orientationIds: ["a"],
+            values: [],
+          },
+          "pl",
+        ),
+      ).toStrictEqual({
         id: "header",
         type: "header",
         position: 0,
         orientationIds: ["a"],
-        labels: {},
+        values: [],
       });
-      expect(module.title).toBeUndefined();
-      expect(module.description).toBeUndefined();
     });
   });
 });

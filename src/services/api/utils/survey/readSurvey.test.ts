@@ -231,16 +231,19 @@ describe("readSurvey()", () => {
             type: "header",
             position: 5,
             orientationIds: ["right", "left"],
-            labels: { link: " Zobacz stronę " },
+            values: [{ key: "label.link", value: " Zobacz stronę " }],
           },
           {
             id: "ranking",
             type: "horizontal_bar",
             position: 1,
             column: "end",
-            title: "Partie",
             orientationIds: ["party"],
-            params: { selection: "linked_to_leader", marker: null },
+            values: [
+              { key: "title", value: "Partie" },
+              { key: "selection", value: "linked_to_leader" },
+              { key: "marker", value: null },
+            ],
           },
         ];
 
@@ -260,21 +263,20 @@ describe("readSurvey()", () => {
             column: "start",
             orientationIds: ["right", "left"],
             axisIds: [],
-            params: {},
-            labels: { link: "Zobacz stronę" },
-            colors: {},
+            values: { "label.link": " Zobacz stronę " },
           },
           {
             id: "ranking",
             type: "horizontal_bar",
             position: 1,
             column: "end",
-            title: "Partie",
             orientationIds: ["party"],
             axisIds: [],
-            params: { selection: "linked_to_leader", marker: null },
-            labels: {},
-            colors: {},
+            values: {
+              title: "Partie",
+              selection: "linked_to_leader",
+              marker: null,
+            },
           },
           {
             id: "axes",
@@ -283,9 +285,7 @@ describe("readSurvey()", () => {
             column: "start",
             orientationIds: [],
             axisIds: ["economy"],
-            params: {},
-            labels: {},
-            colors: {},
+            values: {},
           },
         ]);
       });
@@ -380,13 +380,13 @@ describe("readSurvey()", () => {
       it("holds its texts in the language the quiz was asked for", () => {
         const [polish, english] = [LANGUAGE, "en"].map((language) =>
           read(liveQuiz, surveyId, language).resultModules.map(
-            ({ title }) => title,
+            ({ values }) => values,
           ),
         );
 
         expect(english).toEqual(
           readResultModules(getOwnResultModules(surveyId, "en"), known).map(
-            ({ title }) => title,
+            ({ values }) => values,
           ),
         );
         expect(english).not.toEqual(polish);

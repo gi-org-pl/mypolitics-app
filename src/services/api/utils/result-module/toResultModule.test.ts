@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { RESULT_MODULE_SLOTS, RESULT_MODULE_TYPES } from "@/constants/results";
 import { resultModuleResponseSchema } from "@/services/api/schemas/resultModule";
 
 import { toResultModule } from "./toResultModule";
@@ -23,96 +22,130 @@ const read = (
     known,
   );
 
-const EVERY_SLOT = Object.fromEntries(
-  RESULT_MODULE_TYPES.flatMap((type) => [
-    ...RESULT_MODULE_SLOTS[type].labels,
-    ...RESULT_MODULE_SLOTS[type].colors,
-  ]).map((slot) => [slot, "#123456"]),
-);
-
 describe("toResultModule()", () => {
   describe("given a record with every field", () => {
-    it("reads each field as sent", () => {
+    it("reads each field as sent, and the values by key", () => {
       expect(
         read({
           id: "0d6b0f7e",
           type: "horizontal_bar",
           position: 3,
           column: "end",
-          title: "Partie",
-          description: "Partie najbliższe twojej tożsamości.",
           orientationIds: ["right", "left"],
           axisIds: ["society"],
-          params: {
-            selection: "linked_to_leader",
-            groupBy: "category",
-            marker: 65,
-            visibleRows: 5,
-          },
-          labels: {},
-          colors: {},
+          values: [
+            { key: "title", value: "Partie" },
+            {
+              key: "description",
+              value: "Partie najbliższe twojej tożsamości.",
+            },
+            { key: "selection", value: "linked_to_leader" },
+            { key: "groupBy", value: "category" },
+            { key: "visibleRows", value: 5 },
+          ],
         }),
-      ).toEqual({
+      ).toStrictEqual({
         id: "0d6b0f7e",
         type: "horizontal_bar",
         position: 3,
         column: "end",
-        title: "Partie",
-        description: "Partie najbliższe twojej tożsamości.",
         orientationIds: ["right", "left"],
         axisIds: ["society"],
-        params: {
+        values: {
+          title: "Partie",
+          description: "Partie najbliższe twojej tożsamości.",
           selection: "linked_to_leader",
           groupBy: "category",
-          marker: 65,
           visibleRows: 5,
         },
-        labels: {},
-        colors: {},
       });
     });
   });
 
   describe("given only an identifier, a type and a position", () => {
-    it("holds the default of every other field, and no title or description", () => {
-      const record = read({});
-
-      expect(record).toEqual({
+    it("holds the default of every other field, and no values", () => {
+      expect(read({})).toStrictEqual({
         id: "m1",
         type: "single_axis",
         position: 0,
         column: "start",
         orientationIds: [],
         axisIds: [],
-        params: {},
-        labels: {},
-        colors: {},
+        values: {},
       });
-      expect(record.title).toBeUndefined();
-      expect(record.description).toBeUndefined();
     });
   });
 
-  describe("given parameters", () => {
+  describe("given values", () => {
     it("keeps them as saved, whatever the type of the record reads", () => {
-      const params = {
+      const values = [
+        { key: "marker", value: null },
+        { key: "selection", value: "nobody" },
+        { key: "visibleRows", value: 0 },
+        { key: "title", value: "  Partie\n" },
+        { key: "label.centre", value: " \n " },
+        { key: "color.topLeft", value: "red" },
+        { key: "sortBy", value: "name" },
+      ];
+      const byKey = {
         marker: null,
         selection: "nobody",
         visibleRows: 0,
-        sortBy: ["name", 1, true, null],
+        title: "  Partie\n",
+        "label.centre": " \n ",
+        "color.topLeft": "red",
+        sortBy: "name",
       };
 
-      expect(read({ params }).params).toEqual(params);
-      expect(read({ type: "header", params }).params).toEqual(params);
+      expect(read({ values }).values).toStrictEqual(byKey);
+      expect(read({ type: "header", values }).values).toStrictEqual(byKey);
+      expect(read({ type: "nolan_chart", values }).values).toStrictEqual(byKey);
     });
 
-    it("leaves out a name whose value could not be read", () => {
+    it("skips a pair that cannot be read, and keeps the first of two with the same key", () => {
       expect(
-        read({ params: { marker: 20, bounds: { min: 1 } } }).params,
-      ).toEqual({ marker: 20 });
-      expect(read({ params: { bounds: {} } }).params).not.toHaveProperty(
-        "bounds",
-      );
+        read({
+          values: [
+            { key: "marker", value: 20 },
+            { key: "bounds", value: { min: 1 } },
+            { value: "bez klucza" },
+            { key: "marker", value: 80 },
+          ],
+        }).values,
+      ).toStrictEqual({ marker: 20 });
+    });
+
+    it.each([
+      [undefined],
+      [null],
+      ["title"],
+      [7],
+      [{ title: "Partie" }],
+    ])("holds no values for %j, which is not a list", (values) => {
+      expect(read({ values }).values).toStrictEqual({});
+    });
+  });
+
+  describe("given a record that sends its title, description, parameters, labels or colours as fields", () => {
+    it("reads none of them: they are neither fields nor values of the record", () => {
+      const record = read({
+        type: "nolan_chart",
+        title: "Kompas",
+        description: "Dwie osie.",
+        params: { marker: 60 },
+        labels: { centre: "Centrum" },
+        colors: { topLeft: "#ef4444" },
+      });
+
+      expect(record).toStrictEqual({
+        id: "m1",
+        type: "nolan_chart",
+        position: 0,
+        column: "start",
+        orientationIds: [],
+        axisIds: [],
+        values: {},
+      });
     });
   });
 
@@ -148,113 +181,6 @@ describe("toResultModule()", () => {
         orientationIds: ["right", "left", "hidden"],
         axisIds: ["society", "economy"],
       });
-    });
-  });
-
-  describe("given labels", () => {
-    it("keeps the slots of the record's type, trimmed", () => {
-      expect(
-        read({ type: "header", labels: { link: "  Strona kandydata\n" } })
-          .labels,
-      ).toEqual({ link: "Strona kandydata" });
-      expect(
-        read({
-          type: "nolan_chart",
-          labels: {
-            centre: "Centrum",
-            horizontalEndExtreme: "Wolny rynek",
-            topLeftModerateShort: "Lewica",
-          },
-        }).labels,
-      ).toEqual({
-        centre: "Centrum",
-        horizontalEndExtreme: "Wolny rynek",
-        topLeftModerateShort: "Lewica",
-      });
-    });
-
-    it("drops a slot of another type", () => {
-      expect(
-        read({ type: "header", labels: { link: "Strona", centre: "Centrum" } })
-          .labels,
-      ).toEqual({ link: "Strona" });
-      expect(
-        read({
-          type: "nolan_chart",
-          labels: { link: "Strona", centre: "Centrum" },
-        }).labels,
-      ).toEqual({ centre: "Centrum" });
-    });
-
-    it("drops a blank label", () => {
-      expect(
-        read({
-          type: "nolan_chart",
-          labels: { centre: " \n ", topRightExtreme: "", topLeftExtreme: "A" },
-        }).labels,
-      ).toEqual({ topLeftExtreme: "A" });
-    });
-  });
-
-  describe("given colours", () => {
-    it("keeps the slots of the record's type that hold a plain colour", () => {
-      expect(
-        read({
-          type: "nolan_chart",
-          colors: {
-            topLeft: "#ef4444",
-            topRight: " oklch(74.6% 0.16 232.661) ",
-            bottomLeft: "rgb(16 185 129 / 50%)",
-            bottomRight: "#FFF",
-          },
-        }).colors,
-      ).toEqual({
-        topLeft: "#ef4444",
-        topRight: "oklch(74.6% 0.16 232.661)",
-        bottomLeft: "rgb(16 185 129 / 50%)",
-        bottomRight: "#FFF",
-      });
-    });
-
-    it("drops a colour that is not a plain colour value", () => {
-      expect(
-        read({
-          type: "nolan_chart",
-          colors: {
-            topLeft: "red",
-            topRight: "var(--gi-red)",
-            bottomLeft: "url(https://example.com/a.png)",
-            bottomRight: "#12345",
-          },
-        }).colors,
-      ).toEqual({});
-    });
-
-    it("drops a slot of another type", () => {
-      expect(
-        read({
-          type: "nolan_chart",
-          colors: { topLeft: "#ef4444", centre: "#ef4444", link: "#ef4444" },
-        }).colors,
-      ).toEqual({ topLeft: "#ef4444" });
-      expect(
-        read({ type: "header", colors: { topLeft: "#ef4444" } }).colors,
-      ).toEqual({});
-    });
-  });
-
-  describe("given a type without slots", () => {
-    it.each([
-      ["single_axis"],
-      ["double_axis"],
-      ["multi_axis"],
-      ["horizontal_bar"],
-      ["archetype"],
-      ["traits"],
-    ])("reads no label and no colour for %s", (type) => {
-      expect(
-        read({ type, labels: EVERY_SLOT, colors: EVERY_SLOT }),
-      ).toMatchObject({ labels: {}, colors: {} });
     });
   });
 });

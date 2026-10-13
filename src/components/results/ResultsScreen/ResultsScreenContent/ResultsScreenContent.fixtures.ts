@@ -101,10 +101,10 @@ const longCornerNameQuiz: Survey = {
     record.type === "nolan_chart"
       ? {
           ...record,
-          labels: {
-            ...record.labels,
-            topLeftModerate: LONG_CORNER_NAME,
-            topLeftExtreme: LONG_CORNER_NAME,
+          values: {
+            ...record.values,
+            "label.topLeftModerate": LONG_CORNER_NAME,
+            "label.topLeftExtreme": LONG_CORNER_NAME,
           },
         }
       : record,
@@ -255,28 +255,28 @@ const candidateQuiz: Survey = createSurvey({
   resultModules: [
     createResultModule("candidate-header", "header", {
       orientationIds: candidateIds,
-      labels: { link: "Program" },
+      values: { "label.link": "Program" },
     }),
     createResultModule("candidate-ranking", "horizontal_bar", {
       position: 1,
-      title: "Kandydaci",
       orientationIds: candidateIds,
-      params: { visibleRows: candidateIds.length },
+      values: { title: "Kandydaci", visibleRows: candidateIds.length },
     }),
     createResultModule("candidate-president", "archetype", {
       position: 2,
       column: "end",
-      title: "Prezydent",
-      description:
-        "Prezydent to typ głowy państwa, do którego jest Ci najbliżej.\nNie jest to żaden z kandydatów.",
       orientationIds: presidentIds,
+      values: {
+        title: "Prezydent",
+        description:
+          "Prezydent to typ głowy państwa, do którego jest Ci najbliżej.\nNie jest to żaden z kandydatów.",
+      },
     }),
     createResultModule("candidate-categories", "horizontal_bar", {
       position: 3,
       column: "end",
-      title: "Kategorie",
       orientationIds: candidateIds,
-      params: { groupBy: "category" },
+      values: { title: "Kategorie", groupBy: "category" },
     }),
   ],
 });
@@ -306,8 +306,15 @@ const longNamesQuiz: Survey = {
   })),
   resultModules: candidateQuiz.resultModules.map((record) => ({
     ...record,
-    title: record.title && `${record.title} ${LONG}`,
-    labels: record.labels.link ? { link: `Program ${LONG}` } : record.labels,
+    values: {
+      ...record.values,
+      ...(record.values.title
+        ? { title: `${record.values.title} ${LONG}` }
+        : {}),
+      ...(record.values["label.link"]
+        ? { "label.link": `Program ${LONG}` }
+        : {}),
+    },
   })),
 };
 

@@ -132,10 +132,10 @@ describe("getSurvey()", () => {
         survey: {
           resultModules: [
             { id: "identity-header" },
-            { title: titles[0] },
-            { title: titles[1] },
+            { values: { title: titles[0] } },
+            { values: { title: titles[1] } },
             { id: "identity-compass" },
-            { title: titles[2] },
+            { values: { title: titles[2] } },
           ],
         },
       });
@@ -209,10 +209,10 @@ describe("getSurvey()", () => {
         survey: {
           resultModules: [
             { id: "identity-header" },
-            { id: "identity-archetype", title: "Identity" },
-            { id: "identity-ideologies", title: "Ideologies" },
+            { id: "identity-archetype", values: { title: "Identity" } },
+            { id: "identity-ideologies", values: { title: "Ideologies" } },
             { id: "identity-compass" },
-            { id: "identity-parties", title: "Parties" },
+            { id: "identity-parties", values: { title: "Parties" } },
           ],
         },
       });

@@ -1,6 +1,6 @@
 import type {
-  RESULT_MODULE_PARAM_DEFINITIONS,
-  RESULT_MODULE_PARAMS,
+  RESULT_MODULE_KEYS,
+  RESULT_MODULE_VALUE_DEFINITIONS,
 } from "@/constants/results";
 import type { ScoreTotal } from "@/types/checkpoint";
 import type { DeclaredGender, Orientation } from "@/types/orientation";
@@ -53,29 +53,21 @@ export type ResultModuleType =
 
 export type ResultModuleColumn = "start" | "end";
 
-// A parameter of a record as it is saved: a number, a text, yes or no,
-// nothing, or a list of those.
-export type ResultModuleParamScalar = string | number | boolean | null;
+// A value of a record as it is saved: a text, a number, yes or no, or
+// nothing.
+export type ResultModuleValue = string | number | boolean | null;
 
-export type ResultModuleParamValue =
-  | ResultModuleParamScalar
-  | ResultModuleParamScalar[];
-
-// One record for every module type. Its fields are what every module has;
-// everything a type can be set to is a parameter, a label or a colour, by
-// name.
+// One record for every module type. Its fields are what the back-end has a
+// use for; everything else about the module - its title, its description, its
+// settings, its labels and its colours - is a value by key.
 export interface ResultModule {
   id: string;
   type: ResultModuleType; // as sent
   position: number;
   column: ResultModuleColumn;
-  title?: string;
-  description?: string;
   orientationIds: string[]; // only orientations the quiz has, each once, in the author's order
   axisIds: string[]; // only axes the quiz has, each once, in the author's order
-  params: Record<string, ResultModuleParamValue>; // by name, as saved: the names are not interpreted here
-  labels: Record<string, string>; // by slot; only the slots of the record's type
-  colors: Record<string, string>; // by slot; only the slots of the record's type
+  values: Record<string, ResultModuleValue>; // by key, as saved: the keys are not interpreted here
 }
 
 // A record known to be of one type.
@@ -83,26 +75,36 @@ export type ResultModuleOf<Type extends ResultModuleType> = ResultModule & {
   type: Type;
 };
 
+// A pair of a key and a value, as a list of the app holds it: what the API
+// would send, except that a text is held per language.
+export interface OwnResultModulePair {
+  key: string;
+  value: ResultModuleValue | TranslatedText;
+}
+
 // A record of a list the app keeps for a quiz the API sends none for: what the
-// API would send, except that a text is held per language.
-export interface OwnResultModule
-  extends Partial<Omit<ResultModule, "title" | "description" | "labels">> {
+// API would send, its values as a list of pairs.
+export interface OwnResultModule extends Partial<Omit<ResultModule, "values">> {
   id: string;
   type: ResultModuleType;
   position: number;
-  title?: TranslatedText;
-  description?: TranslatedText;
-  labels?: Record<string, TranslatedText>; // by slot
+  values: OwnResultModulePair[];
 }
 
-// The parameters of a record: what a name may hold is a definition, and a
+// The values of a record: what a key may hold is a definition, and a
 // definition is of a kind.
 
-// What a definition of each kind says: what the name may hold, and what it is
-// when it is left out or holds anything else.
-export interface ResultModuleParamRules {
-  // One of a set of values.
-  choice: { values: readonly string[]; fallback: string };
+// What a definition of each kind says beyond its kind. A definition is a
+// description and holds everything a quiz editor needs to offer a control for
+// its key: the kind chooses the control, the rest are its bounds or its
+// choices, and `fallback` is what the key is when it is left out or holds
+// anything else. A kind with no fallback has none: its key is then absent.
+export interface ResultModuleValueRules {
+  // A text, the same in every language.
+  text: Record<never, never>;
+  // A text the author writes in each language of the quiz. The API sends it
+  // in one language, so it is read like a text.
+  localizedText: Record<never, never>;
   // A number within bounds. `nullable` says whether the author may set it to
   // nothing, which is read as `false`.
   number: {
@@ -112,60 +114,64 @@ export interface ResultModuleParamRules {
     nullable: boolean;
     fallback: number;
   };
+  // One of a list of choices.
+  choice: { choices: readonly string[]; fallback: string };
+  // Yes or no.
+  boolean: { fallback: boolean };
+  // A colour that passes the app's colour check.
+  color: Record<never, never>;
 }
 
-export type ResultModuleParamKind = keyof ResultModuleParamRules;
+export type ResultModuleValueKind = keyof ResultModuleValueRules;
 
-export type ResultModuleParamDefinition<
-  Kind extends ResultModuleParamKind = ResultModuleParamKind,
-> = { [Each in Kind]: { kind: Each } & ResultModuleParamRules[Each] }[Kind];
+export type ResultModuleValueDefinition<
+  Kind extends ResultModuleValueKind = ResultModuleValueKind,
+> = { [Each in Kind]: { kind: Each } & ResultModuleValueRules[Each] }[Kind];
 
 // What a saved value is read as, by the kind of its definition.
-interface ResultModuleParamReadings<
-  Definition extends ResultModuleParamDefinition = ResultModuleParamDefinition,
+interface ResultModuleValueReadings<
+  Definition extends ResultModuleValueDefinition = ResultModuleValueDefinition,
 > {
-  choice: Definition extends { values: readonly (infer Value)[] }
-    ? Value
-    : never;
+  text: string | undefined;
+  localizedText: string | undefined;
   number: Definition extends { nullable: false } ? number : number | false;
+  choice: Definition extends { choices: readonly (infer Choice)[] }
+    ? Choice
+    : never;
+  boolean: boolean;
+  color: string | undefined;
 }
 
 // Reads a saved value by a definition of one kind. The value is absent when
-// the record leaves the name out.
-export type ResultModuleParamReader<Kind extends ResultModuleParamKind> = (
-  definition: ResultModuleParamDefinition<Kind>,
-  value?: ResultModuleParamValue,
-) => ResultModuleParamReadings[Kind];
+// the record leaves the key out.
+export type ResultModuleValueReader<Kind extends ResultModuleValueKind> = (
+  definition: ResultModuleValueDefinition<Kind>,
+  value?: ResultModuleValue,
+) => ResultModuleValueReadings[Kind];
 
-type ResultModuleParamDefinitions = typeof RESULT_MODULE_PARAM_DEFINITIONS;
+type ResultModuleValueDefinitions = typeof RESULT_MODULE_VALUE_DEFINITIONS;
 
-export type ResultModuleParamName = keyof ResultModuleParamDefinitions;
+export type ResultModuleKey = keyof ResultModuleValueDefinitions;
 
-// Every parameter the app knows, as the app works with it. Derived from the
-// definitions: an entry there is a name here.
-export type ResultModuleParams = {
-  [Name in ResultModuleParamName]: ResultModuleParamReadings<
-    ResultModuleParamDefinitions[Name]
-  >[ResultModuleParamDefinitions[Name]["kind"]];
+// Every key the app knows, as the app works with its value. Derived from the
+// definitions: an entry there is a key here.
+export type ResultModuleValues = {
+  [Key in ResultModuleKey]: ResultModuleValueReadings<
+    ResultModuleValueDefinitions[Key]
+  >[ResultModuleValueDefinitions[Key]["kind"]];
 };
 
-// The parameters a module type reads, and no other. Derived from the table of
-// parameters by type, one type at a time, so that a record whose type is not
-// known has no parameter that can be asked for.
-export type ResultModuleParamsOf<Type extends ResultModuleType> =
+// The keys a module type reads, and no other. Derived from the table of keys
+// by type, one type at a time, so that a record whose type is not known has
+// only the keys every type reads.
+export type ResultModuleValuesOf<Type extends ResultModuleType> =
   Type extends ResultModuleType
-    ? Pick<ResultModuleParams, (typeof RESULT_MODULE_PARAMS)[Type][number]>
+    ? Pick<ResultModuleValues, (typeof RESULT_MODULE_KEYS)[Type][number]>
     : never;
 
-export type ResultModuleSelection = ResultModuleParams["selection"];
+export type ResultModuleSelection = ResultModuleValues["selection"];
 
-export type ResultModuleGrouping = ResultModuleParams["groupBy"];
-
-// The slots a module type has: the names its labels and its colours go by.
-export interface ResultModuleSlots {
-  labels: readonly string[];
-  colors: readonly string[];
-}
+export type ResultModuleGrouping = ResultModuleValues["groupBy"];
 
 // A result as its modules are resolved from it.
 
@@ -277,8 +283,8 @@ export interface SurveyAxisGroup {
 export type DrawnModuleType = Exclude<ResultModuleType, "header">;
 
 // What a module of one type is given, or nothing when its record cannot be
-// drawn. The record is of that type, so a resolver can ask for the parameters
-// of its type and for no other.
+// drawn. The record is of that type, so a resolver can ask for the keys of
+// its type and for no other.
 export type ModuleResolver<Type extends ResultModuleType = ResultModuleType> = (
   record: ResultModuleOf<Type>,
   context: ResolutionContext,
