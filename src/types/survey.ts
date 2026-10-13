@@ -1,6 +1,7 @@
 import type { StoreApi } from "zustand";
 
 import type { DeclaredGender, QuizOrientation } from "@/types/orientation";
+import type { ResultModule } from "@/types/results";
 
 export type SurveyQuestionAnswerType =
   | "agree-or-disagree"
@@ -53,6 +54,7 @@ export interface Survey {
   categories: SurveyCategory[]; // in the API's order
   axes: SurveyAxis[]; // in the API's order
   questions: SurveyQuestion[]; // in the API's order, at least one
+  resultModules: ResultModule[]; // in the order they are drawn; at most one header, and it comes first
 }
 
 // Where reading a quiz stands: on its way, or how it ended. An enum - see

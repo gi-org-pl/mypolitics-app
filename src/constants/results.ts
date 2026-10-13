@@ -1,4 +1,14 @@
-import type { NolanPoleSide, NolanQuadrantKey } from "@/types/results";
+import { DEFAULT_MARKER_POSITION } from "@/constants/axis";
+import type {
+  NolanPoleSide,
+  NolanQuadrantKey,
+  ResultModule,
+  ResultModuleColumn,
+  ResultModuleGrouping,
+  ResultModuleSelection,
+  ResultModuleSlots,
+  ResultModuleType,
+} from "@/types/results";
 import type { MatchBand } from "@/utils/results/getMatchBand";
 
 export const PARTIAL_MATCH_FROM = 50;
@@ -41,3 +51,99 @@ export const DEFAULT_COMPASS_QUADRANTS: Record<
   bottomLeft: { color: "oklch(76.5% 0.177 163.223)" }, // --color-emerald-400
   bottomRight: { color: "oklch(54.1% 0.281 293.009)" }, // --color-violet-600
 };
+
+// How many rows a list shows before its fold when nothing says otherwise.
+export const DEFAULT_VISIBLE_ROWS = 3;
+
+// The result modules configuration: what a field of a record may hold, as the
+// API sends it.
+export const RESULT_MODULE_TYPES = [
+  "header",
+  "single_axis",
+  "double_axis",
+  "multi_axis",
+  "horizontal_bar",
+  "nolan_chart",
+  "archetype",
+  "traits",
+] as const satisfies readonly ResultModuleType[];
+
+export const RESULT_MODULE_COLUMNS = [
+  "start",
+  "end",
+] as const satisfies readonly ResultModuleColumn[];
+
+export const RESULT_MODULE_SELECTIONS = [
+  "all",
+  "linked_to_leader",
+] as const satisfies readonly ResultModuleSelection[];
+
+export const RESULT_MODULE_GROUPINGS = [
+  "none",
+  "category",
+] as const satisfies readonly ResultModuleGrouping[];
+
+// What a field of a record holds when it is missing or cannot be read.
+export const RESULT_MODULE_DEFAULTS = {
+  column: "start",
+  selection: "all",
+  groupBy: "none",
+  marker: DEFAULT_MARKER_POSITION,
+  visibleRows: DEFAULT_VISIBLE_ROWS,
+} as const satisfies Partial<ResultModule>;
+
+const NO_SLOTS: ResultModuleSlots = { labels: [], colors: [] };
+
+// The names on the map: its middle, a lean along each axis by pole and level,
+// and each corner by level, in full and in a shorter form for a narrow card.
+const NOLAN_CHART_LABEL_SLOTS = [
+  "centre",
+  "horizontalStartModerate",
+  "horizontalStartExtreme",
+  "horizontalEndModerate",
+  "horizontalEndExtreme",
+  "verticalStartModerate",
+  "verticalStartExtreme",
+  "verticalEndModerate",
+  "verticalEndExtreme",
+  "topLeftModerate",
+  "topLeftExtreme",
+  "topLeftModerateShort",
+  "topLeftExtremeShort",
+  "topRightModerate",
+  "topRightExtreme",
+  "topRightModerateShort",
+  "topRightExtremeShort",
+  "bottomLeftModerate",
+  "bottomLeftExtreme",
+  "bottomLeftModerateShort",
+  "bottomLeftExtremeShort",
+  "bottomRightModerate",
+  "bottomRightExtreme",
+  "bottomRightModerateShort",
+  "bottomRightExtremeShort",
+] as const;
+
+const NOLAN_CHART_COLOR_SLOTS = [
+  "topLeft",
+  "topRight",
+  "bottomLeft",
+  "bottomRight",
+] as const satisfies readonly NolanQuadrantKey[];
+
+// The slots of each module type. A label or a colour in any other slot is not
+// read.
+export const RESULT_MODULE_SLOTS: Record<ResultModuleType, ResultModuleSlots> =
+  {
+    header: { labels: ["link"], colors: [] },
+    single_axis: NO_SLOTS,
+    double_axis: NO_SLOTS,
+    multi_axis: NO_SLOTS,
+    horizontal_bar: NO_SLOTS,
+    nolan_chart: {
+      labels: NOLAN_CHART_LABEL_SLOTS,
+      colors: NOLAN_CHART_COLOR_SLOTS,
+    },
+    archetype: NO_SLOTS,
+    traits: NO_SLOTS,
+  };
