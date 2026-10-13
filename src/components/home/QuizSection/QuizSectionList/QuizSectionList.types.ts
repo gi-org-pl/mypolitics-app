@@ -1,6 +1,5 @@
+import type { TabPanelIdentity } from "@/types/common";
 import type { HomeQuiz } from "@/types/home";
-
-import type { TabPanelIdentity } from "../QuizSection.types";
 
 export interface QuizSectionListProps {
   panel: TabPanelIdentity;

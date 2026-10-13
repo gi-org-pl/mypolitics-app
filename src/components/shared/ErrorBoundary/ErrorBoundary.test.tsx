@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { SurveyQuestionnaireBoundary } from "./SurveyQuestionnaireBoundary";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 const Card = ({ isBroken = false }: { isBroken?: boolean }) => {
   if (isBroken) {
@@ -11,7 +11,7 @@ const Card = ({ isBroken = false }: { isBroken?: boolean }) => {
   return <p>Jesteś na półmetku</p>;
 };
 
-describe("<SurveyQuestionnaireBoundary />", () => {
+describe("<ErrorBoundary />", () => {
   beforeEach(() => {
     // React reports the caught error to the console; the test keeps it quiet.
     vi.spyOn(console, "error").mockImplementation(() => undefined);
@@ -26,9 +26,9 @@ describe("<SurveyQuestionnaireBoundary />", () => {
       const onError = vi.fn();
 
       render(
-        <SurveyQuestionnaireBoundary onError={onError}>
+        <ErrorBoundary onError={onError}>
           <Card />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(screen.getByText("Jesteś na półmetku")).toBeVisible();
@@ -39,10 +39,10 @@ describe("<SurveyQuestionnaireBoundary />", () => {
   describe("given a card that throws while rendering", () => {
     it("shows nothing of the card or of the failure", () => {
       const { container } = render(
-        <SurveyQuestionnaireBoundary onError={vi.fn()}>
+        <ErrorBoundary onError={vi.fn()}>
           <p>Wykres</p>
           <Card isBroken />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(container).toBeEmptyDOMElement();
@@ -51,15 +51,15 @@ describe("<SurveyQuestionnaireBoundary />", () => {
     it("reports the failure once", () => {
       const onError = vi.fn();
       const { rerender } = render(
-        <SurveyQuestionnaireBoundary onError={onError}>
+        <ErrorBoundary onError={onError}>
           <Card isBroken />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       rerender(
-        <SurveyQuestionnaireBoundary onError={onError}>
+        <ErrorBoundary onError={onError}>
           <Card isBroken />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(onError).toHaveBeenCalledTimes(1);
@@ -67,18 +67,34 @@ describe("<SurveyQuestionnaireBoundary />", () => {
 
     it("does not try the card again", () => {
       const { container, rerender } = render(
-        <SurveyQuestionnaireBoundary onError={vi.fn()}>
+        <ErrorBoundary onError={vi.fn()}>
           <Card isBroken />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       rerender(
-        <SurveyQuestionnaireBoundary onError={vi.fn()}>
+        <ErrorBoundary onError={vi.fn()}>
           <Card />
-        </SurveyQuestionnaireBoundary>,
+        </ErrorBoundary>,
       );
 
       expect(container).toBeEmptyDOMElement();
+    });
+  });
+
+  describe("given nobody asks to be told of the failure", () => {
+    it("shows nothing of what failed and keeps what stands beside it", () => {
+      render(
+        <div>
+          <p>Obok</p>
+          <ErrorBoundary>
+            <Card isBroken />
+          </ErrorBoundary>
+        </div>,
+      );
+
+      expect(screen.getByText("Obok")).toBeVisible();
+      expect(screen.queryByText("Jesteś na półmetku")).not.toBeInTheDocument();
     });
   });
 });

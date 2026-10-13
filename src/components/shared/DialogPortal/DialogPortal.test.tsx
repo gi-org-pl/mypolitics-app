@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SurveyDialogPortal } from "./SurveyDialogPortal";
+import { DialogPortal } from "./DialogPortal";
 
-describe("<SurveyDialogPortal />", () => {
+describe("<DialogPortal />", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
   });
@@ -12,9 +12,9 @@ describe("<SurveyDialogPortal />", () => {
   describe("given children", () => {
     it("renders them as children of the body", () => {
       render(
-        <SurveyDialogPortal>
+        <DialogPortal>
           <p>Treść okna</p>
-        </SurveyDialogPortal>,
+        </DialogPortal>,
       );
 
       expect(screen.getByText("Treść okna").parentElement).toBe(document.body);
@@ -25,9 +25,9 @@ describe("<SurveyDialogPortal />", () => {
     it("renders the children outside that ancestor", () => {
       render(
         <div data-testid="ancestor" style={{ transform: "scale(1)" }}>
-          <SurveyDialogPortal>
+          <DialogPortal>
             <p>Treść okna</p>
-          </SurveyDialogPortal>
+          </DialogPortal>
         </div>,
       );
 
@@ -40,9 +40,9 @@ describe("<SurveyDialogPortal />", () => {
   describe("when it is unmounted", () => {
     it("removes the children from the body", () => {
       const { unmount } = render(
-        <SurveyDialogPortal>
+        <DialogPortal>
           <p>Treść okna</p>
-        </SurveyDialogPortal>,
+        </DialogPortal>,
       );
 
       unmount();
@@ -57,9 +57,9 @@ describe("<SurveyDialogPortal />", () => {
 
       expect(
         renderToString(
-          <SurveyDialogPortal>
+          <DialogPortal>
             <p>Treść okna</p>
-          </SurveyDialogPortal>,
+          </DialogPortal>,
         ),
       ).toBe("");
     });

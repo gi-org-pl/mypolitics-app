@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
 
-export interface SurveyDialogPortalProps {
+export interface DialogPortalProps {
   children: ReactNode;
 }
