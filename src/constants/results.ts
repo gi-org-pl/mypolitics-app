@@ -172,13 +172,13 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
   },
   // Whether its rows are one list or one list per category.
   groupBy: { kind: "choice", choices: ["none", "category"], fallback: "none" },
-  // The reference line on every bar of the module. Nothing switches it off.
+  // The reference line on every bar of the module. The word `none` switches
+  // it off.
   marker: {
     kind: "number",
     min: MIN_AXIS_VALUE,
     max: MAX_AXIS_VALUE,
-    whole: false,
-    nullable: true,
+    off: { word: "none", reads: false },
     fallback: DEFAULT_MARKER_POSITION,
   },
   // How many rows a list shows before its fold.
@@ -186,8 +186,6 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
     kind: "number",
     min: 1,
     max: Number.MAX_SAFE_INTEGER,
-    whole: true,
-    nullable: false,
     fallback: DEFAULT_VISIBLE_ROWS,
   },
   // What a module does with a leader below a partial match: says that

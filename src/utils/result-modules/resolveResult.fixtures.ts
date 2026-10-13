@@ -150,7 +150,7 @@ export const moduleQuiz: Survey = createSurvey({
       axisIds: ["economy-axis"],
       values: {
         description: "Jak blisko ci do każdej ze stron osi.",
-        marker: null,
+        marker: "none",
       },
     }),
     createResultModule("ideologies", "multi_axis", {

@@ -20,8 +20,6 @@ describe("toValueDefinitions()", () => {
         kind: "number",
         min: 1,
         max: 20,
-        whole: true,
-        nullable: false,
         fallback: 3,
       } as const;
 
