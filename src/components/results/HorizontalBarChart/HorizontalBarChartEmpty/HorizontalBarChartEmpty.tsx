@@ -1,8 +1,6 @@
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
 
-interface HorizontalBarChartEmptyProps {
-  text: string;
-}
+import type { HorizontalBarChartEmptyProps } from "./HorizontalBarChartEmpty.types";
 
 // A ranking with nothing to rank: the author's line for that, quiet, where a
 // name would stand, over an empty track - as a card says that nothing

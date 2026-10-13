@@ -921,3 +921,39 @@ describe("<Archetype />", () => {
     });
   });
 });
+
+describe("<Archetype />", () => {
+  describe("given a card set to name a leader below a partial match, and archetypes none of which has a match", () => {
+    const UNSCORED: ArchetypeEntry[] = [
+      archetype("Alfa", undefined, {
+        description: SHORT,
+        fullDescription: FULL,
+      }),
+      archetype("Beta"),
+    ];
+
+    it("names nobody: the no match wording over an empty track, and no description", () => {
+      renderArchetype({ archetypes: UNSCORED, lowMatch: "named" });
+
+      expect(screen.getByTestId("archetype-leader-name")).toHaveTextContent(
+        "Brak dopasowania",
+      );
+      expect(screen.queryByText(SHORT)).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Pełny opis" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("ranks every archetype, the first one included", () => {
+      renderArchetype({ archetypes: UNSCORED, lowMatch: "named" });
+
+      fireEvent.click(screen.getByRole("button", { name: "Ranking" }));
+
+      expect(
+        screen
+          .getAllByTestId("ranked-row-name")
+          .map((name) => name.textContent),
+      ).toEqual(["Alfa", "Beta"]);
+    });
+  });
+});

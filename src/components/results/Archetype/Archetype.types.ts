@@ -24,6 +24,10 @@ export type ArchetypeOpenableView = Exclude<ArchetypeView, "summary">;
 export interface ArchetypeRanking {
   leader: ArchetypeEntry | null;
   rest: ArchetypeEntry[];
+  // Whether the leader has a match of its own. A match that is absent is
+  // read as zero, and then nobody leads: the first archetype only stands
+  // first.
+  isLeaderScored: boolean;
 }
 
 export interface ArchetypeContent {

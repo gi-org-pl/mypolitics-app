@@ -12,13 +12,7 @@ import {
   RING_OVERLAP,
   RING_TRACK_CLASS_NAME,
 } from "../ResultsHeader.constants";
-import type { ResultsHeaderBand } from "../ResultsHeader.types";
-
-interface ResultsHeaderRingProps {
-  confidence: number;
-  band: ResultsHeaderBand;
-  imageUrl?: string;
-}
+import type { ResultsHeaderRingProps } from "./ResultsHeaderRing.types";
 
 export const ResultsHeaderRing = ({
   confidence,

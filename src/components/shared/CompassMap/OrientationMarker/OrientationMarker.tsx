@@ -5,19 +5,13 @@ import {
   AVATAR_IMAGE_FIT_CLASS_NAMES,
   AVATAR_WITHOUT_PLACEHOLDER_CLASS_NAME,
 } from "@/constants/image";
-import type { Orientation } from "@/types/orientation";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { getNolanColorStyle } from "@/utils/style/getNolanColorStyle";
 import { getImageKind } from "@/utils/url/getImageKind";
 
 import { MAP_CLIP_CLASS_NAME } from "../CompassMap.constants";
-import type { CompassMapPoint } from "../CompassMap.types";
 import { getPositionStyle } from "../utils/getPositionStyle";
-
-interface OrientationMarkerProps {
-  orientation?: Orientation;
-  position: CompassMapPoint;
-}
+import type { OrientationMarkerProps } from "./OrientationMarker.types";
 
 export const OrientationMarker = ({
   orientation,
