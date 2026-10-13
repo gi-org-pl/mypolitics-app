@@ -1,6 +1,7 @@
 import type { ScoreTotal } from "@/types/checkpoint";
 import type { DeclaredGender, Orientation } from "@/types/orientation";
 import type { ResultInputAnswer, Survey, SurveyAxis } from "@/types/survey";
+import type { TranslatedText } from "@/types/text";
 
 export interface ResultEntry {
   orientation: Orientation;
@@ -69,6 +70,21 @@ export interface ResultModule {
   visibleRows: number; // a whole number, 1 or more
   labels: Record<string, string>; // by slot; only the slots of the record's type
   colors: Record<string, string>; // by slot; only the slots of the record's type
+}
+
+// A record of a list the app keeps for a quiz the API sends none for: what the
+// API would send, except that a text is held per language.
+export interface OwnResultModule
+  extends Partial<
+    Omit<ResultModule, "title" | "description" | "marker" | "labels">
+  > {
+  id: string;
+  type: ResultModuleType;
+  position: number;
+  title?: TranslatedText;
+  description?: TranslatedText;
+  marker?: number | null; // null = no reference line
+  labels?: Record<string, TranslatedText>; // by slot
 }
 
 // The slots a module type has: the names its labels and its colours go by.

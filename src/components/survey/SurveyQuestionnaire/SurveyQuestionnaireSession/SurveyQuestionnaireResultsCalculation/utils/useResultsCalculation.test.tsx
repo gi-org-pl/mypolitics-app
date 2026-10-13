@@ -21,6 +21,7 @@ import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionSt
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import {
   LINE_INTERVAL_MS,
   MAX_LINES,
@@ -46,10 +47,8 @@ const createResultMock = vi.mocked(createResult);
 const getResultMock = vi.mocked(getResult);
 const requestResultLinkMock = vi.mocked(requestResultLink);
 
-const toResult = (isCalculated: boolean): SurveyResult => ({
-  id: "result",
-  isCalculated,
-});
+const toResult = (isCalculated: boolean): SurveyResult =>
+  createSurveyResult({ isCalculated });
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <I18nProvider i18n={i18n}>{children}</I18nProvider>

@@ -107,7 +107,7 @@ describe("getSurvey()", () => {
 
       const result = await getSurvey(SURVEY_ID, "pl");
 
-      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID));
+      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID, "pl"));
       expect(result).toMatchObject({
         status: SurveyLoadStatus.Ready,
         survey: {
@@ -115,6 +115,28 @@ describe("getSurvey()", () => {
           name: "myPolitics Quiz Tożsamościowy",
           isOfficial: true,
           questions: [{ id: "q1", text: "Stwierdzenie." }],
+        },
+      });
+    });
+
+    it.each([
+      ["pl", ["Tożsamość", "Ideologie", "Partie"]],
+      ["en", ["Identity", "Ideologies", "Parties"]],
+    ])("holds the app's own result modules of a quiz the API sends none for, in the language asked for: %s", async (language, titles) => {
+      adapter.mockImplementationOnce(createApiReply(200, surveyResponse));
+
+      const result = await getSurvey(SURVEY_ID, language);
+
+      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID, language));
+      expect(result).toMatchObject({
+        survey: {
+          resultModules: [
+            { id: "identity-header" },
+            { title: titles[0] },
+            { title: titles[1] },
+            { id: "identity-compass" },
+            { title: titles[2] },
+          ],
         },
       });
     });
@@ -174,8 +196,26 @@ describe("getSurvey()", () => {
         .mockImplementationOnce(createApiReply(200, surveyResponse));
 
       expect(await getSurvey(SURVEY_ID, "en")).toEqual(
-        readSurvey(surveyResponse, SURVEY_ID),
+        readSurvey(surveyResponse, SURVEY_ID, "en"),
       );
+    });
+
+    it("holds the app's own result modules in the language asked for, though the quiz is in its default one", async () => {
+      adapter
+        .mockImplementationOnce(createApiReply(400))
+        .mockImplementationOnce(createApiReply(200, surveyResponse));
+
+      expect(await getSurvey(SURVEY_ID, "en")).toMatchObject({
+        survey: {
+          resultModules: [
+            { id: "identity-header" },
+            { id: "identity-archetype", title: "Identity" },
+            { id: "identity-ideologies", title: "Ideologies" },
+            { id: "identity-compass" },
+            { id: "identity-parties", title: "Parties" },
+          ],
+        },
+      });
     });
 
     it("resolves failed when the second request is refused too", async () => {
