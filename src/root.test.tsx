@@ -4,6 +4,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PATHS } from "./constants/paths";
 import App, { HydrateFallback, Layout } from "./root";
 
+// The session is not what these tests are about: a client that never answers
+// keeps it unknown, so no update arrives after a test has finished.
+vi.mock("@/services/auth/client/authClient", async () => {
+  const { createFakeAuthClient } = await import(
+    "@/utils/vitest/auth/createFakeAuthClient"
+  );
+
+  return {
+    authClient: createFakeAuthClient({
+      getSession: () => new Promise(() => undefined),
+    }),
+  };
+});
+
 const ROUTE_CONTENT = "Treść strony";
 const NEXT_ROUTE_CONTENT = "Treść następnej strony";
 
