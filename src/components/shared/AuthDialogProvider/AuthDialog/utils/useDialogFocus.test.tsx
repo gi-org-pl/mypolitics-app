@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -63,6 +63,20 @@ describe("useDialogFocus()", () => {
 
       expect(screen.getByText("opener")).toHaveFocus();
       expect(document.body.style.overflow).toBe("");
+    });
+  });
+
+  describe("given the focused control disappears", () => {
+    it("moves focus back to the dialog", async () => {
+      render(<Dialog onEscape={vi.fn()} />);
+      const grow = screen.getByText("grow");
+      grow.focus();
+
+      grow.remove();
+      screen.getByText("first").remove();
+      await waitFor(() =>
+        expect(screen.getByLabelText("dialog")).toHaveFocus(),
+      );
     });
   });
 

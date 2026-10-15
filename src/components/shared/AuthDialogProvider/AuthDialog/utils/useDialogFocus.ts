@@ -8,11 +8,11 @@ const FOCUSABLE =
 //
 // When it opens, focus moves to the dialog itself, so a screen reader starts
 // at its name and the phone keyboard stays down. Tab and Shift+Tab wrap
-// between the first and the last control; the controls are looked up on every
-// press, because the content changes while the dialog is open (the card
-// turns into the step). Escape closes it, unless closing is blocked. When it
-// closes, focus returns to the element that had it before, and the page
-// behind can scroll again.
+// between the first and the last control; the controls are looked up on
+// every press, because the content changes while the dialog is open (the
+// card turns into the step). Escape closes it, unless closing is blocked.
+// When it closes, focus returns to the element that had it before, and the
+// page behind can scroll again.
 export const useDialogFocus = (
   dialogRef: RefObject<HTMLElement | null>,
   onEscape: () => void,
@@ -24,10 +24,19 @@ export const useDialogFocus = (
         : null;
     const overflow = document.body.style.overflow;
 
+    const dialog = dialogRef.current;
+    // When the control that had focus disappears (the card turns into the
+    // step), focus would fall to the page behind: it goes to the dialog.
+    const keepFocus = new MutationObserver(() => {
+      if (document.activeElement === document.body) dialog?.focus();
+    });
+
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    dialog?.focus();
+    if (dialog) keepFocus.observe(dialog, { childList: true, subtree: true });
 
     return () => {
+      keepFocus.disconnect();
       document.body.style.overflow = overflow;
       opener?.focus();
     };
