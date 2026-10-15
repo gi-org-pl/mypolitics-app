@@ -166,18 +166,19 @@ describe("useSignInFlow()", () => {
       expect(complete).toHaveBeenCalledWith("sign-up-1", SETUP);
     });
 
-    it("finishes when the save failed but the account was made", async () => {
-      const client = createFakeAuthClient({
-        signIn: signingIn(NEW_ACCOUNT),
-        completeSignUp: vi.fn().mockRejectedValue(new Error("timeout")),
-        getSession: vi.fn().mockResolvedValue(ACCOUNT),
-      });
-      const { result, onSignedIn } = renderFlow(client);
-      await act(async () => result.current.chooseProvider("google"));
+    it("repeats a save whose answer was lost, and finishes when the account was made", async () => {
+      const complete = vi
+        .fn()
+        .mockRejectedValueOnce(new Error("timeout"))
+        .mockResolvedValueOnce({ kind: "signed-in", account: ACCOUNT });
+      const { result, onSignedIn, onBusyChange } = await withStep(complete);
 
       await act(async () => result.current.completeSetup(SETUP));
 
+      expect(complete).toHaveBeenCalledTimes(2);
+      expect(complete).toHaveBeenLastCalledWith("sign-up-1", SETUP);
       expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT);
+      expect(onBusyChange.mock.calls).toEqual([[true], [false]]);
     });
 
     it("shows the save error when saving fails and no account was made", async () => {
@@ -194,18 +195,30 @@ describe("useSignInFlow()", () => {
       });
     });
 
-    it("shows the save error when the client cannot be reached at all", async () => {
-      const client = createFakeAuthClient({
-        signIn: signingIn(NEW_ACCOUNT),
-        completeSignUp: vi.fn().mockRejectedValue(new Error("offline")),
-        getSession: vi.fn().mockRejectedValue(new Error("offline")),
-      });
-      const { result } = renderFlow(client);
-      await act(async () => result.current.chooseProvider("google"));
+    it("shows the save error when the client cannot be reached twice", async () => {
+      const { result } = await withStep(
+        vi.fn().mockRejectedValue(new Error("offline")),
+      );
 
       await act(async () => result.current.completeSetup(SETUP));
 
       expect(result.current.state).toMatchObject({ hasSaveFailed: true });
+    });
+
+    it("tells the host nothing more when it is unmounted during the save", async () => {
+      const saved = deferred<CompleteSignUpOutcome>();
+      const { result, unmount, onBusyChange, onSignedIn } = await withStep(
+        () => saved.promise,
+      );
+      act(() => result.current.completeSetup(SETUP));
+
+      unmount();
+      await act(async () =>
+        saved.resolve({ kind: "signed-in", account: ACCOUNT }),
+      );
+
+      expect(onBusyChange.mock.calls).toEqual([[true]]);
+      expect(onSignedIn).not.toHaveBeenCalled();
     });
 
     it("returns to the providers with the failed error when the sign-up expired", async () => {
@@ -307,6 +320,20 @@ describe("useSignInFlow()", () => {
     });
   });
 
+  describe("given a sign-in that failed while the session was started", () => {
+    it("finishes, signed in", async () => {
+      const client = createFakeAuthClient({
+        signIn: vi.fn().mockRejectedValue(new Error("lost")),
+        getSession: vi.fn().mockResolvedValue(ACCOUNT),
+      });
+      const { result, onSignedIn } = renderFlow(client);
+
+      await act(async () => result.current.chooseProvider("google"));
+
+      expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT);
+    });
+  });
+
   describe("given the provider window was closed", () => {
     it("returns to the providers with that error", async () => {
       const { result } = renderFlow(
@@ -403,6 +430,21 @@ describe("useSignInFlow()", () => {
     });
   });
 
+  describe("given a resumed sign-in reports a pending operation after unmount", () => {
+    it("drops it", async () => {
+      const resumed = deferred<SignInOutcome | null>();
+      const { unmount, value } = renderFlow(
+        createFakeAuthClient({ resumeSignIn: () => resumed.promise }),
+        { resume: true },
+      );
+
+      unmount();
+      await act(async () => resumed.resolve(NEW_ACCOUNT));
+
+      expect(value.client.cancelPending).toHaveBeenCalledWith("sign-up-1");
+    });
+  });
+
   describe("given no resume", () => {
     it("does not ask the client", () => {
       const client = createFakeAuthClient();
@@ -420,9 +462,9 @@ describe("useSignInFlow()", () => {
       });
       const { result } = renderFlow(client, { resume: true });
 
-      await waitFor(() => expect(client.resumeSignIn).toHaveBeenCalled());
-
-      expect(result.current.state).toEqual({ step: "choose" });
+      await waitFor(() =>
+        expect(result.current.state).toEqual({ step: "choose" }),
+      );
     });
   });
 

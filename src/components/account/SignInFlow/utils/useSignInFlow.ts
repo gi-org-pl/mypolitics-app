@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import type {
   AccountSetup,
   AuthAccount,
+  CompleteSignUpOutcome,
   IdentityProvider,
   SignInOutcome,
 } from "@/types/auth";
 import { useAuthSession } from "@/utils/auth/useAuthSession";
 
 import type { SignInFlowActions, SignInFlowState } from "../SignInFlow.types";
+import { getPendingId } from "./getPendingId";
 import { toFlowState } from "./toFlowState";
 
 interface SignInFlowOptions {
@@ -20,14 +22,7 @@ interface SignInFlowOptions {
 }
 
 const FAILED: SignInOutcome = { kind: "failed" };
-
-// The identifier of the pending sign-up or link a state shows, if any.
-const getPendingId = (state: SignInFlowState) =>
-  state.step === "setup"
-    ? state.signUp.id
-    : state.step === "account-exists"
-      ? state.pendingId
-      : undefined;
+const SAVE_FAILED: CompleteSignUpOutcome = { kind: "failed" };
 
 // The sign-in as a sequence of states over the app's AuthClient. It talks to
 // the client, keeps the card's state and tells its host when the person is
@@ -36,7 +31,13 @@ const getPendingId = (state: SignInFlowState) =>
 // The flow can be unmounted at any moment - the dialog closes. Then a
 // running provider sign-in is aborted, which makes the client close the
 // window and undo whatever the sign-in started, and a pending sign-up or
-// link on screen is dropped. An answer that still arrives changes nothing.
+// link on screen - or reported after the unmount - is dropped. An answer
+// that still arrives tells the host nothing.
+//
+// An answer can be lost after the API acted on it. So a sign-in that failed
+// is checked against the session, and a save that failed is repeated once
+// (the API answers a repeated completion with the account it made) before
+// the person is told it did not work.
 export const useSignInFlow = ({
   returnTo,
   resume = false,
@@ -58,8 +59,17 @@ export const useSignInFlow = ({
     if (isMounted.current) setState(next);
   };
 
+  // Dropping a pending operation is a request the person never waits for:
+  // when it fails, the cookie expires in their own browser.
+  const dropPending = (pendingId: string | undefined) => {
+    if (pendingId) void client.cancelPending(pendingId).catch(() => undefined);
+  };
+
   const finish = (outcome: SignInOutcome) => {
-    if (!isMounted.current) return;
+    if (!isMounted.current) {
+      dropPending(getPendingId(outcome));
+      return;
+    }
 
     if (outcome.kind === "signed-in") {
       setSignedIn(outcome.account);
@@ -69,10 +79,13 @@ export const useSignInFlow = ({
     }
   };
 
-  // Dropping a pending operation is a request the person never waits for:
-  // when it fails, the cookie expires in their own browser.
-  const dropPending = (pendingId: string | undefined) => {
-    if (pendingId) void client.cancelPending(pendingId).catch(() => undefined);
+  // A failure that may hide a sign-in that happened: the session decides.
+  const reconcile = async (outcome: SignInOutcome): Promise<SignInOutcome> => {
+    if (outcome.kind !== "failed") return outcome;
+
+    const account = await client.getSession().catch(() => null);
+
+    return account ? { kind: "signed-in", account } : outcome;
   };
 
   const signIn = async (provider: IdentityProvider, link?: string) => {
@@ -81,7 +94,8 @@ export const useSignInFlow = ({
 
     const outcome = await client
       .signIn(provider, { returnTo, link, signal: controller.signal })
-      .catch(() => FAILED);
+      .catch(() => FAILED)
+      .then(reconcile);
 
     if (running.current === controller) running.current = null;
     if (!controller.signal.aborted) finish(outcome);
@@ -111,8 +125,8 @@ export const useSignInFlow = ({
     show({ step: "choose" });
   };
 
-  // A save whose answer is lost may still have made the account: before
-  // saying it failed, the flow asks for the session.
+  // The host is told the flow is busy for the whole save, the repeat
+  // included, so it cannot close in between.
   const completeSetup = async (setup: AccountSetup) => {
     const current = stateRef.current;
     if (current.step !== "setup" || current.isSaving) return;
@@ -120,18 +134,16 @@ export const useSignInFlow = ({
     show({ ...current, isSaving: true, hasSaveFailed: false });
     onBusyChange?.(true);
 
-    const outcome = await client
-      .completeSignUp(current.signUp.id, setup)
-      .catch(() => ({ kind: "failed" }) as const);
-    const account =
-      outcome.kind === "failed"
-        ? await client.getSession().catch(() => null)
-        : null;
+    const complete = () =>
+      client.completeSignUp(current.signUp.id, setup).catch(() => SAVE_FAILED);
+    const first = await complete();
+    const outcome = first.kind === "failed" ? await complete() : first;
+
+    if (!isMounted.current) return;
 
     onBusyChange?.(false);
 
     if (outcome.kind === "signed-in") finish(outcome);
-    else if (account) finish({ kind: "signed-in", account });
     else if (outcome.kind === "expired") finish(FAILED);
     else show({ ...current, isSaving: false, hasSaveFailed: true });
   };
