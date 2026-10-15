@@ -17,8 +17,11 @@ export type AuthSession =
   | { status: "signed-in"; account: AuthAccount };
 
 // A provider sign-in that found no account. Nothing is saved until the
-// person completes the account, see AccountSetup.
+// person completes the account, see AccountSetup. The identifier ties the
+// completion or the cancellation to this very sign-up, so a second sign-in
+// in another tab of the same browser cannot take its place.
 export interface PendingSignUp {
+  id: string;
   provider: IdentityProvider;
   suggestedName?: string;
   avatarUrl?: string;
@@ -34,6 +37,7 @@ export type SignInOutcome =
       // provider. The accounts are never merged on the address: the person
       // signs in with the owning provider, and this one is linked then.
       kind: "account-exists";
+      pendingId: string; // the pending link, for the owner's sign-in and for cancelling
       provider: IdentityProvider;
       ownerProvider: IdentityProvider;
       email: string;
@@ -65,8 +69,9 @@ export interface SignInOptions {
   // the sign-in page, which resumes it.
   returnTo?: string;
   // The sign-in with the provider that owns the address, after
-  // "account-exists": it links the waiting provider, or fails as a whole.
-  link?: boolean;
+  // "account-exists", names the pending link it completes: it links the
+  // waiting provider, or fails as a whole.
+  link?: string;
   // Aborting closes the provider window, settles the sign-in as a closed
   // window, and undoes whatever the sign-in started, so that closing the
   // dialog never leaves anyone signed in or anything pending.
@@ -88,9 +93,14 @@ export interface AuthClient {
   // How a sign-in that had to leave the page ended, once the provider has
   // sent the person back; null when there is none.
   resumeSignIn: () => Promise<SignInOutcome | null>;
-  completeSignUp: (setup: AccountSetup) => Promise<CompleteSignUpOutcome>;
+  // Completing the same pending sign-up again answers with the account it
+  // made, so a completion whose answer was lost can be repeated safely.
+  completeSignUp: (
+    pendingId: string,
+    setup: AccountSetup,
+  ) => Promise<CompleteSignUpOutcome>;
   // Drops a pending sign-up or a pending link.
-  cancelPending: () => Promise<void>;
+  cancelPending: (pendingId: string) => Promise<void>;
   // Rejects when the session could not be ended.
   signOut: () => Promise<void>;
 }
