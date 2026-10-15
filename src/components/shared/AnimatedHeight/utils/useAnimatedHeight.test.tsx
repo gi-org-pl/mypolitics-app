@@ -1,14 +1,13 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
+import {
+  mockResizeObserver,
+  type ResizeObserverMock,
+} from "@/utils/vitest/mockResizeObserver";
 import {
   HEIGHT_CHANGE_EASING,
   HEIGHT_CHANGE_MIN_PX,
 } from "../AnimatedHeight.constants";
-import {
-  mockResizeObserver,
-  type ResizeObserverMock,
-} from "./mockResizeObserver";
 import { useAnimatedHeight } from "./useAnimatedHeight";
 
 const DURATION_MS = 300;
