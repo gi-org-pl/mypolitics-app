@@ -147,6 +147,23 @@ describe("useSessionState()", () => {
     });
   });
 
+  describe("given a signed-in session and a refresh that cannot be answered", () => {
+    it("stays signed in", async () => {
+      const getSession = vi
+        .fn()
+        .mockResolvedValueOnce(createAuthAccount())
+        .mockRejectedValueOnce(new Error("offline"));
+      const { result } = renderState(createFakeAuthClient({ getSession }));
+      await waitFor(() =>
+        expect(result.current.session.status).toBe("signed-in"),
+      );
+
+      await act(() => result.current.refresh());
+
+      expect(result.current.session.status).toBe("signed-in");
+    });
+  });
+
   describe("given a sign-in finishes before the first answer of the client", () => {
     it("keeps the sign-in when the late answer says signed out", async () => {
       const first = deferred<AuthAccount | null>();

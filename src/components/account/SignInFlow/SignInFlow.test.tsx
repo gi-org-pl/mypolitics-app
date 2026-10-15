@@ -2,14 +2,13 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { mockResizeObserver } from "@/components/shared/AnimatedHeight/utils/mockResizeObserver";
 import { AuthSessionProvider } from "@/components/shared/AuthSessionProvider/AuthSessionProvider";
 import {
   createMockAuthClient,
   type MockAuthClientOptions,
 } from "@/services/auth/client/createMockAuthClient";
 import type { TextStorage } from "@/types/storage";
+import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 
 import { SignInFlow } from "./SignInFlow";
 import type { SignInFlowProps } from "./SignInFlow.types";
