@@ -689,7 +689,7 @@ msgstr "Nawigacja główna"
 msgid "Nawigacja w stopce"
 msgstr "Nawigacja w stopce"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:68
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:69
 msgid "Nazwa"
 msgstr "Nazwa"
 
@@ -939,7 +939,7 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:57
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
@@ -1115,7 +1115,7 @@ msgstr "Szala się przechyla"
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Szukamy Twojej ćwiartki"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:59
 msgid "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 msgstr "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 

@@ -188,6 +188,18 @@ describe("AccountSetupForm", () => {
     });
   });
 
+  describe("given more than 50 characters typed, some outside the basic plane", () => {
+    it("keeps 50 characters, however many UTF-16 units they take", () => {
+      renderForm({ suggestedName: undefined });
+
+      fireEvent.change(nameField(), { target: { value: "😀".repeat(60) } });
+
+      expect(Array.from((nameField() as HTMLInputElement).value)).toHaveLength(
+        50,
+      );
+    });
+  });
+
   describe("given a pasted tab", () => {
     it("turns it into a space", () => {
       renderForm({ suggestedName: undefined });

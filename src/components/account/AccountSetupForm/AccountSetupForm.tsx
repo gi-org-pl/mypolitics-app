@@ -6,7 +6,6 @@ import {
   TALL_BUTTON_CLASS_NAME,
 } from "@/constants/button";
 import { TEXT_FIELD_CLASS_NAME } from "@/constants/form";
-import { DISPLAY_NAME_MAX_LENGTH } from "@/utils/auth/toDisplayName";
 
 import { AuthCard } from "../AuthCard/AuthCard";
 import {
@@ -32,7 +31,9 @@ import { useSetupTexts } from "./utils/useSetupTexts";
 // button stays filled with a spinner and everything else is drawn at 40%.
 //
 // The message about the name is Athena's error text of the field: Athena
-// describes the input with it and with nothing else.
+// describes the input with it and with nothing else. The field has no
+// native length limit: the browser counts UTF-16 units, the name counts
+// characters, and the typed text is cut to 50 characters as it changes.
 export const AccountSetupForm = ({
   provider,
   suggestedName,
@@ -71,7 +72,6 @@ export const AccountSetupForm = ({
             ref={form.nameRef}
             id={form.ids.name}
             autoComplete="nickname"
-            maxLength={DISPLAY_NAME_MAX_LENGTH}
             value={form.name}
             isDisabled={isSaving}
             isError={form.nameIssue !== undefined}

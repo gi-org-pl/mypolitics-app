@@ -689,7 +689,7 @@ msgstr "Main navigation"
 msgid "Nawigacja w stopce"
 msgstr "Footer navigation"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:68
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:69
 msgid "Nazwa"
 msgstr "Name"
 
@@ -939,7 +939,7 @@ msgstr "Learn what shapes your orientation"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:57
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Almost ready"
@@ -1115,7 +1115,7 @@ msgstr "The scales are tipping"
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Looking for your quadrant"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:59
 msgid "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 msgstr "This is how we will sign your quizzes. You can change the name later in your account settings."
 
