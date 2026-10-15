@@ -18,7 +18,7 @@ import { AuthDialog } from "./AuthDialog";
 const renderDialog = (client: AuthClient = createFakeAuthClient()) => {
   const onClose = vi.fn();
   const rendered = renderWithSession(
-    <MemoryRouter initialEntries={["/quizzes?tab=all"]}>
+    <MemoryRouter initialEntries={["/quizzes?tab=all#top"]}>
       <AuthDialog intent="create-quiz" onClose={onClose} />
     </MemoryRouter>,
     createSessionValue({ client }),
@@ -72,7 +72,7 @@ describe("AuthDialog", () => {
       expect(client.signIn).toHaveBeenCalledWith(
         "google",
         expect.objectContaining({
-          returnTo: "/login?next=%2Fquizzes%3Ftab%3Dall",
+          returnTo: "/login?next=%2Fquizzes%3Ftab%3Dall%23top",
         }),
       );
     });

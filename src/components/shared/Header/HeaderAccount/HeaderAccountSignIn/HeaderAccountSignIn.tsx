@@ -19,9 +19,9 @@ export const HeaderAccountSignIn = ({
   onNavigate,
 }: HeaderAccountSignInProps) => {
   const { t } = useLingui();
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const isActive = pathname === PATHS.signIn();
-  const next = isActive ? undefined : `${pathname}${search}`;
+  const next = isActive ? undefined : `${pathname}${search}${hash}`;
 
   return (
     <Button

@@ -32,6 +32,23 @@ describe("HeaderAccountPhone", () => {
       expect(screen.getByText("AN")).toBeInTheDocument();
     });
 
+    it("lets a long name wrap instead of cutting it", () => {
+      renderWithSession(
+        <HeaderAccountPhone
+          account={createAuthAccount({
+            displayName: "Aleksandra Konstantynopolitańczykiewiczówna",
+          })}
+        />,
+        createSessionValue(),
+      );
+
+      const name = screen.getByText(
+        "Aleksandra Konstantynopolitańczykiewiczówna",
+      );
+      expect(name).not.toHaveClass("truncate");
+      expect(name).toHaveClass("wrap-break-word");
+    });
+
     it("signs out and closes the menu", async () => {
       const { onNavigate, signOut } = renderPhone();
 

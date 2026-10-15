@@ -13,7 +13,8 @@ import type { HeaderAccountPhoneProps } from "./HeaderAccountPhone.types";
 
 // The account at the end of the phone menu: who is signed in, as a row drawn
 // like the pills above it, and signing out as a white pill with a hairline
-// outline. Signing out closes the menu.
+// outline. Signing out closes the menu. The name is the only place the phone
+// shows who is signed in, so a long one wraps and the row grows.
 export const HeaderAccountPhone = ({
   account,
   onNavigate,
@@ -24,7 +25,7 @@ export const HeaderAccountPhone = ({
   return (
     <>
       <div
-        className={`flex h-10 items-center justify-center gap-2 rounded-full pl-1 ${HEADER_PILL_CLASS_NAME} ${HEADER_PILL_IDLE_CLASS_NAME} hover:bg-gi-light-primary/10`}
+        className={`flex min-h-10 items-center justify-center gap-2 rounded-3xl py-1 pl-1 ${HEADER_PILL_CLASS_NAME} ${HEADER_PILL_IDLE_CLASS_NAME} hover:bg-gi-light-primary/10`}
       >
         <HeaderAccountAvatar
           displayName={account.displayName}
@@ -32,7 +33,9 @@ export const HeaderAccountPhone = ({
           size="small"
           className="bg-white"
         />
-        <span className="min-w-0 truncate">{account.displayName}</span>
+        <span className="min-w-0 text-center leading-[1.2] wrap-break-word">
+          {account.displayName}
+        </span>
       </div>
       <Button
         type="outlined"

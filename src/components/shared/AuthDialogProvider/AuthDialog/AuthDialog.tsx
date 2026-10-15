@@ -23,7 +23,7 @@ import { useAuthDialog } from "./utils/useAuthDialog";
 // cancel button of the step - is refused while the account is being saved.
 export const AuthDialog = ({ intent, onClose }: AuthDialogProps) => {
   const { t, i18n } = useLingui();
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const dialog = useAuthDialog(onClose);
 
   // It only ever opens on a press in the browser, so the body is there.
@@ -47,7 +47,7 @@ export const AuthDialog = ({ intent, onClose }: AuthDialogProps) => {
         <SignInFlow
           heading={t`Najpierw zaloguj się`}
           description={i18n._(AUTH_INTENTS[intent].line)}
-          returnTo={PATHS.signIn(`${pathname}${search}`)}
+          returnTo={PATHS.signIn(`${pathname}${search}${hash}`)}
           cardLayout="sheet-on-phone"
           headingId={dialog.headingId}
           descriptionId={dialog.descriptionId}

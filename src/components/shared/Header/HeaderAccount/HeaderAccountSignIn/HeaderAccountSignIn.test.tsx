@@ -22,11 +22,11 @@ const renderSignIn = (path: string, onNavigate = vi.fn()) => {
 describe("HeaderAccountSignIn", () => {
   describe("given a page of the app", () => {
     it("links to the sign-in page with the page as next", () => {
-      const { link } = renderSignIn("/quizzes/mypolitics?tab=all");
+      const { link } = renderSignIn("/quizzes/mypolitics?tab=all#results");
 
       expect(link).toHaveAttribute(
         "href",
-        "/login?next=%2Fquizzes%2Fmypolitics%3Ftab%3Dall",
+        "/login?next=%2Fquizzes%2Fmypolitics%3Ftab%3Dall%23results",
       );
       expect(link).not.toHaveAttribute("aria-current");
     });
