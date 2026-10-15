@@ -38,6 +38,11 @@ export type SignInOutcome =
       ownerProvider: IdentityProvider;
       email: string;
     }
+  // A sign-in meant to link a provider (SignInOptions.link) found nothing
+  // to link to: the pending link expired, or the identity that signed in
+  // belongs to another account than the one the address belongs to. No
+  // session was started and nothing was linked.
+  | { kind: "link-failed" }
   | { kind: "window-closed"; provider: IdentityProvider }
   | { kind: "provider-failed"; provider: IdentityProvider }
   | { kind: "failed" };
@@ -59,6 +64,9 @@ export interface SignInOptions {
   // Where a sign-in that has to leave the page for the provider comes back:
   // the sign-in page, which resumes it.
   returnTo?: string;
+  // The sign-in with the provider that owns the address, after
+  // "account-exists": it links the waiting provider, or fails as a whole.
+  link?: boolean;
   // Aborting closes the provider window, settles the sign-in as a closed
   // window, and undoes whatever the sign-in started, so that closing the
   // dialog never leaves anyone signed in or anything pending.

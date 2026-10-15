@@ -69,7 +69,11 @@ const stateSchema = z.object({
     })
     .optional(),
   pendingLink: z
-    .object({ provider: providerSchema, ownerProvider: providerSchema })
+    .object({
+      provider: providerSchema,
+      ownerProvider: providerSchema,
+      accountId: z.string(),
+    })
     .optional(),
 });
 
@@ -190,15 +194,24 @@ export const createMockAuthClient = ({
 
     const state = read();
     const linked = findAccount(state, provider);
+    const link = state.pendingLink;
+
+    // A sign-in meant to link links the waiting provider to the very account
+    // the address belongs to, or does nothing at all.
+    if (
+      options.link &&
+      (!link ||
+        link.ownerProvider !== provider ||
+        linked?.id !== link.accountId)
+    ) {
+      write({ ...state, pendingLink: undefined });
+
+      return { kind: "link-failed" };
+    }
 
     if (linked) {
-      // Signing in with the provider that owns the address links the provider
-      // that was waiting for it, so either works from now on. A sign-in with
-      // any other provider links nothing.
-      const link = state.pendingLink;
       const account =
-        link?.ownerProvider === provider &&
-        !linked.providers.includes(link.provider)
+        options.link && link && !linked.providers.includes(link.provider)
           ? { ...linked, providers: [...linked.providers, link.provider] }
           : linked;
 
@@ -219,23 +232,25 @@ export const createMockAuthClient = ({
     if (typeof behaviour === "object") {
       const owner = behaviour.accountExists;
       const email = profile.email ?? MOCK_PROFILES.google.email ?? "";
-      const accounts = findAccount(state, owner)
+      const ownerAccount = findAccount(state, owner) ?? {
+        id: `mock-${owner}`,
+        displayName: MOCK_PROFILES[owner].suggestedName,
+        email,
+        providers: [owner],
+      };
+      const accounts = state.accounts.includes(ownerAccount)
         ? state.accounts
-        : [
-            ...state.accounts,
-            {
-              id: `mock-${owner}`,
-              displayName: MOCK_PROFILES[owner].suggestedName,
-              email,
-              providers: [owner],
-            },
-          ];
+        : [...state.accounts, ownerAccount];
 
       write({
         ...state,
         accounts,
         pendingSignUp: undefined,
-        pendingLink: { provider, ownerProvider: owner },
+        pendingLink: {
+          provider,
+          ownerProvider: owner,
+          accountId: ownerAccount.id,
+        },
       });
 
       return { kind: "account-exists", provider, ownerProvider: owner, email };

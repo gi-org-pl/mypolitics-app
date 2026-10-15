@@ -3,9 +3,9 @@ import { useLingui } from "@lingui/react/macro";
 
 import { AUTH_PROVIDERS, getAuthProvider } from "@/constants/auth";
 import { QUIET_BUTTON_CLASS_NAME } from "@/constants/button";
+import { TEXT_LINK_CLASS_NAME } from "@/constants/link";
 
 import { AuthCard } from "../AuthCard/AuthCard";
-import { LINK_CLASS_NAME } from "./SignInPanel.constants";
 import type { SignInPanelProps } from "./SignInPanel.types";
 import { SignInPanelError } from "./SignInPanelError/SignInPanelError";
 import { SignInProviderButton } from "./SignInProviderButton/SignInProviderButton";
@@ -97,7 +97,7 @@ export const SignInPanel = ({
           href={termsHref}
           target="_blank"
           rel="noopener noreferrer"
-          className={LINK_CLASS_NAME}
+          className={TEXT_LINK_CLASS_NAME}
         >
           {t`Regulamin`}
         </a>
@@ -106,7 +106,7 @@ export const SignInPanel = ({
           href={privacyHref}
           target="_blank"
           rel="noopener noreferrer"
-          className={LINK_CLASS_NAME}
+          className={TEXT_LINK_CLASS_NAME}
         >
           {t`Polityka prywatności`}
         </a>

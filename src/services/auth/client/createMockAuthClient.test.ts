@@ -158,11 +158,11 @@ describe("createMockAuthClient()", () => {
       });
     });
 
-    it("links the waiting provider once the owner signs in", async () => {
+    it("links the waiting provider when the owner signs in to link", async () => {
       const client = createClient({ outcomes });
       await client.signIn("facebook");
 
-      const owner = await client.signIn("google");
+      const owner = await client.signIn("google", { link: true });
       await client.signOut();
       const linked = await client.signIn("facebook");
 
@@ -189,10 +189,29 @@ describe("createMockAuthClient()", () => {
       expect((await client.signIn("facebook")).kind).toBe("account-exists");
     });
 
-    it("links nothing when the pending link is cancelled", async () => {
+    it("fails the link when the pending link was cancelled", async () => {
       const client = createClient({ outcomes });
       await client.signIn("facebook");
       await client.cancelPending();
+
+      expect(await client.signIn("google", { link: true })).toEqual({
+        kind: "link-failed",
+      });
+      expect(await client.getSession()).toBeNull();
+    });
+
+    it("fails the link when another provider than the owner signs in to link", async () => {
+      const client = createClient({ outcomes });
+      await client.signIn("facebook");
+
+      expect(await client.signIn("x", { link: true })).toEqual({
+        kind: "link-failed",
+      });
+    });
+
+    it("links nothing on a plain sign-in of the owner", async () => {
+      const client = createClient({ outcomes });
+      await client.signIn("facebook");
       await client.signIn("google");
       await client.signOut();
 

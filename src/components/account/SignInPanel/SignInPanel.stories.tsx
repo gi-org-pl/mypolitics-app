@@ -4,23 +4,15 @@ import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { SignInPanel } from "./SignInPanel";
 
-// The card as the sign-in page shows it: 480 px wide on a computer, the
-// width of the screen less 16 px on each side on a phone. The stories follow
-// the frames of the Figma page "Logowanie i rejestracja - v2".
+// The card fills its parent: the sign-in page and the dialog give it its
+// width. Check it by resizing the viewport. The stories follow the frames of
+// the Figma page "Logowanie i rejestracja - v2".
 const meta = {
   title: "Account/SignInPanel",
   component: SignInPanel,
   parameters: {
-    layout: "fullscreen",
     viewport: { options: INITIAL_VIEWPORTS },
   },
-  decorators: [
-    (Story) => (
-      <div className="mx-auto w-full max-w-120 px-4 py-8 md:px-0">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     heading: "Zaloguj się lub załóż konto",
     description:
