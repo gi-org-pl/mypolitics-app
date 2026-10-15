@@ -180,10 +180,11 @@ test.describe("Feature: Application shell", () => {
       await page.getByRole("button", { name: OPEN_MENU_NAME }).click();
     });
 
-    await test.step("Then they see the navigation links, quizzes first", async () => {
-      await expect(menu.getByRole("link")).toHaveText(
-        [...NAVIGATION_LINKS].reverse(),
-      );
+    await test.step("Then they see the navigation links, quizzes first, and the way to sign in", async () => {
+      await expect(menu.getByRole("link")).toHaveText([
+        ...[...NAVIGATION_LINKS].reverse(),
+        "Zaloguj się",
+      ]);
     });
 
     await test.step("When they choose the quizzes link", async () => {

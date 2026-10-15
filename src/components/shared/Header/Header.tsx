@@ -7,6 +7,7 @@ import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
+import { HeaderAccount } from "./HeaderAccount/HeaderAccount";
 import { HeaderNav } from "./HeaderNav/HeaderNav";
 import { useHeaderMenu } from "./utils/useHeaderMenu";
 
@@ -24,7 +25,10 @@ export const Header = () => {
           <img src={logo} alt="" className="h-6" />
         </Link>
 
-        <HeaderNav variant="bar" onNavigate={close} />
+        <div className="hidden items-center gap-3 md:flex">
+          <HeaderNav variant="bar" onNavigate={close} />
+          <HeaderAccount variant="bar" />
+        </div>
 
         <Button
           ref={buttonRef}
@@ -48,12 +52,9 @@ export const Header = () => {
       </div>
 
       {isOpen && (
-        <HeaderNav
-          ref={menuRef}
-          id={menuId}
-          variant="menu"
-          onNavigate={close}
-        />
+        <HeaderNav ref={menuRef} id={menuId} variant="menu" onNavigate={close}>
+          <HeaderAccount variant="menu" onNavigate={close} />
+        </HeaderNav>
       )}
     </header>
   );

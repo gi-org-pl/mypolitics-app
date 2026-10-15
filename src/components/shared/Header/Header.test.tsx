@@ -5,7 +5,12 @@ import { describe, expect, it } from "vitest";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
-import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import type { AuthSession } from "@/types/auth";
+import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
+import {
+  createSessionValue,
+  renderWithSession,
+} from "@/utils/vitest/auth/renderWithSession";
 
 import { Header } from "./Header";
 
@@ -13,11 +18,17 @@ const NAVIGATION_NAME = "Nawigacja główna";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
 const CLOSE_MENU_NAME = "Zamknij menu nawigacji";
 
-const renderHeader = (path: string = PATHS.home) =>
-  renderWithI18n(
+// The session is not known in most tests, so the account place stays empty
+// and the navigation is tested on its own.
+const renderHeader = (
+  path: string = PATHS.home,
+  session: AuthSession = { status: "unknown" },
+) =>
+  renderWithSession(
     <MemoryRouter initialEntries={[path]}>
       <Header />
     </MemoryRouter>,
+    createSessionValue({ session }),
   );
 
 const getNavigations = () =>
@@ -186,6 +197,43 @@ describe("<Header />", () => {
       fireEvent.mouseDown(menu);
 
       expect(getNavigations()).toHaveLength(2);
+    });
+  });
+
+  describe("given a signed-out visitor", () => {
+    it("offers to sign in after the navigation of the bar and of the menu", () => {
+      renderHeader(PATHS.home, { status: "signed-out" });
+
+      expect(
+        within(screen.getByRole("banner")).getByRole("link", {
+          name: "Zaloguj się",
+        }),
+      ).toBeInTheDocument();
+
+      const menu = openMenu();
+
+      expect(
+        within(menu).getByRole("link", { name: "Zaloguj się" }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("given a signed-in person", () => {
+    it("shows the account in the bar and in the menu", () => {
+      renderHeader(PATHS.home, {
+        status: "signed-in",
+        account: createAuthAccount(),
+      });
+
+      expect(
+        screen.getByRole("button", { name: "Ala Nowak" }),
+      ).toBeInTheDocument();
+
+      const menu = openMenu();
+
+      expect(
+        within(menu).getByRole("button", { name: "Wyloguj się" }),
+      ).toBeInTheDocument();
     });
   });
 });
