@@ -26,7 +26,8 @@ import { useAccountSetup } from "./utils/useAccountSetup";
 // The done button is always the filled one, as the frames draw it. Pressed
 // with something missing, it says what under each missing item and moves
 // focus to the first of them. Nothing is focused when the step opens, so a phone
-// keyboard does not cover it.
+// keyboard does not cover it. While the account is saved, the done button
+// stays filled with a spinner and everything else is drawn at 40%.
 //
 // The message about the name is Athena's error text of the field: Athena
 // describes the input with it and with nothing else.
@@ -161,7 +162,7 @@ export const AccountSetupForm = ({
             variant="primary"
             htmlType="submit"
             isLoading={isSaving}
-            className={TALL_BUTTON_CLASS_NAME}
+            className={`${TALL_BUTTON_CLASS_NAME} data-[disabled=true]:bg-gi-primary`}
           >
             {t`Gotowe`}
           </Button>
@@ -169,7 +170,7 @@ export const AccountSetupForm = ({
             type="ghost"
             variant="primary"
             disabled={isSaving}
-            className={QUIET_BUTTON_CLASS_NAME}
+            className={`${QUIET_BUTTON_CLASS_NAME} data-[disabled=true]:bg-transparent data-[disabled=true]:text-gi-primary data-[disabled=true]:opacity-40`}
             onClick={onCancel}
           >
             {t`Anuluj`}
