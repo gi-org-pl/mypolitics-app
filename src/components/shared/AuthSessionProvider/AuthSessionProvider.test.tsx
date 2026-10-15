@@ -1,198 +1,70 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type { AuthAccount, AuthClient, AuthSessionValue } from "@/types/auth";
+import type { AuthClient } from "@/types/auth";
 import { useAuthSession } from "@/utils/auth/useAuthSession";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
 import { createFakeAuthClient } from "@/utils/vitest/auth/createFakeAuthClient";
 
 import { AuthSessionProvider } from "./AuthSessionProvider";
 
-const SessionProbe = ({
-  onValue,
-}: {
-  onValue: (value: AuthSessionValue) => void;
-}) => {
-  const value = useAuthSession();
-  onValue(value);
+// The provider only composes: what the session does is tested on
+// useSessionState.
+const SessionProbe = () => {
+  const { session } = useAuthSession();
 
   return (
     <p>
-      {value.session.status === "signed-in"
-        ? value.session.account.displayName
-        : value.session.status}
+      {session.status === "signed-in"
+        ? session.account.displayName
+        : session.status}
     </p>
   );
 };
 
-const renderProvider = (client: AuthClient) => {
-  let latest: AuthSessionValue | undefined;
-
+const renderProvider = (client?: AuthClient) =>
   render(
     <AuthSessionProvider client={client}>
-      <SessionProbe
-        onValue={(value) => {
-          latest = value;
-        }}
-      />
+      <SessionProbe />
     </AuthSessionProvider>,
   );
 
-  return () => {
-    if (!latest) throw new Error("The probe has not rendered");
-    return latest;
+vi.mock("@/services/auth/client/authClient", async () => {
+  const { createFakeAuthClient: createDefault } = await import(
+    "@/utils/vitest/auth/createFakeAuthClient"
+  );
+
+  return {
+    authClient: createDefault({
+      getSession: () => Promise.resolve(createAuthAccountName("Domyślny")),
+    }),
   };
-};
+});
 
-const deferred = <Value,>() => {
-  let resolve: (value: Value) => void = () => undefined;
-  const promise = new Promise<Value>((done) => {
-    resolve = done;
-  });
-
-  return { promise, resolve };
-};
+const createAuthAccountName = (displayName: string) => ({
+  id: "default",
+  displayName,
+  provider: "google" as const,
+});
 
 describe("AuthSessionProvider", () => {
-  describe("given the client has not answered yet", () => {
-    it("holds an unknown session", () => {
-      const client = createFakeAuthClient({
-        getSession: () => new Promise<AuthAccount | null>(() => undefined),
-      });
-
-      renderProvider(client);
-
-      expect(screen.getByText("unknown")).toBeInTheDocument();
-    });
-  });
-
-  describe("given the client returns an account", () => {
-    it("is signed in with it", async () => {
-      const client = createFakeAuthClient({
-        getSession: vi.fn().mockResolvedValue(createAuthAccount()),
-      });
-
-      renderProvider(client);
+  describe("given a client", () => {
+    it("hands the session it reads to the components inside", async () => {
+      renderProvider(
+        createFakeAuthClient({
+          getSession: vi.fn().mockResolvedValue(createAuthAccount()),
+        }),
+      );
 
       expect(await screen.findByText("Ala Nowak")).toBeInTheDocument();
     });
   });
 
-  describe("given the client returns no account", () => {
-    it("is signed out", async () => {
-      renderProvider(createFakeAuthClient());
+  describe("given no client", () => {
+    it("uses the app's client", async () => {
+      renderProvider();
 
-      expect(await screen.findByText("signed-out")).toBeInTheDocument();
-    });
-  });
-
-  describe("given the client cannot answer", () => {
-    it("is signed out", async () => {
-      const client = createFakeAuthClient({
-        getSession: vi.fn().mockRejectedValue(new Error("offline")),
-      });
-
-      renderProvider(client);
-
-      expect(await screen.findByText("signed-out")).toBeInTheDocument();
-    });
-  });
-
-  describe("given a signed-in session", () => {
-    it("signs out through the client", async () => {
-      const client = createFakeAuthClient({
-        getSession: vi.fn().mockResolvedValue(createAuthAccount()),
-      });
-      const value = renderProvider(client);
-      await screen.findByText("Ala Nowak");
-
-      let hasEnded: boolean | undefined;
-      await act(async () => {
-        hasEnded = await value().signOut();
-      });
-
-      expect(client.signOut).toHaveBeenCalledOnce();
-      expect(hasEnded).toBe(true);
-      expect(screen.getByText("signed-out")).toBeInTheDocument();
-    });
-
-    it("stays signed in when the client cannot end the session", async () => {
-      const client = createFakeAuthClient({
-        getSession: vi.fn().mockResolvedValue(createAuthAccount()),
-        signOut: vi.fn().mockRejectedValue(new Error("offline")),
-      });
-      const value = renderProvider(client);
-      await screen.findByText("Ala Nowak");
-
-      let hasEnded: boolean | undefined;
-      await act(async () => {
-        hasEnded = await value().signOut();
-      });
-
-      expect(hasEnded).toBe(false);
-      expect(screen.getByText("Ala Nowak")).toBeInTheDocument();
-    });
-  });
-
-  describe("given any session", () => {
-    it("is signed in with the account a sign-in screen hands over", async () => {
-      const value = renderProvider(createFakeAuthClient());
-      await screen.findByText("signed-out");
-
-      act(() => value().setSignedIn(createAuthAccount({ displayName: "Ola" })));
-
-      expect(screen.getByText("Ola")).toBeInTheDocument();
-    });
-
-    it("asks the client again on refresh", async () => {
-      const getSession = vi
-        .fn()
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(createAuthAccount());
-      const value = renderProvider(createFakeAuthClient({ getSession }));
-      await screen.findByText("signed-out");
-
-      await act(() => value().refresh());
-
-      expect(screen.getByText("Ala Nowak")).toBeInTheDocument();
-    });
-  });
-
-  describe("given a sign-in finishes before the first answer of the client", () => {
-    it("keeps the sign-in when the late answer says signed out", async () => {
-      const first = deferred<AuthAccount | null>();
-      const value = renderProvider(
-        createFakeAuthClient({ getSession: () => first.promise }),
-      );
-
-      act(() => value().setSignedIn(createAuthAccount({ displayName: "Ola" })));
-      await act(async () => first.resolve(null));
-
-      await waitFor(() => expect(screen.getByText("Ola")).toBeInTheDocument());
-    });
-  });
-
-  describe("given a sign-in finishes while a sign-out is on its way", () => {
-    it("keeps the sign-in", async () => {
-      const ending = deferred<void>();
-      const client = createFakeAuthClient({
-        getSession: vi.fn().mockResolvedValue(createAuthAccount()),
-        signOut: () => ending.promise,
-      });
-      const value = renderProvider(client);
-      await screen.findByText("Ala Nowak");
-
-      let signOut: Promise<boolean> | undefined;
-      act(() => {
-        signOut = value().signOut();
-      });
-      act(() => value().setSignedIn(createAuthAccount({ displayName: "Ola" })));
-      await act(async () => {
-        ending.resolve();
-        await signOut;
-      });
-
-      expect(screen.getByText("Ola")).toBeInTheDocument();
+      expect(await screen.findByText("Domyślny")).toBeInTheDocument();
     });
   });
 });
