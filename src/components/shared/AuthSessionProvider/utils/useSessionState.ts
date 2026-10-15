@@ -8,8 +8,9 @@ import type {
 } from "@/types/auth";
 
 // The session of the app and the ways to change it. The session is unknown
-// until the client answers; a client that cannot answer leaves the person
-// signed out, so the header offers to sign in rather than waiting for ever.
+// until the client answers; a client that cannot answer the first check
+// leaves the person signed out, so the header offers to sign in rather than
+// waiting for ever, and leaves a known session as it was later on.
 //
 // Answers arrive out of order, so each change says what it may overwrite:
 // - a session check is dropped when anything changed after it was asked for
@@ -25,15 +26,17 @@ export const useSessionState = (client: AuthClient): AuthSessionValue => {
   const refresh = useCallback(async () => {
     changes.current += 1;
     const asked = changes.current;
-    let next: AuthSession;
+    let next: (current: AuthSession) => AuthSession;
 
     try {
       const account = await client.getSession();
-      next = account
-        ? { status: "signed-in", account }
-        : { status: "signed-out" };
+      next = () =>
+        account ? { status: "signed-in", account } : { status: "signed-out" };
     } catch {
-      next = { status: "signed-out" };
+      // An answer that cannot be had says nothing about a session already
+      // known: a signed-in person stays signed in through an outage.
+      next = (current) =>
+        current.status === "signed-in" ? current : { status: "signed-out" };
     }
 
     if (asked === changes.current) setSession(next);
