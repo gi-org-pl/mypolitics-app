@@ -18,6 +18,7 @@ export const toFlowState = (
     case "account-exists":
       return {
         step: "account-exists",
+        pendingId: outcome.pendingId,
         provider: outcome.provider,
         ownerProvider: outcome.ownerProvider,
         email: outcome.email,

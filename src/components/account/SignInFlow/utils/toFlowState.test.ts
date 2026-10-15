@@ -5,7 +5,11 @@ import { toFlowState } from "./toFlowState";
 describe("toFlowState()", () => {
   describe("given a new account", () => {
     it("opens the step with the pending sign-up, not saving", () => {
-      const signUp = { provider: "x" as const, suggestedName: "Ala" };
+      const signUp = {
+        id: "pending-1",
+        provider: "x" as const,
+        suggestedName: "Ala",
+      };
 
       expect(toFlowState({ kind: "new-account", signUp })).toEqual({
         step: "setup",
@@ -21,12 +25,14 @@ describe("toFlowState()", () => {
       expect(
         toFlowState({
           kind: "account-exists",
+          pendingId: "pending-2",
           provider: "facebook",
           ownerProvider: "google",
           email: "ala@example.com",
         }),
       ).toEqual({
         step: "account-exists",
+        pendingId: "pending-2",
         provider: "facebook",
         ownerProvider: "google",
         email: "ala@example.com",

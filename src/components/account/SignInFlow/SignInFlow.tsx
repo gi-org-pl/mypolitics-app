@@ -33,6 +33,8 @@ export const SignInFlow = ({
   const { state } = flow;
   const cardProps = { headingLevel, headingId, descriptionId, onClose };
 
+  if (state.step === "resuming") return null;
+
   if (state.step === "setup") {
     return (
       <AccountSetupForm

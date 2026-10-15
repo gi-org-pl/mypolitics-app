@@ -80,6 +80,17 @@ describe("SignInFlow", () => {
     });
   });
 
+  describe("given it resumes a sign-in that left the page", () => {
+    it("shows nothing until it knows how it ended", async () => {
+      renderFlow({}, { resume: true });
+
+      expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+      expect(
+        await screen.findByRole("button", { name: "Kontynuuj z Google" }),
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("given a first sign-in", () => {
     it("shows the step, and the done button finishes", async () => {
       const { onSignedIn } = renderFlow();

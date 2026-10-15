@@ -24,6 +24,7 @@ describe("toPanelView()", () => {
       expect(
         toPanelView({
           step: "account-exists",
+          pendingId: "pending-2",
           provider: "facebook",
           ownerProvider: "google",
           email: "ala@example.com",

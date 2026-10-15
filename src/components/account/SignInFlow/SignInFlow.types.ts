@@ -20,11 +20,14 @@ export interface SignInFlowProps {
   onCancel?: () => void; // the cancel button of the step, after the pending sign-up is dropped
 }
 
-// One state per row of the spec's "States and lifecycle - The card".
+// One state per row of the spec's "States and lifecycle - The card", and the
+// moment a sign-in that left the page is resumed.
 export type SignInFlowState =
+  | { step: "resuming" }
   | { step: "choose"; waitingFor?: IdentityProvider; error?: SignInError }
   | {
       step: "account-exists";
+      pendingId: string;
       provider: IdentityProvider;
       ownerProvider: IdentityProvider;
       email: string;

@@ -4,7 +4,7 @@ import type { SignInFlowState } from "../SignInFlow.types";
 
 // What the sign-in card shows for a state of the flow outside the step.
 export const toPanelView = (
-  state: Exclude<SignInFlowState, { step: "setup" }>,
+  state: Exclude<SignInFlowState, { step: "setup" } | { step: "resuming" }>,
 ): SignInPanelView =>
   state.step === "account-exists"
     ? {

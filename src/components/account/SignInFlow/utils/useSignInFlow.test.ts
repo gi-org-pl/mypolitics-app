@@ -24,10 +24,11 @@ const SETUP: AccountSetup = {
 const ACCOUNT = createAuthAccount();
 const NEW_ACCOUNT: SignInOutcome = {
   kind: "new-account",
-  signUp: { provider: "google", suggestedName: "Ala Nowak" },
+  signUp: { id: "sign-up-1", provider: "google", suggestedName: "Ala Nowak" },
 };
 const ACCOUNT_EXISTS: SignInOutcome = {
   kind: "account-exists",
+  pendingId: "link-1",
   provider: "facebook",
   ownerProvider: "google",
   email: "ala@example.com",
@@ -78,7 +79,7 @@ describe("useSignInFlow()", () => {
 
       expect(client.signIn).toHaveBeenCalledWith("google", {
         returnTo: "/back",
-        link: false,
+        link: undefined,
         signal: expect.any(AbortSignal),
       });
       expect(value.setSignedIn).toHaveBeenCalledWith(ACCOUNT);
@@ -113,7 +114,11 @@ describe("useSignInFlow()", () => {
 
       expect(result.current.state).toEqual({
         step: "setup",
-        signUp: { provider: "google", suggestedName: "Ala Nowak" },
+        signUp: {
+          id: "sign-up-1",
+          provider: "google",
+          suggestedName: "Ala Nowak",
+        },
         isSaving: false,
         hasSaveFailed: false,
       });
@@ -152,7 +157,30 @@ describe("useSignInFlow()", () => {
       expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT);
     });
 
-    it("shows the save error when saving fails", async () => {
+    it("saves the named sign-up", async () => {
+      const complete = vi.fn().mockResolvedValue({ kind: "failed" });
+      const { result } = await withStep(complete);
+
+      await act(async () => result.current.completeSetup(SETUP));
+
+      expect(complete).toHaveBeenCalledWith("sign-up-1", SETUP);
+    });
+
+    it("finishes when the save failed but the account was made", async () => {
+      const client = createFakeAuthClient({
+        signIn: signingIn(NEW_ACCOUNT),
+        completeSignUp: vi.fn().mockRejectedValue(new Error("timeout")),
+        getSession: vi.fn().mockResolvedValue(ACCOUNT),
+      });
+      const { result, onSignedIn } = renderFlow(client);
+      await act(async () => result.current.chooseProvider("google"));
+
+      await act(async () => result.current.completeSetup(SETUP));
+
+      expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT);
+    });
+
+    it("shows the save error when saving fails and no account was made", async () => {
       const { result } = await withStep(
         vi.fn().mockResolvedValue({ kind: "failed" }),
       );
@@ -166,10 +194,14 @@ describe("useSignInFlow()", () => {
       });
     });
 
-    it("shows the save error when the client cannot be reached", async () => {
-      const { result } = await withStep(
-        vi.fn().mockRejectedValue(new Error("offline")),
-      );
+    it("shows the save error when the client cannot be reached at all", async () => {
+      const client = createFakeAuthClient({
+        signIn: signingIn(NEW_ACCOUNT),
+        completeSignUp: vi.fn().mockRejectedValue(new Error("offline")),
+        getSession: vi.fn().mockRejectedValue(new Error("offline")),
+      });
+      const { result } = renderFlow(client);
+      await act(async () => result.current.chooseProvider("google"));
 
       await act(async () => result.current.completeSetup(SETUP));
 
@@ -194,7 +226,7 @@ describe("useSignInFlow()", () => {
 
       act(() => result.current.cancelSetup());
 
-      expect(value.client.cancelPending).toHaveBeenCalledOnce();
+      expect(value.client.cancelPending).toHaveBeenCalledWith("sign-up-1");
       expect(result.current.state).toEqual({ step: "choose" });
       expect(onCancel).toHaveBeenCalledOnce();
     });
@@ -204,7 +236,7 @@ describe("useSignInFlow()", () => {
 
       unmount();
 
-      expect(value.client.cancelPending).toHaveBeenCalledOnce();
+      expect(value.client.cancelPending).toHaveBeenCalledWith("sign-up-1");
     });
   });
 
@@ -225,7 +257,7 @@ describe("useSignInFlow()", () => {
 
       expect(client.signIn).toHaveBeenLastCalledWith("google", {
         returnTo: "/back",
-        link: true,
+        link: "link-1",
         signal: expect.any(AbortSignal),
       });
       expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT);
@@ -270,7 +302,7 @@ describe("useSignInFlow()", () => {
 
       act(() => result.current.chooseAnother());
 
-      expect(value.client.cancelPending).toHaveBeenCalledOnce();
+      expect(value.client.cancelPending).toHaveBeenCalledWith("link-1");
       expect(result.current.state).toEqual({ step: "choose" });
     });
   });
@@ -355,18 +387,19 @@ describe("useSignInFlow()", () => {
       await waitFor(() => expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT));
     });
 
-    it("lets a sign-in started meanwhile win", async () => {
+    it("shows nothing and offers no sign-in until the client answers", async () => {
       const resumed = deferred<SignInOutcome | null>();
       const client = createFakeAuthClient({
         resumeSignIn: () => resumed.promise,
-        signIn: signingIn({ kind: "window-closed", provider: "x" }),
       });
       const { result } = renderFlow(client, { resume: true });
 
-      await act(async () => result.current.chooseProvider("x"));
-      await act(async () => resumed.resolve(NEW_ACCOUNT));
+      act(() => result.current.chooseProvider("x"));
 
-      expect(result.current.state.step).toBe("choose");
+      expect(result.current.state).toEqual({ step: "resuming" });
+      expect(client.signIn).not.toHaveBeenCalled();
+      await act(async () => resumed.resolve(null));
+      expect(result.current.state).toEqual({ step: "choose" });
     });
   });
 
