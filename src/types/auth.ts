@@ -1,0 +1,89 @@
+// A company a person signs in with. The order of the sign-in buttons is the
+// order of AUTH_PROVIDERS, not of this union.
+export type IdentityProvider = "google" | "facebook" | "x";
+
+// The account of the person signed in.
+export interface AuthAccount {
+  id: string;
+  displayName: string;
+  avatarUrl?: string; // the provider's photo; without one the initials are drawn
+  email?: string; // only an address the provider verified; X often gives none
+  provider: IdentityProvider; // the provider of the current sign-in
+}
+
+export type AuthSession =
+  | { status: "unknown" } // the client has not answered yet
+  | { status: "signed-out" }
+  | { status: "signed-in"; account: AuthAccount };
+
+// A provider sign-in that found no account. Nothing is saved until the
+// person completes the account, see AccountSetup.
+export interface PendingSignUp {
+  provider: IdentityProvider;
+  suggestedName?: string;
+  avatarUrl?: string;
+  email?: string;
+}
+
+// What one provider sign-in ends in.
+export type SignInOutcome =
+  | { kind: "signed-in"; account: AuthAccount }
+  | { kind: "new-account"; signUp: PendingSignUp }
+  | {
+      // The provider's address belongs to an account made with another
+      // provider. The accounts are never merged on the address: the person
+      // signs in with the owning provider, and this one is linked then.
+      kind: "account-exists";
+      provider: IdentityProvider;
+      ownerProvider: IdentityProvider;
+      email: string;
+    }
+  | { kind: "window-closed"; provider: IdentityProvider }
+  | { kind: "provider-failed"; provider: IdentityProvider }
+  | { kind: "failed" };
+
+// What completes a pending sign-up. The two declarations are part of the
+// type so that an account can never be completed without them.
+export interface AccountSetup {
+  displayName: string; // already cleaned and valid
+  isAgeDeclared: true;
+  hasAcceptedTerms: true;
+}
+
+export type CompleteSignUpOutcome =
+  | { kind: "signed-in"; account: AuthAccount }
+  | { kind: "expired" } // the pending sign-up is gone
+  | { kind: "failed" };
+
+export interface SignInOptions {
+  // Where a sign-in that has to leave the page for the provider comes back.
+  returnTo?: string;
+}
+
+// Everything the app asks of whatever keeps the accounts. The screens talk
+// only to this, so the stand-in of today and the API adapter of later are
+// interchangeable.
+export interface AuthClient {
+  // The account of this browser's session, or null without one. Rejects
+  // when the answer cannot be had; the app then treats the person as
+  // signed out.
+  getSession: () => Promise<AuthAccount | null>;
+  signIn: (
+    provider: IdentityProvider,
+    options?: SignInOptions,
+  ) => Promise<SignInOutcome>;
+  completeSignUp: (setup: AccountSetup) => Promise<CompleteSignUpOutcome>;
+  // Drops a pending sign-up or a pending link.
+  cancelPending: () => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+export interface AuthSessionValue {
+  session: AuthSession;
+  client: AuthClient;
+  // Called by the sign-in screens when a sign-in has finished.
+  setSignedIn: (account: AuthAccount) => void;
+  signOut: () => Promise<void>;
+  // Asks the client for the session again.
+  refresh: () => Promise<void>;
+}
