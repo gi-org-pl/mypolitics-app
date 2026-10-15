@@ -829,6 +829,10 @@ msgstr "Pełne wyniki"
 msgid "Pełny opis"
 msgstr "Pełny opis"
 
+#: src/pages/login.tsx:31
+msgid "Pierwsze logowanie zakłada konto, w którym tworzysz quizy. Quizy rozwiążesz bez logowania."
+msgstr "Pierwsze logowanie zakłada konto, w którym tworzysz quizy. Quizy rozwiążesz bez logowania."
+
 #: src/constants/home.ts:74
 msgid "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 msgstr "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
@@ -1419,6 +1423,10 @@ msgstr "Zaglądamy do teczek"
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
+
+#: src/pages/login.tsx:30
+msgid "Zaloguj się lub załóż konto"
+msgstr "Zaloguj się lub załóż konto"
 
 #: src/components/account/SignInPanel/SignInPanel.tsx:58
 msgid "Zaloguj się przez {ownerName}"
