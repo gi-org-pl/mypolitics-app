@@ -3,12 +3,11 @@ import { I18nProvider } from "@lingui/react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { mockResizeObserver } from "@/components/shared/AnimatedHeight/utils/mockResizeObserver";
 import { AuthSessionProvider } from "@/components/shared/AuthSessionProvider/AuthSessionProvider";
 import type { AuthAccount, AuthClient, SignInOutcome } from "@/types/auth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
 import { createFakeAuthClient } from "@/utils/vitest/auth/createFakeAuthClient";
+import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 
 import SignInPage from "./login";
 
