@@ -1,8 +1,6 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import { mockResizeObserver } from "@/components/shared/AnimatedHeight/utils/mockResizeObserver";
 import type {
   AuthClient,
   CompleteSignUpOutcome,
@@ -13,6 +11,7 @@ import {
   createSessionValue,
   renderWithSession,
 } from "@/utils/vitest/auth/renderWithSession";
+import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 
 import { AuthDialog } from "./AuthDialog";
 

@@ -14,7 +14,9 @@ import { AuthDialogProvider } from "./AuthDialogProvider";
 
 // The dialog as any action meets it: a button that needs an account. The
 // stories run on the stand-in client with fresh accounts each time; the
-// dialog opens by itself. On a phone viewport it is a bottom sheet.
+// dialog opens by itself. On a phone viewport it is a bottom sheet. The
+// scene around the dialog is fixture text in the source language, like the
+// data of the other stories; the dialog itself comes from the catalogues.
 const createStorage = (): TextStorage => {
   const items = new Map<string, string>();
 
@@ -42,7 +44,7 @@ const CreateQuiz = () => {
       >
         Stwórz własny
       </button>
-      {isCreated && <p>The action ran: the editor would open here.</p>}
+      {isCreated && <p>Akcja wykonana: tu otworzyłby się edytor.</p>}
     </div>
   );
 };
@@ -55,7 +57,7 @@ const Scene = ({ isGuarded = false }: { isGuarded?: boolean }) => (
       <AuthDialogProvider>
         {isGuarded ? (
           <RequireAuth intent="create-quiz">
-            <p className="text-gi-primary">The guarded page.</p>
+            <p className="text-gi-primary">Strona wymagająca konta.</p>
           </RequireAuth>
         ) : (
           <CreateQuiz />
