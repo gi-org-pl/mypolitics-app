@@ -68,7 +68,9 @@ const stateSchema = z.object({
       email: z.string().optional(),
     })
     .optional(),
-  pendingLink: z.object({ provider: providerSchema }).optional(),
+  pendingLink: z
+    .object({ provider: providerSchema, ownerProvider: providerSchema })
+    .optional(),
 });
 
 type MockState = z.infer<typeof stateSchema>;
@@ -86,6 +88,25 @@ const createMemoryStorage = (): TextStorage => {
     },
     removeItem: (key) => {
       items.delete(key);
+    },
+  };
+};
+
+// Keeps every value in memory as well as in the storage it is given, and
+// reads from memory first: a storage that refuses a write - full, or limited
+// by the browser's privacy settings - then loses nothing for this client.
+const withMemory = (storage: TextStorage): TextStorage => {
+  const memory = createMemoryStorage();
+
+  return {
+    getItem: (key) => memory.getItem(key) ?? storage.getItem(key),
+    setItem: (key, value) => {
+      memory.setItem(key, value);
+      storage.setItem(key, value);
+    },
+    removeItem: (key) => {
+      memory.removeItem(key);
+      storage.removeItem(key);
     },
   };
 };
@@ -122,7 +143,7 @@ export const createMockAuthClient = ({
   outcomes = {},
   failCompleteSignUp = false,
 }: MockAuthClientOptions = {}): AuthClient => {
-  const store = toJsonStorage<unknown>(storage);
+  const store = toJsonStorage<unknown>(withMemory(storage));
 
   const read = (): MockState => {
     const parsed = stateSchema.safeParse(store.getItem(MOCK_AUTH_STORAGE_KEY));
@@ -171,12 +192,14 @@ export const createMockAuthClient = ({
     const linked = findAccount(state, provider);
 
     if (linked) {
-      // Signing in with the owner of an account links the provider that was
-      // waiting for it, so either works from now on.
-      const pending = state.pendingLink?.provider;
+      // Signing in with the provider that owns the address links the provider
+      // that was waiting for it, so either works from now on. A sign-in with
+      // any other provider links nothing.
+      const link = state.pendingLink;
       const account =
-        pending && !linked.providers.includes(pending)
-          ? { ...linked, providers: [...linked.providers, pending] }
+        link?.ownerProvider === provider &&
+        !linked.providers.includes(link.provider)
+          ? { ...linked, providers: [...linked.providers, link.provider] }
           : linked;
 
       return startSession(
@@ -212,7 +235,7 @@ export const createMockAuthClient = ({
         ...state,
         accounts,
         pendingSignUp: undefined,
-        pendingLink: { provider },
+        pendingLink: { provider, ownerProvider: owner },
       });
 
       return { kind: "account-exists", provider, ownerProvider: owner, email };

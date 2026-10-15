@@ -171,4 +171,28 @@ describe("AuthSessionProvider", () => {
       await waitFor(() => expect(screen.getByText("Ola")).toBeInTheDocument());
     });
   });
+
+  describe("given a sign-in finishes while a sign-out is on its way", () => {
+    it("keeps the sign-in", async () => {
+      const ending = deferred<void>();
+      const client = createFakeAuthClient({
+        getSession: vi.fn().mockResolvedValue(createAuthAccount()),
+        signOut: () => ending.promise,
+      });
+      const value = renderProvider(client);
+      await screen.findByText("Ala Nowak");
+
+      let signOut: Promise<boolean> | undefined;
+      act(() => {
+        signOut = value().signOut();
+      });
+      act(() => value().setSignedIn(createAuthAccount({ displayName: "Ola" })));
+      await act(async () => {
+        ending.resolve();
+        await signOut;
+      });
+
+      expect(screen.getByText("Ola")).toBeInTheDocument();
+    });
+  });
 });

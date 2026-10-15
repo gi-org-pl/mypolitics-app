@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { AccountSetup } from "@/types/auth";
 import type { TextStorage } from "@/types/storage";
+import { safely } from "@/utils/function/safely";
 
 import {
   createMockAuthClient,
@@ -27,6 +28,13 @@ const createStorage = (): TextStorage => {
     },
   };
 };
+
+// The storage as the app hands it over: calls that never throw.
+const getSafeStorage = (storage: TextStorage): TextStorage => ({
+  getItem: (key) => safely(() => storage.getItem(key), null),
+  setItem: (key, value) => safely(() => storage.setItem(key, value), undefined),
+  removeItem: (key) => safely(() => storage.removeItem(key), undefined),
+});
 
 const createClient = (
   options: Parameters<typeof createMockAuthClient>[0] = {},
@@ -168,6 +176,19 @@ describe("createMockAuthClient()", () => {
       });
     });
 
+    it("links nothing when another provider's account signs in", async () => {
+      const client = createClient({ outcomes });
+      await client.signIn("x");
+      await client.completeSignUp(SETUP);
+      await client.signOut();
+      await client.signIn("facebook");
+
+      await client.signIn("x");
+      await client.signOut();
+
+      expect((await client.signIn("facebook")).kind).toBe("account-exists");
+    });
+
     it("links nothing when the pending link is cancelled", async () => {
       const client = createClient({ outcomes });
       await client.signIn("facebook");
@@ -263,6 +284,30 @@ describe("createMockAuthClient()", () => {
       const again = createMockAuthClient({ delayMs: 0 });
 
       expect(await again.getSession()).toMatchObject({ displayName: "Ala" });
+    });
+  });
+
+  describe("given a storage that refuses writes", () => {
+    it("keeps the pending sign-up in memory", async () => {
+      const refusing: TextStorage = {
+        getItem: () => null,
+        setItem: () => {
+          throw new DOMException(
+            "The quota has been exceeded.",
+            "QuotaExceededError",
+          );
+        },
+        removeItem: () => undefined,
+      };
+      const client = createMockAuthClient({
+        storage: getSafeStorage(refusing),
+        delayMs: 0,
+      });
+      await client.signIn("google");
+
+      expect(await client.completeSignUp(SETUP)).toMatchObject({
+        kind: "signed-in",
+      });
     });
   });
 

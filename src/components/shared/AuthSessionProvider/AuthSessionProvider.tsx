@@ -44,15 +44,20 @@ export const AuthSessionProvider = ({
 
   // The page never shows a person signed out while the session may still be
   // alive behind it: a client that could not end it leaves them signed in.
+  //
+  // A sign-in that finishes while the sign-out is on its way is newer, so the
+  // sign-out then leaves it in place.
   const signOut = useCallback(async () => {
+    version.current += 1;
+    const asked = version.current;
+
     try {
       await client.signOut();
     } catch {
       return false;
     }
 
-    version.current += 1;
-    setSession({ status: "signed-out" });
+    if (asked === version.current) setSession({ status: "signed-out" });
 
     return true;
   }, [client]);
