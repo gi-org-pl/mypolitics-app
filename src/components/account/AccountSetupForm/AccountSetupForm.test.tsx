@@ -223,6 +223,12 @@ describe("AccountSetupForm", () => {
       expect(screen.getByRole("button", { name: "Anuluj" })).toBeDisabled();
     });
 
+    it("disables the close button as well", () => {
+      renderForm({ isSaving: true, onClose: vi.fn() });
+
+      expect(screen.getByRole("button", { name: "Zamknij" })).toBeDisabled();
+    });
+
     it("ignores a submit of the field", () => {
       const { onSubmit } = renderForm({ isSaving: true });
 
