@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { mockResizeObserver } from "@/components/shared/AnimatedHeight/utils/mockResizeObserver";
+import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
