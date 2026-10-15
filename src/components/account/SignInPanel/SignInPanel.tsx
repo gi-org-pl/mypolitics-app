@@ -22,6 +22,7 @@ export const SignInPanel = ({
   termsHref,
   privacyHref,
   headingLevel,
+  cardLayout,
   headingId,
   descriptionId,
   onClose,
@@ -29,7 +30,13 @@ export const SignInPanel = ({
   onChooseAnother,
 }: SignInPanelProps) => {
   const { t, i18n } = useLingui();
-  const cardProps = { headingLevel, headingId, descriptionId, onClose };
+  const cardProps = {
+    headingLevel,
+    headingId,
+    descriptionId,
+    onClose,
+    layout: cardLayout,
+  };
 
   if (view.kind === "account-exists") {
     const owner = getAuthProvider(view.ownerProvider);

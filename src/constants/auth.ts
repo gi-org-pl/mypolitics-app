@@ -4,7 +4,7 @@ import { msg } from "@lingui/core/macro";
 import facebookMark from "@/assets/icons/facebook-mark.svg";
 import googleMark from "@/assets/icons/google-mark.svg";
 import xMark from "@/assets/icons/x-mark.svg";
-import type { IdentityProvider } from "@/types/auth";
+import type { AuthIntentKey, IdentityProvider } from "@/types/auth";
 
 export interface AuthProviderEntry {
   id: IdentityProvider;
@@ -54,3 +54,13 @@ export const AUTH_PROVIDERS: AuthProviderEntry[] = [
 
 export const getAuthProvider = (id: IdentityProvider): AuthProviderEntry =>
   AUTH_PROVIDERS.find((provider) => provider.id === id) ?? AUTH_PROVIDERS[0];
+
+// Why an account is needed, in the terms of the action: what will be kept on
+// the account, then that the first sign-in creates it. The dialog shows it
+// under its heading.
+export const AUTH_INTENTS: Record<AuthIntentKey, { line: MessageDescriptor }> =
+  {
+    "create-quiz": {
+      line: msg`Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada.`,
+    },
+  };

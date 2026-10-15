@@ -6,16 +6,14 @@ import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 
+import { CARD_LAYOUT_CLASS_NAMES } from "./AuthCard.constants";
 import type { AuthCardProps } from "./AuthCard.types";
 
 // The card every sign-in screen is drawn in: an ash card with the heading and
 // its line in a darker box at the top, like the e-mail card of the
-// questionnaire. In a dialog the box also holds the round close button.
-//
-// The frames are drawn 420 px wide with 24 px of padding; where the card is
-// given less than 400 px the padding is 16 px, so the provider labels keep
-// their line. The width is the card's own (a container query), not the
-// screen's: a dialog may give a narrow card on a wide screen.
+// questionnaire. In a dialog the box also holds the round close button, and
+// on a phone the card is a bottom sheet with a handle - a picture of one:
+// the sheet is not dragged.
 export const AuthCard = ({
   heading,
   description,
@@ -24,7 +22,7 @@ export const AuthCard = ({
   descriptionId,
   onClose,
   isCloseDisabled = false,
-  className = "",
+  layout = "card",
   children,
 }: AuthCardProps) => {
   const { t } = useLingui();
@@ -33,8 +31,14 @@ export const AuthCard = ({
   return (
     <div className="@container w-full min-w-0">
       <div
-        className={`flex w-full min-w-0 flex-col gap-4 rounded-4xl bg-gi-ash p-4 text-gi-primary @min-[25rem]:p-6 ${className}`}
+        className={`flex w-full min-w-0 flex-col gap-4 bg-gi-ash text-gi-primary ${CARD_LAYOUT_CLASS_NAMES[layout]}`}
       >
+        {layout === "sheet-on-phone" && (
+          <span
+            aria-hidden="true"
+            className="mx-auto block h-1 w-10 shrink-0 rounded-xs bg-gi-dark-ash md:hidden"
+          />
+        )}
         <div className="rounded-2xl bg-gi-dark-ash p-4">
           <div className="flex items-start gap-3">
             <Heading

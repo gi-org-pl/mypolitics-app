@@ -250,7 +250,7 @@ msgctxt "checkpoint-new-trait"
 msgid "A to niespodzianka!"
 msgstr "A to niespodzianka!"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:44
+#: src/components/account/SignInPanel/SignInPanel.tsx:51
 msgid "Adres {email} należy do konta założonego przez {ownerName}. Zaloguj się przez {ownerName}, a {addedName} dodamy jako drugi sposób logowania."
 msgstr "Adres {email} należy do konta założonego przez {ownerName}. Zaloguj się przez {ownerName}, a {addedName} dodamy jako drugi sposób logowania."
 
@@ -266,7 +266,7 @@ msgstr "Akceptuję"
 msgid "Algorytm jest jawny"
 msgstr "Algorytm jest jawny"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:130
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:132
 msgid "Anuluj"
 msgstr "Anuluj"
 
@@ -317,11 +317,11 @@ msgctxt "checkpoint-position-puzzle-ask"
 msgid "Czas na typowanie"
 msgstr "Czas na typowanie"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:85
+#: src/components/account/SignInPanel/SignInPanel.tsx:92
 msgid "Czekamy na {inflectedName}…"
 msgstr "Czekamy na {inflectedName}…"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:50
+#: src/components/account/SignInPanel/SignInPanel.tsx:57
 msgid "Czekamy na {ownerName}…"
 msgstr "Czekamy na {ownerName}…"
 
@@ -430,7 +430,7 @@ msgstr "Generacja Innowacja"
 msgid "Google"
 msgstr "Google"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:121
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:123
 msgid "Gotowe"
 msgstr "Gotowe"
 
@@ -671,6 +671,10 @@ msgstr "Na tym etapie quizu najbliżej Ciebie jest {position}."
 msgid "Najdłuższy quiz na myPolitics!"
 msgstr "Najdłuższy quiz na myPolitics!"
 
+#: src/components/shared/AuthDialogProvider/AuthDialog/AuthDialog.tsx:48
+msgid "Najpierw zaloguj się"
+msgstr "Najpierw zaloguj się"
+
 #: src/constants/checkpoint.ts:353
 msgctxt "checkpoint-stats-against"
 msgid "Należysz do {percent}% osób, które nie zgadzają się z tezą „{thesis}”."
@@ -689,7 +693,7 @@ msgstr "Nawigacja główna"
 msgid "Nawigacja w stopce"
 msgstr "Nawigacja w stopce"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:69
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:71
 msgid "Nazwa"
 msgstr "Nazwa"
 
@@ -728,7 +732,7 @@ msgstr "Nie udało się zalogować przez {inflectedName}. Spróbuj za chwilę al
 msgid "Nie udało się zalogować. Spróbuj jeszcze raz."
 msgstr "Nie udało się zalogować. Spróbuj jeszcze raz."
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:109
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:111
 msgid "Nie udało się zapisać konta. Spróbuj jeszcze raz."
 msgstr "Nie udało się zapisać konta. Spróbuj jeszcze raz."
 
@@ -883,7 +887,7 @@ msgstr "Pokaż osie"
 msgid "Pokaż wszystkie"
 msgstr "Pokaż wszystkie"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:111
+#: src/components/account/SignInPanel/SignInPanel.tsx:118
 msgid "Polityka prywatności"
 msgstr "Polityka prywatności"
 
@@ -939,7 +943,7 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:59
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
@@ -978,6 +982,10 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Pudło!"
 msgstr "Pudło!"
 
+#: src/constants/auth.ts:64
+msgid "Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada."
+msgstr "Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada."
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
 msgstr "Quizy"
@@ -986,7 +994,7 @@ msgstr "Quizy"
 msgid "Ranking"
 msgstr "Ranking"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:102
+#: src/components/account/SignInPanel/SignInPanel.tsx:109
 #: src/components/shared/Footer/FooterLegal/FooterLegal.constants.ts:6
 msgid "Regulamin"
 msgstr "Regulamin"
@@ -1115,7 +1123,7 @@ msgstr "Szala się przechyla"
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Szukamy Twojej ćwiartki"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:59
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:60
 msgid "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 msgstr "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 
@@ -1164,7 +1172,7 @@ msgctxt "checkpoint-axis-closeness-single"
 msgid "To już wiemy"
 msgstr "To już wiemy"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:43
+#: src/components/account/SignInPanel/SignInPanel.tsx:50
 msgid "To konto już istnieje"
 msgstr "To konto już istnieje"
 
@@ -1341,7 +1349,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Wszystkie ćwiartki kompasu są już za Tobą."
 msgstr "Wszystkie ćwiartki kompasu są już za Tobą."
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:63
+#: src/components/account/SignInPanel/SignInPanel.tsx:70
 msgid "Wybierz inny sposób"
 msgstr "Wybierz inny sposób"
 
@@ -1412,7 +1420,7 @@ msgstr "Zaglądamy do teczek"
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
-#: src/components/account/SignInPanel/SignInPanel.tsx:51
+#: src/components/account/SignInPanel/SignInPanel.tsx:58
 msgid "Zaloguj się przez {ownerName}"
 msgstr "Zaloguj się przez {ownerName}"
 
@@ -1420,7 +1428,7 @@ msgstr "Zaloguj się przez {ownerName}"
 msgid "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 
-#: src/components/account/AuthCard/AuthCard.tsx:51
+#: src/components/account/AuthCard/AuthCard.tsx:55
 msgid "Zamknij"
 msgstr "Zamknij"
 
