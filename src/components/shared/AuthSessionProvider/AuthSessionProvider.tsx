@@ -42,18 +42,19 @@ export const AuthSessionProvider = ({
     setSession({ status: "signed-in", account });
   }, []);
 
+  // The page never shows a person signed out while the session may still be
+  // alive behind it: a client that could not end it leaves them signed in.
   const signOut = useCallback(async () => {
-    version.current += 1;
-
-    // The person asked to be signed out: the page shows them signed out even
-    // when the client could not end the session.
     try {
       await client.signOut();
     } catch {
-      // Nothing to add: the session below is signed out either way.
+      return false;
     }
 
+    version.current += 1;
     setSession({ status: "signed-out" });
+
+    return true;
   }, [client]);
 
   useEffect(() => {

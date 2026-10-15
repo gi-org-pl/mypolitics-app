@@ -56,8 +56,13 @@ export type CompleteSignUpOutcome =
   | { kind: "failed" };
 
 export interface SignInOptions {
-  // Where a sign-in that has to leave the page for the provider comes back.
+  // Where a sign-in that has to leave the page for the provider comes back:
+  // the sign-in page, which resumes it.
   returnTo?: string;
+  // Aborting closes the provider window, settles the sign-in as a closed
+  // window, and undoes whatever the sign-in started, so that closing the
+  // dialog never leaves anyone signed in or anything pending.
+  signal?: AbortSignal;
 }
 
 // Everything the app asks of whatever keeps the accounts. The screens talk
@@ -72,9 +77,13 @@ export interface AuthClient {
     provider: IdentityProvider,
     options?: SignInOptions,
   ) => Promise<SignInOutcome>;
+  // How a sign-in that had to leave the page ended, once the provider has
+  // sent the person back; null when there is none.
+  resumeSignIn: () => Promise<SignInOutcome | null>;
   completeSignUp: (setup: AccountSetup) => Promise<CompleteSignUpOutcome>;
   // Drops a pending sign-up or a pending link.
   cancelPending: () => Promise<void>;
+  // Rejects when the session could not be ended.
   signOut: () => Promise<void>;
 }
 
@@ -83,7 +92,9 @@ export interface AuthSessionValue {
   client: AuthClient;
   // Called by the sign-in screens when a sign-in has finished.
   setSignedIn: (account: AuthAccount) => void;
-  signOut: () => Promise<void>;
+  // True when the session ended. False when the client could not end it:
+  // the person is then still signed in.
+  signOut: () => Promise<boolean>;
   // Asks the client for the session again.
   refresh: () => Promise<void>;
 }

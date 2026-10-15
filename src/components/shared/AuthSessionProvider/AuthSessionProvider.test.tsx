@@ -106,13 +106,17 @@ describe("AuthSessionProvider", () => {
       const value = renderProvider(client);
       await screen.findByText("Ala Nowak");
 
-      await act(() => value().signOut());
+      let hasEnded: boolean | undefined;
+      await act(async () => {
+        hasEnded = await value().signOut();
+      });
 
       expect(client.signOut).toHaveBeenCalledOnce();
+      expect(hasEnded).toBe(true);
       expect(screen.getByText("signed-out")).toBeInTheDocument();
     });
 
-    it("is signed out even when the client cannot end the session", async () => {
+    it("stays signed in when the client cannot end the session", async () => {
       const client = createFakeAuthClient({
         getSession: vi.fn().mockResolvedValue(createAuthAccount()),
         signOut: vi.fn().mockRejectedValue(new Error("offline")),
@@ -120,9 +124,13 @@ describe("AuthSessionProvider", () => {
       const value = renderProvider(client);
       await screen.findByText("Ala Nowak");
 
-      await act(() => value().signOut());
+      let hasEnded: boolean | undefined;
+      await act(async () => {
+        hasEnded = await value().signOut();
+      });
 
-      expect(screen.getByText("signed-out")).toBeInTheDocument();
+      expect(hasEnded).toBe(false);
+      expect(screen.getByText("Ala Nowak")).toBeInTheDocument();
     });
   });
 

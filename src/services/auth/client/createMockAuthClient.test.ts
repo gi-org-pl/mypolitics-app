@@ -201,6 +201,37 @@ describe("createMockAuthClient()", () => {
     });
   });
 
+  describe("given a sign-in is aborted", () => {
+    it("settles as a closed window and leaves nothing pending", async () => {
+      const client = createClient({ delayMs: 1000 });
+      const controller = new AbortController();
+      const outcome = client.signIn("google", { signal: controller.signal });
+
+      controller.abort();
+
+      expect(await outcome).toEqual({
+        kind: "window-closed",
+        provider: "google",
+      });
+      expect(await client.completeSignUp(SETUP)).toEqual({ kind: "expired" });
+    });
+
+    it("settles at once when the signal was aborted before", async () => {
+      const controller = new AbortController();
+      controller.abort();
+
+      expect(
+        await createClient().signIn("x", { signal: controller.signal }),
+      ).toEqual({ kind: "window-closed", provider: "x" });
+    });
+  });
+
+  describe("given the stand-in never leaves the page", () => {
+    it("has no sign-in to resume", async () => {
+      expect(await createClient().resumeSignIn()).toBeNull();
+    });
+  });
+
   describe("given a failing behaviour", () => {
     it.each([
       ["window-closed", { kind: "window-closed", provider: "x" }],

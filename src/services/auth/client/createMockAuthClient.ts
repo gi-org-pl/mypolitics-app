@@ -4,6 +4,7 @@ import type {
   AuthAccount,
   AuthClient,
   IdentityProvider,
+  SignInOptions,
   SignInOutcome,
 } from "@/types/auth";
 import type { TextStorage } from "@/types/storage";
@@ -89,9 +90,20 @@ const createMemoryStorage = (): TextStorage => {
   };
 };
 
-const wait = (ms: number) =>
-  new Promise<void>((resolve) => {
-    setTimeout(resolve, ms);
+// Waits, or stops early with false when the signal is aborted.
+const wait = (ms: number, signal?: AbortSignal) =>
+  new Promise<boolean>((resolve) => {
+    if (signal?.aborted) {
+      resolve(false);
+      return;
+    }
+
+    const timer = setTimeout(() => resolve(true), ms);
+
+    signal?.addEventListener("abort", () => {
+      clearTimeout(timer);
+      resolve(false);
+    });
   });
 
 const toAccount = (
@@ -139,8 +151,14 @@ export const createMockAuthClient = ({
     return { kind: "signed-in", account: toAccount(account, provider) };
   };
 
-  const signIn = async (provider: IdentityProvider): Promise<SignInOutcome> => {
-    await wait(delayMs);
+  const signIn = async (
+    provider: IdentityProvider,
+    options: SignInOptions = {},
+  ): Promise<SignInOutcome> => {
+    // An aborted sign-in is a closed window that changed nothing.
+    if (!(await wait(delayMs, options.signal))) {
+      return { kind: "window-closed", provider };
+    }
 
     const behaviour = outcomes[provider] ?? "auto";
 
@@ -223,6 +241,7 @@ export const createMockAuthClient = ({
         : null;
     },
     signIn,
+    resumeSignIn: async () => null, // the stand-in never leaves the page
     completeSignUp: async (setup) => {
       await wait(delayMs);
 

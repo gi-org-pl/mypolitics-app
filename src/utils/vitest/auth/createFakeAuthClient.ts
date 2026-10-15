@@ -9,6 +9,7 @@ export const createFakeAuthClient = (
 ): AuthClient => ({
   getSession: vi.fn<AuthClient["getSession"]>().mockResolvedValue(null),
   signIn: vi.fn<AuthClient["signIn"]>().mockResolvedValue({ kind: "failed" }),
+  resumeSignIn: vi.fn<AuthClient["resumeSignIn"]>().mockResolvedValue(null),
   completeSignUp: vi
     .fn<AuthClient["completeSignUp"]>()
     .mockResolvedValue({ kind: "failed" }),
