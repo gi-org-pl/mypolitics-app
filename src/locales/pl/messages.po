@@ -725,7 +725,7 @@ msgid "Nie udało się wczytać quizu"
 msgstr "Nie udało się wczytać quizu"
 
 #: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:95
-#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:51
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:54
 msgid "Nie udało się wylogować. Spróbuj jeszcze raz."
 msgstr "Nie udało się wylogować. Spróbuj jeszcze raz."
 
@@ -1387,7 +1387,7 @@ msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
 
 #: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:88
-#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:44
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:47
 msgid "Wyloguj się"
 msgstr "Wyloguj się"
 
