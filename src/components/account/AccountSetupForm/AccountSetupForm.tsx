@@ -61,7 +61,7 @@ export const AccountSetupForm = ({
       headingId={headingId}
       descriptionId={descriptionId}
       onClose={onClose}
-      isCloseDisabled={isCloseDisabled}
+      isCloseDisabled={isCloseDisabled || isSaving}
     >
       <form noValidate className="flex flex-col gap-4" onSubmit={form.submit}>
         <div className="flex flex-col gap-1.5">
