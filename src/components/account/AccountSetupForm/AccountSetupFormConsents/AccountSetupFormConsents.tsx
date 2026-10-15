@@ -6,10 +6,9 @@ import {
   CONSENT_CLASS_NAME,
 } from "@/constants/form";
 
-import {
-  LINK_CLASS_NAME,
-  MESSAGE_CLASS_NAME,
-} from "../AccountSetupForm.constants";
+import { TEXT_LINK_CLASS_NAME } from "@/constants/link";
+
+import { MESSAGE_CLASS_NAME } from "./AccountSetupFormConsents.constants";
 import type { AccountSetupFormConsentsProps } from "./AccountSetupFormConsents.types";
 
 // The two declarations of the step, drawn like the consent of the e-mail
@@ -70,7 +69,7 @@ export const AccountSetupFormConsents = ({
               href={termsHref}
               target="_blank"
               rel="noopener noreferrer"
-              className={LINK_CLASS_NAME}
+              className={TEXT_LINK_CLASS_NAME}
             >
               Regulamin
             </a>{" "}
@@ -79,7 +78,7 @@ export const AccountSetupFormConsents = ({
               href={privacyHref}
               target="_blank"
               rel="noopener noreferrer"
-              className={LINK_CLASS_NAME}
+              className={TEXT_LINK_CLASS_NAME}
             >
               Politykę prywatności
             </a>

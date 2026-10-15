@@ -190,7 +190,7 @@ msgstr "<0>Quiz dla wytrwałych.</0> Ponad 600 pytań, które prześwietlą Twoj
 msgid "<0>Quiz edukacyjny o tożsamości.</0> Poznaj czynniki, które według badań kształtują orientację."
 msgstr "<0>Quiz edukacyjny o tożsamości.</0> Poznaj czynniki, które według badań kształtują orientację."
 
-#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:68
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:67
 msgid "<0>Regulamin</0> i <1>Politykę prywatności</1>."
 msgstr "<0>Regulamin</0> i <1>Politykę prywatności</1>."
 
@@ -258,7 +258,7 @@ msgstr "Adres {email} należy do konta założonego przez {ownerName}. Zaloguj s
 msgid "Adres e-mail"
 msgstr "Adres e-mail"
 
-#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:59
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:58
 msgid "Akceptuję"
 msgstr "Akceptuję"
 
@@ -266,7 +266,7 @@ msgstr "Akceptuję"
 msgid "Algorytm jest jawny"
 msgstr "Algorytm jest jawny"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:176
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:130
 msgid "Anuluj"
 msgstr "Anuluj"
 
@@ -350,15 +350,15 @@ msgstr "Dalej"
 msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:74
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:21
 msgid "Dbamy o Twoją prywatność. Dane z konta Google (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "Dbamy o Twoją prywatność. Dane z konta Google (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:71
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:22
 msgid "Dbamy o Twoją prywatność. Dane z konta na Facebooku (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "Dbamy o Twoją prywatność. Dane z konta na Facebooku (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:73
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:23
 msgid "Dbamy o Twoją prywatność. Dane z konta X (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "Dbamy o Twoją prywatność. Dane z konta X (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 
@@ -430,7 +430,7 @@ msgstr "Generacja Innowacja"
 msgid "Google"
 msgstr "Google"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:167
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:121
 msgid "Gotowe"
 msgstr "Gotowe"
 
@@ -545,7 +545,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
 msgstr "Komplet!"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:65
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:16
 msgid "Konto mogą założyć osoby, które mają ukończone 16 lat."
 msgstr "Konto mogą założyć osoby, które mają ukończone 16 lat."
 
@@ -600,7 +600,7 @@ msgctxt "checkpoint-axis-puzzle-ask"
 msgid "Mała zagadka"
 msgstr "Mała zagadka"
 
-#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:40
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:39
 msgid "Mam ukończone 16 lat."
 msgstr "Mam ukończone 16 lat."
 
@@ -689,11 +689,11 @@ msgstr "Nawigacja główna"
 msgid "Nawigacja w stopce"
 msgstr "Nawigacja w stopce"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:111
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:68
 msgid "Nazwa"
 msgstr "Nazwa"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:64
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:15
 msgid "Nazwa musi mieć co najmniej 2 znaki."
 msgstr "Nazwa musi mieć co najmniej 2 znaki."
 
@@ -728,7 +728,7 @@ msgstr "Nie udało się zalogować przez {inflectedName}. Spróbuj za chwilę al
 msgid "Nie udało się zalogować. Spróbuj jeszcze raz."
 msgstr "Nie udało się zalogować. Spróbuj jeszcze raz."
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:155
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:109
 msgid "Nie udało się zapisać konta. Spróbuj jeszcze raz."
 msgstr "Nie udało się zapisać konta. Spróbuj jeszcze raz."
 
@@ -939,7 +939,7 @@ msgstr "Poznaj co wpływa na Twoją orientację"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Pozostałe pytania w kategorii: {count}"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:100
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:57
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Prawie gotowe"
@@ -1115,7 +1115,7 @@ msgstr "Szala się przechyla"
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Szukamy Twojej ćwiartki"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:101
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
 msgid "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 msgstr "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
 
@@ -1308,7 +1308,7 @@ msgstr "Wieś"
 msgid "Wolę nie podawać"
 msgstr "Wolę nie podawać"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:63
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:14
 msgid "Wpisz nazwę, którą podpiszemy Twoje quizy."
 msgstr "Wpisz nazwę, którą podpiszemy Twoje quizy."
 
@@ -1436,7 +1436,7 @@ msgstr "Zapisz swoje wyniki!"
 msgid "Zasadnicze zawodowe"
 msgstr "Zasadnicze zawodowe"
 
-#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:66
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:17
 msgid "Żeby założyć konto, zaakceptuj Regulamin i Politykę prywatności."
 msgstr "Żeby założyć konto, zaakceptuj Regulamin i Politykę prywatności."
 

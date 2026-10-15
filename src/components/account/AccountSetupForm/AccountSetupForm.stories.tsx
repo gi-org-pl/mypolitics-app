@@ -4,7 +4,8 @@ import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import { AccountSetupForm } from "./AccountSetupForm";
 
-// The step as the sign-in page shows it, after a first sign-in with Google.
+// The step after a first sign-in with Google. It fills its parent; check it
+// by resizing the viewport.
 // The stories follow the frames "First run" of the Figma page "Logowanie i
 // rejestracja - v2"; the states with messages, saving and a failed save are
 // not drawn there.
@@ -12,16 +13,8 @@ const meta = {
   title: "Account/AccountSetupForm",
   component: AccountSetupForm,
   parameters: {
-    layout: "fullscreen",
     viewport: { options: INITIAL_VIEWPORTS },
   },
-  decorators: [
-    (Story) => (
-      <div className="mx-auto w-full max-w-120 px-4 py-8 md:px-0">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     provider: "google",
     suggestedName: "Ala Nowak",
