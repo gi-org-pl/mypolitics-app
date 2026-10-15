@@ -13,10 +13,12 @@ import { toJsonStorage } from "@/utils/storage/toJsonStorage";
 
 // A stand-in for the accounts API, which does not exist yet. It behaves as
 // the sign-in spec says the API will - a pending sign-up that becomes an
-// account only when completed, no merging on the address, a pending link -
-// but it contacts no provider and no server. Its accounts and its session
-// live in the tab's storage, so a refresh keeps the person signed in for the
-// tab. It is for development builds, stories and tests only.
+// account only when completed, no merging on the address, a pending link
+// bound to the account the address belongs to, every pending operation named
+// by its own identifier - but it contacts no provider and no server. Its
+// accounts and its session live in the tab's storage, so a refresh keeps the
+// person signed in for the tab. It is for development builds, stories and
+// tests only.
 
 export type MockSignInBehaviour =
   | "auto" // signed in when the provider has an account, otherwise a new account
@@ -61,26 +63,40 @@ const stateSchema = z.object({
   session: z
     .object({ accountId: z.string(), provider: providerSchema })
     .optional(),
-  pendingSignUp: z
-    .object({
-      provider: providerSchema,
-      suggestedName: z.string().optional(),
-      email: z.string().optional(),
-    })
-    .optional(),
-  pendingLink: z
-    .object({
-      provider: providerSchema,
-      ownerProvider: providerSchema,
-      accountId: z.string(),
-    })
-    .optional(),
+  pendingSignUps: z
+    .record(
+      z.string(),
+      z.object({
+        provider: providerSchema,
+        suggestedName: z.string().optional(),
+        email: z.string().optional(),
+      }),
+    )
+    .default({}),
+  pendingLinks: z
+    .record(
+      z.string(),
+      z.object({
+        provider: providerSchema,
+        ownerProvider: providerSchema,
+        accountId: z.string(),
+      }),
+    )
+    .default({}),
+  // Completed sign-ups, so a repeated completion answers with its account.
+  completed: z
+    .record(
+      z.string(),
+      z.object({ accountId: z.string(), provider: providerSchema }),
+    )
+    .default({}),
+  nextId: z.number().default(1),
 });
 
 type MockState = z.infer<typeof stateSchema>;
 type MockAccount = MockState["accounts"][number];
 
-const EMPTY_STATE: MockState = { accounts: [] };
+const createEmptyState = (): MockState => stateSchema.parse({ accounts: [] });
 
 const createMemoryStorage = (): TextStorage => {
   const items = new Map<string, string>();
@@ -141,6 +157,9 @@ const toAccount = (
   provider,
 });
 
+const without = <Value>(record: Record<string, Value>, key: string) =>
+  Object.fromEntries(Object.entries(record).filter(([id]) => id !== key));
+
 export const createMockAuthClient = ({
   storage = getSafeSessionStorage() ?? createMemoryStorage(),
   delayMs = DEFAULT_DELAY_MS,
@@ -152,7 +171,7 @@ export const createMockAuthClient = ({
   const read = (): MockState => {
     const parsed = stateSchema.safeParse(store.getItem(MOCK_AUTH_STORAGE_KEY));
 
-    return parsed.success ? parsed.data : EMPTY_STATE;
+    return parsed.success ? parsed.data : createEmptyState();
   };
 
   const write = (state: MockState) =>
@@ -161,19 +180,45 @@ export const createMockAuthClient = ({
   const findAccount = (state: MockState, provider: IdentityProvider) =>
     state.accounts.find((account) => account.providers.includes(provider));
 
-  const startSession = (
+  const signedIn = (
     state: MockState,
     account: MockAccount,
     provider: IdentityProvider,
-  ): SignInOutcome => {
-    write({
-      ...state,
-      session: { accountId: account.id, provider },
-      pendingSignUp: undefined,
-      pendingLink: undefined,
-    });
+  ): Extract<SignInOutcome, { kind: "signed-in" }> => {
+    write({ ...state, session: { accountId: account.id, provider } });
 
     return { kind: "signed-in", account: toAccount(account, provider) };
+  };
+
+  // The owner's sign-in after account-exists: it links the waiting provider
+  // to the very account the address belongs to, or does nothing at all.
+  const signInToLink = (
+    state: MockState,
+    provider: IdentityProvider,
+    pendingId: string,
+  ): SignInOutcome => {
+    const link = state.pendingLinks[pendingId];
+    const linked = findAccount(state, provider);
+    const pendingLinks = without(state.pendingLinks, pendingId);
+
+    if (
+      !link ||
+      link.ownerProvider !== provider ||
+      linked?.id !== link.accountId
+    ) {
+      write({ ...state, pendingLinks });
+
+      return { kind: "link-failed" };
+    }
+
+    const account = linked.providers.includes(link.provider)
+      ? linked
+      : { ...linked, providers: [...linked.providers, link.provider] };
+    const accounts = state.accounts.map((item) =>
+      item.id === account.id ? account : item,
+    );
+
+    return signedIn({ ...state, accounts, pendingLinks }, account, provider);
   };
 
   const signIn = async (
@@ -193,40 +238,14 @@ export const createMockAuthClient = ({
     }
 
     const state = read();
+
+    if (options.link) return signInToLink(state, provider, options.link);
+
     const linked = findAccount(state, provider);
-    const link = state.pendingLink;
+    if (linked) return signedIn(state, linked, provider);
 
-    // A sign-in meant to link links the waiting provider to the very account
-    // the address belongs to, or does nothing at all.
-    if (
-      options.link &&
-      (!link ||
-        link.ownerProvider !== provider ||
-        linked?.id !== link.accountId)
-    ) {
-      write({ ...state, pendingLink: undefined });
-
-      return { kind: "link-failed" };
-    }
-
-    if (linked) {
-      const account =
-        options.link && link && !linked.providers.includes(link.provider)
-          ? { ...linked, providers: [...linked.providers, link.provider] }
-          : linked;
-
-      return startSession(
-        {
-          ...state,
-          accounts: state.accounts.map((item) =>
-            item.id === account.id ? account : item,
-          ),
-        },
-        account,
-        provider,
-      );
-    }
-
+    const id = `pending-${state.nextId}`;
+    const nextId = state.nextId + 1;
     const profile = MOCK_PROFILES[provider];
 
     if (typeof behaviour === "object") {
@@ -245,15 +264,20 @@ export const createMockAuthClient = ({
       write({
         ...state,
         accounts,
-        pendingSignUp: undefined,
-        pendingLink: {
-          provider,
-          ownerProvider: owner,
-          accountId: ownerAccount.id,
+        nextId,
+        pendingLinks: {
+          ...state.pendingLinks,
+          [id]: { provider, ownerProvider: owner, accountId: ownerAccount.id },
         },
       });
 
-      return { kind: "account-exists", provider, ownerProvider: owner, email };
+      return {
+        kind: "account-exists",
+        pendingId: id,
+        provider,
+        ownerProvider: owner,
+        email,
+      };
     }
 
     const signUp = {
@@ -262,9 +286,13 @@ export const createMockAuthClient = ({
       email: profile.email,
     };
 
-    write({ ...state, pendingSignUp: signUp, pendingLink: undefined });
+    write({
+      ...state,
+      nextId,
+      pendingSignUps: { ...state.pendingSignUps, [id]: signUp },
+    });
 
-    return { kind: "new-account", signUp };
+    return { kind: "new-account", signUp: { id, ...signUp } };
   };
 
   return {
@@ -280,24 +308,40 @@ export const createMockAuthClient = ({
     },
     signIn,
     resumeSignIn: async () => null, // the stand-in never leaves the page
-    completeSignUp: async (setup) => {
+    completeSignUp: async (pendingId, setup) => {
       await wait(delayMs);
 
       const state = read();
-      const pending = state.pendingSignUp;
+      const done = state.completed[pendingId];
+      const doneAccount = state.accounts.find(
+        (item) => item.id === done?.accountId,
+      );
+
+      if (done && doneAccount) {
+        return signedIn(state, doneAccount, done.provider);
+      }
+
+      const pending = state.pendingSignUps[pendingId];
 
       if (!pending) return { kind: "expired" };
       if (failCompleteSignUp) return { kind: "failed" };
 
       const account: MockAccount = {
-        id: `mock-${pending.provider}`,
+        id: `mock-account-${state.nextId}`,
         displayName: setup.displayName,
         email: pending.email,
         providers: [pending.provider],
       };
 
       write({
+        ...state,
         accounts: [...state.accounts, account],
+        nextId: state.nextId + 1,
+        pendingSignUps: without(state.pendingSignUps, pendingId),
+        completed: {
+          ...state.completed,
+          [pendingId]: { accountId: account.id, provider: pending.provider },
+        },
         session: { accountId: account.id, provider: pending.provider },
       });
 
@@ -306,8 +350,14 @@ export const createMockAuthClient = ({
         account: toAccount(account, pending.provider),
       };
     },
-    cancelPending: async () => {
-      write({ ...read(), pendingSignUp: undefined, pendingLink: undefined });
+    cancelPending: async (pendingId) => {
+      const state = read();
+
+      write({
+        ...state,
+        pendingSignUps: without(state.pendingSignUps, pendingId),
+        pendingLinks: without(state.pendingLinks, pendingId),
+      });
     },
     signOut: async () => {
       write({ ...read(), session: undefined });

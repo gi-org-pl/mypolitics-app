@@ -1420,7 +1420,7 @@ msgstr "Sign in with {ownerName}"
 msgid "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgstr "Instead of politics, let's argue about music!"
 
-#: src/components/account/AuthCard/AuthCard.tsx:48
+#: src/components/account/AuthCard/AuthCard.tsx:51
 msgid "Zamknij"
 msgstr "Close"
 
