@@ -12,10 +12,10 @@ const openCreateDialog = async (page: Page) => {
   await openPage(page, "/");
   await page.getByRole("main").getByRole("button", { name: CREATE }).click();
 
-  const dialog = page.getByRole("dialog", { name: DIALOG });
-  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("dialog", { name: DIALOG })).toBeVisible();
 
-  return dialog;
+  // The dialog is named by its heading, which changes with the step.
+  return page.getByRole("dialog");
 };
 
 test.describe("Feature: Asking for an account before creating a quiz", () => {
