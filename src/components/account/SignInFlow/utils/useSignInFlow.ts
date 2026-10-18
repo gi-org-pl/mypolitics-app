@@ -160,11 +160,13 @@ export const useSignInFlow = ({
     isMounted.current = true;
 
     // While the flow asks how a sign-in that left the page ended, it shows
-    // nothing, so no other sign-in can start.
+    // nothing, so no other sign-in can start. A resumed failure is checked
+    // against the session like any other.
     if (resume) {
       void client
         .resumeSignIn()
         .catch(() => null)
+        .then((outcome) => (outcome ? reconcile(outcome) : null))
         .then((outcome) => {
           if (outcome) finish(outcome);
           else show({ step: "choose" });

@@ -1,11 +1,8 @@
 import { useState } from "react";
-
+import { DISPLAY_NAME_MIN_LENGTH } from "@/constants/auth";
 import type { AccountSetup } from "@/types/auth";
-import {
-  DISPLAY_NAME_MIN_LENGTH,
-  toDisplayName,
-  toTypedName,
-} from "@/utils/auth/toDisplayName";
+import { toDisplayName } from "@/utils/auth/toDisplayName";
+import { toTypedName } from "@/utils/auth/toTypedName";
 
 import type { AccountSetupIssue } from "../AccountSetupForm.types";
 
