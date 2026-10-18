@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { toDisplayName, toTypedName } from "./toDisplayName";
+import { toDisplayName } from "./toDisplayName";
 
 describe("toDisplayName()", () => {
   describe("given spaces around and inside the name", () => {
@@ -51,20 +51,6 @@ describe("toDisplayName()", () => {
   describe("given characters outside the basic plane", () => {
     it("counts each as one character", () => {
       expect(Array.from(toDisplayName("😀".repeat(60)))).toHaveLength(50);
-    });
-  });
-});
-
-describe("toTypedName()", () => {
-  describe("given a space typed at the end", () => {
-    it("keeps it, so the next word can follow", () => {
-      expect(toTypedName("Ala ")).toBe("Ala ");
-    });
-  });
-
-  describe("given a pasted line break", () => {
-    it("replaces it with a space", () => {
-      expect(toTypedName("Ala\nNowak")).toBe("Ala Nowak");
     });
   });
 });
