@@ -54,6 +54,19 @@ describe("useAccountSetup()", () => {
     });
   });
 
+  describe("given a name made only of zero-width spaces", () => {
+    it("says the name is missing", () => {
+      const { result } = renderHook(() => useAccountSetup("​​"));
+
+      let outcome: ReturnType<typeof result.current.submit> | undefined;
+      act(() => {
+        outcome = result.current.submit();
+      });
+
+      expect(outcome).toContain("name-missing");
+    });
+  });
+
   describe("given everything is filled in", () => {
     it("answers the cleaned setup", () => {
       const { result } = renderHook(() => useAccountSetup());

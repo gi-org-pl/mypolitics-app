@@ -15,6 +15,33 @@ describe("toDisplayName()", () => {
     });
   });
 
+  describe("given only invisible format characters", () => {
+    it("comes out empty", () => {
+      expect(toDisplayName("​​")).toBe("");
+      expect(toDisplayName(" ‎⁠﻿ ")).toBe("");
+    });
+  });
+
+  describe("given invisible format characters at the ends of the name", () => {
+    it("removes them, so they do not count as characters", () => {
+      expect(toDisplayName("​A​")).toBe("A");
+    });
+  });
+
+  describe("given invisible format characters around a space", () => {
+    it("keeps one space", () => {
+      expect(toDisplayName("Ala ​ Nowak")).toBe("Ala Nowak");
+    });
+  });
+
+  describe("given an emoji sequence held together by a zero-width joiner", () => {
+    it("keeps the sequence whole", () => {
+      expect(toDisplayName("Ala \u{1F469}‍\u{1F4BB}")).toBe(
+        "Ala \u{1F469}‍\u{1F4BB}",
+      );
+    });
+  });
+
   describe("given more than 50 characters", () => {
     it("keeps the first 50", () => {
       expect(toDisplayName("a".repeat(60))).toHaveLength(50);
