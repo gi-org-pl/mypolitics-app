@@ -1,4 +1,5 @@
 import { act, fireEvent, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
 import type { AuthAccount } from "@/types/auth";
@@ -13,7 +14,9 @@ const renderMenu = (
   signOut = vi.fn().mockResolvedValue(true),
 ) => {
   renderWithSession(
-    <HeaderAccountMenu account={account} />,
+    <MemoryRouter>
+      <HeaderAccountMenu account={account} />
+    </MemoryRouter>,
     createSessionValue({ signOut }),
   );
 
