@@ -9,10 +9,8 @@ import type {
 } from "@/types/auth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
 import { createFakeAuthClient } from "@/utils/vitest/auth/createFakeAuthClient";
-import {
-  createSessionValue,
-  SessionWrapper,
-} from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
+import { SessionWrapper } from "@/utils/vitest/auth/SessionWrapper";
 
 import { useSignInFlow } from "./useSignInFlow";
 
