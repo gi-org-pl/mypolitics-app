@@ -7,10 +7,8 @@ import type {
   SignInOutcome,
 } from "@/types/auth";
 import { createFakeAuthClient } from "@/utils/vitest/auth/createFakeAuthClient";
-import {
-  createSessionValue,
-  renderWithSession,
-} from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
+import { renderWithSession } from "@/utils/vitest/auth/renderWithSession";
 import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 
 import { AuthDialog } from "./AuthDialog";
