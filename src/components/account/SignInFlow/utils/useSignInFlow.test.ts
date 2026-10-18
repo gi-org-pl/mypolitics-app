@@ -414,6 +414,33 @@ describe("useSignInFlow()", () => {
       await waitFor(() => expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT));
     });
 
+    it("finishes when it failed but the session was started", async () => {
+      const client = createFakeAuthClient({
+        resumeSignIn: vi.fn().mockResolvedValue({ kind: "failed" }),
+        getSession: vi.fn().mockResolvedValue(ACCOUNT),
+      });
+      const { onSignedIn, value } = renderFlow(client, { resume: true });
+
+      await waitFor(() => expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT));
+      expect(value.setSignedIn).toHaveBeenCalledWith(ACCOUNT);
+    });
+
+    it("shows the failed error when it failed and no session was started", async () => {
+      const client = createFakeAuthClient({
+        resumeSignIn: vi.fn().mockResolvedValue({ kind: "failed" }),
+        getSession: vi.fn().mockResolvedValue(null),
+      });
+      const { result, onSignedIn } = renderFlow(client, { resume: true });
+
+      await waitFor(() =>
+        expect(result.current.state).toEqual({
+          step: "choose",
+          error: { kind: "failed" },
+        }),
+      );
+      expect(onSignedIn).not.toHaveBeenCalled();
+    });
+
     it("shows nothing and offers no sign-in until the client answers", async () => {
       const resumed = deferred<SignInOutcome | null>();
       const client = createFakeAuthClient({
