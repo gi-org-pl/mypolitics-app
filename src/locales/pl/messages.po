@@ -982,7 +982,7 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Pudło!"
 msgstr "Pudło!"
 
-#: src/constants/auth.ts:64
+#: src/constants/auth.ts:68
 msgid "Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada."
 msgstr "Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada."
 

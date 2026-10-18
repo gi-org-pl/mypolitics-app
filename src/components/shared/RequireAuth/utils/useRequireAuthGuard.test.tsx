@@ -7,7 +7,7 @@ import type { AuthSession, RequireAuth } from "@/types/auth";
 import { AuthDialogContext } from "@/utils/auth/authDialogContext";
 import { AuthSessionContext } from "@/utils/auth/authSessionContext";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
-import { createSessionValue } from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
 
 import { useRequireAuthGuard } from "./useRequireAuthGuard";
 
