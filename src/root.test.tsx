@@ -131,7 +131,55 @@ describe("root Layout", () => {
     it("titles the document", () => {
       renderRoot();
 
-      expect(document.title).toBe("mypolitics");
+      expect(document.title).toBe("myPolitics");
+    });
+
+    it("links the favicon as an SVG and as an icon file with three sizes", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('link[rel="icon"][type="image/svg+xml"]'),
+      ).toHaveAttribute("href", "/favicon.svg");
+      expect(
+        document.head.querySelector('link[rel="icon"][type="image/x-icon"]'),
+      ).toHaveAttribute("sizes", "16x16 32x32 48x48");
+    });
+
+    it("links the touch icon and the web manifest", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('link[rel="apple-touch-icon"]'),
+      ).toHaveAttribute("href", "/apple-touch-icon.png");
+      expect(
+        document.head.querySelector('link[rel="manifest"]'),
+      ).toHaveAttribute("href", "/site.webmanifest");
+    });
+
+    it("gives link previews the share image by its absolute address and size", () => {
+      renderRoot();
+
+      const content = (selector: string) =>
+        document.head.querySelector(selector)?.getAttribute("content");
+
+      expect(content('meta[property="og:image"]')).toBe(
+        "https://mypolitics.pl/og-image.png",
+      );
+      expect(content('meta[property="og:image:width"]')).toBe("1200");
+      expect(content('meta[property="og:image:height"]')).toBe("630");
+      expect(content('meta[property="og:image:alt"]')).toBe("Logo myPolitics");
+      expect(content('meta[property="og:site_name"]')).toBe("myPolitics");
+    });
+
+    it("asks for the large image card where links are shared on X", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('meta[name="twitter:card"]'),
+      ).toHaveAttribute("content", "summary_large_image");
+      expect(
+        document.head.querySelector('meta[name="twitter:image"]'),
+      ).toHaveAttribute("content", "https://mypolitics.pl/og-image.png");
     });
   });
 
