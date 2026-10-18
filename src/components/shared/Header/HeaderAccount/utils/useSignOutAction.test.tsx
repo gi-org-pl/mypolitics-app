@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { AuthSessionValue } from "@/types/auth";
 import { AuthSessionContext } from "@/utils/auth/authSessionContext";
-import { createSessionValue } from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
 
 import { useSignOutAction } from "./useSignOutAction";
 

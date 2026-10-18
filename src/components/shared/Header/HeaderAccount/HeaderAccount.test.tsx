@@ -4,10 +4,8 @@ import { describe, expect, it } from "vitest";
 
 import type { AuthSession } from "@/types/auth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
-import {
-  createSessionValue,
-  renderWithSession,
-} from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
+import { renderWithSession } from "@/utils/vitest/auth/renderWithSession";
 
 import { HeaderAccount } from "./HeaderAccount";
 import type { HeaderAccountProps } from "./HeaderAccount.types";

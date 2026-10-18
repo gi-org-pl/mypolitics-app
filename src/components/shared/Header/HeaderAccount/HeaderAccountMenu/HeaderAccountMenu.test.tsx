@@ -3,10 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { AuthAccount } from "@/types/auth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
-import {
-  createSessionValue,
-  renderWithSession,
-} from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
+import { renderWithSession } from "@/utils/vitest/auth/renderWithSession";
 
 import { HeaderAccountMenu } from "./HeaderAccountMenu";
 

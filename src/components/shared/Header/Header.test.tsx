@@ -7,10 +7,8 @@ import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
 import type { AuthSession } from "@/types/auth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
-import {
-  createSessionValue,
-  renderWithSession,
-} from "@/utils/vitest/auth/renderWithSession";
+import { createSessionValue } from "@/utils/vitest/auth/createSessionValue";
+import { renderWithSession } from "@/utils/vitest/auth/renderWithSession";
 
 import { Header } from "./Header";
 
