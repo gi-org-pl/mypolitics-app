@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import myPoliticsLogo from "@/assets/vectors/mypolitics.svg";
+import myPoliticsLogo from "@/assets/icons/mypolitics-primary-colour-on-light.svg";
 
 import { PartnersList } from "./PartnersList";
 import type { Partner, PartnerSection } from "./PartnersList.types";
