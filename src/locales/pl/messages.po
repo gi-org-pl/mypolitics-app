@@ -1438,7 +1438,7 @@ msgstr "Zaglądamy do teczek"
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
-#: src/components/shared/Header/HeaderAccount/HeaderAccountSignIn/HeaderAccountSignIn.tsx:41
+#: src/components/shared/Header/HeaderAccount/HeaderAccountSignIn/HeaderAccountSignIn.tsx:43
 msgid "Zaloguj się"
 msgstr "Zaloguj się"
 

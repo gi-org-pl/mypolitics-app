@@ -41,11 +41,11 @@ describe("HeaderAccountSignIn", () => {
   });
 
   describe("given the sign-in page is open", () => {
-    it("is the current page, filled, and links to the page without next", () => {
-      const { link } = renderSignIn("/login?next=%2F");
+    it("is the current page, filled, and links to the page as it is, keeping next", () => {
+      const { link } = renderSignIn("/login?next=%2Fquizzes");
 
       expect(link).toHaveAttribute("aria-current", "page");
-      expect(link).toHaveAttribute("href", "/login");
+      expect(link).toHaveAttribute("href", "/login?next=%2Fquizzes");
       expect(link.className).toContain("bg-gi-light-primary ");
     });
   });

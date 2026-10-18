@@ -13,7 +13,8 @@ import type { HeaderAccountSignInProps } from "./HeaderAccountSignIn.types";
 
 // The sign-in pill: a link to the sign-in page that brings the person back to
 // the page they were on. It is drawn like the navigation pills, filled while
-// the sign-in page is open.
+// the sign-in page is open; there it stays on that page as it is, so the page
+// the person came from is kept.
 export const HeaderAccountSignIn = ({
   className = "",
   onNavigate,
@@ -21,7 +22,7 @@ export const HeaderAccountSignIn = ({
   const { t } = useLingui();
   const { pathname, search, hash } = useLocation();
   const isActive = pathname === PATHS.signIn();
-  const next = isActive ? undefined : `${pathname}${search}${hash}`;
+  const here = `${pathname}${search}${hash}`;
 
   return (
     <Button
@@ -34,7 +35,8 @@ export const HeaderAccountSignIn = ({
       } ${className}`}
     >
       <Link
-        to={PATHS.signIn(next)}
+        to={isActive ? here : PATHS.signIn(here)}
+        replace={isActive}
         aria-current={isActive ? "page" : undefined}
         onClick={onNavigate}
       >

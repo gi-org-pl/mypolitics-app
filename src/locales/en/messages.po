@@ -1438,7 +1438,7 @@ msgstr "Looking into the files"
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
 
-#: src/components/shared/Header/HeaderAccount/HeaderAccountSignIn/HeaderAccountSignIn.tsx:41
+#: src/components/shared/Header/HeaderAccount/HeaderAccountSignIn/HeaderAccountSignIn.tsx:43
 msgid "Zaloguj się"
 msgstr "Sign in"
 
