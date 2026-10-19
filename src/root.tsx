@@ -2,7 +2,13 @@ import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { I18nProvider } from "@lingui/react";
 import type { ReactNode } from "react";
-import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
+import {
+  Links,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useMatches,
+} from "react-router";
 
 import { messages as enMessages } from "../src/locales/en/messages";
 import { messages as plMessages } from "../src/locales/pl/messages";
@@ -72,10 +78,13 @@ export function HydrateFallback() {
 }
 
 export default function App() {
+  // The deepest route that matches is the view on screen.
+  const routeId = useMatches().at(-1)?.id;
+
   return (
     <I18nProvider i18n={i18n}>
       <div className="flex min-h-dvh flex-col">
-        <Header />
+        <Header routeId={routeId} />
         <main className="flex-1">
           <Outlet />
         </main>

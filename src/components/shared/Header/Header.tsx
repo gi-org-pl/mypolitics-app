@@ -1,17 +1,22 @@
 import { Button } from "@gi-org-pl/athena";
 import { t } from "@lingui/core/macro";
 import { Link } from "react-router";
-import logo from "@/assets/icons/mypolitics-primary-colour-on-light.svg";
 import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
+import { useFirstViewVisit } from "@/utils/storage/useFirstViewVisit";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
+import type { HeaderProps } from "./Header.types";
+import { HeaderLogo } from "./HeaderLogo/HeaderLogo";
 import { HeaderNav } from "./HeaderNav/HeaderNav";
 import { useHeaderMenu } from "./utils/useHeaderMenu";
 
-export const Header = () => {
+// The bar on top of every page. Its logo moves on the first visit of each
+// view in the session (see `HeaderLogo`) and rests on the blue logo after.
+export const Header = ({ routeId }: HeaderProps) => {
   const { menuId, isOpen, menuRef, buttonRef, toggle, close } = useHeaderMenu();
+  const isFirstVisit = useFirstViewVisit(routeId);
 
   return (
     <header className="relative w-full border-b border-[#d4e1e4] bg-white">
@@ -21,7 +26,7 @@ export const Header = () => {
           aria-label={t`Strona główna`}
           className={FOCUS_CLASS_NAME}
         >
-          <img src={logo} alt="" className="h-6" />
+          <HeaderLogo playId={isFirstVisit ? routeId : undefined} />
         </Link>
 
         <HeaderNav variant="bar" onNavigate={close} />
