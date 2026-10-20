@@ -190,6 +190,10 @@ yarn lint:fix          # Automatically fix linting and formatting issues
 
 The project is configured with custom linting rules in `biome.json`, including complexity checks, style rules, and correctness validations for TypeScript files.
 
+## Pre-check
+
+Every pull request that is ready for review gets an AI pre-check (`.github/workflows/pre-check.yml`): an isolated reviewer checks the diff against [gi-tech-standards](https://github.com/gi-org-pl/gi-tech-standards) and `AGENTS.md`, comments on real findings, and posts one **Pre-check** comment with the technical decisions of the pull request and what QA should test. The label `pre-check: passed` or `pre-check: changes` and the check `pre-check / review` show the result. The workflow and the reviewer's instructions live in gi-tech-standards, described in its [pre-check process](https://github.com/gi-org-pl/gi-tech-standards/blob/main/docs/process/PRE_CHECK.md). Runs are skipped until the organisation secret `CLAUDE_CODE_OAUTH_TOKEN` is set.
+
 ## Visual testing
 
 This project uses Storybook for visual testing and component development. Storybook provides an isolated environment to develop, test, and document UI components independently.

@@ -566,6 +566,10 @@ assumptions about the frame it was drawn in.
   `yarn test:coverage` and `yarn build` locally and state the results in the PR. E2E is local for
   every PR, stacked or not (§4.6). Look at the PR's checks afterwards and
   never describe a PR as "CI green" when CI did not run on it.
+- Every PR that is ready for review, stacked or not, gets the AI pre-check
+  (`.github/workflows/pre-check.yml`; process in gi-tech-standards `docs/process/PRE_CHECK.md`).
+  It checks the PR against this file as it is on the base branch. Fix its `[blocking]` comments or
+  answer them with the reason (§8.4) before asking a person to review.
 
 ### 8.4 Review feedback
 
