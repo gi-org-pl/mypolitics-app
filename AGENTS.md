@@ -571,7 +571,10 @@ assumptions about the frame it was drawn in.
   `docs/process/PRE_CHECK.md`). It checks the PR against this file as it is on the base branch.
   Fix its `[blocking]` comments or answer them with the reason (§8.4) before asking a person to
   review. PRs from forks and bots get no pre-check (GitHub gives them no secrets); a person reviews
-  them as before.
+  them as before. The pre-check does not open Figma: when the issue links a design, the description
+  must carry screenshots of every changed view compared with the Figma frames (viewport and commit
+  named), or the pre-check reports the comparison as missing - blocking for a visible change with no
+  screenshot at all. Tests are left out of its diff; it judges test coverage by the test file names.
 
 ### 8.4 Review feedback
 
