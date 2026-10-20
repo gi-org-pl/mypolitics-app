@@ -8,7 +8,9 @@ name: pre-check
 # organisation secret CLAUDE_CODE_OAUTH_TOKEN exists, every run is skipped.
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    # edited: the description carries the design comparison the reviewer
+    # checks, so a changed description is reviewed again (see the job's if).
+    types: [opened, synchronize, reopened, ready_for_review, edited]
   # Ends green at once; keeps a required pre-check from blocking a merge queue.
   merge_group:
 
@@ -17,6 +19,9 @@ permissions: {}
 jobs:
   pre-check:
     name: pre-check
+    # Only an edit of the description counts, not of the title or the base.
+    # Skipped here, the run leaves the last pre-check / review result alone.
+    if: github.event.action != 'edited' || github.event.changes.body != null
     permissions:
       contents: read
       pull-requests: write
