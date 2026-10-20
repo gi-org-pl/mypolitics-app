@@ -1,3 +1,5 @@
+![mypolitics-app header](https://raw.githubusercontent.com/gi-org-pl/mypolitics-app/main/.github/image/header.png)
+
 # myPolitics
 
 ## Repository contents
