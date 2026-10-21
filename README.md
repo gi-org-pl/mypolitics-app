@@ -1,3 +1,5 @@
+![mypolitics-app header](https://raw.githubusercontent.com/gi-org-pl/mypolitics-app/main/.github/image/header.png)
+
 # myPolitics
 
 ## Repository contents
@@ -138,6 +140,23 @@ This project uses Vite and React Router for building and serving the application
 
 Build the project with `yarn build` and preview the production build locally with `yarn preview`.
 
+## Dev site
+
+`main` is published to <https://dev.mypolitics.pl> with GitHub Pages by `.github/workflows/deploy-dev.yml`. It is the place to test the app while `mypolitics.pl` still serves the old product. It is not for search engines: the published copy carries a `robots.txt` that disallows everything.
+
+- **When** - on every push to `main`. To publish something else, start the workflow by hand from the Actions tab on `main` and give it a branch, a tag or a commit in the `ref` field: the dev site then shows that code until the next deployment.
+- **What** - the static build of `yarn build`, with a copy of the entry page as `404.html`, so an address the build has no file for (a quiz, a result) opens the app.
+- **Where it points** - the build takes its addresses from repository variables (Settings, Secrets and variables, Actions, Variables): `DEV_API_URL`, `DEV_RESULTS_EMAIL_URL` and `DEV_ANSWER_COUNTS_URL` become `VITE_API_URL`, `VITE_RESULTS_EMAIL_URL` and `VITE_ANSWER_COUNTS_URL`. Unset, each has the default of the [table above](#environment-variables).
+- **One site** - Pages has one site per repository, built for the root of a domain. There is no preview per pull request, and the app does not work under `gi-org-pl.github.io/mypolitics-app/`.
+
+Set up once, outside this repository, by an administrator:
+
+| Where | What |
+| ----- | ---- |
+| Repository settings, Pages | Source: "GitHub Actions". Custom domain: `dev.mypolitics.pl` (a `CNAME` file in the build is ignored for this kind of deployment). "Enforce HTTPS" once the certificate is issued |
+| DNS of `mypolitics.pl` | `dev` as a `CNAME` to `gi-org-pl.github.io`, not proxied |
+| The API | `https://dev.mypolitics.pl` among the origins the API allows. Without it the browser refuses the API's answers and no quiz loads |
+
 ## Testing
 
 This project includes both unit testing and end-to-end testing:
@@ -172,6 +191,10 @@ yarn lint:fix          # Automatically fix linting and formatting issues
 ```
 
 The project is configured with custom linting rules in `biome.json`, including complexity checks, style rules, and correctness validations for TypeScript files.
+
+## Pre-check
+
+Every pull request from a branch of this repository that is ready for review gets an AI pre-check (`.github/workflows/frontend-pre-check.yml`): an isolated reviewer checks the diff against [gi-tech-standards](https://github.com/gi-org-pl/gi-tech-standards) and `AGENTS.md`, comments on real findings, and posts one **Pre-check** comment with the technical decisions of the pull request and what QA should test. One label - `pre-check: clean`, `pre-check: advisory` (only non-blocking findings), `pre-check: changes` or `pre-check: human review` (CI, dependencies, build configuration, changes without a reviewable diff, or a diff too large to review) - and the check `frontend-pre-check / review` show the outcome; the check passes only for "clean" and "advisory", and fails for a pull request that was not pre-checked. The pre-check is advisory: a person still approves, and automation reads the check of the head commit, never the label. The workflow and the reviewer's instructions live in [frontend-workflows](https://github.com/gi-org-pl/frontend-workflows), described in its [pre-check process](https://github.com/gi-org-pl/frontend-workflows/blob/main/docs/pre-check/PROCESS.md). Pull requests from forks and bots get no pre-check, because GitHub gives their runs no secrets: the check fails for them, and a person reviews and merges them. The reviewer does not open Figma: when the issue links a design, the pull request description has to show the changed views next to the Figma frames, and the pre-check checks that this comparison is there.
 
 ## Visual testing
 
