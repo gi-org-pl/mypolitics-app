@@ -566,6 +566,15 @@ assumptions about the frame it was drawn in.
   `yarn test:coverage` and `yarn build` locally and state the results in the PR. E2E is local for
   every PR, stacked or not (§4.6). Look at the PR's checks afterwards and
   never describe a PR as "CI green" when CI did not run on it.
+- Every PR from a branch of this repository that is ready for review, stacked or not, gets the AI
+  pre-check (`.github/workflows/frontend-pre-check.yml`; process in gi-org-pl/frontend-workflows
+  `docs/pre-check/PROCESS.md`). It checks the PR against this file as it is on the base branch.
+  Fix its `[blocking]` comments or answer them with the reason (§8.4) before asking a person to
+  review. PRs from forks and bots get no pre-check (GitHub gives them no secrets): the check fails
+  for them, and a person reviews and merges them. The pre-check does not open Figma: when the issue links a design, the description
+  must carry screenshots of every changed view compared with the Figma frames (viewport and commit
+  named), or the pre-check reports the comparison as missing - blocking for a visible change with no
+  screenshot at all. Tests are left out of its diff; it judges test coverage by the test file names.
 
 ### 8.4 Review feedback
 
