@@ -1,0 +1,91 @@
+name: deploy-dev
+
+# Publishes the app to the dev site, https://dev.mypolitics.pl, with GitHub
+# Pages: on every push to the default branch, and by hand from the Actions tab.
+# What has to be set up outside this file is in the README, under "Dev site".
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag or commit to publish. Empty: the branch the run is started on"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+# One deployment at a time. A run that is publishing is left to finish, and of
+# the runs waiting behind it only the newest is kept.
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build the dev site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # A run started by hand may name what to publish; a push publishes the
+      # commit that was pushed.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --network-concurrency 1
+
+      # The addresses the build takes come from repository variables, so the
+      # dev site can be pointed elsewhere without a commit. A variable that is
+      # not set is empty here, and the app reads an empty one as its default.
+      - name: Build
+        run: yarn build
+        env:
+          VITE_API_URL: ${{ vars.DEV_API_URL }}
+          VITE_RESULTS_EMAIL_URL: ${{ vars.DEV_RESULTS_EMAIL_URL }}
+          VITE_ANSWER_COUNTS_URL: ${{ vars.DEV_ANSWER_COUNTS_URL }}
+
+      # Pages serves files only. A path the build has no file for - a quiz, a
+      # result - is answered with 404.html, so a copy of the entry page there
+      # hands every such address to the app's router. The dev site is not for
+      # search engines; robots.txt goes into the published copy only, never
+      # into the build a production host gets.
+      - name: Prepare the published copy
+        working-directory: build/client
+        run: |
+          test -f index.html
+          cp index.html 404.html
+          printf 'User-agent: *\nDisallow: /\n' > robots.txt
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/client
+
+  # Needs Pages switched on for the repository with "GitHub Actions" as its
+  # source: until then this job fails and says so.
+  deploy:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
