@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -86,9 +86,9 @@ describe("<ResultsPage />", () => {
 
       expect(document.title).toBe("mypolitics");
 
-      await screen.findByRole("heading", { level: 1 });
-
-      expect(document.title).toBe(identityResultQuiz.name);
+      // The title is set by an effect, which React may run a task after the
+      // heading is drawn, so the test waits for the title itself.
+      await waitFor(() => expect(document.title).toBe(identityResultQuiz.name));
     });
   });
 
