@@ -364,3 +364,18 @@ export const LongCategoryNames: Story = {
 export const Empty: Story = {
   args: { entries: [] },
 };
+
+// A ranking with nothing to rank and a line for that: the parties of a taker
+// to whose identity no party is tied.
+export const EmptyWithLabel: Story = {
+  args: { title: "Partie", entries: [], emptyLabel: "Brak najbliższej partii" },
+};
+
+export const EmptyWithLongLabel: Story = {
+  args: {
+    title: "Partie",
+    entries: [],
+    emptyLabel:
+      "Na podstawie Twoich odpowiedzi nie potrafimy określić najbliższej partii.",
+  },
+};

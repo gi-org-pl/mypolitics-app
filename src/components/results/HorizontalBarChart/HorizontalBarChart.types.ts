@@ -21,6 +21,8 @@ export interface HorizontalBarChartProps {
   entries?: RankedEntry[];
   categories?: RankedCategory[];
   visibleRows?: number;
+  // What the card says in place of its rows when it has none to rank.
+  emptyLabel?: string;
   comparison?: HorizontalBarComparison;
   onStatsClick?: () => void;
   onInfoClick?: () => void;

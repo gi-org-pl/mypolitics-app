@@ -8,9 +8,11 @@ const ABSENT_RANK = -1;
 export const getArchetypeRanking = (
   archetypes?: ArchetypeEntry[],
 ): ArchetypeRanking => {
-  if (!Array.isArray(archetypes)) return { leader: null, rest: [] };
+  if (!Array.isArray(archetypes)) {
+    return { leader: null, rest: [], isLeaderScored: false };
+  }
 
-  const [leader = null, ...rest] = archetypes
+  const ranked = archetypes
     .filter(
       (archetype) =>
         typeof archetype === "object" &&
@@ -28,8 +30,12 @@ export const getArchetypeRanking = (
     })
     .sort(
       (first, second) => second.rank - first.rank || first.index - second.index,
-    )
-    .map(({ archetype }) => archetype);
+    );
+  const [leader = null, ...rest] = ranked.map(({ archetype }) => archetype);
 
-  return { leader, rest };
+  return {
+    leader,
+    rest,
+    isLeaderScored: ranked.length > 0 && ranked[0].rank !== ABSENT_RANK,
+  };
 };

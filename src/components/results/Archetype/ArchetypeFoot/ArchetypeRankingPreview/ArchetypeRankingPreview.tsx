@@ -1,14 +1,11 @@
 import { Avatar } from "@gi-org-pl/athena";
 
 import plusIcon from "@/assets/icons/plus.svg";
+import { AVATAR_IMAGE_FIT_CLASS_NAMES } from "@/constants/image";
 import { withKeys } from "@/utils/array/withKeys";
-
-import type { ArchetypeEntry } from "../../Archetype.types";
+import { getImageKind } from "@/utils/url/getImageKind";
+import type { ArchetypeRankingPreviewProps } from "./ArchetypeRankingPreview.types";
 import { usePreviewImages } from "./utils/usePreviewImages";
-
-interface ArchetypeRankingPreviewProps {
-  ranking: ArchetypeEntry[];
-}
 
 const ITEM_CLASS_NAME =
   "size-4 shrink-0 rounded-full border border-gi-dark-ash bg-white";
@@ -32,7 +29,7 @@ export const ArchetypeRankingPreview = ({
           src={item}
           alt=""
           dataTestId="archetype-ranking-preview-image"
-          className={ITEM_CLASS_NAME}
+          className={`${ITEM_CLASS_NAME} ${AVATAR_IMAGE_FIT_CLASS_NAMES[getImageKind(item)]}`}
           onErrorCapture={() => markFailed(item)}
         />
       ))}

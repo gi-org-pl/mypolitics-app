@@ -91,6 +91,54 @@ describe("resolveHorizontalBar()", () => {
     });
   });
 
+  describe("given a record with a text for a selection that leaves nothing", () => {
+    const values = {
+      selection: "linked_to_leader",
+      "label.empty": "Brak najbliższej partii",
+    };
+
+    it("returns no rows and the text when there is no leader", () => {
+      expect(
+        resolve({ orientationIds: PARTY_IDS, values }, moduleQuizContext),
+      ).toEqual({
+        type: "horizontal_bar",
+        entries: [],
+        visibleRows: 3,
+        emptyLabel: "Brak najbliższej partii",
+      });
+    });
+
+    it("returns no rows and the text when the leader links none of the record's orientations", () => {
+      expect(
+        resolve({ orientationIds: ["party-right"], values }),
+      ).toMatchObject({ entries: [], emptyLabel: "Brak najbliższej partii" });
+    });
+
+    it("returns the rows, and the text unused, when the selection leaves some", () => {
+      const resolved = resolve({ orientationIds: PARTY_IDS, values });
+
+      expect(resolved).not.toHaveProperty("emptyLabel");
+      expect(resolved).toMatchObject({
+        entries: [
+          { orientation: { id: "party-green" } },
+          { orientation: { id: "party-left" } },
+        ],
+      });
+    });
+
+    it("returns nothing for a text that is blank", () => {
+      expect(
+        resolve(
+          {
+            orientationIds: PARTY_IDS,
+            values: { selection: "linked_to_leader", "label.empty": "  " },
+          },
+          moduleQuizContext,
+        ),
+      ).toBeUndefined();
+    });
+  });
+
   describe("given a record that groups by category", () => {
     const resolved = resolve({
       orientationIds: ["liberal", "socialist"],

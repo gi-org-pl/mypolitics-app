@@ -1,8 +1,10 @@
 import type { CSSProperties } from "react";
 
+import { IMAGE_FIT_CLASS_NAMES } from "@/constants/image";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { isLightColor } from "@/utils/color/isLightColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { getImageKind } from "@/utils/url/getImageKind";
 import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import { LOOK_CLASS_NAMES } from "./OrientationChip.constants";
@@ -43,7 +45,7 @@ export const OrientationChip = ({
           onError={markFailed}
           src={displayImageUrl}
           alt=""
-          className={`-mx-2.5 size-8 shrink-0 object-cover ${look === "quiet" ? "opacity-20 brightness-0" : ""} ${isLight ? "brightness-0" : ""}`}
+          className={`-mx-2.5 size-8 shrink-0 ${IMAGE_FIT_CLASS_NAMES[getImageKind(displayImageUrl)]} ${look === "quiet" ? "opacity-20 brightness-0" : ""} ${isLight ? "brightness-0" : ""}`}
         />
       )}
       {displayName && (

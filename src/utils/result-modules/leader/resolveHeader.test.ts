@@ -29,6 +29,7 @@ describe("resolveHeader()", () => {
         }),
         confidence: 100,
         linkLabel: "Zobacz stronę",
+        lowMatch: "no_match",
       });
     });
 
@@ -80,13 +81,16 @@ describe("resolveHeader()", () => {
         }),
       ]);
 
-      expect(header).toEqual({ linkLabel: "Zobacz stronę" });
+      expect(header).toEqual({
+        linkLabel: "Zobacz stronę",
+        lowMatch: "no_match",
+      });
       expect(header?.orientation).toBeUndefined();
       expect(header?.confidence).toBeUndefined();
     });
 
     it("returns the same for a record that lists no orientation", () => {
-      expect(resolveWith([toHeader({})])).toEqual({});
+      expect(resolveWith([toHeader({})])).toEqual({ lowMatch: "no_match" });
     });
   });
 
@@ -95,6 +99,61 @@ describe("resolveHeader()", () => {
       expect(
         resolveWith([toHeader({ orientationIds: ["socialist"] })])?.linkLabel,
       ).toBeUndefined();
+    });
+  });
+
+  describe("given a header record that says nothing of a leader below a partial match", () => {
+    it("returns that the header says that nothing matches, and no line for it", () => {
+      const header = resolveWith([toHeader({ orientationIds: ["socialist"] })]);
+
+      expect(header?.lowMatch).toBe("no_match");
+      expect(header?.lowMatchLabel).toBeUndefined();
+    });
+  });
+
+  describe("given a header record set to name a leader below a partial match", () => {
+    it("returns that, and the line the header says under such a leader", () => {
+      expect(
+        resolveWith([
+          toHeader({
+            orientationIds: ["socialist"],
+            values: {
+              lowMatch: "named",
+              "label.lowMatch":
+                "Żadna tożsamość nie jest wystarczająco blisko.",
+            },
+          }),
+        ]),
+      ).toMatchObject({
+        lowMatch: "named",
+        lowMatchLabel: "Żadna tożsamość nie jest wystarczająco blisko.",
+      });
+    });
+
+    it("still returns the orientation with the highest value, whatever that value is", () => {
+      const result = {
+        ...moduleQuizResult,
+        scores: {
+          ...moduleQuizResult.scores,
+          socialist: { points: 1, maximum: 4 },
+        },
+      };
+
+      expect(
+        resolveWith(
+          [
+            toHeader({
+              orientationIds: ["socialist"],
+              values: { lowMatch: "named" },
+            }),
+          ],
+          result,
+        ),
+      ).toMatchObject({
+        orientation: { id: "socialist" },
+        confidence: 25,
+        lowMatch: "named",
+      });
     });
   });
 

@@ -61,11 +61,11 @@ msgstr "{name}: {percent}%"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "{name}: brak wyniku"
 msgstr "{name}: no result"
 
@@ -256,7 +256,7 @@ msgid "Bez pudła"
 msgstr "Right on target"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
-#: src/components/results/ResultsHeader/ResultsHeader.tsx:31
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:34
 msgid "Brak dopasowania"
 msgstr "No match"
 
@@ -275,7 +275,7 @@ msgstr "No questions to show."
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:178
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:182
 msgid "Brak wyniku"
 msgstr "No result"
 
@@ -851,11 +851,11 @@ msgstr "Previous question"
 #~ msgid "Porównanie będzie dostępne wkrótce."
 #~ msgstr "Comparison is coming soon."
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:168
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:172
 msgid "porównanie z {name}"
 msgstr "compared with {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:170
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:174
 msgid "porównanie z {name}: {value}%"
 msgstr "compared with {name}: {value}%"
 

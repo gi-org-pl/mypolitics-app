@@ -249,12 +249,13 @@ describe("<ResultsHeader />", () => {
       );
     });
 
-    it("truncates a long slogan to one line and keeps it complete", () => {
+    it("wraps a long slogan and never cuts it", () => {
       renderHeader({ orientation: withSlogan(LONG_TEXT) });
 
       const text = screen.getByText(LONG_TEXT);
 
-      expect(text).toHaveClass("truncate");
+      expect(text).toHaveClass("wrap-break-word");
+      expect(text).not.toHaveClass("truncate");
       expect(text).toHaveTextContent(LONG_TEXT);
     });
 
@@ -574,6 +575,114 @@ describe("<ResultsHeader />", () => {
       expect(
         screen.getByRole("tab", { name: "Tryb porównania" }),
       ).toHaveAttribute("aria-selected", "true");
+    });
+  });
+});
+
+// The identity quiz of the old site named the closest identity whatever its
+// confidence, under a notice. A header does that when it is set to.
+describe("<ResultsHeader />", () => {
+  const NOTICE =
+    "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).";
+  const getNotice = () =>
+    screen.queryByTestId("results-header-low-match-notice");
+
+  describe("given a header set to name an orientation below a partial match", () => {
+    it("shows the name, the image in the ring and the confidence, in the colour of the band of no match", () => {
+      renderHeader({ confidence: 43.67, lowMatch: "named" });
+
+      expect(
+        screen.getByRole("heading", { level: 1, name: "Liberalizm" }),
+      ).toBeInTheDocument();
+      expect(screen.getByTestId("results-header-confidence")).toHaveTextContent(
+        "44% pewności",
+      );
+      expect(screen.getByTestId("results-header-confidence")).toHaveClass(
+        "text-gi-red",
+      );
+      expect(
+        screen.getByTestId("results-header-image").querySelector("img"),
+      ).toHaveAttribute("src", IMAGE_URL);
+      expect(screen.getByTestId("results-header-ring-arc")).toHaveAttribute(
+        "stroke-dasharray",
+        "43.67 100",
+      );
+      expect(
+        screen.queryByTestId("results-header-question-mark"),
+      ).not.toBeInTheDocument();
+    });
+
+    it("shows the slogan and the link of the orientation", () => {
+      renderHeader({
+        orientation: {
+          ...withSlogan("Wolność przede wszystkim"),
+          websiteUrl: "https://example.org",
+        },
+        confidence: 20,
+        lowMatch: "named",
+        linkLabel: "Program",
+      });
+
+      expect(screen.getByTestId("results-header-slogan")).toHaveTextContent(
+        "Wolność przede wszystkim",
+      );
+      expect(screen.getByRole("link", { name: /Program/ })).toBeVisible();
+    });
+
+    it("shows the line for it under the result, on one line of its own", () => {
+      renderHeader({
+        confidence: 43.67,
+        lowMatch: "named",
+        lowMatchLabel: ` ${NOTICE}\n`,
+      });
+
+      expect(getNotice()).toHaveTextContent(NOTICE);
+      expect(getNotice()?.textContent).toBe(NOTICE);
+    });
+
+    it("shows no line when it has none, or a blank one", () => {
+      renderHeader({ confidence: 43.67, lowMatch: "named" });
+
+      expect(getNotice()).not.toBeInTheDocument();
+    });
+
+    it("shows no line from a partial match up", () => {
+      renderHeader({
+        confidence: 50,
+        lowMatch: "named",
+        lowMatchLabel: NOTICE,
+      });
+
+      expect(getNotice()).not.toBeInTheDocument();
+      expect(screen.getByTestId("results-header-confidence")).toHaveClass(
+        "text-gi-orange",
+      );
+    });
+
+    it("still shows no match without an orientation or a confidence, and no line", () => {
+      renderHeader({
+        orientation: undefined,
+        lowMatch: "named",
+        lowMatchLabel: NOTICE,
+      });
+
+      expectNoMatch();
+      expect(getNotice()).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a header that is not set to name an orientation below a partial match", () => {
+    it("shows no match and no line, whatever line it is given", () => {
+      renderHeader({ confidence: 43.67, lowMatchLabel: NOTICE });
+
+      expectNoMatch();
+      expect(getNotice()).not.toBeInTheDocument();
+    });
+
+    it("shows no match when it is set to say so", () => {
+      renderHeader({ confidence: 43.67, lowMatch: "no_match" });
+
+      expectNoMatch();
     });
   });
 });

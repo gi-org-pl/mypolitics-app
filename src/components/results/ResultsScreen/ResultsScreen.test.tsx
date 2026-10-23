@@ -50,7 +50,7 @@ const QUIZ_NAME = "myPolitics Quiz Tożsamościowy";
 const LEADER = "Zielony postępowiec";
 const RETRY = "Spróbuj ponownie";
 const PARTIES_DESCRIPTION =
-  "W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.";
+  "Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich. W quizie tożsamościowym nie dopasowujemy partii do Twoich wyników według odpowiedzi. Zamiast tego najpierw określamy najbliższą tożsamość, a później to, jak ta tożsamość prawdopodobnie zagłosowałaby w wyborach.";
 
 const PENDING = createResultLoad({ id: RESULT_ID, surveyId: SURVEY_ID });
 const CALCULATED = createResultLoad({
@@ -326,8 +326,8 @@ describe("<ResultsScreen />", () => {
           (region) => region.getAttribute("aria-label"),
         );
 
-      expect(getColumn("start")).toEqual(["Ideologie", "Partie"]);
-      expect(getColumn("end")).toEqual(["Tożsamość", "Lewicowy"]);
+      expect(getColumn("start")).toEqual(["Ideologie"]);
+      expect(getColumn("end")).toEqual(["Tożsamość", "Lewicowy", "Partie"]);
     });
 
     it("shows the name of the quiz, and titles the document with it", async () => {
@@ -345,7 +345,7 @@ describe("<ResultsScreen />", () => {
       expect(document.title).toBe("mypolitics");
     });
 
-    it("offers no statistics, and the info action only for the record with a description", async () => {
+    it("offers no statistics, and the info action only for the records with a description", async () => {
       await renderReady();
 
       expect(
@@ -355,7 +355,7 @@ describe("<ResultsScreen />", () => {
         screen
           .getAllByRole("button", { name: /^Informacje/ })
           .map((button) => button.getAttribute("aria-label")),
-      ).toEqual(["Informacje: Partie"]);
+      ).toEqual(["Informacje: Ideologie", "Informacje: Partie"]);
     });
   });
 
@@ -391,7 +391,7 @@ describe("<ResultsScreen />", () => {
         screen
           .getAllByRole("region")
           .map((region) => region.getAttribute("aria-label")),
-      ).toEqual(["Ideologie", "Partie", "Tożsamość"]);
+      ).toEqual(["Ideologie", "Tożsamość", "Partie"]);
       expect(screen.getByText(QUIZ_NAME)).toBeVisible();
     });
   });

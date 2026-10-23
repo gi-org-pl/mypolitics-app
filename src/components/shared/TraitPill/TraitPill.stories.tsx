@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
-
+import { GLYPHS } from "@/constants/image.fixtures";
 import type { Orientation } from "@/types/orientation";
-
 import { TraitPill } from "./TraitPill";
 
 // A white glyph of 16 px in the middle of a square of 32 px: the shape of a
@@ -88,5 +87,17 @@ export const OtherWithoutAvatar: Story = {
   args: {
     holder: "both",
     otherOrientation: { ...friend, imageUrl: undefined },
+  },
+};
+
+// The icon of a quiz in use: a bare glyph of 18 by 17 px with no margin of
+// its own, drawn whole.
+export const Glyph: Story = {
+  args: {
+    orientation: {
+      ...monarchism,
+      name: "Progresywizm",
+      imageUrl: GLYPHS.progressivism,
+    },
   },
 };

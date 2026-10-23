@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import {
   RING_IMAGE_CLASS_NAME,
   RING_TRACK_CLASS_NAME,
@@ -157,6 +157,54 @@ describe("<ResultsHeaderRing />", () => {
           screen.getByTestId("results-header-ring"),
         ) & Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
+    });
+  });
+});
+
+describe("<ResultsHeaderRing />", () => {
+  describe("given an image that is a glyph", () => {
+    it("draws it whole inside the ring, at its own size", () => {
+      render(
+        <ResultsHeaderRing
+          confidence={60}
+          band="partial"
+          imageUrl={GLYPH_ADDRESS}
+        />,
+      );
+
+      expect(screen.getByTestId("results-header-image")).toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+    });
+  });
+
+  describe("given an image that is a picture", () => {
+    it("lets it cover the inside of the ring", () => {
+      render(
+        <ResultsHeaderRing
+          confidence={60}
+          band="partial"
+          imageUrl={PORTRAIT_ADDRESS}
+        />,
+      );
+
+      expect(screen.getByTestId("results-header-image")).not.toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+    });
+  });
+
+  describe("given a confidence below a partial match", () => {
+    it("draws the ring in the colour of that band", () => {
+      const { container } = render(
+        <ResultsHeaderRing confidence={44} band="none" />,
+      );
+
+      expect(container.firstElementChild).toHaveClass("text-gi-red");
+      expect(screen.getByTestId("results-header-ring-arc")).toHaveAttribute(
+        "stroke-dasharray",
+        "44 100",
+      );
     });
   });
 });

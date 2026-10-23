@@ -7,6 +7,7 @@ import {
   identityResults,
   longCornerNameResults,
   longNamesResults,
+  lowMatchResults,
   noMatchResults,
   oneColumnResults,
 } from "./ResultsScreenContent.fixtures";
@@ -41,6 +42,12 @@ export const LongCornerName: Story = {
 
 export const NoMatch: Story = {
   args: noMatchResults,
+};
+
+// The closest identity at 44 %: the quiz names it all the same, with its
+// notice, and its parties card says that there is no closest party.
+export const LowMatch: Story = {
+  args: lowMatchResults,
 };
 
 export const LongNames: Story = {
