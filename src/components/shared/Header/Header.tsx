@@ -1,8 +1,8 @@
 import { Button } from "@gi-org-pl/athena";
 import { t } from "@lingui/core/macro";
 import { Link } from "react-router";
+import logo from "@/assets/icons/mypolitics-primary-colour-on-light.svg";
 import hamburgerIcon from "@/assets/vectors/hamburger-menu.svg";
-import logo from "@/assets/vectors/mypoliticslogo-light.svg";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { PATHS } from "@/constants/paths";
