@@ -2,10 +2,17 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MemoryRouter } from "react-router";
 import { userEvent, within } from "storybook/test";
 import { PATHS } from "@/constants/paths";
+import {
+  VIEW_VISIT_STORAGE_KEY_PREFIX,
+  VIEW_VISITED,
+} from "@/constants/storage";
 import type { AuthAccount, AuthClient, AuthSession } from "@/types/auth";
 import { AuthSessionContext } from "@/utils/auth/authSessionContext";
 import { Header } from "./Header";
 import type { HeaderStoryProps } from "./Header.types";
+
+const HOME_ROUTE_ID = "routes/_index";
+const HOME_VISIT_KEY = `${VIEW_VISIT_STORAGE_KEY_PREFIX}${HOME_ROUTE_ID}`;
 
 // The session the header reads, without a client behind it: signing out in
 // a story only pretends to.
@@ -13,6 +20,7 @@ const STORY_CLIENT = {} as AuthClient;
 
 const HeaderStory = ({
   initialPath,
+  routeId,
   session = { status: "unknown" },
 }: HeaderStoryProps) => (
   <MemoryRouter initialEntries={[initialPath]}>
@@ -25,7 +33,7 @@ const HeaderStory = ({
         refresh: async () => undefined,
       }}
     >
-      <Header />
+      <Header routeId={routeId} />
     </AuthSessionContext>
   </MemoryRouter>
 );
@@ -141,4 +149,29 @@ export const WithPhoto: Story = {
 export const WithoutEmail: Story = {
   args: { session: signedIn({ email: undefined, provider: "x" }) },
   play: BarSignedInMenuOpen.play,
+};
+
+// The first visit of the home page in the session: the logo plays its
+// animation once and rests on the blue logo.
+export const FirstVisit: Story = {
+  args: {
+    routeId: HOME_ROUTE_ID,
+  },
+  beforeEach: () => {
+    sessionStorage.removeItem(HOME_VISIT_KEY);
+
+    return () => sessionStorage.removeItem(HOME_VISIT_KEY);
+  },
+};
+
+// A later visit of the home page in the same session: the blue logo at once.
+export const AlreadySeen: Story = {
+  args: {
+    routeId: HOME_ROUTE_ID,
+  },
+  beforeEach: () => {
+    sessionStorage.setItem(HOME_VISIT_KEY, VIEW_VISITED);
+
+    return () => sessionStorage.removeItem(HOME_VISIT_KEY);
+  },
 };
