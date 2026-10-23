@@ -2,7 +2,7 @@ import { ARCHETYPE_ORIENTATION_TYPE } from "@/constants/checkpoint";
 import type { RunningScore } from "@/types/checkpoint";
 import type { ResultEntry } from "@/types/results";
 import type { Survey } from "@/types/survey";
-import { getSideValue } from "@/utils/running-state/scores/getSideValue";
+import { toResultEntry } from "@/utils/results/toResultEntry";
 import { getFedOrientationIds } from "./getFedOrientationIds";
 import { toNamedOrientation } from "./toNamedOrientation";
 
@@ -27,9 +27,7 @@ export const getRunningArchetypes = (
           ? toNamedOrientation(quizOrientation)
           : undefined;
 
-      return orientation
-        ? [{ orientation, value: getSideValue(scores, [orientation.id]) }]
-        : [];
+      return orientation ? [toResultEntry(orientation, scores)] : [];
     })
     .sort(
       (first, second) =>
