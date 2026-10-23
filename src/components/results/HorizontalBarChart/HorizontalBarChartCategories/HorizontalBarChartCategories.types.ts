@@ -1,3 +1,5 @@
+import type { RankedComparison } from "@/types/results";
+
 import type { RankedEntry } from "../../RankedRow/RankedRow.types";
 
 export interface CategoryRanking {
@@ -9,4 +11,5 @@ export interface CategoryRanking {
 
 export interface CategoryItem extends CategoryRanking {
   key: string;
+  comparison?: RankedComparison; // the other party over the rows of this category
 }

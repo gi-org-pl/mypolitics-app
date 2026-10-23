@@ -619,6 +619,52 @@ describe("<HorizontalBarChart />", () => {
     });
   });
 
+  describe("given a comparison with values by category", () => {
+    const categories: RankedCategory[] = [
+      { id: "economy", name: "Gospodarka", entries: [entry("Beta", 65)] },
+      {
+        id: "views",
+        name: "Światopogląd",
+        entries: [entry("Beta", 75), entry("Alfa", 10)],
+      },
+      { id: "law", name: "Prawo", entries: [entry("Beta", 30)] },
+    ];
+    const comparison = {
+      orientation: FRIEND,
+      values: { beta: 99 },
+      categoryValues: { economy: { beta: 20 }, views: { beta: 45, alfa: 80 } },
+    };
+
+    it("draws each category with the value of the other party inside it", () => {
+      renderChart({ categories, comparison });
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 65%, porównanie z Ania: 20%" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Beta: 75%, porównanie z Ania: 45%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("draws a category it has no values for with no overlay", () => {
+      renderChart({ categories, comparison });
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 30%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("draws the rows of an opened category with its values", () => {
+      renderChart({ categories, comparison });
+
+      press("Pokaż kategorię: Światopogląd");
+
+      expect(
+        screen.getByRole("img", { name: "Alfa: 10%, porównanie z Ania: 80%" }),
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("given a hidden orientation in a flat list", () => {
     it("does not draw its row and does not count it against the fold", () => {
       renderChart({
