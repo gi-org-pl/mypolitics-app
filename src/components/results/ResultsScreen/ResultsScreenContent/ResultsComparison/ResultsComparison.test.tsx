@@ -36,6 +36,9 @@ const renderComparison = (props: Partial<ResultsComparisonProps> = {}) =>
 const getTab = (name: string) => screen.getByRole("tab", { name });
 const getField = () => screen.getByRole("textbox", { name: FRIEND_FIELD });
 const queryBar = () => screen.queryByRole("region", { name: "Zgodność" });
+const queryQuestions = () => screen.queryByRole("list", { name: "Pytania" });
+const getQuestionRows = () =>
+  within(queryQuestions() as HTMLElement).getAllByRole("button");
 
 const enterId = (text: string) =>
   fireEvent.change(getField(), { target: { value: text } });
@@ -347,17 +350,51 @@ describe("<ResultsComparison />", () => {
         ).toBeEnabled();
       });
 
-      it("shows the results view under the bar, with no switch of views", async () => {
-        const { container } = renderComparison();
+      it("shows two views under the bar, the results first: the switch, and the results view", async () => {
+        renderComparison();
 
         await compareWithFriend();
 
+        expect(
+          screen.getAllByRole("tab").map((tab) => tab.textContent),
+        ).toEqual(["Wyniki", "Pytania"]);
+        expect(getTab("Wyniki")).toHaveAttribute("aria-selected", "true");
         expect(screen.getAllByRole("region")[0]).toBe(queryBar());
         expect(screen.getAllByRole("region")).toHaveLength(
           moduleTaker.resolved.modules.length + 1,
         );
-        expect(screen.queryByRole("tab")).not.toBeInTheDocument();
-        expect(container).not.toHaveTextContent("Pytania");
+        expect(queryQuestions()).not.toBeInTheDocument();
+      });
+
+      it("shows the questions of the quiz with the answers of both, when that view is chosen", async () => {
+        renderComparison();
+
+        await compareWithFriend();
+        fireEvent.click(getTab("Pytania"));
+
+        expect(getTab("Pytania")).toHaveAttribute("aria-selected", "true");
+        expect(
+          within(queryQuestions() as HTMLElement).getAllByRole("listitem"),
+        ).toHaveLength(moduleTaker.survey.questions.length);
+        expect(screen.getAllByRole("region")).toEqual([queryBar()]);
+
+        fireEvent.click(getQuestionRows()[0]);
+
+        expect(screen.getByRole("group", { name: "Znajomy" })).toBeVisible();
+        expect(screen.getByRole("group", { name: "Ty" })).toBeVisible();
+      });
+
+      it("shows the results again when that view is chosen back", async () => {
+        renderComparison();
+
+        await compareWithFriend();
+        fireEvent.click(getTab("Pytania"));
+        fireEvent.click(getTab("Wyniki"));
+
+        expect(queryQuestions()).not.toBeInTheDocument();
+        expect(screen.getAllByRole("region")).toHaveLength(
+          moduleTaker.resolved.modules.length + 1,
+        );
       });
 
       it("draws every module of the taker with the friend laid over it", async () => {
@@ -393,13 +430,28 @@ describe("<ResultsComparison />", () => {
         );
       });
 
-      it("shows the bar alone: no view, and nothing laid over any module", () => {
+      it("shows the questions only, with no choice of view, and no module", () => {
         renderComparison();
 
         pick("Wolny rynek");
 
         expect(screen.getAllByRole("region")).toEqual([queryBar()]);
         expect(screen.queryByRole("tab")).not.toBeInTheDocument();
+        expect(
+          within(queryQuestions() as HTMLElement).getAllByRole("listitem"),
+        ).toHaveLength(moduleTaker.survey.questions.length);
+      });
+
+      it("shows the answers the orientation stands for beside the answer of the taker, when a question is opened", () => {
+        renderComparison();
+
+        pick("Wolny rynek");
+        fireEvent.click(getQuestionRows()[0]);
+
+        expect(
+          screen.getByRole("group", { name: "Wolny rynek" }),
+        ).toBeVisible();
+        expect(screen.getByRole("group", { name: "Ty" })).toBeVisible();
       });
     });
 

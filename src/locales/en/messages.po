@@ -260,9 +260,18 @@ msgstr "Right on target"
 msgid "Brak dopasowania"
 msgstr "No match"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/Side/Answer/Answer.tsx:33
 #: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:12
 msgid "Brak odpowiedzi"
 msgstr "No answer"
+
+#: src/constants/comparison.ts:12
+msgid "Brak porównania"
+msgstr "No comparison"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionList.tsx:28
+msgid "Brak pytań do pokazania."
+msgstr "No questions to show."
 
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
@@ -678,6 +687,10 @@ msgctxt "checkpoint-stats-for"
 msgid "Niewielu Was"
 msgstr "There are few of you"
 
+#: src/constants/comparison.ts:11
+msgid "Niezgodność"
+msgstr "Disagreement"
+
 #: src/constants/checkpoint.ts:266
 msgctxt "checkpoint-nolan-path-partial"
 msgid "Niezła wędrówka"
@@ -905,7 +918,8 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Pudło!"
 msgstr "Missed!"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:15
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionList.tsx:31
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:16
 msgid "Pytania"
 msgstr "Questions"
 
@@ -1054,8 +1068,11 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "Szala się przechyla"
 msgstr "The scales are tipping"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:29
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:30
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/ComparisonQuestions.tsx:43
+msgid "Szukaj"
+msgstr "Search"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:25
 msgid "Szukaj po nazwie"
 msgstr "Search by name"
 
@@ -1204,6 +1221,10 @@ msgstr "So far your answers point to the “{leading}” side."
 msgid "Twoje wyniki"
 msgstr "Your results"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:68
+msgid "Ty"
+msgstr "You"
+
 #: src/constants/checkpoint.ts:371
 msgctxt "checkpoint-stats-against"
 msgid "Tylko {percent}% osób jest przeciw tezie „{thesis}”."
@@ -1218,6 +1239,10 @@ msgstr "Only {percent}% of people are for the thesis “{thesis}”."
 msgctxt "checkpoint-position-puzzle-ask"
 msgid "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
 msgstr "Only one of these options is really close to you. Point to it!"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionFilter/QuestionFilter.tsx:27
+msgid "Tylko niezgodność"
+msgstr "Only disagreements"
 
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
@@ -1249,7 +1274,7 @@ msgstr "Loading the result…"
 msgid "Wczytywanie quizu"
 msgstr "Loading the quiz"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.tsx:36
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.tsx:39
 msgid "Widok porównania"
 msgstr "Comparison view"
 
@@ -1331,7 +1356,7 @@ msgstr "Swap result identifiers with a friend to compare your answers."
 msgid "Wynik nie jest jeszcze gotowy"
 msgstr "The result is not ready yet"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:14
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:15
 msgid "Wyniki"
 msgstr "Results"
 
@@ -1416,6 +1441,7 @@ msgstr "Raising a point of order"
 
 #: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/AgreementBar/AgreementBar.tsx:23
 #: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/AgreementBar/AgreementBar.tsx:28
+#: src/constants/comparison.ts:10
 msgid "Zgodność"
 msgstr "Agreement"
 
