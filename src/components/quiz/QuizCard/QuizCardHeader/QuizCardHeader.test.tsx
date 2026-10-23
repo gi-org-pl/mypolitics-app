@@ -35,7 +35,7 @@ vi.mock("./QuizCardToggle/QuizCardToggle", async (importOriginal) => {
 });
 
 const TITLE = "Polskie Lata 90.";
-const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
+const LOGO_URL = "/assets/mypolitics-primary-colour-on-light.svg";
 const BODY_ID = "quiz-card-body";
 const PLAY_NAME = "Rozpocznij quiz";
 const EXPAND_NAME = "Rozwiń";
