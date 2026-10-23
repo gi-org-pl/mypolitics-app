@@ -562,7 +562,7 @@ msgstr "Counting, not judging"
 #: src/root.tsx:58
 #: src/root.tsx:61
 msgid "Logo myPolitics"
-msgstr ""
+msgstr "myPolitics logo"
 
 #: src/components/account/SignInPanel/SignInPanelError/SignInPanelError.tsx:24
 msgid "Logowanie przerwane"
