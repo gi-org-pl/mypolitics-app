@@ -112,7 +112,7 @@ msgstr "{value}% confidence"
 msgid "{xAxis}: {x}, {yAxis}: {y}"
 msgstr "{xAxis}: {x}, {yAxis}: {y}"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:13
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:15
 msgid "© {currentYear}"
 msgstr "© {currentYear}"
 
@@ -421,7 +421,7 @@ msgstr "Facebook"
 msgid "Filozoficzny"
 msgstr "Philosophical"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:24
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:26
 msgid "Generacja Innowacja"
 msgstr "Generacja Innowacja"
 
@@ -591,6 +591,11 @@ msgstr "Counting, but happy about it"
 msgid "Liczymy, nie oceniamy"
 msgstr "Counting, not judging"
 
+#: src/root.tsx:58
+#: src/root.tsx:61
+msgid "Logo myPolitics"
+msgstr "myPolitics logo"
+
 #: src/components/account/SignInPanel/SignInPanelError/SignInPanelError.tsx:24
 msgid "Logowanie przerwane"
 msgstr "Sign-in interrupted"
@@ -642,7 +647,7 @@ msgstr "We have helped millions of Poles broaden their political awareness throu
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
 msgstr "With this error we open the eyes of the doubters! We say: this is our error, made by us, and it is not our last word!"
 
-#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:16
+#: src/components/shared/Footer/FooterLeft/FooterLeft.tsx:18
 #: src/constants/home.ts:225
 msgid "myPolitics"
 msgstr "myPolitics"
@@ -813,7 +818,7 @@ msgstr "The {inflectedName} window was closed before signing in finished. Please
 msgid "Orientacja seksualna"
 msgstr "Sexual orientation"
 
-#: src/components/shared/Header/Header.tsx:37
+#: src/components/shared/Header/Header.tsx:42
 msgid "Otwórz menu nawigacji"
 msgstr "Open navigation menu"
 
@@ -1106,7 +1111,7 @@ msgid "Statystyki: {name}"
 msgstr "Statistics: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:39
-#: src/components/shared/Header/Header.tsx:21
+#: src/components/shared/Header/Header.tsx:26
 msgid "Strona główna"
 msgstr "Home page"
 
@@ -1432,7 +1437,7 @@ msgstr "Instead of politics, let's argue about music!"
 msgid "Zamknij"
 msgstr "Close"
 
-#: src/components/shared/Header/Header.tsx:37
+#: src/components/shared/Header/Header.tsx:42
 msgid "Zamknij menu nawigacji"
 msgstr "Close navigation menu"
 
