@@ -4,7 +4,13 @@ import { HEADER_NAV_LOOKS } from "./HeaderNav.constants";
 import type { HeaderNavProps } from "./HeaderNav.types";
 import { HeaderNavItem } from "./HeaderNavItem/HeaderNavItem";
 
-export const HeaderNav = ({ variant, onNavigate, id, ref }: HeaderNavProps) => {
+export const HeaderNav = ({
+  variant,
+  onNavigate,
+  id,
+  ref,
+  children,
+}: HeaderNavProps) => {
   const { pathname } = useLocation();
   const { className, entries } = HEADER_NAV_LOOKS[variant];
 
@@ -23,6 +29,7 @@ export const HeaderNav = ({ variant, onNavigate, id, ref }: HeaderNavProps) => {
           onNavigate={onNavigate}
         />
       ))}
+      {children}
     </nav>
   );
 };
