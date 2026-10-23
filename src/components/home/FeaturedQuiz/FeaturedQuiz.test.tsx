@@ -20,7 +20,7 @@ const QUIZ: HomeQuiz = {
   id: "mypolitics",
   name: createMessage("myPolitics"),
   categories: [],
-  logoUrl: "/assets/quiz-logo-mypolitics.svg",
+  logoUrl: "/assets/mypolitics-primary-colour-on-light.svg",
   backgroundUrl: "/assets/quiz-card-mypolitics.png",
   description: createMessage(
     "<0>Najbardziej zaawansowany test poglądów politycznych.</0> Poznaj swoją tożsamość!",
