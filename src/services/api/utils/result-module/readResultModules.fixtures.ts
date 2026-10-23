@@ -45,7 +45,7 @@ export const resultModulesResponse: unknown = [
     axisIds: ["economy"],
     values: [
       { key: "description", value: "Jak blisko ci do każdej ze stron osi." },
-      { key: "marker", value: null },
+      { key: "marker", value: "none" },
     ],
   },
   {

@@ -31,7 +31,7 @@ describe("resolveDoubleAxis()", () => {
 
     it("returns a marker that is switched off as it is", () => {
       expect(
-        resolve({ axisIds: ["economy-axis"], values: { marker: null } })
+        resolve({ axisIds: ["economy-axis"], values: { marker: "none" } })
           ?.marker,
       ).toBe(false);
     });

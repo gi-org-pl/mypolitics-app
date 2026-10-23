@@ -1,20 +1,19 @@
 import type { ResultModuleValueReader } from "@/types/results";
-import { isNumber } from "@/utils/number/isNumber";
 
-// A number is the saved value when it is within the bounds of the definition,
-// and whole where the definition asks for that. Nothing is read as `false`
-// where the definition allows nothing. Anything else, a key that is left out
-// included, is the definition's fallback.
+// A number is the saved value when it is whole and within the bounds of the
+// definition. The word the definition names for "off" is read as the
+// definition says. Anything else, a key that is left out included, is the
+// definition's fallback.
 export const readNumberValue: ResultModuleValueReader<"number"> = (
-  { min, max, whole, nullable, fallback },
+  { min, max, off, fallback },
   value,
 ) => {
-  if (value === null && nullable) return false;
+  if (off && value === off.word) return off.reads;
 
-  return isNumber(value) &&
+  return typeof value === "number" &&
+    Number.isInteger(value) &&
     value >= min &&
-    value <= max &&
-    (!whole || Number.isInteger(value))
+    value <= max
     ? value
     : fallback;
 };

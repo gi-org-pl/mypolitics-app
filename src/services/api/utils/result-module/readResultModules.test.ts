@@ -68,7 +68,7 @@ describe("readResultModules()", () => {
           axisIds: ["economy"],
           values: {
             description: "Jak blisko ci do każdej ze stron osi.",
-            marker: null,
+            marker: "none",
           },
         },
         {
@@ -315,17 +315,17 @@ describe("readResultModules()", () => {
             values: [
               { key: "title", value: "Partie" },
               { key: "selection", value: "linked_to_leader" },
-              { key: "marker", value: null },
+              { key: "marker", value: "none" },
               { key: "visibleRows", value: 5 },
-              { key: "isFolded", value: true },
+              { key: "isFolded", value: 1 },
             ],
           }).values,
         ).toStrictEqual({
           title: "Partie",
           selection: "linked_to_leader",
-          marker: null,
+          marker: "none",
           visibleRows: 5,
-          isFolded: true,
+          isFolded: 1,
         });
       });
 
