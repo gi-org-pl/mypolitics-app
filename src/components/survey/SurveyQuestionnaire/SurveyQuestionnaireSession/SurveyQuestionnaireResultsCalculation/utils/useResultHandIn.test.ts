@@ -13,6 +13,7 @@ import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionSt
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import {
   CREATE_RESULT_TIMEOUT_MS,
   RESULT_READ_INTERVAL_MS,
@@ -27,10 +28,8 @@ vi.mock("@/services/api/client/getResult");
 const createResultMock = vi.mocked(createResult);
 const getResultMock = vi.mocked(getResult);
 
-const toResult = (isCalculated: boolean): SurveyResult => ({
-  id: "result",
-  isCalculated,
-});
+const toResult = (isCalculated: boolean): SurveyResult =>
+  createSurveyResult({ isCalculated });
 
 // A hand-in that the test answers by hand.
 const holdHandIn = () => {

@@ -5,7 +5,7 @@ import {
   surveyResponseSchema,
 } from "@/services/api/schemas/survey";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
-import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
+import { readSurveyResultModules } from "@/services/api/utils/result-module/readSurveyResultModules";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { uniqueBy } from "@/utils/array/uniqueBy";
 import { parseItems } from "@/utils/zod/parseItems";
@@ -17,9 +17,13 @@ import { toSurveyQuestion } from "./toSurveyQuestion";
 
 const OFFICIAL_SURVEY_TYPE = "OFFICIAL";
 
+// `language` is the one the quiz was asked for in. The API has already put
+// its texts into one language; the app's own list of result modules is put
+// into this one.
 export const readSurvey = (
   response: unknown,
   surveyId: string,
+  language: string,
 ): SurveyLoadResult => {
   const { success, data } = surveyResponseSchema.safeParse(response);
 
@@ -73,10 +77,11 @@ export const readSurvey = (
       categories,
       axes,
       questions,
-      resultModules: readResultModules(data.resultModules, {
-        orientationIds,
-        axisIds,
-      }),
+      resultModules: readSurveyResultModules(
+        data.resultModules,
+        { id: surveyId, language },
+        { orientationIds, axisIds },
+      ),
     },
   };
 };

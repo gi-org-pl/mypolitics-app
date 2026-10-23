@@ -18,7 +18,8 @@ export const getSurvey = async (
 
   try {
     // The API refuses a language the quiz is not written in. Asked once more
-    // without one, it sends the quiz in its default language.
+    // without one, it sends the quiz in its default language. What the app
+    // itself holds for the quiz is still read in the language asked for.
     const { data } = await apiClient
       .get<unknown>(url, { ...config, params: { lang: language } })
       .catch((error: unknown) =>
@@ -27,7 +28,7 @@ export const getSurvey = async (
           : Promise.reject(error),
       );
 
-    return readSurvey(data, surveyId);
+    return readSurvey(data, surveyId, language);
   } catch (error) {
     return isNotFound(toApiFailure(error))
       ? { status: SurveyLoadStatus.NotFound }
