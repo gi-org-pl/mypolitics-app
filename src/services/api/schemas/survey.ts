@@ -74,6 +74,7 @@ export const surveyResponseSchema = z.object({
   categories: list,
   axis: list,
   questions: z.array(z.unknown()),
+  resultModules: z.unknown(),
 });
 
 export type CategoryResponse = z.infer<typeof categoryResponseSchema>;
