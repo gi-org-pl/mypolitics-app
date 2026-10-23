@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
 
-import myPoliticsLogo from "@/assets/icons/quiz-logo-mypolitics.svg";
+import myPoliticsLogo from "@/assets/icons/mypolitics-primary-colour-on-light.svg";
 import radarLogo from "@/assets/icons/quiz-logo-warszawski-radar-wyborczy.svg";
 import wyborczyLogo from "@/assets/icons/quiz-logo-wyborczy-2023.svg";
 import lata90Background from "@/assets/images/home/quiz-card-lata-90.png";

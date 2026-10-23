@@ -17,6 +17,17 @@ describe("<FooterLeft />", () => {
       );
     });
 
+    it("renders both logos at the smallest heights their brand books allow", () => {
+      renderWithI18n(<FooterLeft />);
+
+      expect(screen.getByRole("img", { name: "myPolitics" })).toHaveClass(
+        "h-6",
+      );
+      expect(
+        screen.getByRole("img", { name: "Generacja Innowacja" }),
+      ).toHaveClass("h-5");
+    });
+
     it("renders the Generacja Innowacja logo as a link named after it", () => {
       renderWithI18n(<FooterLeft />);
 
