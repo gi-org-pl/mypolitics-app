@@ -6,6 +6,24 @@
   --font-family-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* The myPolitics brand colours, as the brand book of gi-org-pl/product names
+   them (mypolitics/docs/visual-identity/colours.md): the dark teal of the
+   lettering, the universal family of three blues and the colour family of the
+   quizzes. They are tokens so that a logo drawn in code takes its colours
+   from the palette, as `fill-mp-blue` and the like. */
+@theme {
+  --color-mp-dark-teal: #003642;
+  --color-mp-dark-blue: #00718f;
+  --color-mp-blue: #0092b8;
+  --color-mp-light-blue: #00b3db;
+  --color-mp-red: #e54c3c;
+  --color-mp-green: #4eb96f;
+  --color-mp-grey-blue: #4e8eac;
+  --color-mp-orange: #f89d37;
+  --color-mp-purple: #945ba4;
+  --color-mp-turquoise: #27b899;
+}
+
 body {
   font-family: var(--font-family);
 }

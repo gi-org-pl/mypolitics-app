@@ -1,7 +1,7 @@
 import { msg } from "@lingui/core/macro";
 
+import myPoliticsLogo from "@/assets/icons/mypolitics-primary-colour-on-light.svg";
 import eurowyborczyLogo from "@/assets/icons/quiz-logo-eurowyborczy-2024.svg";
-import myPoliticsLogo from "@/assets/icons/quiz-logo-mypolitics.svg";
 import radarLogo from "@/assets/icons/quiz-logo-warszawski-radar-wyborczy.svg";
 import wyborczyLogo from "@/assets/icons/quiz-logo-wyborczy-2023.svg";
 import pytaniaBackground from "@/assets/images/home/quiz-card-600-pytan.png";
