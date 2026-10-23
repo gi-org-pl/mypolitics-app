@@ -4,7 +4,9 @@ import type {
   ResolvedModule,
   ResultModuleOf,
   ResultModuleType,
+  ResultModuleValues,
 } from "@/types/results";
+import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 import { resolveArchetype } from "./resolveArchetype";
 import { resolveDoubleAxis } from "./resolveDoubleAxis";
@@ -15,7 +17,7 @@ import { resolveSingleAxis } from "./resolveSingleAxis";
 import { resolveTraits } from "./resolveTraits";
 
 // The resolver of every type. Each takes a record of its own type, which is
-// what lets it ask for the parameters of that type. The header is resolved
+// what lets it ask for the keys of that type. The header is resolved
 // on its own and is never one of the modules, so its record gives nothing.
 const RESOLVERS: { [Type in ResultModuleType]: ModuleResolver<Type> } = {
   header: () => undefined,
@@ -37,7 +39,11 @@ export const resolveModule = <Type extends ResultModuleType>(
   context: ResolutionContext,
 ): ResolvedModule | undefined => {
   const content = RESOLVERS[record.type](record, context);
-  const { id, position, column, title, description } = record;
+  const { id, position, column } = record;
+  // The record is of any type here, so it is read as one: a type that reads
+  // no title has none, whatever its record holds.
+  const { title, description }: Partial<ResultModuleValues> =
+    getModuleValues<ResultModuleType>(record);
 
   return content && { id, position, column, title, description, ...content };
 };

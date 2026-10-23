@@ -1,15 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { resultModuleResponseSchema } from "./resultModule";
+import {
+  resultModulePairSchema,
+  resultModuleResponseSchema,
+} from "./resultModule";
 
 const record = { id: "f0a1", type: "single_axis", position: 2 };
 
-const DEFAULTS = {
-  column: "start",
-  params: {},
-  labels: {},
-  colors: {},
-};
+const DEFAULTS = { column: "start" };
 
 const parse = (overrides: Record<string, unknown>) =>
   resultModuleResponseSchema.parse({ ...record, ...overrides });
@@ -22,18 +20,15 @@ describe("resultModuleResponseSchema", () => {
         type: "nolan_chart",
         position: 4,
         column: "end",
-        title: "Kompas",
-        description: "Gdzie jesteś na mapie poglądów.",
         orientationIds: ["a"],
         axisIds: ["x", "y"],
-        params: {
-          selection: "linked_to_leader",
-          groupBy: "category",
-          marker: 60,
-          visibleRows: 5,
-        },
-        labels: { centre: "Centrum" },
-        colors: { topLeft: "#ef4444" },
+        values: [
+          { key: "title", value: "Kompas" },
+          { key: "description", value: "Gdzie jesteś na mapie poglądów." },
+          { key: "marker", value: 60 },
+          { key: "label.centre", value: "Centrum" },
+          { key: "color.topLeft", value: "#ef4444" },
+        ],
       };
 
       expect(
@@ -42,21 +37,31 @@ describe("resultModuleResponseSchema", () => {
     });
   });
 
-  describe("given a record that sends a setting as a field beside its parameters", () => {
-    it("does not read the field: only the parameters count", () => {
-      const sent = {
-        selection: "linked_to_leader",
-        groupBy: "category",
-        marker: 60,
-        visibleRows: 5,
-      };
+  describe("given a record that sends its title, description, parameters, labels or colours as fields, as the earlier versions of the contract had it", () => {
+    const fields = {
+      title: "Kompas",
+      description: "Gdzie jesteś na mapie poglądów.",
+      params: { marker: 60, groupBy: "category" },
+      labels: { centre: "Centrum" },
+      colors: { topLeft: "#ef4444" },
+      selection: "linked_to_leader",
+      groupBy: "category",
+      marker: 60,
+      visibleRows: 5,
+    };
 
-      expect(parse({ ...sent, params: { marker: 20 } })).toEqual({
+    it("does not read them", () => {
+      expect(parse(fields)).toEqual({ ...record, ...DEFAULTS });
+    });
+
+    it("does not read them beside its values: only the values count", () => {
+      const values = [{ key: "marker", value: 20 }];
+
+      expect(parse({ ...fields, values })).toEqual({
         ...record,
         ...DEFAULTS,
-        params: { marker: 20 },
+        values,
       });
-      expect(parse(sent)).toEqual({ ...record, ...DEFAULTS });
     });
   });
 
@@ -168,68 +173,32 @@ describe("resultModuleResponseSchema", () => {
     });
   });
 
-  describe("given parameters", () => {
-    it.each([
-      ["a number", 37.5],
-      ["a text", "linked_to_leader"],
-      ["a boolean", false],
-      ["null", null],
-      ["a list of those", [1, "two", true, null]],
-      ["an empty list", []],
-    ])("keeps %s as sent", (_, value) => {
-      expect(parse({ params: { name: value } }).params).toEqual({
-        name: value,
-      });
-    });
+  describe("given values", () => {
+    it("leaves the items of the list as sent: they are read pair by pair", () => {
+      const values = [
+        { key: "title", value: "Partie" },
+        { key: "marker", value: null },
+        { key: "sortBy", value: { by: "name" } },
+        { value: "bez klucza" },
+        null,
+        7,
+      ];
 
-    it("keeps every name, whether the app knows it or not, and checks no value against its name", () => {
-      const params = { marker: 250, selection: 7, sortBy: "name", "": "x" };
-
-      expect(parse({ params }).params).toEqual(params);
-    });
-
-    it.each([
-      ["an object", { min: 1 }],
-      ["a list that holds an object", [1, {}]],
-      ["a list that holds a list", [[1]]],
-      ["a number that is not one", Number.NaN],
-      ["an endless number", Number.POSITIVE_INFINITY],
-    ])("reads %s as absent and keeps the other names", (_, value) => {
-      expect(parse({ params: { name: value, marker: 20 } }).params).toEqual({
-        marker: 20,
-      });
-    });
-
-    it.each([
-      [undefined],
-      [null],
-      ["marker"],
-      [7],
-      [true],
-      [[["marker", 20]]],
-    ])("reads %j as no parameters", (params) => {
-      expect(parse({ params }).params).toEqual({});
-    });
-  });
-
-  describe("given text with space or line breaks around it", () => {
-    it("trims the title and the description", () => {
-      expect(
-        parse({ title: "  Partie\n", description: "\n Kto jest najbliżej. " }),
-      ).toMatchObject({ title: "Partie", description: "Kto jest najbliżej." });
+      expect(parse({ values }).values).toEqual(values);
+      expect(parse({ values: [] }).values).toEqual([]);
     });
 
     it.each([
       [undefined],
       [null],
       [""],
-      [" \n\t "],
+      ["title"],
       [7],
-    ])("reads the title and the description %j as absent", (text) => {
-      expect(parse({ title: text, description: text })).toEqual({
-        ...record,
-        ...DEFAULTS,
-      });
+      [true],
+      [{ title: "Partie" }],
+      [{ 0: { key: "title", value: "Partie" }, length: 1 }],
+    ])("reads %j, which is not a list, as absent", (values) => {
+      expect(parse({ values })).toEqual({ ...record, ...DEFAULTS });
     });
   });
 
@@ -250,40 +219,110 @@ describe("resultModuleResponseSchema", () => {
       });
     });
   });
+});
 
-  describe("given labels or colours", () => {
-    it("keeps every slot that holds text, as sent", () => {
-      const slots = { link: " Strona ", unknown: "x", topLeft: "red" };
-
-      expect(parse({ labels: slots, colors: slots })).toMatchObject({
-        labels: slots,
-        colors: slots,
+describe("resultModulePairSchema", () => {
+  describe("given a key and a value", () => {
+    it.each([
+      ["a text", "linked_to_leader"],
+      ["an empty text", ""],
+      ["a number", 37.5],
+      ["zero", 0],
+      ["yes", true],
+      ["no", false],
+      ["nothing", null],
+    ])("accepts %s as sent", (_, value) => {
+      expect(resultModulePairSchema.parse({ key: "name", value })).toEqual({
+        key: "name",
+        value,
       });
     });
 
-    it("reads a slot that does not hold text as absent and keeps the others", () => {
+    it("does not trim a text: whoever reads the key does", () => {
       expect(
-        parse({
-          labels: { link: 7, centre: null, topLeftModerate: "Lewica" },
-          colors: { topLeft: {}, topRight: ["#fff"], bottomLeft: "#fff" },
-        }),
-      ).toMatchObject({
-        labels: { topLeftModerate: "Lewica" },
-        colors: { bottomLeft: "#fff" },
-      });
+        resultModulePairSchema.parse({ key: "title", value: "  Partie\n" }),
+      ).toEqual({ key: "title", value: "  Partie\n" });
     });
 
+    it("accepts any key, whether the app knows it or not, and checks no value against its key", () => {
+      for (const pair of [
+        { key: "marker", value: 250 },
+        { key: "selection", value: 7 },
+        { key: "sortBy", value: "name" },
+        { key: "label.topLeftModerate", value: false },
+        { key: "__proto__", value: "x" },
+      ]) {
+        expect(resultModulePairSchema.parse(pair)).toEqual(pair);
+      }
+    });
+
+    it("reads nothing else of a pair", () => {
+      expect(
+        resultModulePairSchema.parse({
+          key: "title",
+          value: "Partie",
+          id: "0d6b",
+          language: "pl",
+        }),
+      ).toEqual({ key: "title", value: "Partie" });
+    });
+  });
+
+  describe("given a value that is not a text, a number, a boolean or null", () => {
+    it.each([
+      ["no value", undefined],
+      ["an object", { min: 1 }],
+      ["a text per language", { pl: "Partie", en: "Parties" }],
+      ["a list", ["a", "b"]],
+      ["an empty list", []],
+      ["a number that is not one", Number.NaN],
+      ["an endless number", Number.POSITIVE_INFINITY],
+    ])("does not accept %s", (_, value) => {
+      expect(
+        resultModulePairSchema.safeParse({ key: "name", value }).success,
+      ).toBe(false);
+    });
+
+    it("does not accept a pair that leaves the value out", () => {
+      expect(resultModulePairSchema.safeParse({ key: "name" }).success).toBe(
+        false,
+      );
+    });
+  });
+
+  describe("given no key, or one that is blank or not a text", () => {
     it.each([
       [undefined],
       [null],
-      ["link"],
+      [""],
+      [" \n\t "],
       [7],
-      [["Strona"]],
-    ])("reads %j as no slots", (slots) => {
-      expect(parse({ labels: slots, colors: slots })).toMatchObject({
-        labels: {},
-        colors: {},
-      });
+      [true],
+      [["title"]],
+      [{}],
+    ])("does not accept the key %j", (key) => {
+      expect(
+        resultModulePairSchema.safeParse({ key, value: "Partie" }).success,
+      ).toBe(false);
+    });
+
+    it("does not accept a pair that leaves the key out", () => {
+      expect(
+        resultModulePairSchema.safeParse({ value: "Partie" }).success,
+      ).toBe(false);
+    });
+  });
+
+  describe("given something that is not a pair", () => {
+    it.each([
+      [undefined],
+      [null],
+      ["title"],
+      [7],
+      [[]],
+      [["title", "Partie"]],
+    ])("does not accept %j", (pair) => {
+      expect(resultModulePairSchema.safeParse(pair).success).toBe(false);
     });
   });
 });
