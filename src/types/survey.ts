@@ -133,6 +133,21 @@ export interface SurveyResult extends QuizResult {
   surveyId?: string; // the survey the result was handed in for
 }
 
+// How reading a result ended. An enum, like SurveyLoadStatus.
+export const ResultLoadStatus = {
+  Ready: "ready", // the API has the result, calculated or not yet
+  NotFound: "not-found", // the API has no such result
+  Failed: "failed", // no reply, a refusal, or a reply that is not a result
+} as const;
+
+export type ResultLoadStatus =
+  (typeof ResultLoadStatus)[keyof typeof ResultLoadStatus];
+
+export type ResultLoadResult =
+  | { status: typeof ResultLoadStatus.Ready; result: SurveyResult }
+  | { status: typeof ResultLoadStatus.NotFound }
+  | { status: typeof ResultLoadStatus.Failed };
+
 export type ResultLinkLanguage = "pl" | "en";
 
 // What the request for the result link is made of. The address and the
@@ -309,7 +324,7 @@ export interface SurveyPhaseContentProps {
   survey: Survey;
   session: SurveySessionApi; // from useSurveySession(survey); the screen calls the hook once
   lock: () => void; // call at a press that changes the screen only after a delay; the screen releases it
-  onLeave: () => void; // end the session and open the results destination
+  onLeave: () => void; // end the session and open its result
 }
 
 // What an event makes of a session. It returns the very session it was handed

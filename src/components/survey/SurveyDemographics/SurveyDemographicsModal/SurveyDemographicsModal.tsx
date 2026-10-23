@@ -2,7 +2,12 @@ import { Modal } from "@gi-org-pl/athena";
 import { Trans } from "@lingui/react/macro";
 import { useId } from "react";
 
-import { SurveyDialogPortal } from "../../SurveyDialogPortal/SurveyDialogPortal";
+import { DialogPortal } from "@/components/shared/DialogPortal/DialogPortal";
+import {
+  INFO_DIALOG_CLASS_NAME,
+  INFO_DIALOG_TEXT_CLASS_NAME,
+  INFO_DIALOG_TITLE_CLASS_NAME,
+} from "@/constants/dialog";
 
 import type { SurveyDemographicsModalProps } from "./SurveyDemographicsModal.types";
 
@@ -13,21 +18,21 @@ export const SurveyDemographicsModal = ({
   const descriptionId = useId();
 
   return (
-    <SurveyDialogPortal>
+    <DialogPortal>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
         aria-describedby={descriptionId}
-        className="mx-4 rounded-4xl p-[23px] shadow-none"
+        className={INFO_DIALOG_CLASS_NAME}
         title={
-          <span className="block pb-1 text-lg leading-7 font-bold">
+          <span className={INFO_DIALOG_TITLE_CLASS_NAME}>
             <Trans>Zakres wykorzystania danych</Trans>
           </span>
         }
       >
         <div
           id={descriptionId}
-          className="-mt-1 flex flex-col gap-2 text-sm leading-5 text-gi-gray"
+          className={`${INFO_DIALOG_TEXT_CLASS_NAME} flex flex-col gap-2`}
         >
           <p>
             <Trans>
@@ -42,6 +47,6 @@ export const SurveyDemographicsModal = ({
           </p>
         </div>
       </Modal>
-    </SurveyDialogPortal>
+    </DialogPortal>
   );
 };

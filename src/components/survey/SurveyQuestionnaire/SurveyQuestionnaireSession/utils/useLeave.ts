@@ -1,42 +1,39 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import type { SurveySessionApi } from "@/types/survey";
-import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
-import { openAddress } from "@/utils/url/openAddress";
 
-// `onLeave` of the screen: the stored session is removed, then the results of
-// that session open in the same tab. Called again, it does nothing - there is
-// one navigation. The session in memory is not touched, so the screen keeps
-// showing what it showed until the browser has left.
+// `onLeave` of the screen: the stored session is removed, then the result of
+// that session is opened - its identifier is the identifier of the session.
+// Called again, it does nothing: the result is opened once. The session in
+// memory is not touched, so the screen keeps showing what it showed for as
+// long as it is there.
 //
-// A browser can show the page again from its memory when the taker comes
-// back. The session that was handed in is then over: a new one starts.
-export const useLeave = ({
-  session,
-  leave,
-  startOver,
-}: SurveySessionApi): (() => void) => {
+// The session that was handed in is over once the screen is gone: a taker who
+// comes back to the quiz finds a new one, and nothing of it is stored until
+// they do something.
+export const useLeave = (
+  { session, leave, startOver }: SurveySessionApi,
+  onResultOpen: (resultId: string) => void,
+): (() => void) => {
   const hasLeft = useRef(false);
   const sessionId = session.id;
 
-  useEffect(() => {
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted && hasLeft.current) {
-        hasLeft.current = false;
-        startOver();
-      }
-    };
+  useEffect(
+    () => () => {
+      if (!hasLeft.current) return;
 
-    window.addEventListener("pageshow", handlePageShow);
-
-    return () => window.removeEventListener("pageshow", handlePageShow);
-  }, [startOver]);
+      hasLeft.current = false;
+      startOver();
+      leave();
+    },
+    [leave, startOver],
+  );
 
   return useCallback(() => {
     if (hasLeft.current) return;
 
     hasLeft.current = true;
     leave();
-    openAddress(getResultsUrl(sessionId));
-  }, [leave, sessionId]);
+    onResultOpen(sessionId);
+  }, [leave, onResultOpen, sessionId]);
 };

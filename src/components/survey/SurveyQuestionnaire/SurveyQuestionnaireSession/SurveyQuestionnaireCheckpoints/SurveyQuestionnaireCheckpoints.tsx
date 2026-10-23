@@ -1,10 +1,8 @@
 import type { ComponentType } from "react";
-
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary/ErrorBoundary";
 import type { CheckpointCardProps } from "@/types/checkpoint";
 import type { SurveyPhaseContentProps } from "@/types/survey";
-
 import { CHECKPOINT_CARDS } from "../../SurveyQuestionnaire.constants";
-import { SurveyQuestionnaireBoundary } from "./SurveyQuestionnaireBoundary/SurveyQuestionnaireBoundary";
 import { useCheckpointCard } from "./utils/useCheckpointCard";
 
 // The Checkpoints phase: the card that is up, in place of the question, its
@@ -29,13 +27,13 @@ export const SurveyQuestionnaireCheckpoints = ({
   ] as ComponentType<CheckpointCardProps>;
 
   return (
-    <SurveyQuestionnaireBoundary onError={close}>
+    <ErrorBoundary onError={close}>
       <Card
         card={card}
         onReveal={reveal}
         onContinue={close}
         onOptOut={optOut}
       />
-    </SurveyQuestionnaireBoundary>
+    </ErrorBoundary>
   );
 };

@@ -6,6 +6,7 @@ export const PATHS = {
   home: "/",
   quizzes: "/quizzes",
   quiz: (slug: string) => `/quizzes/${encodeURIComponent(slug)}`,
+  result: (resultId: string) => `/results/${encodeURIComponent(resultId)}`,
   debates: "/debates",
   polls: "https://polls.mypolitics.pl", // external
   whitepaperPDF: "https://mypolitics.pl/static/whitepaper.pdf", // external

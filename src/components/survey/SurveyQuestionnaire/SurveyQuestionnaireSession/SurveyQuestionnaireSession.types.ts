@@ -4,6 +4,7 @@ import type { Survey, SurveyProgress } from "@/types/survey";
 
 export interface SurveyQuestionnaireSessionProps {
   survey: Survey;
+  onResultOpen: (resultId: string) => void; // the result of the session is calculated: show it
 }
 
 // What stands over the content in a phase: the bar and the controls bar.

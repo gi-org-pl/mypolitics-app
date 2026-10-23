@@ -12,15 +12,13 @@ import {
   SurveyResultState,
   type SurveySession,
 } from "@/types/survey";
-import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
 import { createSession } from "@/utils/survey/session/createSession";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
-import { openAddress } from "@/utils/url/openAddress";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
-import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import { QUESTION_SLIDE_MS } from "./SurveyQuestionnaireQuestions/SurveyQuestionSlide/SurveyQuestionSlide.constants";
 import { SurveyQuestionnaireSession } from "./SurveyQuestionnaireSession";
 import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
@@ -28,7 +26,6 @@ import { CONTENT_CHANGE_MS } from "./SurveyQuestionnaireSession.constants";
 vi.mock("@/services/api/client/createResult");
 vi.mock("@/services/api/client/getResult");
 vi.mock("@/services/api/client/requestResultLink");
-vi.mock("@/utils/url/openAddress");
 
 // The acknowledgement of an answer: it reports the press when it has played.
 const ACKNOWLEDGEMENT_MS = 300;
@@ -62,6 +59,7 @@ const NO_VISIBLE_CATEGORY = ONE_VISIBLE_CATEGORY.map((category) => ({
 }));
 
 const scrollIntoView = vi.fn();
+const onResultOpen = vi.fn<(resultId: string) => void>();
 
 // The stores live as long as the module does, so every test takes a quiz of
 // its own. q1 economy, q2 ecology, q3 economy, q4 hidden, q5 ecology.
@@ -77,7 +75,12 @@ const renderScreen = (
   store.setState(toSession(survey), true);
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession
+        survey={survey}
+        onResultOpen={onResultOpen}
+      />,
+    ),
     survey,
     getSession: store.getState,
   };
@@ -158,20 +161,13 @@ const finishLoader = async () => {
   }
 };
 
-const showPageFromMemory = () =>
-  act(() => {
-    window.dispatchEvent(
-      new PageTransitionEvent("pageshow", { persisted: true }),
-    );
-  });
-
 describe("<SurveyQuestionnaireSession />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     Element.prototype.scrollIntoView = scrollIntoView;
     vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
     vi.mocked(getResult).mockResolvedValue(
-      createSurveyResult({ isCalculated: true }),
+      createResultLoad({ isCalculated: true }),
     );
   });
 
@@ -1015,12 +1011,12 @@ describe("<SurveyQuestionnaireSession />", () => {
   });
 
   describe("when onLeave is called", () => {
-    it("removes the stored session, then opens the results address of that session in the same tab", async () => {
+    it("removes the stored session, then opens the result of that session", async () => {
       const { survey, getSession } = renderScreen(onQuestion(ALL_DONE));
       const storageKey = getSessionStorageKey(survey.id);
       const stored: (string | null)[] = [];
 
-      vi.mocked(openAddress).mockImplementation(() => {
+      onResultOpen.mockImplementation(() => {
         stored.push(sessionStorage.getItem(storageKey));
       });
 
@@ -1030,14 +1026,14 @@ describe("<SurveyQuestionnaireSession />", () => {
       await finishRequests();
 
       // The result is there; the stay of the loader is not over.
-      expect(openAddress).not.toHaveBeenCalled();
+      expect(onResultOpen).not.toHaveBeenCalled();
       expect(sessionStorage.getItem(storageKey)).not.toBeNull();
 
       await finishLoader();
 
       expect(createResult).toHaveBeenCalledTimes(1);
-      expect(openAddress).toHaveBeenCalledTimes(1);
-      expect(openAddress).toHaveBeenCalledWith(getResultsUrl(getSession().id));
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledWith(getSession().id);
       expect(stored).toEqual([null]);
       expect(sessionStorage.getItem(storageKey)).toBeNull();
     });
@@ -1048,7 +1044,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       fireEvent.click(getSkipButton());
       await finishLoader();
 
-      expect(openAddress).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
       expect(screen.getByText(WAITING)).toBeVisible();
       expect(getSession().phase).toBe("results-calculation");
       expect(getSession().resultState).toBe(SurveyResultState.Calculated);
@@ -1062,7 +1058,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       onQuestion(ALL_DONE, { phase: "results-calculation", ...overrides });
 
     it('draws no bar, "Prawie gotowe", back off and reset off while a run is under way', async () => {
-      vi.mocked(getResult).mockResolvedValue(createSurveyResult());
+      vi.mocked(getResult).mockResolvedValue(createResultLoad());
 
       const { getSession } = renderScreen(inCalculation());
 
@@ -1078,7 +1074,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(
         screen.getByRole("button", { name: "Pełne wyniki" }),
       ).toBeDisabled();
-      expect(openAddress).not.toHaveBeenCalled();
+      expect(onResultOpen).not.toHaveBeenCalled();
     });
 
     it("turns reset on when the run has failed, and starts a new session when it is confirmed", async () => {
@@ -1104,7 +1100,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(getSession().phase).toBe("category-select");
       expect(getSession().resultState).toBe(SurveyResultState.NotSent);
       expect(createResult).toHaveBeenCalledTimes(1);
-      expect(openAddress).not.toHaveBeenCalled();
+      expect(onResultOpen).not.toHaveBeenCalled();
     });
 
     it("keeps reset off on the notice", async () => {
@@ -1130,7 +1126,7 @@ describe("<SurveyQuestionnaireSession />", () => {
       );
       expect(getBackButton()).toBeDisabled();
       expect(getResetButton()).toBeDisabled();
-      expect(openAddress).not.toHaveBeenCalled();
+      expect(onResultOpen).not.toHaveBeenCalled();
       expect(
         sessionStorage.getItem(getSessionStorageKey(survey.id)),
       ).not.toBeNull();
@@ -1138,25 +1134,33 @@ describe("<SurveyQuestionnaireSession />", () => {
       fireEvent.click(getResultsButton());
 
       expect(requestResultLink).toHaveBeenCalledTimes(1);
-      expect(openAddress).toHaveBeenCalledTimes(1);
-      expect(openAddress).toHaveBeenCalledWith(getResultsUrl(getSession().id));
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledWith(getSession().id);
       expect(
         sessionStorage.getItem(getSessionStorageKey(survey.id)),
       ).toBeNull();
     });
   });
 
-  describe("when the page is shown again from the memory of the browser after leaving", () => {
+  describe("when the screen is gone after leaving and the taker comes back", () => {
     it("starts over and shows the first phase of a new session", async () => {
-      const { getSession } = renderScreen(onQuestion(ALL_DONE));
+      const { survey, getSession, unmount } = renderScreen(
+        onQuestion(ALL_DONE),
+      );
       const { id } = getSession();
 
       fireEvent.click(getSkipButton());
       await finishLoader();
 
-      expect(openAddress).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
 
-      showPageFromMemory();
+      unmount();
+      renderWithI18n(
+        <SurveyQuestionnaireSession
+          survey={survey}
+          onResultOpen={onResultOpen}
+        />,
+      );
 
       expect(getSession().id).not.toBe(id);
       expect(getSession()).toMatchObject({
@@ -1167,6 +1171,9 @@ describe("<SurveyQuestionnaireSession />", () => {
       expect(screen.getByRole("group", { name: PROMPT })).toBeInTheDocument();
       expect(screen.queryByText(WAITING)).not.toBeInTheDocument();
       expect(createResult).toHaveBeenCalledTimes(1);
+      expect(
+        sessionStorage.getItem(getSessionStorageKey(survey.id)),
+      ).toBeNull();
     });
   });
 });
