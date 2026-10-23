@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PATHS } from "./constants/paths";
+import { VIEW_VISIT_STORAGE_KEY_PREFIX } from "./constants/storage";
 import App, { HydrateFallback, Layout } from "./root";
 
 const ROUTE_CONTENT = "Treść strony";
@@ -87,6 +88,19 @@ describe("root App", () => {
       expect(screen.getByRole("main")).toHaveTextContent(
         new RegExp(`^${ROUTE_CONTENT}$`),
       );
+    });
+  });
+
+  describe("given the route on screen", () => {
+    it("hands it to the header, which notes the visit of its view", () => {
+      sessionStorage.clear();
+      renderRoot();
+
+      expect(
+        Object.keys(sessionStorage).filter((key) =>
+          key.startsWith(VIEW_VISIT_STORAGE_KEY_PREFIX),
+        ),
+      ).toHaveLength(1);
     });
   });
 

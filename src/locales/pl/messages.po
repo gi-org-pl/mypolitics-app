@@ -517,8 +517,8 @@ msgstr "Liczymy, ale się cieszymy"
 msgid "Liczymy, nie oceniamy"
 msgstr "Liczymy, nie oceniamy"
 
-#: src/root.tsx:51
-#: src/root.tsx:54
+#: src/root.tsx:57
+#: src/root.tsx:60
 msgid "Logo myPolitics"
 msgstr "Logo myPolitics"
 
@@ -708,7 +708,7 @@ msgstr "Odwiedź nasz profil na X"
 msgid "Orientacja seksualna"
 msgstr "Orientacja seksualna"
 
-#: src/components/shared/Header/Header.tsx:37
+#: src/components/shared/Header/Header.tsx:42
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
@@ -991,7 +991,7 @@ msgid "Statystyki: {name}"
 msgstr "Statystyki: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:39
-#: src/components/shared/Header/Header.tsx:21
+#: src/components/shared/Header/Header.tsx:26
 msgid "Strona główna"
 msgstr "Strona główna"
 
@@ -1288,7 +1288,7 @@ msgstr "Zakres wykorzystania danych"
 msgid "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 
-#: src/components/shared/Header/Header.tsx:37
+#: src/components/shared/Header/Header.tsx:42
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
 
