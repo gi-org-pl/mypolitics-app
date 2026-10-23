@@ -42,7 +42,7 @@ vi.mock("./QuizCardImage/QuizCardImage", async (importOriginal) => {
 });
 
 const TITLE = "Polskie Lata 90.";
-const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
+const LOGO_URL = "/assets/mypolitics-primary-colour-on-light.svg";
 const BACKGROUND_URL = "/assets/quiz-card-lata-90.png";
 const CTA = "Kiedyś to było... no właśnie, jak?";
 const DESCRIPTION = "Poznaj najbliższych sobie warszawskich polityków!";

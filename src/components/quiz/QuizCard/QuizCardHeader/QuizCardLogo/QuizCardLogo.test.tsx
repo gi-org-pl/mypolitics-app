@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { QuizCardLogo } from "./QuizCardLogo";
 
-const LOGO_URL = "/assets/quiz-logo-mypolitics.svg";
+const LOGO_URL = "/assets/mypolitics-primary-colour-on-light.svg";
 const OTHER_LOGO_URL = "/assets/quiz-logo-wyborczy-2023.svg";
 const TITLE = "myPolitics";
 
