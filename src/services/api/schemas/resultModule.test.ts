@@ -6,10 +6,7 @@ const record = { id: "f0a1", type: "single_axis", position: 2 };
 
 const DEFAULTS = {
   column: "start",
-  selection: "all",
-  groupBy: "none",
-  marker: 50,
-  visibleRows: 3,
+  params: {},
   labels: {},
   colors: {},
 };
@@ -29,10 +26,12 @@ describe("resultModuleResponseSchema", () => {
         description: "Gdzie jesteś na mapie poglądów.",
         orientationIds: ["a"],
         axisIds: ["x", "y"],
-        selection: "linked_to_leader",
-        groupBy: "category",
-        marker: 60,
-        visibleRows: 5,
+        params: {
+          selection: "linked_to_leader",
+          groupBy: "category",
+          marker: 60,
+          visibleRows: 5,
+        },
         labels: { centre: "Centrum" },
         colors: { topLeft: "#ef4444" },
       };
@@ -40,6 +39,24 @@ describe("resultModuleResponseSchema", () => {
       expect(
         resultModuleResponseSchema.parse({ ...sent, surveyId: "60beb898" }),
       ).toEqual(sent);
+    });
+  });
+
+  describe("given a record that sends a setting as a field beside its parameters", () => {
+    it("does not read the field: only the parameters count", () => {
+      const sent = {
+        selection: "linked_to_leader",
+        groupBy: "category",
+        marker: 60,
+        visibleRows: 5,
+      };
+
+      expect(parse({ ...sent, params: { marker: 20 } })).toEqual({
+        ...record,
+        ...DEFAULTS,
+        params: { marker: 20 },
+      });
+      expect(parse(sent)).toEqual({ ...record, ...DEFAULTS });
     });
   });
 
@@ -133,16 +150,10 @@ describe("resultModuleResponseSchema", () => {
     });
   });
 
-  describe("given a column, a selection or a grouping", () => {
-    it("accepts the values the API has for each", () => {
+  describe("given a column", () => {
+    it("accepts the values the API has for it", () => {
       expect(parse({ column: "end" }).column).toBe("end");
       expect(parse({ column: "start" }).column).toBe("start");
-      expect(parse({ selection: "linked_to_leader" }).selection).toBe(
-        "linked_to_leader",
-      );
-      expect(parse({ selection: "all" }).selection).toBe("all");
-      expect(parse({ groupBy: "category" }).groupBy).toBe("category");
-      expect(parse({ groupBy: "none" }).groupBy).toBe("none");
     });
 
     it.each([
@@ -152,50 +163,52 @@ describe("resultModuleResponseSchema", () => {
       ["END"],
       [7],
       [{}],
-    ])("reads %j as the default of the field", (value) => {
-      expect(
-        parse({ column: value, selection: value, groupBy: value }),
-      ).toMatchObject({ column: "start", selection: "all", groupBy: "none" });
+    ])("reads %j as the default of the field", (column) => {
+      expect(parse({ column }).column).toBe("start");
     });
   });
 
-  describe("given a marker", () => {
-    it.each([[0], [37.5], [100]])("accepts %j as sent", (marker) => {
-      expect(parse({ marker }).marker).toBe(marker);
+  describe("given parameters", () => {
+    it.each([
+      ["a number", 37.5],
+      ["a text", "linked_to_leader"],
+      ["a boolean", false],
+      ["null", null],
+      ["a list of those", [1, "two", true, null]],
+      ["an empty list", []],
+    ])("keeps %s as sent", (_, value) => {
+      expect(parse({ params: { name: value } }).params).toEqual({
+        name: value,
+      });
     });
 
-    it("accepts null as sent", () => {
-      expect(parse({ marker: null }).marker).toBeNull();
+    it("keeps every name, whether the app knows it or not, and checks no value against its name", () => {
+      const params = { marker: 250, selection: 7, sortBy: "name", "": "x" };
+
+      expect(parse({ params }).params).toEqual(params);
     });
 
     it.each([
-      [-0.1],
-      [100.1],
-      [Number.NaN],
-      [Number.POSITIVE_INFINITY],
-      ["60"],
-      [false],
-      [{}],
-    ])("reads %j as the default", (marker) => {
-      expect(parse({ marker }).marker).toBe(50);
-    });
-  });
-
-  describe("given a number of visible rows", () => {
-    it.each([[1], [3], [12]])("accepts %j as sent", (visibleRows) => {
-      expect(parse({ visibleRows }).visibleRows).toBe(visibleRows);
+      ["an object", { min: 1 }],
+      ["a list that holds an object", [1, {}]],
+      ["a list that holds a list", [[1]]],
+      ["a number that is not one", Number.NaN],
+      ["an endless number", Number.POSITIVE_INFINITY],
+    ])("reads %s as absent and keeps the other names", (_, value) => {
+      expect(parse({ params: { name: value, marker: 20 } }).params).toEqual({
+        marker: 20,
+      });
     });
 
     it.each([
-      [0],
-      [-2],
-      [2.5],
-      [Number.NaN],
-      [Number.POSITIVE_INFINITY],
-      ["4"],
+      [undefined],
       [null],
-    ])("reads %j as the default", (visibleRows) => {
-      expect(parse({ visibleRows }).visibleRows).toBe(3);
+      ["marker"],
+      [7],
+      [true],
+      [[["marker", 20]]],
+    ])("reads %j as no parameters", (params) => {
+      expect(parse({ params }).params).toEqual({});
     });
   });
 

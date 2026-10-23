@@ -20,7 +20,9 @@ const SELECTIONS: Record<
 // The orientations a record shows: its shown ones, as its selection keeps
 // them.
 export const getSelectedOrientations = (
-  record: Pick<ResultModule, "orientationIds" | "selection">,
+  record: Pick<ResultModule, "orientationIds"> & {
+    selection: ResultModuleSelection;
+  },
   context: Pick<ResolutionContext, "survey" | "gender" | "leader">,
 ): Orientation[] =>
   SELECTIONS[record.selection](

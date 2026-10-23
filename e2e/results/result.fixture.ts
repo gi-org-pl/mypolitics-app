@@ -189,7 +189,7 @@ export const resultSurveyFixture = {
       column: "start",
       title: "Ideologie",
       axisIds: [AXIS_IDS.economy, AXIS_IDS.worldview],
-      groupBy: "category",
+      params: { groupBy: "category" },
     },
     {
       id: "result-identity",
@@ -207,7 +207,7 @@ export const resultSurveyFixture = {
       title: "Partie",
       description: PARTIES_DESCRIPTION,
       orientationIds: [IDS.greens, IDS.newLeft, IDS.right],
-      selection: "linked_to_leader",
+      params: { selection: "linked_to_leader" },
     },
   ],
 };

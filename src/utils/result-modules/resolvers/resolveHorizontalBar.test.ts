@@ -34,7 +34,7 @@ describe("resolveHorizontalBar()", () => {
       expect(
         resolve({
           orientationIds: ["liberal", "anarchist", "socialist", "party-left"],
-          visibleRows: 5,
+          params: { visibleRows: 5 },
         }),
       ).toMatchObject({
         type: "horizontal_bar",
@@ -57,7 +57,10 @@ describe("resolveHorizontalBar()", () => {
   describe("given a record that selects the ones linked to the leader", () => {
     it("returns the ones the leader links, in the leader's order", () => {
       expect(
-        resolve({ orientationIds: PARTY_IDS, selection: "linked_to_leader" }),
+        resolve({
+          orientationIds: PARTY_IDS,
+          params: { selection: "linked_to_leader" },
+        }),
       ).toMatchObject({
         entries: [
           { orientation: { id: "party-green" }, isOfficial: false },
@@ -69,7 +72,10 @@ describe("resolveHorizontalBar()", () => {
     it("returns nothing when there is no leader", () => {
       expect(
         resolve(
-          { orientationIds: PARTY_IDS, selection: "linked_to_leader" },
+          {
+            orientationIds: PARTY_IDS,
+            params: { selection: "linked_to_leader" },
+          },
           moduleQuizContext,
         ),
       ).toBeUndefined();
@@ -79,7 +85,7 @@ describe("resolveHorizontalBar()", () => {
       expect(
         resolve({
           orientationIds: ["party-right"],
-          selection: "linked_to_leader",
+          params: { selection: "linked_to_leader" },
         }),
       ).toBeUndefined();
     });
@@ -88,8 +94,7 @@ describe("resolveHorizontalBar()", () => {
   describe("given a record that groups by category", () => {
     const resolved = resolve({
       orientationIds: ["liberal", "socialist"],
-      groupBy: "category",
-      visibleRows: 1,
+      params: { groupBy: "category", visibleRows: 1 },
     });
 
     it("returns one category per category of the quiz that is not hidden, and the visible rows", () => {
@@ -130,8 +135,7 @@ describe("resolveHorizontalBar()", () => {
       expect(
         resolve({
           orientationIds: PARTY_IDS,
-          selection: "linked_to_leader",
-          groupBy: "category",
+          params: { selection: "linked_to_leader", groupBy: "category" },
         }),
       ).toMatchObject({
         categories: [
@@ -154,7 +158,7 @@ describe("resolveHorizontalBar()", () => {
     it("returns nothing when the quiz has no category to show", () => {
       expect(
         resolve(
-          { orientationIds: ["liberal"], groupBy: "category" },
+          { orientationIds: ["liberal"], params: { groupBy: "category" } },
           { ...leaderContext, survey: { ...moduleQuiz, categories: [] } },
         ),
       ).toBeUndefined();
@@ -166,8 +170,40 @@ describe("resolveHorizontalBar()", () => {
       expect(resolve({ orientationIds: [] })).toBeUndefined();
       expect(resolve({ orientationIds: ["anarchist"] })).toBeUndefined();
       expect(
-        resolve({ orientationIds: ["anarchist"], groupBy: "category" }),
+        resolve({
+          orientationIds: ["anarchist"],
+          params: { groupBy: "category" },
+        }),
       ).toBeUndefined();
+    });
+  });
+
+  describe("given a record whose parameters are left out or are not allowed", () => {
+    it("selects all, does not group, and returns three visible rows", () => {
+      const resolved = resolve({ orientationIds: PARTY_IDS });
+
+      expect(resolved).toMatchObject({
+        entries: [
+          { orientation: { id: "party-left" } },
+          { orientation: { id: "party-right" } },
+          { orientation: { id: "party-green" } },
+        ],
+        visibleRows: 3,
+      });
+      expect(
+        resolve({
+          orientationIds: PARTY_IDS,
+          params: { selection: "leader", groupBy: true, visibleRows: 0 },
+        }),
+      ).toEqual(resolved);
+    });
+  });
+
+  describe("given a record that holds a parameter of another type", () => {
+    it("does not read it", () => {
+      expect(
+        resolve({ orientationIds: PARTY_IDS, params: { marker: 20 } }),
+      ).toEqual(resolve({ orientationIds: PARTY_IDS }));
     });
   });
 });
