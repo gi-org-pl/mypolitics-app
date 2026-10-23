@@ -1,6 +1,6 @@
-import { fireEvent, screen, within } from "@testing-library/react";
+import { act, fireEvent, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import { BUTTON_ICON_MASK_CLASS_NAME } from "@/constants/icon";
@@ -13,12 +13,17 @@ const NAVIGATION_NAME = "Nawigacja główna";
 const OPEN_MENU_NAME = "Otwórz menu nawigacji";
 const CLOSE_MENU_NAME = "Zamknij menu nawigacji";
 
-const renderHeader = (path: string = PATHS.home) =>
+const HOME_ROUTE_ID = "routes/_index";
+
+const renderHeader = (path: string = PATHS.home, routeId?: string) =>
   renderWithI18n(
     <MemoryRouter initialEntries={[path]}>
-      <Header />
+      <Header routeId={routeId} />
     </MemoryRouter>,
   );
+
+const getLogo = () =>
+  screen.getByRole("link", { name: "Strona główna" }).querySelector("svg");
 
 const getNavigations = () =>
   screen.getAllByRole("navigation", { name: NAVIGATION_NAME });
@@ -186,6 +191,63 @@ describe("<Header />", () => {
       fireEvent.mouseDown(menu);
 
       expect(getNavigations()).toHaveLength(2);
+    });
+  });
+
+  describe("given the logo", () => {
+    beforeEach(() => {
+      sessionStorage.clear();
+      vi.useFakeTimers({
+        toFake: [
+          "requestAnimationFrame",
+          "cancelAnimationFrame",
+          "performance",
+        ],
+      });
+      vi.stubGlobal(
+        "matchMedia",
+        vi.fn(() => ({ matches: false })),
+      );
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+      vi.unstubAllGlobals();
+    });
+
+    const playFrames = () => {
+      act(() => {
+        vi.advanceTimersByTime(500);
+      });
+    };
+
+    it("draws it inside the link, hidden from assistive technology", () => {
+      renderHeader(PATHS.home, HOME_ROUTE_ID);
+
+      expect(getLogo()).toHaveAttribute("aria-hidden", "true");
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("plays the animation on the first visit of the view", () => {
+      renderHeader(PATHS.home, HOME_ROUTE_ID);
+      playFrames();
+
+      expect(getLogo()).toHaveAttribute("data-playing", "true");
+    });
+
+    it("rests on a later visit of the view in the session", () => {
+      renderHeader(PATHS.home, HOME_ROUTE_ID).unmount();
+      renderHeader(PATHS.home, HOME_ROUTE_ID);
+      playFrames();
+
+      expect(getLogo()).not.toHaveAttribute("data-playing");
+    });
+
+    it("rests when it does not know the view", () => {
+      renderHeader(PATHS.home);
+      playFrames();
+
+      expect(getLogo()).not.toHaveAttribute("data-playing");
     });
   });
 });

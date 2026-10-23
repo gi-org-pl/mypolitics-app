@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { createRoutesStub } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PATHS } from "./constants/paths";
+import { VIEW_VISIT_STORAGE_KEY_PREFIX } from "./constants/storage";
 import App, { HydrateFallback, Layout } from "./root";
 
 // The session is not what these tests are about: a client that never answers
@@ -104,6 +105,19 @@ describe("root App", () => {
     });
   });
 
+  describe("given the route on screen", () => {
+    it("hands it to the header, which notes the visit of its view", () => {
+      sessionStorage.clear();
+      renderRoot();
+
+      expect(
+        Object.keys(sessionStorage).filter((key) =>
+          key.startsWith(VIEW_VISIT_STORAGE_KEY_PREFIX),
+        ),
+      ).toHaveLength(1);
+    });
+  });
+
   describe("when the user follows a link to another page", () => {
     it("replaces the route content and keeps the shell", async () => {
       renderRoot();
@@ -145,7 +159,55 @@ describe("root Layout", () => {
     it("titles the document", () => {
       renderRoot();
 
-      expect(document.title).toBe("mypolitics");
+      expect(document.title).toBe("myPolitics");
+    });
+
+    it("links the favicon as an SVG and as an icon file with three sizes", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('link[rel="icon"][type="image/svg+xml"]'),
+      ).toHaveAttribute("href", "/favicon.svg");
+      expect(
+        document.head.querySelector('link[rel="icon"][type="image/x-icon"]'),
+      ).toHaveAttribute("sizes", "16x16 32x32 48x48");
+    });
+
+    it("links the touch icon and the web manifest", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('link[rel="apple-touch-icon"]'),
+      ).toHaveAttribute("href", "/apple-touch-icon.png");
+      expect(
+        document.head.querySelector('link[rel="manifest"]'),
+      ).toHaveAttribute("href", "/site.webmanifest");
+    });
+
+    it("gives link previews the share image by its absolute address and size", () => {
+      renderRoot();
+
+      const content = (selector: string) =>
+        document.head.querySelector(selector)?.getAttribute("content");
+
+      expect(content('meta[property="og:image"]')).toBe(
+        "https://mypolitics.pl/og-image.png",
+      );
+      expect(content('meta[property="og:image:width"]')).toBe("1200");
+      expect(content('meta[property="og:image:height"]')).toBe("630");
+      expect(content('meta[property="og:image:alt"]')).toBe("Logo myPolitics");
+      expect(content('meta[property="og:site_name"]')).toBe("myPolitics");
+    });
+
+    it("asks for the large image card where links are shared on X", () => {
+      renderRoot();
+
+      expect(
+        document.head.querySelector('meta[name="twitter:card"]'),
+      ).toHaveAttribute("content", "summary_large_image");
+      expect(
+        document.head.querySelector('meta[name="twitter:image"]'),
+      ).toHaveAttribute("content", "https://mypolitics.pl/og-image.png");
     });
   });
 
