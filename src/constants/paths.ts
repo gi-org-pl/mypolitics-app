@@ -4,6 +4,9 @@ export const PATHS = {
   privacy: "/privacy",
   about: "/about",
   home: "/",
+  // The sign-in page; next is the page to go to once signed in.
+  signIn: (next?: string) =>
+    next ? `/login?next=${encodeURIComponent(next)}` : "/login",
   quizzes: "/quizzes",
   quiz: (slug: string) => `/quizzes/${encodeURIComponent(slug)}`,
   debates: "/debates",

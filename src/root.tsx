@@ -12,6 +12,7 @@ import {
 
 import { messages as enMessages } from "../src/locales/en/messages";
 import { messages as plMessages } from "../src/locales/pl/messages";
+import { AuthDialogProvider } from "./components/shared/AuthDialogProvider/AuthDialogProvider";
 import { AuthSessionProvider } from "./components/shared/AuthSessionProvider/AuthSessionProvider";
 import { Footer } from "./components/shared/Footer/Footer";
 import { Header } from "./components/shared/Header/Header";
@@ -85,13 +86,15 @@ export default function App() {
   return (
     <I18nProvider i18n={i18n}>
       <AuthSessionProvider>
-        <div className="flex min-h-dvh flex-col">
-          <Header routeId={routeId} />
-          <main className="flex-1">
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
+        <AuthDialogProvider>
+          <div className="flex min-h-dvh flex-col">
+            <Header routeId={routeId} />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
+        </AuthDialogProvider>
       </AuthSessionProvider>
     </I18nProvider>
   );
