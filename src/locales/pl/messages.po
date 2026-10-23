@@ -517,8 +517,8 @@ msgstr "Liczymy, ale się cieszymy"
 msgid "Liczymy, nie oceniamy"
 msgstr "Liczymy, nie oceniamy"
 
-#: src/root.tsx:57
-#: src/root.tsx:60
+#: src/root.tsx:58
+#: src/root.tsx:61
 msgid "Logo myPolitics"
 msgstr "Logo myPolitics"
 
