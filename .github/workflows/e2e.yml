@@ -70,7 +70,7 @@ jobs:
     permissions:
       contents: read
     # A full commit SHA, like frontend-ci in build-frontend.yml.
-    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-e2e.yml@6336749ab3699156a7e246e179ad9c6d8af87108 # pre-release, frontend-workflows#13
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-e2e.yml@29abab77b99adfdf42027db9865463b86fda4d95 # pre-release, frontend-workflows#13
     with:
       install_args: --network-concurrency 1
       timeout_minutes: 25
