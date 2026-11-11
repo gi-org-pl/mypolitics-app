@@ -190,6 +190,10 @@ msgstr "<0>A quiz for the persistent.</0> Over 600 questions that examine your v
 msgid "<0>Quiz edukacyjny o tożsamości.</0> Poznaj czynniki, które według badań kształtują orientację."
 msgstr "<0>An educational quiz about identity.</0> Learn about the factors that, according to research, shape orientation."
 
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:67
+msgid "<0>Regulamin</0> i <1>Politykę prywatności</1>."
+msgstr "the <0>Terms</0> and the <1>Privacy policy</1>."
+
 #: src/constants/home.ts:291
 msgid "<0>Stoik, hedonista czy pragmatyk?</0> Odkryj nurt filozoficzny, który najlepiej opisuje Twoje podejście do życia."
 msgstr "<0>Stoic, hedonist or pragmatist?</0> Discover the school of philosophy that best describes your approach to life."
@@ -254,9 +258,17 @@ msgstr "The address {email} belongs to an account created with {ownerName}. Sign
 msgid "Adres e-mail"
 msgstr "E-mail address"
 
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:58
+msgid "Akceptuję"
+msgstr "I accept"
+
 #: src/constants/home.ts:77
 msgid "Algorytm jest jawny"
 msgstr "The algorithm is open"
+
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:130
+msgid "Anuluj"
+msgstr "Cancel"
 
 #: src/constants/checkpoint.ts:431
 msgctxt "checkpoint-axis-puzzle-hit"
@@ -338,6 +350,18 @@ msgstr "Continue"
 msgid "Dbamy o Twoją prywatność, Twoje dane osobowe (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
 msgstr "We care about your privacy: your personal data (including your e-mail address) will never be linked to data about your views."
 
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:21
+msgid "Dbamy o Twoją prywatność. Dane z konta Google (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "We care about your privacy. The data of your Google account (including your e-mail address) will never be linked to data about your views."
+
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:22
+msgid "Dbamy o Twoją prywatność. Dane z konta na Facebooku (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "We care about your privacy. The data of your Facebook account (including your e-mail address) will never be linked to data about your views."
+
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:23
+msgid "Dbamy o Twoją prywatność. Dane z konta X (w tym adres e-mail) nigdy nie będą powiązane z danymi o Twoich poglądach."
+msgstr "We care about your privacy. The data of your X account (including your e-mail address) will never be linked to data about your views."
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:15
 msgid "Debaty"
 msgstr "Debates"
@@ -405,6 +429,10 @@ msgstr "Generacja Innowacja"
 #: src/constants/auth.ts:26
 msgid "Google"
 msgstr "Google"
+
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:121
+msgid "Gotowe"
+msgstr "Done"
 
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect.tsx:26
 msgid "Idziemy dalej"
@@ -517,6 +545,10 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
 msgstr "Full set!"
 
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:16
+msgid "Konto mogą założyć osoby, które mają ukończone 16 lat."
+msgstr "You need to be 16 or older to create an account."
+
 #: src/constants/auth.ts:40
 msgid "Kontynuuj z Facebookiem"
 msgstr "Continue with Facebook"
@@ -572,6 +604,10 @@ msgstr "Sign-in interrupted"
 msgctxt "checkpoint-axis-puzzle-ask"
 msgid "Mała zagadka"
 msgstr "A little puzzle"
+
+#: src/components/account/AccountSetupForm/AccountSetupFormConsents/AccountSetupFormConsents.tsx:39
+msgid "Mam ukończone 16 lat."
+msgstr "I am 16 or older."
 
 #: src/constants/checkpoint.ts:270
 msgctxt "checkpoint-nolan-path-partial"
@@ -658,6 +694,14 @@ msgstr "Main navigation"
 msgid "Nawigacja w stopce"
 msgstr "Footer navigation"
 
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:69
+msgid "Nazwa"
+msgstr "Name"
+
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:15
+msgid "Nazwa musi mieć co najmniej 2 znaki."
+msgstr "The name needs at least 2 characters."
+
 #. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
 #: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
 msgctxt "survey question: emphasised phrase"
@@ -688,6 +732,10 @@ msgstr "Signing in with {inflectedName} did not work. Try again in a moment or c
 #: src/components/account/SignInPanel/SignInPanelError/SignInPanelError.tsx:17
 msgid "Nie udało się zalogować. Spróbuj jeszcze raz."
 msgstr "Signing in did not work. Please try again."
+
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:109
+msgid "Nie udało się zapisać konta. Spróbuj jeszcze raz."
+msgstr "Your account could not be saved. Please try again."
 
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:17
 msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
@@ -896,6 +944,7 @@ msgstr "Learn what shapes your orientation"
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:58
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireSession.constants.ts:38
 msgid "Prawie gotowe"
 msgstr "Almost ready"
@@ -1070,6 +1119,10 @@ msgstr "The scales are tipping"
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:15
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Looking for your quadrant"
+
+#: src/components/account/AccountSetupForm/AccountSetupForm.tsx:59
+msgid "Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta."
+msgstr "This is how we will sign your quizzes. You can change the name later in your account settings."
 
 #: src/constants/checkpoint.ts:435
 msgctxt "checkpoint-axis-puzzle-hit"
@@ -1260,6 +1313,10 @@ msgstr "Village"
 msgid "Wolę nie podawać"
 msgstr "I prefer not to say"
 
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:14
+msgid "Wpisz nazwę, którą podpiszemy Twoje quizy."
+msgstr "Enter the name we will sign your quizzes with."
+
 #: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureField/SurveyEmailCaptureField.tsx:56
 msgid "Wpisz pełny adres e-mail, na przykład twoj@mail.com."
 msgstr "Enter a full e-mail address, for example your@mail.com."
@@ -1383,6 +1440,10 @@ msgstr "Save your results!"
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireDemographics/SurveyQuestionnaireDemographics.constants.ts:29
 msgid "Zasadnicze zawodowe"
 msgstr "Basic vocational"
+
+#: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:17
+msgid "Żeby założyć konto, zaakceptuj Regulamin i Politykę prywatności."
+msgstr "To create an account, accept the Terms and the Privacy policy."
 
 #: src/constants/checkpoint.ts:487
 msgctxt "checkpoint-position-puzzle-ask"

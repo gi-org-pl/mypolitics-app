@@ -54,3 +54,7 @@ export const AUTH_PROVIDERS: AuthProviderEntry[] = [
 
 export const getAuthProvider = (id: IdentityProvider): AuthProviderEntry =>
   AUTH_PROVIDERS.find((provider) => provider.id === id) ?? AUTH_PROVIDERS[0];
+
+// How long a display name may be, in characters as a person counts them.
+export const DISPLAY_NAME_MAX_LENGTH = 50;
+export const DISPLAY_NAME_MIN_LENGTH = 2;
