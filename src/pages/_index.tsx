@@ -11,16 +11,20 @@ import {
   HOME_QUIZZES,
 } from "@/constants/home";
 import { PATHS } from "@/constants/paths";
+import { useRequireAuth } from "@/utils/auth/useRequireAuth";
 import { doNothing } from "@/utils/function/doNothing";
 import { useHomeContent } from "@/utils/home/useHomeContent";
 
 // The spacing around and between the sections belongs to the page: the shell
 // adds none. Starting a quiz opens its address inside the app, without a full
 // page load; a quiz the app has no survey for ends on the not-found page.
-// Showing more quizzes and creating one have nothing behind them yet.
+// Creating a quiz needs an account, so it asks for one first; behind it there
+// is nothing yet - the editor starts there once it exists. Showing more
+// quizzes has nothing behind it yet either.
 export default function HomePage() {
   const navigate = useNavigate();
   const { promotions, features } = useHomeContent();
+  const requireAuth = useRequireAuth();
 
   return (
     <div className="mx-auto box-content flex max-w-300 flex-col gap-4 px-4 pt-4 pb-8 md:gap-8 md:pt-8 md:pb-24">
@@ -39,7 +43,7 @@ export default function HomePage() {
         quizzes={HOME_QUIZZES}
         onQuizStart={(quizId) => navigate(PATHS.quiz(quizId))}
         onShowMore={doNothing}
-        onCreate={doNothing}
+        onCreate={() => requireAuth("create-quiz", doNothing)}
       />
     </div>
   );

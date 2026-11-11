@@ -42,6 +42,7 @@ export const AccountSetupForm = ({
   termsHref,
   privacyHref,
   headingLevel,
+  cardLayout,
   headingId,
   descriptionId,
   onClose,
@@ -58,6 +59,7 @@ export const AccountSetupForm = ({
       heading={t`Prawie gotowe`}
       description={t`Tak podpiszemy Twoje quizy. Nazwę zmienisz później w ustawieniach konta.`}
       headingLevel={headingLevel}
+      layout={cardLayout}
       headingId={headingId}
       descriptionId={descriptionId}
       onClose={onClose}

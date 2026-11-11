@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+export type AuthCardLayout = "card" | "sheet-on-phone";
+
 export interface AuthCardProps {
   heading: string;
   description: ReactNode;
@@ -8,6 +10,6 @@ export interface AuthCardProps {
   descriptionId?: string; // and described by the line
   onClose?: () => void; // when given, a round close button stands in the header box
   isCloseDisabled?: boolean;
-  className?: string; // the dialog adjusts the corners and the width
+  layout?: AuthCardLayout; // the dialog is a bottom sheet on a phone
   children: ReactNode;
 }

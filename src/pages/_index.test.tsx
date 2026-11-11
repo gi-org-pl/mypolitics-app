@@ -1,6 +1,9 @@
-import { fireEvent, screen, within } from "@testing-library/react";
+import { act, fireEvent, screen, within } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+import { AuthDialogProvider } from "@/components/shared/AuthDialogProvider/AuthDialogProvider";
+import { AuthSessionProvider } from "@/components/shared/AuthSessionProvider/AuthSessionProvider";
 
 import {
   FEATURED_QUIZ,
@@ -9,6 +12,9 @@ import {
   HOME_QUIZZES,
 } from "@/constants/home";
 import { PATHS } from "@/constants/paths";
+import type { AuthAccount } from "@/types/auth";
+import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
+import { createFakeAuthClient } from "@/utils/vitest/auth/createFakeAuthClient";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import HomePage from "./_index";
@@ -50,11 +56,25 @@ const expectPanelQuizzes = (tabName: string, titles: string[]) => {
 };
 
 // The page starts a quiz by opening its address, so it is rendered inside a
-// router, next to a stand-in for the page of a quiz.
-const renderPage = () => {
+// router, next to a stand-in for the page of a quiz. It asks for an account
+// before creating a quiz, so it stands in the session and the dialog the
+// root of the app gives every page.
+const renderPage = (account: AuthAccount | null = null) => {
+  const client = createFakeAuthClient({
+    getSession: vi.fn().mockResolvedValue(account),
+  });
   const router = createMemoryRouter(
     [
-      { path: PATHS.home, element: <HomePage /> },
+      {
+        path: PATHS.home,
+        element: (
+          <AuthSessionProvider client={client}>
+            <AuthDialogProvider>
+              <HomePage />
+            </AuthDialogProvider>
+          </AuthSessionProvider>
+        ),
+      },
       { path: "/quizzes/:quizSlug", element: <p>Strona quizu</p> },
     ],
     { initialEntries: [PATHS.home] },
@@ -239,10 +259,38 @@ describe("<HomePage />", () => {
       const router = renderPage();
 
       fireEvent.click(screen.getByRole("button", { name: "Zobacz więcej" }));
-      fireEvent.click(screen.getByRole("button", { name: "Stwórz własny" }));
 
       expect(router.state.location.pathname).toBe(PATHS.home);
       expectPanelQuizzes("Wszystkie", [...ELECTORAL_TITLES, ...SOCIAL_TITLES]);
+    });
+  });
+
+  describe("when a signed-out visitor presses the create button", () => {
+    it("asks them to sign in, saying the quiz is kept on the account", async () => {
+      renderPage();
+
+      fireEvent.click(screen.getByRole("button", { name: "Stwórz własny" }));
+
+      const dialog = await screen.findByRole("dialog", {
+        name: "Najpierw zaloguj się",
+      });
+
+      expect(dialog).toHaveAccessibleDescription(
+        "Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada.",
+      );
+    });
+  });
+
+  describe("when a signed-in person presses the create button", () => {
+    it("opens no dialog and stays on the page", async () => {
+      const router = renderPage(createAuthAccount());
+      // The session is read when the page opens; let that answer arrive.
+      await act(async () => undefined);
+
+      fireEvent.click(screen.getByRole("button", { name: "Stwórz własny" }));
+
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(router.state.location.pathname).toBe(PATHS.home);
     });
   });
 });

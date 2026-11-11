@@ -116,3 +116,17 @@ export interface AuthSessionValue {
   // Asks the client for the session again.
   refresh: () => Promise<void>;
 }
+
+// Asks for an account before an action: runs it at once when signed in,
+// otherwise opens the auth dialog with the line of the intent and runs the
+// action once, after a successful sign-in. Closing the dialog runs nothing
+// and calls onCancel.
+export type RequireAuth = (
+  intent: AuthIntentKey,
+  action: () => void,
+  options?: { onCancel?: () => void },
+) => void;
+
+// The actions that need an account, each with the line the dialog shows.
+// Adding one means adding a key here and its line in AUTH_INTENTS.
+export type AuthIntentKey = "create-quiz";
