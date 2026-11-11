@@ -834,6 +834,10 @@ msgstr "Full results"
 msgid "Pełny opis"
 msgstr "Full description"
 
+#: src/pages/login.tsx:31
+msgid "Pierwsze logowanie zakłada konto, w którym tworzysz quizy. Quizy rozwiążesz bez logowania."
+msgstr "Signing in for the first time creates the account you make quizzes in. You can take quizzes without signing in."
+
 #: src/constants/home.ts:74
 msgid "Platformę tworzą wolontariusze ze wsparciem ekspertów. Nie przyjęliśmy ani złotówki ze środków publicznych ani zagranicznych."
 msgstr "The platform is built by volunteers with the support of experts. We have not accepted a single zloty of public or foreign funds."
@@ -1424,6 +1428,10 @@ msgstr "Looking into the files"
 #: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
 msgid "Zakres wykorzystania danych"
 msgstr "How the data is used"
+
+#: src/pages/login.tsx:30
+msgid "Zaloguj się lub załóż konto"
+msgstr "Sign in or create an account"
 
 #: src/components/account/SignInPanel/SignInPanel.tsx:58
 msgid "Zaloguj się przez {ownerName}"
