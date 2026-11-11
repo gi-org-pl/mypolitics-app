@@ -1,4 +1,5 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
+import { MemoryRouter, useNavigate } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useHeaderMenu } from "./useHeaderMenu";
@@ -13,7 +14,7 @@ const appendElement = <T extends keyof HTMLElementTagNameMap>(tagName: T) => {
 const renderOpenMenu = () => {
   const menu = appendElement("nav");
   const button = appendElement("button");
-  const view = renderHook(() => useHeaderMenu());
+  const view = renderHook(() => useHeaderMenu(), { wrapper: MemoryRouter });
 
   view.result.current.menuRef.current = menu;
   view.result.current.buttonRef.current = button;
@@ -30,19 +31,25 @@ describe("useHeaderMenu()", () => {
 
   describe("given a header that has just been rendered", () => {
     it("starts with the menu closed", () => {
-      const { result } = renderHook(() => useHeaderMenu());
+      const { result } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
 
       expect(result.current.isOpen).toBe(false);
     });
 
     it("gives the menu an id for the button to point at", () => {
-      const { result } = renderHook(() => useHeaderMenu());
+      const { result } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
 
       expect(result.current.menuId).not.toBe("");
     });
 
     it("keeps the same id between renders", () => {
-      const { result, rerender } = renderHook(() => useHeaderMenu());
+      const { result, rerender } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
       const { menuId } = result.current;
 
       rerender();
@@ -53,7 +60,9 @@ describe("useHeaderMenu()", () => {
 
   describe("when the menu is toggled", () => {
     it("opens it", () => {
-      const { result } = renderHook(() => useHeaderMenu());
+      const { result } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
 
       act(() => result.current.toggle());
 
@@ -61,7 +70,9 @@ describe("useHeaderMenu()", () => {
     });
 
     it("closes it when toggled again", () => {
-      const { result } = renderHook(() => useHeaderMenu());
+      const { result } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
 
       act(() => result.current.toggle());
       act(() => result.current.toggle());
@@ -77,6 +88,22 @@ describe("useHeaderMenu()", () => {
       act(() => result.current.close());
 
       expect(result.current.isOpen).toBe(false);
+    });
+  });
+
+  describe("when the app moves to another page while the menu is open", () => {
+    it("closes it, so a link followed from the keyboard does not leave it open", () => {
+      const { result } = renderHook(
+        () => ({ menu: useHeaderMenu(), navigate: useNavigate() }),
+        { wrapper: MemoryRouter },
+      );
+      act(() => result.current.menu.toggle());
+
+      act(() => {
+        void result.current.navigate("/quizzes");
+      });
+
+      expect(result.current.menu.isOpen).toBe(false);
     });
   });
 
@@ -112,7 +139,9 @@ describe("useHeaderMenu()", () => {
 
   describe("when the user presses anywhere while the menu is closed", () => {
     it("keeps it closed", () => {
-      const { result } = renderHook(() => useHeaderMenu());
+      const { result } = renderHook(() => useHeaderMenu(), {
+        wrapper: MemoryRouter,
+      });
 
       fireEvent.mouseDown(document.body);
 

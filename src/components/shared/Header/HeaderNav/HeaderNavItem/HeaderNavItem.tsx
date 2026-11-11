@@ -1,7 +1,11 @@
 import { Button } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react";
 import { Link } from "react-router";
-import { FOCUS_CLASS_NAME } from "@/constants/focus";
+import {
+  HEADER_PILL_ACTIVE_CLASS_NAME,
+  HEADER_PILL_CLASS_NAME,
+  HEADER_PILL_IDLE_CLASS_NAME,
+} from "@/constants/header";
 import { LINK_ICON_MASK_CLASS_NAME } from "@/constants/icon";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 import type { HeaderNavItemProps } from "./HeaderNavItem.types";
@@ -19,10 +23,8 @@ export const HeaderNavItem = ({
       type={isActive ? "primary" : "ghost"}
       variant="primary"
       size="regular"
-      className={`px-3 text-base leading-none font-bold ${FOCUS_CLASS_NAME} ${
-        isActive
-          ? "bg-gi-light-primary text-white"
-          : "bg-gi-light-primary/10 text-gi-light-primary hover:bg-gi-light-primary/20"
+      className={`${HEADER_PILL_CLASS_NAME} ${
+        isActive ? HEADER_PILL_ACTIVE_CLASS_NAME : HEADER_PILL_IDLE_CLASS_NAME
       }`}
       LeftIcon={
         <span
