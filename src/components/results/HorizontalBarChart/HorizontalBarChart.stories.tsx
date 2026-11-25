@@ -322,6 +322,15 @@ export const MissingValues: Story = {
   },
 };
 
+// No entry has a value - the parties linked to the identity of a result: a
+// list of names, each with its mark, and no bars.
+export const NoValues: Story = {
+  args: {
+    title: "Partie",
+    entries: [{ orientation: a }, { orientation: b }],
+  },
+};
+
 export const LongNames: Story = {
   args: {
     entries: [
