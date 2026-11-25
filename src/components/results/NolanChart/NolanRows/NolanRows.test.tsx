@@ -1,10 +1,8 @@
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import { getNolanPosition } from "@/utils/results/getNolanPosition";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
-import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
 import type { NolanAxis, NolanComparison } from "../NolanChart.types";
 import { NolanRows } from "./NolanRows";
 
@@ -104,9 +102,9 @@ describe("<NolanRows />", () => {
       const [horizontalRow, verticalRow] = getRows();
 
       expect(getCapColor(horizontalRow, "end")).toBe("");
-      expect(getCapColor(horizontalRow, "start")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor(horizontalRow, "start")).toBe(AXIS_OTHER_SIDE_COLOR);
       expect(getCapColor(verticalRow, "start")).toBe("");
-      expect(getCapColor(verticalRow, "end")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor(verticalRow, "end")).toBe(AXIS_OTHER_SIDE_COLOR);
     });
   });
 

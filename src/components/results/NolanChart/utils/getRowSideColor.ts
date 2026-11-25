@@ -1,6 +1,6 @@
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import type { NolanPoleSide } from "@/types/results";
 import { isDarkFill } from "@/utils/color/isDarkFill";
-import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
 
 export const getRowSideColor = (
   side: NolanPoleSide,
@@ -10,5 +10,5 @@ export const getRowSideColor = (
   if (!lean) return undefined;
   if (side === lean) return color;
 
-  return isDarkFill(color) ? ROW_OTHER_SIDE_COLOR : undefined;
+  return isDarkFill(color) ? AXIS_OTHER_SIDE_COLOR : undefined;
 };
