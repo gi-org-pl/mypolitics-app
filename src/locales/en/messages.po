@@ -1225,7 +1225,7 @@ msgstr "So far your answers point to the “{leading}” side."
 msgid "Twoje wyniki"
 msgstr "Your results"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:68
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:67
 msgid "Ty"
 msgstr "You"
 

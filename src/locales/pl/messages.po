@@ -1225,7 +1225,7 @@ msgstr "Twoje odpowiedzi wskazują jak dotąd na stronę „{leading}”."
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:68
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:67
 msgid "Ty"
 msgstr "Ty"
 
