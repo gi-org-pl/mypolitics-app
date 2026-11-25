@@ -634,6 +634,10 @@ msgstr "Main navigation"
 msgid "Nawigacja w stopce"
 msgstr "Footer navigation"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:38
+msgid "Nic nie pasuje do wyszukiwania."
+msgstr "Nothing matches the search."
+
 #. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
 #: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
 msgctxt "survey question: emphasised phrase"
@@ -1072,7 +1076,7 @@ msgstr "The scales are tipping"
 msgid "Szukaj"
 msgstr "Search"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:25
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:30
 msgid "Szukaj po nazwie"
 msgstr "Search by name"
 
