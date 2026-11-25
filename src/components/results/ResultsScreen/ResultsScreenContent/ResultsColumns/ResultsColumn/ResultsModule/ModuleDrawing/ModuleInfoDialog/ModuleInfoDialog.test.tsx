@@ -47,6 +47,13 @@ describe("<ModuleInfoDialog />", () => {
       );
     });
 
+    it("draws the description in a grey that is readable on the card", () => {
+      renderDialog();
+
+      expect(screen.getByText(DESCRIPTION)).toHaveClass("text-gi-dark-gray");
+      expect(screen.getByText(DESCRIPTION)).not.toHaveClass("text-gi-gray");
+    });
+
     it("draws the title and the description as text, never as markup", () => {
       renderDialog({
         title: "<b>Partie</b>",
