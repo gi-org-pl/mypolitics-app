@@ -56,6 +56,16 @@ describe("<SurveyControlsCount />", () => {
       expect(getIcon()).toHaveAttribute("aria-hidden", "true");
     });
 
+    it("hides the icon when the row of the controls is narrower than the design draws it, and keeps the number and its sentence", () => {
+      render(withI18n(30));
+
+      expect(getIcon()).toHaveClass("@max-[21.25rem]:hidden");
+      expect(screen.getByText("30")).not.toHaveClass("@max-[21.25rem]:hidden");
+      expect(
+        screen.getByText("Pozostałe pytania w kategorii: 30"),
+      ).toBeInTheDocument();
+    });
+
     it("keeps the icon visible when colours are forced", () => {
       render(withI18n(30));
 
