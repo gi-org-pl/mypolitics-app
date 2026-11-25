@@ -1175,7 +1175,7 @@ msgid "Trochę Cię nosi"
 msgstr "Trochę Cię nosi"
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.tsx:38
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.tsx:44
 msgid "Tryb porównania"
 msgstr "Tryb porównania"
 

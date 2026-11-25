@@ -63,6 +63,7 @@ export const ResultsComparison = ({
           state={state}
           resultId={result.id}
           orientations={orientations}
+          orientationLabel={resolved.header?.compareLabel}
           onModeChange={chooseMode}
           onFriendIdChange={enterFriendId}
           onOrientationPick={pickOrientation}

@@ -215,6 +215,10 @@ describe("OWN_RESULT_MODULES", () => {
 
       expect(header.values).toEqual([
         { key: "label.link", value: { pl: "Program", en: "Programme" } },
+        {
+          key: "label.compare",
+          value: { pl: "Z kandydatem", en: "With a candidate" },
+        },
       ]);
     });
   });

@@ -20,6 +20,7 @@ const SET = {
     lowMatch: "named",
     "label.link": "Program",
     "label.lowMatch": "Żadna tożsamość nie jest wystarczająco blisko.",
+    "label.compare": "Z kandydatem",
   },
   single_axis: { description: "Jedna oś.", marker: 20 },
   double_axis: { description: "Dwie strony osi.", marker: 80 },
@@ -170,6 +171,7 @@ describe("getModuleValues()", () => {
         lowMatch: "no_match",
         "label.link": undefined,
         "label.lowMatch": undefined,
+        "label.compare": undefined,
       });
       expect(
         Object.values(readMap({})).filter((value) => value !== undefined),
@@ -487,6 +489,7 @@ describe("getModuleValues()", () => {
         lowMatch: "no_match" | "named";
         "label.link": string | undefined;
         "label.lowMatch": string | undefined;
+        "label.compare": string | undefined;
       }>();
       expectTypeOf(traits).toEqualTypeOf<{
         title: string | undefined;

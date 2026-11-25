@@ -45,13 +45,19 @@ describe("getOwnResultModules()", () => {
       ]);
     });
 
-    it("holds the label of the link of the presidential quiz in Polish and in English", () => {
+    it("holds the label of the link and the name of the comparison of the presidential quiz in Polish and in English", () => {
       expect(
         getOwnResultModules(PRESIDENTIAL_SURVEY_ID, "pl")[0].values,
-      ).toEqual([{ key: "label.link", value: "Program" }]);
+      ).toEqual([
+        { key: "label.link", value: "Program" },
+        { key: "label.compare", value: "Z kandydatem" },
+      ]);
       expect(
         getOwnResultModules(PRESIDENTIAL_SURVEY_ID, "en")[0].values,
-      ).toEqual([{ key: "label.link", value: "Programme" }]);
+      ).toEqual([
+        { key: "label.link", value: "Programme" },
+        { key: "label.compare", value: "With a candidate" },
+      ]);
     });
 
     it("falls back to Polish for a language the list is not written in", () => {

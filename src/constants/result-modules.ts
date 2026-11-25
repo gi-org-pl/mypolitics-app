@@ -6,7 +6,9 @@ import type { OwnResultModule } from "@/types/results";
 // the old site showed for its quiz: which cards, in which order, with which
 // explanations, and what happens below a partial match - the identity quiz
 // named the closest identity all the same, with a notice, and said that there
-// is no closest party; the presidential quiz said that nobody is close.
+// is no closest party; the presidential quiz said that nobody is close. The
+// header of each also names the comparison after what it compares with - the
+// identities of one quiz, the candidates of the other - as the old site did.
 //
 // A record is written as the API would send it - its identifier a UUID, its
 // values a list of pairs of a key and a value - except that a text is a value
@@ -46,6 +48,13 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
           value: {
             pl: "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
             en: "Your views are not similar enough to any identity (less than 50% confidence).",
+          },
+        },
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z tożsamością",
+            en: "With an identity",
           },
         },
       ],
@@ -346,6 +355,13 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
           value: {
             pl: "Program",
             en: "Programme",
+          },
+        },
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z kandydatem",
+            en: "With a candidate",
           },
         },
       ],

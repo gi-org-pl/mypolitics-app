@@ -201,6 +201,10 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
   "label.link": LOCALIZED_TEXT,
   // What the header says under a leader it names below a partial match.
   "label.lowMatch": LOCALIZED_TEXT,
+  // The name of the comparison with the header's orientations, on its tab -
+  // one that says "with a candidate" in a quiz of candidates. Without it the
+  // tab says that it compares with an orientation.
+  "label.compare": LOCALIZED_TEXT,
   // What a ranking says when its selection leaves nothing to rank. With it
   // the card is drawn; without it there is no card.
   "label.empty": LOCALIZED_TEXT,
@@ -212,7 +216,13 @@ export const RESULT_MODULE_VALUE_DEFINITIONS = {
 // The keys each module type reads. A key that is not listed for a type is
 // never read from a record of that type. Every type reads `description`.
 export const RESULT_MODULE_KEYS = {
-  header: ["description", "lowMatch", "label.link", "label.lowMatch"],
+  header: [
+    "description",
+    "lowMatch",
+    "label.link",
+    "label.lowMatch",
+    "label.compare",
+  ],
   single_axis: ["description", "marker"],
   double_axis: ["description", "marker"],
   multi_axis: ["title", "description", "groupBy", "marker"],
