@@ -24,10 +24,9 @@ import { toRowSides } from "./utils/toRowSides";
 // stand. The word is part of the name of the control, and is written out
 // where colours are forced and the tint is gone.
 //
-// Opened, the two sides stand next to each other from the width the design
-// draws its narrow frame at, and one under the other on anything narrower.
-// The row is a container, so that width is its own. Its padding is the 16 px
-// of the design less its 1 px border, which the design draws inside the row.
+// Opened, the two sides stand next to each other at every width. Its padding
+// is the 16 px of the design less its 1 px border, which the design draws
+// inside the row.
 export const QuestionRow = ({
   compared,
   other,
@@ -39,7 +38,7 @@ export const QuestionRow = ({
   const { question, agreement } = compared;
 
   return (
-    <div className="@container w-full min-w-0 rounded-2xl border border-gi-dark-ash">
+    <div className="w-full min-w-0 rounded-2xl border border-gi-dark-ash">
       <button
         type="button"
         aria-expanded={isOpen}

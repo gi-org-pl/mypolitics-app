@@ -68,6 +68,17 @@ describe("<PillTabs />", () => {
         "[&>[role=tab]]:basis-34",
       );
     });
+
+    it("never draws a pill narrower than its label", () => {
+      renderTabs();
+
+      expect(screen.getByRole("tablist")).toHaveClass(
+        "[&>[role=tab]]:min-w-fit",
+      );
+      expect(screen.getByRole("tablist")).not.toHaveClass(
+        "[&>[role=tab]]:min-w-0",
+      );
+    });
   });
 
   describe("when another tab is pressed", () => {
