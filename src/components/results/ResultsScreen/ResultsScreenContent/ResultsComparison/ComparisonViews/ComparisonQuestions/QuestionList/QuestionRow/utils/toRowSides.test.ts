@@ -93,6 +93,26 @@ describe("toRowSides()", () => {
     });
   });
 
+  describe("given an orientation whose answer shared with the taker is not the first of the question", () => {
+    it("gives the shared answer first, so that it stands level with the taker's, then the rest in the order of the question", () => {
+      const prices = findCompared(orientationQuestions, "prices");
+      const [first, second, third] = prices.question.possibleAnswers;
+      const [other] = toRowSides(
+        { ...prices, otherAnswers: [third, second, first] },
+        progressivism,
+        "Ty",
+      );
+
+      expect(other.answers.map(({ id, agreement }) => [id, agreement])).toEqual(
+        [
+          ["prices-a1", Agreement.Agree],
+          ["prices-a3", Agreement.Disagree],
+          ["prices-a2", Agreement.Disagree],
+        ],
+      );
+    });
+  });
+
   describe("given an orientation no answer of the question lists", () => {
     it("gives the other side no answer, and the taker theirs", () => {
       const [other, taker] = withOrientation("rents");

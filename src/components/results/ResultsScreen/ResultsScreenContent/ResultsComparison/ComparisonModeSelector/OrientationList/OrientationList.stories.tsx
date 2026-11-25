@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
+import { fn, userEvent, within } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import {
@@ -60,4 +60,18 @@ export const NoColourNoImage: Story = {
       ...rest,
     ],
   },
+};
+
+// A search that no name contains: the line that says so takes the place of
+// the list.
+export const NothingFound: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.type(
+      within(canvasElement).getByRole("searchbox", {
+        name: "Szukaj po nazwie",
+      }),
+      "zzzz",
+    );
+  },
+  globals: { viewport: { value: "iphone6" } },
 };
