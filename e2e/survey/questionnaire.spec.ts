@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 
 import { openPage } from "../layout/openPage";
 import {
@@ -226,6 +226,42 @@ const expectNoStoredSession = async (page: Page) => {
     ),
   ).toEqual([]);
 };
+
+// Whether a text is cut: its box is narrower than the text it holds.
+const isCut = (text: Locator) =>
+  text.evaluate((element) => element.scrollWidth > element.clientWidth);
+
+// Whether the page is wider than the window.
+const scrollsSideways = (page: Page) =>
+  page.evaluate(
+    () =>
+      document.documentElement.scrollWidth >
+      document.documentElement.clientWidth,
+  );
+
+// On how many lines a word of an element is drawn: one, unless it is broken.
+const countLinesOf = (element: Locator, word: string) =>
+  element.evaluate((node, searched) => {
+    const text = [...node.querySelectorAll("*"), node]
+      .flatMap((parent) => [...parent.childNodes])
+      .find(
+        (child) =>
+          child.nodeType === Node.TEXT_NODE &&
+          (child.textContent ?? "").includes(searched),
+      );
+
+    if (!text) return 0;
+
+    const range = document.createRange();
+    const start = (text.textContent ?? "").indexOf(searched);
+
+    range.setStart(text, start);
+    range.setEnd(text, start + searched.length);
+
+    return new Set(
+      [...range.getClientRects()].map(({ top }) => Math.round(top)),
+    ).size;
+  }, word);
 
 const getSessionId = (result: unknown): string =>
   (result as { sessionId: string }).sessionId;
@@ -899,6 +935,50 @@ test.describe("Feature: Questionnaire", () => {
       await expect(page).toHaveURL(UNKNOWN_QUIZ_PATH);
       expect(api.projectRequests).toHaveLength(0);
       expect(api.surveyRequests).toHaveLength(0);
+    });
+  });
+
+  test("Scenario: A taker on a 360 px phone reads the category of the question", async ({
+    page,
+  }) => {
+    await test.step("Given a user on a 360 px wide screen opened the quiz and skipped the categories", async () => {
+      await page.setViewportSize({ width: 360, height: 740 });
+      await openQuiz(page);
+      await getButton(page, "Pomiń").click();
+    });
+
+    await test.step("Then the category in the pill is written in full", async () => {
+      await expectQuestion(page, FIRST_QUESTION);
+      await expectPill(page, "Gospodarka", 2);
+      expect(
+        await isCut(
+          page.getByRole("main").getByText("Gospodarka", { exact: true }),
+        ),
+      ).toBe(false);
+      expect(await scrollsSideways(page)).toBe(false);
+    });
+  });
+
+  test("Scenario: A taker on a 320 px screen reads the demographics step", async ({
+    page,
+  }) => {
+    await test.step("Given a user on a 320 px wide screen opened the quiz and answered every question", async () => {
+      await page.setViewportSize({ width: 320, height: 740 });
+      await answerEveryQuestion(page);
+    });
+
+    await test.step("Then no word of the heading is broken, the field names are whole and the page does not scroll sideways", async () => {
+      const heading = page.getByRole("heading", { name: "Twoja tożsamość" });
+
+      expect(await countLinesOf(heading, "tożsamość")).toBe(1);
+      expect(
+        await isCut(
+          getButton(page, "Wielkość miejsca zamieszkania").getByText(
+            "Wielkość miejsca zamieszkania",
+          ),
+        ),
+      ).toBe(false);
+      expect(await scrollsSideways(page)).toBe(false);
     });
   });
 });
