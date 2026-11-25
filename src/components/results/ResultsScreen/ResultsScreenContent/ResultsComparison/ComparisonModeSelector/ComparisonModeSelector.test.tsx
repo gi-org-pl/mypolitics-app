@@ -62,6 +62,21 @@ describe("<ComparisonModeSelector />", () => {
       ]);
     });
 
+    it("names the orientation mode as the quiz names it", () => {
+      renderSelector({ orientationLabel: "  Z kandydatem " });
+
+      expect(screen.getAllByRole("tab").map((tab) => tab.textContent)).toEqual([
+        "Ze znajomym",
+        "Z kandydatem",
+      ]);
+    });
+
+    it("keeps its own name of the orientation mode when the quiz gives a blank one", () => {
+      renderSelector({ orientationLabel: " " });
+
+      expect(getTab("Z orientacją")).toBeInTheDocument();
+    });
+
     it("starts on the friend mode", () => {
       renderSelector();
 

@@ -84,6 +84,23 @@ describe("<ResultsComparison />", () => {
         expect(queryBar()).not.toBeInTheDocument();
         expect(getResultMock).not.toHaveBeenCalled();
       });
+
+      it("names the orientation mode as the header of the quiz names the comparison", () => {
+        renderComparison({
+          resolved: {
+            ...moduleTaker.resolved,
+            header: {
+              ...moduleTaker.resolved.header,
+              lowMatch: "no_match",
+              compareLabel: "Z kandydatem",
+            },
+          },
+        });
+
+        expect(
+          screen.getAllByRole("tab").map((tab) => tab.textContent),
+        ).toEqual(["Ze znajomym", "Z kandydatem"]);
+      });
     });
 
     describe("given the friend mode", () => {

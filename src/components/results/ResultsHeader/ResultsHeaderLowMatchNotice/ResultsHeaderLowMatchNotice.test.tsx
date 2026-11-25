@@ -17,10 +17,16 @@ describe("<ResultsHeaderLowMatchNotice />", () => {
       expect(getNotice()).toHaveTextContent(TEXT);
     });
 
-    it("draws it in the colour of the band of no match, on a tint of that colour", () => {
+    it("draws it on a tint of the colour of the band of no match", () => {
       render(<ResultsHeaderLowMatchNotice text={TEXT} />);
 
       expect(getNotice()).toHaveClass("text-gi-red", "bg-current/10");
+    });
+
+    it("draws the text itself in the primary colour, which can be read on that tint", () => {
+      render(<ResultsHeaderLowMatchNotice text={TEXT} />);
+
+      expect(screen.getByText(TEXT)).toHaveClass("text-gi-primary");
     });
 
     it("wraps the text and never cuts it", () => {

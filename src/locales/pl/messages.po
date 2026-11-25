@@ -634,6 +634,10 @@ msgstr "Nawigacja główna"
 msgid "Nawigacja w stopce"
 msgstr "Nawigacja w stopce"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:38
+msgid "Nic nie pasuje do wyszukiwania."
+msgstr "Nic nie pasuje do wyszukiwania."
+
 #. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
 #: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
 msgctxt "survey question: emphasised phrase"
@@ -1072,7 +1076,7 @@ msgstr "Szala się przechyla"
 msgid "Szukaj"
 msgstr "Szukaj"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:25
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:30
 msgid "Szukaj po nazwie"
 msgstr "Szukaj po nazwie"
 
@@ -1171,7 +1175,7 @@ msgid "Trochę Cię nosi"
 msgstr "Trochę Cię nosi"
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.tsx:38
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.tsx:44
 msgid "Tryb porównania"
 msgstr "Tryb porównania"
 
@@ -1221,7 +1225,7 @@ msgstr "Twoje odpowiedzi wskazują jak dotąd na stronę „{leading}”."
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
 
-#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:68
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:67
 msgid "Ty"
 msgstr "Ty"
 

@@ -272,6 +272,7 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
         "lowMatch",
         "label.link",
         "label.lowMatch",
+        "label.compare",
         "label.empty",
         ...NOLAN_CHART_LABEL_KEYS,
         ...NOLAN_CHART_COLOR_KEYS,
@@ -322,7 +323,13 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
 describe("RESULT_MODULE_KEYS", () => {
   it("lists the keys each module type reads, as the spec does", () => {
     expect(RESULT_MODULE_KEYS).toEqual({
-      header: ["description", "lowMatch", "label.link", "label.lowMatch"],
+      header: [
+        "description",
+        "lowMatch",
+        "label.link",
+        "label.lowMatch",
+        "label.compare",
+      ],
       single_axis: ["description", "marker"],
       double_axis: ["description", "marker"],
       multi_axis: ["title", "description", "groupBy", "marker"],

@@ -268,7 +268,7 @@ const candidateQuiz: Survey = createSurvey({
   resultModules: [
     createResultModule("candidate-header", "header", {
       orientationIds: candidateIds,
-      values: { "label.link": "Program" },
+      values: { "label.link": "Program", "label.compare": "Z kandydatem" },
     }),
     createResultModule("candidate-ranking", "horizontal_bar", {
       position: 1,

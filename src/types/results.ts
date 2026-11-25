@@ -261,6 +261,7 @@ export interface ResolvedHeader {
   linkLabel?: string;
   lowMatch: ResultModuleLowMatch; // what the header does with it below a partial match
   lowMatchLabel?: string; // what it says under one it names all the same
+  compareLabel?: string; // the name of the comparison with its orientations. Absent = the app's own
 }
 
 export interface ResolvedResult {

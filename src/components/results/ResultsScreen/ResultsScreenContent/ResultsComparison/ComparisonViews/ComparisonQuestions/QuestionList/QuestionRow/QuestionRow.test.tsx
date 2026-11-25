@@ -188,23 +188,20 @@ describe("<QuestionRow />", () => {
       );
     });
 
-    it("draws the sides next to each other from the narrow width of the design, and one under the other below it", () => {
-      const { container } = renderOpen({});
+    it("draws the sides next to each other at every width, as the design does", () => {
+      renderOpen({});
 
-      expect(container.firstElementChild).toHaveClass("@container");
-      expect(getSide("Ty").parentElement).toHaveClass(
-        "grid",
-        "grid-cols-1",
-        "@[19.875rem]:grid-cols-2",
+      expect(getSide("Ty").parentElement).toHaveClass("grid", "grid-cols-2");
+      expect(getSide("Ty").parentElement?.className).not.toMatch(
+        /grid-cols-1|@\[/,
       );
     });
 
-    it("says how much room the name of the other side has: its own half under each other, and up to the name of the taker next to each other", () => {
+    it("says how much room the name of the other side has: up to the name of the taker", () => {
       renderOpen({});
 
       expect(getSide("Ty").parentElement).toHaveClass(
-        "[--side-name-room:100%]",
-        "@[19.875rem]:[--side-name-room:calc(200%+0.5rem-5rem)]",
+        "[--side-name-room:calc(200%+0.5rem-5rem)]",
       );
     });
   });

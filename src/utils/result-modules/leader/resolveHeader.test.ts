@@ -94,6 +94,26 @@ describe("resolveHeader()", () => {
     });
   });
 
+  describe("given a header record that names the comparison with its orientations", () => {
+    it("returns that name", () => {
+      expect(
+        resolveWith([
+          toHeader({
+            orientationIds: ["socialist"],
+            values: { "label.compare": "Z kandydatem" },
+          }),
+        ])?.compareLabel,
+      ).toBe("Z kandydatem");
+    });
+
+    it("returns no name when the record gives none", () => {
+      expect(
+        resolveWith([toHeader({ orientationIds: ["socialist"] })])
+          ?.compareLabel,
+      ).toBeUndefined();
+    });
+  });
+
   describe("given a header record with no label for the link", () => {
     it("returns no link label", () => {
       expect(

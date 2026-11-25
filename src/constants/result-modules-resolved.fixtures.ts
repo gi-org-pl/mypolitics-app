@@ -82,6 +82,7 @@ const RESOLVED = {
       lowMatch: "named",
       lowMatchLabel:
         "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+      compareLabel: "Z tożsamością",
     },
     modules: [
       {
@@ -455,6 +456,7 @@ const RESOLVED = {
       confidence: 100,
       linkLabel: "Program",
       lowMatch: "no_match",
+      compareLabel: "Z kandydatem",
     },
     modules: [
       {

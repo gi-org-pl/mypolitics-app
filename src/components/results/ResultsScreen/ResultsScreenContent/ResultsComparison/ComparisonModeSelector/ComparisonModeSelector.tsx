@@ -3,6 +3,7 @@ import { useLingui } from "@lingui/react/macro";
 import { PillTabs } from "@/components/results/PillTabs/PillTabs";
 import { ComparisonMode } from "@/types/comparison";
 import { getTabPanelIdentity } from "@/utils/dom/getTabPanelIdentity";
+import { toTrimmedText } from "@/utils/text/toTrimmedText";
 import {
   COMPARISON_MODE_LABELS,
   COMPARISON_MODES,
@@ -18,11 +19,15 @@ import { getFriendNotice } from "./utils/getFriendNotice";
 // orientations of the quiz.
 //
 // A quiz that offers no orientation has one mode: the form of a friend
-// stands alone, with no tab list over it and as no tab panel.
+// stands alone, with no tab list over it and as no tab panel. A quiz may name
+// the orientation mode after what its orientations are - a candidate, in a
+// quiz of candidates; otherwise the tab says that it compares with an
+// orientation.
 export const ComparisonModeSelector = ({
   state,
   resultId,
   orientations,
+  orientationLabel,
   onModeChange,
   onFriendIdChange,
   onOrientationPick,
@@ -30,6 +35,7 @@ export const ComparisonModeSelector = ({
   const { i18n, t } = useLingui();
   const hasModes = orientations.length > 0;
   const { id, labelledBy } = getTabPanelIdentity(state.mode);
+  const ownOrientationLabel = toTrimmedText(orientationLabel);
 
   return (
     <div className="flex w-full min-w-0 flex-col gap-4">
@@ -38,7 +44,10 @@ export const ComparisonModeSelector = ({
           label={t`Tryb porównania`}
           tabs={COMPARISON_MODES.map((value) => ({
             value,
-            label: i18n._(COMPARISON_MODE_LABELS[value]),
+            label:
+              value === ComparisonMode.Orientation && ownOrientationLabel
+                ? ownOrientationLabel
+                : i18n._(COMPARISON_MODE_LABELS[value]),
           }))}
           value={state.mode}
           onChange={onModeChange}
