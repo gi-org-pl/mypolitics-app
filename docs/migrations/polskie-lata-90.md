@@ -6,16 +6,19 @@ verification.
 
 ## Start
 
-1. Add the temporary local mapping below to `src/constants/survey.ts`. Do not
-   commit it: the mock project ID does not exist in production.
+1. In one terminal, run `node server.mjs 4010`.
+2. In another, run:
 
-   ```ts
-   "polskie-lata-90": "polskie-lata-90-mock-project",
+   ```sh
+   VITE_API_URL=http://localhost:4010/api \
+   VITE_POLISH_NINETIES_PROJECT_ID=polskie-lata-90-mock-project \
+   yarn dev
    ```
 
-2. In one terminal, run `node server.mjs 4010`.
-3. In another, run `VITE_API_URL=http://localhost:4010/api yarn dev`.
-4. Open `/quizzes/polskie-lata-90`, answer the questions, and inspect the
+   The project ID is an environment-only override, so it cannot be
+   accidentally committed as a production mapping.
+
+3. Open `/quizzes/polskie-lata-90`, answer the questions, and inspect the
    resulting `/results/<uuid>` page.
 
 The mock reads `quiz-data-1MRfrZ26Fl.json` and
