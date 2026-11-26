@@ -6,21 +6,22 @@ import { describe, expect, it } from "vitest";
 
 import { CompassMap } from "@/components/shared/CompassMap/CompassMap";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
-import { readParam } from "@/utils/result-modules/params/readParam";
+import type { ResultModuleValueKind } from "@/types/results";
+import { readValue } from "@/utils/result-modules/values/readValue";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import {
+  COLOR_KEY_PREFIX,
   DEFAULT_COMPASS_QUADRANTS,
   DEFAULT_VISIBLE_ROWS,
-  HEADER_LINK_SLOT,
   HEADER_MODULE_TYPE,
+  LABEL_KEY_PREFIX,
   MATCH_BAND_COLORS,
   RESULT_MODULE_COLUMNS,
   RESULT_MODULE_DEFAULTS,
-  RESULT_MODULE_PARAM_DEFINITIONS,
-  RESULT_MODULE_PARAMS,
-  RESULT_MODULE_SLOTS,
+  RESULT_MODULE_KEYS,
   RESULT_MODULE_TYPES,
+  RESULT_MODULE_VALUE_DEFINITIONS,
 } from "./results";
 
 const TOKENS = {
@@ -143,7 +144,7 @@ describe("RESULT_MODULE_TYPES", () => {
 });
 
 describe("RESULT_MODULE_DEFAULTS", () => {
-  it("holds what the spec gives a field that is left out, and no parameter", () => {
+  it("holds what the spec gives a field that is left out, and no value of a key", () => {
     expect(RESULT_MODULE_DEFAULTS).toEqual({ column: "start" });
   });
 
@@ -153,17 +154,60 @@ describe("RESULT_MODULE_DEFAULTS", () => {
   });
 });
 
-describe("RESULT_MODULE_PARAM_DEFINITIONS", () => {
-  it("defines the parameters of the spec, each with what it may hold and its default", () => {
-    expect(RESULT_MODULE_PARAM_DEFINITIONS).toEqual({
+describe("HEADER_MODULE_TYPE", () => {
+  it("is the header, one of the types the API sends", () => {
+    expect(HEADER_MODULE_TYPE).toBe("header");
+    expect(RESULT_MODULE_TYPES).toContain(HEADER_MODULE_TYPE);
+  });
+});
+
+// The keys of the map as the spec lists them, written out here on their own:
+// the table is not asked what it holds.
+const LEVELS = ["Moderate", "Extreme"];
+const CORNERS = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
+const NOLAN_CHART_LABEL_KEYS = [
+  "centre",
+  ...["horizontal", "vertical"].flatMap((axis) =>
+    ["Start", "End"].flatMap((pole) =>
+      LEVELS.map((level) => `${axis}${pole}${level}`),
+    ),
+  ),
+  ...CORNERS.flatMap((corner) =>
+    LEVELS.flatMap((level) => [`${corner}${level}`, `${corner}${level}Short`]),
+  ),
+].map((name) => `label.${name}`);
+
+const NOLAN_CHART_COLOR_KEYS = CORNERS.map((corner) => `color.${corner}`);
+
+const KINDS: ResultModuleValueKind[] = [
+  "text",
+  "localizedText",
+  "number",
+  "choice",
+  "boolean",
+  "color",
+];
+
+const LOCALIZED_TEXT = { kind: "localizedText" };
+const COLOR = { kind: "color" };
+
+const DEFINITIONS: Record<string, { kind: string }> =
+  RESULT_MODULE_VALUE_DEFINITIONS;
+
+describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
+  it("defines the title, the description, the four settings and the label of the header's link, each with what it may hold and its default", () => {
+    expect(RESULT_MODULE_VALUE_DEFINITIONS).toMatchObject({
+      title: LOCALIZED_TEXT,
+      description: LOCALIZED_TEXT,
       selection: {
         kind: "choice",
-        values: ["all", "linked_to_leader"],
+        choices: ["all", "linked_to_leader"],
         fallback: "all",
       },
       groupBy: {
         kind: "choice",
-        values: ["none", "category"],
+        choices: ["none", "category"],
         fallback: "none",
       },
       marker: {
@@ -182,114 +226,134 @@ describe("RESULT_MODULE_PARAM_DEFINITIONS", () => {
         nullable: false,
         fallback: 3,
       },
+      "label.link": LOCALIZED_TEXT,
     });
     expect(DEFAULT_VISIBLE_ROWS).toBe(3);
   });
 
-  it.each(
-    Object.entries(RESULT_MODULE_PARAM_DEFINITIONS),
-  )("gives %s a default that its own definition reads as itself", (_, definition) => {
-    expect(readParam(definition, definition.fallback)).toBe(
-      definition.fallback,
+  it("defines a text per language for the name of the middle, of a lean along each axis and of each corner of the map", () => {
+    expect(NOLAN_CHART_LABEL_KEYS).toHaveLength(25);
+
+    for (const key of NOLAN_CHART_LABEL_KEYS) {
+      expect(DEFINITIONS[key]).toStrictEqual(LOCALIZED_TEXT);
+    }
+  });
+
+  it("defines a colour for each corner of the map", () => {
+    expect([...NOLAN_CHART_COLOR_KEYS].sort()).toEqual(
+      Object.keys(DEFAULT_COMPASS_QUADRANTS)
+        .map((corner) => `color.${corner}`)
+        .sort(),
     );
+
+    for (const key of NOLAN_CHART_COLOR_KEYS) {
+      expect(DEFINITIONS[key]).toStrictEqual(COLOR);
+    }
+  });
+
+  it("defines no other key", () => {
+    expect(Object.keys(RESULT_MODULE_VALUE_DEFINITIONS).sort()).toEqual(
+      [
+        "title",
+        "description",
+        "selection",
+        "groupBy",
+        "marker",
+        "visibleRows",
+        "label.link",
+        ...NOLAN_CHART_LABEL_KEYS,
+        ...NOLAN_CHART_COLOR_KEYS,
+      ].sort(),
+    );
+  });
+
+  // The prefix says what kind of value follows.
+  it("starts the key of a colour with `color.`, and holds a text under every key that starts with `label.`", () => {
+    expect(LABEL_KEY_PREFIX).toBe("label.");
+    expect(COLOR_KEY_PREFIX).toBe("color.");
+
+    for (const [key, { kind }] of Object.entries(DEFINITIONS)) {
+      expect([key, key.startsWith(COLOR_KEY_PREFIX)]).toEqual([
+        key,
+        kind === "color",
+      ]);
+
+      if (key.startsWith(LABEL_KEY_PREFIX)) {
+        expect([key, kind]).toEqual([key, "localizedText"]);
+      }
+    }
+  });
+
+  it("gives every key one of the six kinds a value is read by", () => {
+    for (const { kind } of Object.values(DEFINITIONS)) {
+      expect(KINDS).toContain(kind);
+    }
+  });
+
+  it.each(
+    Object.entries(RESULT_MODULE_VALUE_DEFINITIONS),
+  )("gives %s a default that its own definition reads as itself, or none", (_, definition) => {
+    expect(
+      "fallback" in definition
+        ? readValue(definition, definition.fallback)
+        : readValue(definition),
+    ).toBe("fallback" in definition ? definition.fallback : undefined);
+  });
+
+  it("holds a key that follows the contract of the API: letters, digits, dots and underscores, 64 at most", () => {
+    for (const key of Object.keys(RESULT_MODULE_VALUE_DEFINITIONS)) {
+      expect(key).toMatch(/^[A-Za-z0-9._]{1,64}$/);
+    }
   });
 });
 
-describe("RESULT_MODULE_PARAMS", () => {
-  it("lists the parameters each module type reads, as the spec does", () => {
-    expect(RESULT_MODULE_PARAMS).toEqual({
-      header: [],
-      single_axis: ["marker"],
-      double_axis: ["marker"],
-      multi_axis: ["groupBy", "marker"],
-      horizontal_bar: ["selection", "groupBy", "visibleRows"],
-      nolan_chart: [],
-      archetype: [],
-      traits: [],
+describe("RESULT_MODULE_KEYS", () => {
+  it("lists the keys each module type reads, as the spec does", () => {
+    expect(RESULT_MODULE_KEYS).toEqual({
+      header: ["description", "label.link"],
+      single_axis: ["description", "marker"],
+      double_axis: ["description", "marker"],
+      multi_axis: ["title", "description", "groupBy", "marker"],
+      horizontal_bar: [
+        "title",
+        "description",
+        "selection",
+        "groupBy",
+        "visibleRows",
+      ],
+      nolan_chart: expect.any(Array),
+      archetype: ["title", "description"],
+      traits: ["title", "description"],
     });
+    expect([...RESULT_MODULE_KEYS.nolan_chart].sort()).toEqual(
+      [
+        "description",
+        ...NOLAN_CHART_LABEL_KEYS,
+        ...NOLAN_CHART_COLOR_KEYS,
+      ].sort(),
+    );
   });
 
-  it("lists every module type, and only names that are defined", () => {
-    expect(Object.keys(RESULT_MODULE_PARAMS)).toEqual([...RESULT_MODULE_TYPES]);
+  it("lists every module type, and only keys that are defined", () => {
+    expect(Object.keys(RESULT_MODULE_KEYS)).toEqual([...RESULT_MODULE_TYPES]);
 
-    for (const name of Object.values(RESULT_MODULE_PARAMS).flat()) {
-      expect(RESULT_MODULE_PARAM_DEFINITIONS).toHaveProperty(name);
+    for (const key of Object.values(RESULT_MODULE_KEYS).flat()) {
+      expect(RESULT_MODULE_VALUE_DEFINITIONS).toHaveProperty([key]);
     }
+  });
+
+  it.each(
+    RESULT_MODULE_TYPES,
+  )("lists the description for %s, and no key twice", (type) => {
+    const keys: readonly string[] = RESULT_MODULE_KEYS[type];
+
+    expect(keys).toContain("description");
+    expect(new Set(keys).size).toBe(keys.length);
   });
 
   it("leaves no definition unread", () => {
     expect(
-      [...new Set(Object.values(RESULT_MODULE_PARAMS).flat())].sort(),
-    ).toEqual(Object.keys(RESULT_MODULE_PARAM_DEFINITIONS).sort());
-  });
-});
-
-const LEVELS = ["Moderate", "Extreme"];
-const CORNERS = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
-
-const NOLAN_CHART_LABELS = [
-  "centre",
-  ...["horizontal", "vertical"].flatMap((axis) =>
-    ["Start", "End"].flatMap((pole) =>
-      LEVELS.map((level) => `${axis}${pole}${level}`),
-    ),
-  ),
-  ...CORNERS.flatMap((corner) =>
-    LEVELS.flatMap((level) => [`${corner}${level}`, `${corner}${level}Short`]),
-  ),
-];
-
-describe("HEADER_MODULE_TYPE", () => {
-  it("is the header, one of the types the API sends", () => {
-    expect(HEADER_MODULE_TYPE).toBe("header");
-    expect(RESULT_MODULE_TYPES).toContain(HEADER_MODULE_TYPE);
-  });
-});
-
-describe("HEADER_LINK_SLOT", () => {
-  it("is the one label slot of the header", () => {
-    expect(RESULT_MODULE_SLOTS[HEADER_MODULE_TYPE].labels).toEqual([
-      HEADER_LINK_SLOT,
-    ]);
-  });
-});
-
-describe("RESULT_MODULE_SLOTS", () => {
-  it("has the slots of every type", () => {
-    expect(Object.keys(RESULT_MODULE_SLOTS).sort()).toEqual(
-      [...RESULT_MODULE_TYPES].sort(),
-    );
-  });
-
-  it("gives the header the label of its link and no colour", () => {
-    expect(RESULT_MODULE_SLOTS.header).toEqual({
-      labels: ["link"],
-      colors: [],
-    });
-  });
-
-  it("gives the Nolan chart the names of the middle, of a lean along each axis and of each corner", () => {
-    const { labels } = RESULT_MODULE_SLOTS.nolan_chart;
-
-    expect(labels).toHaveLength(25);
-    expect([...labels].sort()).toEqual([...NOLAN_CHART_LABELS].sort());
-  });
-
-  it("gives the Nolan chart a colour for each corner", () => {
-    expect(RESULT_MODULE_SLOTS.nolan_chart.colors).toEqual(CORNERS);
-    expect([...RESULT_MODULE_SLOTS.nolan_chart.colors].sort()).toEqual(
-      Object.keys(DEFAULT_COMPASS_QUADRANTS).sort(),
-    );
-  });
-
-  it.each([
-    ["single_axis"],
-    ["double_axis"],
-    ["multi_axis"],
-    ["horizontal_bar"],
-    ["archetype"],
-    ["traits"],
-  ] as const)("gives %s no slot", (type) => {
-    expect(RESULT_MODULE_SLOTS[type]).toEqual({ labels: [], colors: [] });
+      [...new Set(Object.values(RESULT_MODULE_KEYS).flat())].sort(),
+    ).toEqual(Object.keys(RESULT_MODULE_VALUE_DEFINITIONS).sort());
   });
 });

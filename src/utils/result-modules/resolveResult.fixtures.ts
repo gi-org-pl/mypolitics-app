@@ -131,49 +131,52 @@ export const moduleQuiz: Survey = createSurvey({
   resultModules: [
     createResultModule("header", "header", {
       orientationIds: ["liberal", "socialist", "anarchist"],
-      labels: { link: "Zobacz stronę" },
+      values: { "label.link": "Zobacz stronę" },
     }),
     createResultModule("identity", "archetype", {
       position: 1,
       column: "end",
-      title: "Tożsamość",
       orientationIds: ["liberal", "socialist", "anarchist"],
+      values: { title: "Tożsamość" },
     }),
     createResultModule("ecology", "single_axis", {
       position: 2,
       orientationIds: ["green"],
-      params: { marker: 60 },
+      values: { marker: 60 },
     }),
     createResultModule("economy", "double_axis", {
       position: 3,
       column: "end",
-      description: "Jak blisko ci do każdej ze stron osi.",
       axisIds: ["economy-axis"],
-      params: { marker: null },
+      values: {
+        description: "Jak blisko ci do każdej ze stron osi.",
+        marker: null,
+      },
     }),
     createResultModule("ideologies", "multi_axis", {
       position: 4,
-      title: "Ideologie",
       axisIds: ["society-axis", "economy-axis"],
-      params: { groupBy: "category" },
+      values: { title: "Ideologie", groupBy: "category" },
     }),
     createResultModule("parties", "horizontal_bar", {
       position: 5,
-      title: "Partie",
       orientationIds: ["party-left", "party-right", "party-green"],
-      params: { selection: "linked_to_leader", visibleRows: 2 },
+      values: {
+        title: "Partie",
+        selection: "linked_to_leader",
+        visibleRows: 2,
+      },
     }),
     createResultModule("compass", "nolan_chart", {
       position: 6,
       column: "end",
       axisIds: ["compass-x", "compass-y"],
-      labels: { centre: "Centrum" },
-      colors: { topLeft: "#ff0000" },
+      values: { "label.centre": "Centrum", "color.topLeft": "#ff0000" },
     }),
     createResultModule("traits", "traits", {
       position: 7,
-      title: "Cechy",
       orientationIds: ["brave", "calm"],
+      values: { title: "Cechy" },
     }),
   ],
 });

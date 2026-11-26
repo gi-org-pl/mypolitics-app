@@ -60,7 +60,7 @@ describe("readSurveyResultModules()", () => {
           undefined,
           { id: IDENTITY_SURVEY_ID, language },
           known,
-        ).flatMap(({ title }) => title ?? []),
+        ).flatMap(({ values }) => values.title ?? []),
       ).toEqual(titles);
     });
 

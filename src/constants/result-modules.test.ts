@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import { getOwnResultModules } from "@/services/api/utils/result-module/getOwnResultModules";
 import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
-import { getModuleParams } from "@/utils/result-modules/params/getModuleParams";
+import type { OwnResultModule } from "@/types/results";
 import { resolveResult } from "@/utils/result-modules/resolveResult";
+import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 import { OWN_RESULT_MODULES } from "./result-modules";
 import {
@@ -18,8 +19,26 @@ const SURVEYS = [
   ["the presidential quiz", PRESIDENTIAL_SURVEY_ID],
 ] as const;
 
-// The settings a record held as fields before they became parameters.
+// What a record held as fields of its own before everything about a module
+// became a pair of a key and a value.
+const FIELDS_BEFORE = [
+  "title",
+  "description",
+  "params",
+  "labels",
+  "colors",
+  "selection",
+  "groupBy",
+  "marker",
+  "visibleRows",
+];
+
+// The keys that are settings: the ones the old result pages had in code.
 const SETTINGS = ["selection", "groupBy", "marker", "visibleRows"];
+
+// What a record of a list holds under a key.
+const findValue = (record: OwnResultModule, key: string) =>
+  record.values.find((pair) => pair.key === key)?.value;
 
 // The same value with every orientation written as its identifier, and every
 // field that has no value left out: the form the values resolved before this
@@ -42,24 +61,25 @@ describe("OWN_RESULT_MODULES", () => {
   describe("given the list of the identity quiz", () => {
     it("is the header, then per column the modules of the old identity result", () => {
       expect(
-        OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].map(
-          ({ type, column, title }) => [type, column, title?.pl],
-        ),
+        OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].map((record) => [
+          record.type,
+          record.column,
+          findValue(record, "title"),
+        ]),
       ).toEqual([
         ["header", undefined, undefined],
-        ["archetype", "end", "Tożsamość"],
-        ["multi_axis", "start", "Ideologie"],
+        ["archetype", "end", { pl: "Tożsamość", en: "Identity" }],
+        ["multi_axis", "start", { pl: "Ideologie", en: "Ideologies" }],
         ["nolan_chart", "end", undefined],
-        ["horizontal_bar", "start", "Partie"],
+        ["horizontal_bar", "start", { pl: "Partie", en: "Parties" }],
       ]);
     });
   });
 
   describe("given the map of the identity quiz", () => {
-    const labels =
-      OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].find(
-        ({ type }) => type === "nolan_chart",
-      )?.labels ?? {};
+    const [map] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].filter(
+      ({ type }) => type === "nolan_chart",
+    );
 
     it.each([
       ["bottomLeft", "Lewicowy", "Left-wing"],
@@ -67,14 +87,19 @@ describe("OWN_RESULT_MODULES", () => {
       ["topLeft", "Mieszany", "Mixed"],
       ["bottomRight", "Mieszany", "Mixed"],
     ])("names the %s corner, the same at both levels and in both languages", (corner, pl, en) => {
-      expect(labels[`${corner}Moderate`]).toEqual({ pl, en });
-      expect(labels[`${corner}Extreme`]).toEqual({ pl, en });
+      expect(findValue(map, `label.${corner}Moderate`)).toEqual({ pl, en });
+      expect(findValue(map, `label.${corner}Extreme`)).toEqual({ pl, en });
     });
 
-    it("names the middle, and gives no corner a shorter form", () => {
-      expect(labels.centre).toEqual({ pl: "Centrowy", en: "Centrist" });
+    it("names the middle, and gives no corner a shorter form or a colour", () => {
+      expect(findValue(map, "label.centre")).toEqual({
+        pl: "Centrowy",
+        en: "Centrist",
+      });
       expect(
-        Object.keys(labels).filter((slot) => slot.endsWith("Short")),
+        map.values.filter(
+          ({ key }) => key.endsWith("Short") || key.startsWith("color."),
+        ),
       ).toEqual([]);
     });
   });
@@ -82,72 +107,93 @@ describe("OWN_RESULT_MODULES", () => {
   describe("given the list of the presidential quiz", () => {
     it("is the header, then per column the modules of the old presidential result", () => {
       expect(
-        OWN_RESULT_MODULES[PRESIDENTIAL_SURVEY_ID].map(
-          ({ type, column, title }) => [type, column, title?.pl],
-        ),
+        OWN_RESULT_MODULES[PRESIDENTIAL_SURVEY_ID].map((record) => [
+          record.type,
+          record.column,
+          findValue(record, "title"),
+        ]),
       ).toEqual([
         ["header", undefined, undefined],
-        ["horizontal_bar", "start", "Kandydaci"],
-        ["archetype", "end", "Prezydent"],
-        ["horizontal_bar", "end", "Kategorie"],
+        ["horizontal_bar", "start", { pl: "Kandydaci", en: "Candidates" }],
+        ["archetype", "end", { pl: "Prezydent", en: "President" }],
+        ["horizontal_bar", "end", { pl: "Kategorie", en: "Categories" }],
+      ]);
+    });
+
+    it("names the link of the header in both languages", () => {
+      const [header] = OWN_RESULT_MODULES[PRESIDENTIAL_SURVEY_ID];
+
+      expect(header.values).toEqual([
+        { key: "label.link", value: { pl: "Program", en: "Programme" } },
       ]);
     });
   });
 
-  // A list is written in parameters: a setting that differs from its default
-  // is a name in `params`, and one equal to its default is left out.
+  // A list is written in pairs: everything about a module beyond what it is,
+  // where it stands and what it points at is a key, and a key equal to its
+  // default is left out.
   describe.each(
     SURVEYS,
-  )("given the parameters of the list of %s", (_, surveyId) => {
+  )("given the values of the list of %s", (_, surveyId) => {
     const records = readResultModules(getOwnResultModules(surveyId, "pl"), {
       orientationIds: new Set(LIVE_QUIZ_IDS[surveyId].orientationIds),
       axisIds: new Set(LIVE_QUIZ_IDS[surveyId].axisIds),
     });
 
-    it("writes every record with its parameters, and none of the four settings as a field", () => {
+    it("writes every record with a list of pairs, and none of what a record held as a field before", () => {
       for (const record of OWN_RESULT_MODULES[surveyId]) {
-        expect(record).toHaveProperty("params");
+        expect(Array.isArray(record.values)).toBe(true);
         expect(
-          Object.keys(record).filter((key) => SETTINGS.includes(key)),
+          Object.keys(record).filter((field) => FIELDS_BEFORE.includes(field)),
         ).toEqual([]);
       }
     });
 
-    it("sets only names the type of the record reads", () => {
+    it("holds a key once in a record", () => {
+      for (const { values } of OWN_RESULT_MODULES[surveyId]) {
+        const keys = values.map(({ key }) => key);
+
+        expect(new Set(keys).size).toBe(keys.length);
+      }
+    });
+
+    it("sets only keys the type of the record reads", () => {
       for (const record of records) {
-        expect(Object.keys(getModuleParams(record))).toEqual(
-          expect.arrayContaining(Object.keys(record.params)),
+        expect(Object.keys(getModuleValues(record))).toEqual(
+          expect.arrayContaining(Object.keys(record.values)),
         );
       }
     });
 
-    it("leaves out every setting equal to its default: each one it sets is read as something else", () => {
+    it("leaves out every key equal to its default: each one it sets is read as something else", () => {
       for (const record of records) {
-        const set: Record<string, unknown> = getModuleParams(record);
-        const defaults: Record<string, unknown> = getModuleParams({
+        const set: Record<string, unknown> = getModuleValues(record);
+        const defaults: Record<string, unknown> = getModuleValues({
           ...record,
-          params: {},
+          values: {},
         });
 
-        for (const name of Object.keys(record.params)) {
-          expect(set[name]).not.toBe(defaults[name]);
+        for (const key of Object.keys(record.values)) {
+          expect([key, set[key]]).not.toEqual([key, defaults[key]]);
         }
       }
     });
   });
 
-  it("sets the parameters the old result pages had in code, and no other", () => {
+  it("sets the settings the old result pages had in code, and no other", () => {
     expect(
       Object.values(OWN_RESULT_MODULES).flatMap((records) =>
-        records.flatMap(({ id, params = {} }) =>
-          Object.keys(params).length > 0 ? [[id, params]] : [],
+        records.flatMap(({ id, values }) =>
+          values
+            .filter(({ key }) => SETTINGS.includes(key))
+            .map(({ key, value }) => [id, key, value]),
         ),
       ),
     ).toEqual([
-      ["identity-ideologies", { groupBy: "category" }],
-      ["identity-parties", { selection: "linked_to_leader" }],
-      ["presidential-candidates", { visibleRows: 13 }],
-      ["presidential-categories", { groupBy: "category" }],
+      ["identity-ideologies", "groupBy", "category"],
+      ["identity-parties", "selection", "linked_to_leader"],
+      ["presidential-candidates", "visibleRows", 13],
+      ["presidential-categories", "groupBy", "category"],
     ]);
   });
 
@@ -206,24 +252,18 @@ describe("OWN_RESULT_MODULES", () => {
         );
       });
 
-      it("holds every title, description and label in that language", () => {
-        expect(
-          modules.map(({ title, description, labels }) => ({
-            title,
-            description,
-            labels,
-          })),
-        ).toEqual(
-          records.map(({ title, description, labels = {} }) => ({
-            title: title?.[language],
-            description: description?.[language],
-            labels: Object.fromEntries(
-              Object.entries(labels).map(([slot, text]) => [
-                slot,
-                text[language],
+      it("holds every pair by its key: a text in that language, a plain value as it is", () => {
+        expect(modules.map(({ values }) => values)).toEqual(
+          records.map(({ values }) =>
+            Object.fromEntries(
+              values.map(({ key, value }) => [
+                key,
+                typeof value === "object" && value !== null
+                  ? value[language]
+                  : value,
               ]),
             ),
-          })),
+          ),
         );
       });
     });

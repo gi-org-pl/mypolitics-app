@@ -16,7 +16,7 @@ describe("resolveSingleAxis()", () => {
   describe("given a record that lists a shown orientation", () => {
     it("returns the orientation with its value, and the marker", () => {
       expect(
-        resolve({ orientationIds: ["green"], params: { marker: 60 } }),
+        resolve({ orientationIds: ["green"], values: { marker: 60 } }),
       ).toMatchObject({
         type: "single_axis",
         entry: { orientation: { id: "green", name: "Ekologia" }, value: 100 },
@@ -26,7 +26,7 @@ describe("resolveSingleAxis()", () => {
 
     it("returns a marker that is switched off as it is", () => {
       expect(
-        resolve({ orientationIds: ["green"], params: { marker: null } })
+        resolve({ orientationIds: ["green"], values: { marker: null } })
           ?.marker,
       ).toBe(false);
     });
@@ -56,16 +56,16 @@ describe("resolveSingleAxis()", () => {
     });
   });
 
-  describe("given a record whose marker is left out, is not allowed, or is not the only parameter", () => {
-    it("returns the default marker for the first two, and reads no parameter of another type", () => {
+  describe("given a record whose marker is left out, is not allowed, or is not the only setting", () => {
+    it("returns the default marker for the first two, and reads no setting of another type", () => {
       expect(resolve({ orientationIds: ["green"] })?.marker).toBe(50);
       expect(
-        resolve({ orientationIds: ["green"], params: { marker: 140 } })?.marker,
+        resolve({ orientationIds: ["green"], values: { marker: 140 } })?.marker,
       ).toBe(50);
       expect(
         resolve({
           orientationIds: ["green"],
-          params: { marker: 60, visibleRows: 9, sortBy: "name" },
+          values: { marker: 60, visibleRows: 9, sortBy: "name" },
         }),
       ).toEqual({ type: "single_axis", entry: expect.anything(), marker: 60 });
     });

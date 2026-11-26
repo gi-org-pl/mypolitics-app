@@ -1,6 +1,11 @@
-import { HEADER_LINK_SLOT, HEADER_MODULE_TYPE } from "@/constants/results";
-import type { ResolutionContext, ResolvedHeader } from "@/types/results";
+import { HEADER_MODULE_TYPE } from "@/constants/results";
+import type {
+  ResolutionContext,
+  ResolvedHeader,
+  ResultModuleOf,
+} from "@/types/results";
 import { getRecordEntries } from "@/utils/result-modules/orientations/getRecordEntries";
+import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 import { getTopEntry } from "./getTopEntry";
 
@@ -12,7 +17,8 @@ export const resolveHeader = (
   context: Pick<ResolutionContext, "survey" | "result" | "gender">,
 ): ResolvedHeader | undefined => {
   const record = context.survey.resultModules.find(
-    ({ type }) => type === HEADER_MODULE_TYPE,
+    (module): module is ResultModuleOf<typeof HEADER_MODULE_TYPE> =>
+      module.type === HEADER_MODULE_TYPE,
   );
 
   if (!record) return undefined;
@@ -22,6 +28,6 @@ export const resolveHeader = (
   return {
     orientation: top?.orientation,
     confidence: top?.value,
-    linkLabel: record.labels[HEADER_LINK_SLOT],
+    linkLabel: getModuleValues(record)["label.link"],
   };
 };

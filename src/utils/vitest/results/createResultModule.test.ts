@@ -3,17 +3,15 @@ import { describe, expect, it } from "vitest";
 import { createResultModule } from "./createResultModule";
 
 describe("createResultModule()", () => {
-  it("builds a record of the type given, with no parameter set and every other field at its default", () => {
-    expect(createResultModule("ranking", "horizontal_bar")).toEqual({
+  it("builds a record of the type given, with no value set and every other field at its default", () => {
+    expect(createResultModule("ranking", "horizontal_bar")).toStrictEqual({
       id: "ranking",
       type: "horizontal_bar",
       position: 0,
       column: "start",
       orientationIds: [],
       axisIds: [],
-      params: {},
-      labels: {},
-      colors: {},
+      values: {},
     });
   });
 
@@ -22,8 +20,7 @@ describe("createResultModule()", () => {
       position: 4,
       column: "end",
       orientationIds: ["left"],
-      params: { marker: null },
-      labels: { link: "Strona" },
+      values: { description: "Kto jest najbliżej.", "label.link": "Strona" },
     });
 
     expect(record).toMatchObject({
@@ -32,8 +29,7 @@ describe("createResultModule()", () => {
       position: 4,
       column: "end",
       orientationIds: ["left"],
-      params: { marker: null },
-      labels: { link: "Strona" },
+      values: { description: "Kto jest najbliżej.", "label.link": "Strona" },
     });
     expect(record.axisIds).toEqual([]);
   });

@@ -32,21 +32,23 @@ const readOne = (overrides: Record<string, unknown>): ResultModule =>
 const getIds = (response: unknown): string[] =>
   read(response).map(({ id }) => id);
 
+const toTitle = (value: string) => ({ key: "title", value });
+
 describe("readResultModules()", () => {
   describe("given a list with one record of each type", () => {
-    it("reads eight records, every field as the reading table says", () => {
-      expect(read(resultModulesResponse)).toEqual([
+    it("reads eight records, every field as the reading table says and the values by key", () => {
+      expect(read(resultModulesResponse)).toStrictEqual([
         {
           id: "module-header",
           type: "header",
           position: 0,
           column: "start",
-          description: "Tożsamość, do której jest ci najbliżej.",
           orientationIds: ["socialist", "liberal", "conservative"],
           axisIds: [],
-          params: {},
-          labels: { link: "Zobacz stronę" },
-          colors: {},
+          values: {
+            description: "Tożsamość, do której jest ci najbliżej.",
+            "label.link": "Zobacz stronę",
+          },
         },
         {
           id: "module-single-axis",
@@ -55,46 +57,42 @@ describe("readResultModules()", () => {
           column: "start",
           orientationIds: ["green"],
           axisIds: [],
-          params: { marker: 60 },
-          labels: {},
-          colors: {},
+          values: { marker: 60 },
         },
         {
           id: "module-double-axis",
           type: "double_axis",
           position: 2,
           column: "end",
-          description: "Jak blisko ci do każdej ze stron osi.",
           orientationIds: [],
           axisIds: ["economy"],
-          params: { marker: null },
-          labels: {},
-          colors: {},
+          values: {
+            description: "Jak blisko ci do każdej ze stron osi.",
+            marker: null,
+          },
         },
         {
           id: "module-multi-axis",
           type: "multi_axis",
           position: 3,
           column: "start",
-          title: "Ideologie",
           orientationIds: [],
           axisIds: ["economy", "society"],
-          params: { groupBy: "category" },
-          labels: {},
-          colors: {},
+          values: { title: "Ideologie", groupBy: "category" },
         },
         {
           id: "module-horizontal-bar",
           type: "horizontal_bar",
           position: 4,
           column: "end",
-          title: "Partie",
-          description: "Partie powiązane z twoją tożsamością.",
           orientationIds: ["party-left", "party-right"],
           axisIds: [],
-          params: { selection: "linked_to_leader", visibleRows: 5 },
-          labels: {},
-          colors: {},
+          values: {
+            title: "Partie",
+            description: "Partie powiązane z twoją tożsamością.",
+            selection: "linked_to_leader",
+            visibleRows: 5,
+          },
         },
         {
           id: "module-nolan-chart",
@@ -103,20 +101,17 @@ describe("readResultModules()", () => {
           column: "start",
           orientationIds: [],
           axisIds: ["compass-x", "compass-y"],
-          params: {},
-          labels: {
-            centre: "Centrum",
-            horizontalStartModerate: "Umiarkowany socjalizm",
-            horizontalEndExtreme: "Wolny rynek",
-            verticalEndModerate: "Umiarkowany konserwatyzm",
-            topLeftExtreme: "Autorytarna lewica",
-            topLeftExtremeShort: "Aut. lewica",
-          },
-          colors: {
-            topLeft: "#ef4444",
-            topRight: "oklch(74.6% 0.16 232.661)",
-            bottomLeft: "rgb(16 185 129)",
-            bottomRight: "#7c3aed",
+          values: {
+            "label.centre": "Centrum",
+            "label.horizontalStartModerate": "Umiarkowany socjalizm",
+            "label.horizontalEndExtreme": "Wolny rynek",
+            "label.verticalEndModerate": "Umiarkowany konserwatyzm",
+            "label.topLeftExtreme": "Autorytarna lewica",
+            "label.topLeftExtremeShort": "Aut. lewica",
+            "color.topLeft": "#ef4444",
+            "color.topRight": "oklch(74.6% 0.16 232.661)",
+            "color.bottomLeft": "rgb(16 185 129)",
+            "color.bottomRight": "#7c3aed",
           },
         },
         {
@@ -124,24 +119,18 @@ describe("readResultModules()", () => {
           type: "archetype",
           position: 6,
           column: "end",
-          title: "Tożsamość",
           orientationIds: ["socialist", "liberal", "conservative"],
           axisIds: [],
-          params: {},
-          labels: {},
-          colors: {},
+          values: { title: "Tożsamość" },
         },
         {
           id: "module-traits",
           type: "traits",
           position: 7,
           column: "start",
-          title: "Cechy",
           orientationIds: ["green", "hidden"],
           axisIds: [],
-          params: {},
-          labels: {},
-          colors: {},
+          values: { title: "Cechy" },
         },
       ]);
     });
@@ -221,10 +210,14 @@ describe("readResultModules()", () => {
       it("keeps the first", () => {
         expect(
           read([
-            createRecord({ id: "a", title: "Pierwszy", position: 5 }),
-            createRecord({ id: "b", title: "Inny", position: 6 }),
-            createRecord({ id: "a", title: "Drugi", position: 0 }),
-          ]).map(({ id, title }) => [id, title]),
+            createRecord({
+              id: "a",
+              values: [toTitle("Pierwszy")],
+              position: 5,
+            }),
+            createRecord({ id: "b", values: [toTitle("Inny")], position: 6 }),
+            createRecord({ id: "a", values: [toTitle("Drugi")], position: 0 }),
+          ]).map(({ id, values }) => [id, values.title]),
         ).toEqual([
           ["a", "Pierwszy"],
           ["b", "Inny"],
@@ -234,9 +227,13 @@ describe("readResultModules()", () => {
       it("keeps the first that can be read", () => {
         expect(
           read([
-            createRecord({ id: "a", title: "Bez typu", type: "radar" }),
-            createRecord({ id: "a", title: "Drugi" }),
-          ]).map(({ id, title }) => [id, title]),
+            createRecord({
+              id: "a",
+              values: [toTitle("Bez typu")],
+              type: "radar",
+            }),
+            createRecord({ id: "a", values: [toTitle("Drugi")] }),
+          ]).map(({ id, values }) => [id, values.title]),
         ).toEqual([["a", "Drugi"]]);
       });
     });
@@ -310,31 +307,70 @@ describe("readResultModules()", () => {
       });
     });
 
-    describe("given parameters that are an object", () => {
-      it("keeps them as sent, name by name", () => {
-        const params = {
+    // The rows of "Reading a record".
+    describe("given values that are a list of pairs", () => {
+      it("keeps them by key, as saved", () => {
+        expect(
+          readOne({
+            values: [
+              { key: "title", value: "Partie" },
+              { key: "selection", value: "linked_to_leader" },
+              { key: "marker", value: null },
+              { key: "visibleRows", value: 5 },
+              { key: "isFolded", value: true },
+            ],
+          }).values,
+        ).toStrictEqual({
+          title: "Partie",
           selection: "linked_to_leader",
           marker: null,
           visibleRows: 5,
           isFolded: true,
-          tags: ["a", 2, false, null],
-        };
-
-        expect(readOne({ params }).params).toEqual(params);
+        });
       });
 
       it.each([
-        ["an object", { from: 1 }],
-        ["a list that holds an object", ["a", {}]],
-        ["a list that holds a list", [["a"]]],
-      ])("drops a value that is %s and keeps the others", (_, value) => {
-        expect(readOne({ params: { marker: 20, name: value } }).params).toEqual(
-          { marker: 20 },
-        );
+        ["no key", { value: "Partie" }],
+        ["a blank key", { key: " \n ", value: "Partie" }],
+        ["a key that is not a text", { key: 7, value: "Partie" }],
+        ["no value", { key: "title" }],
+        [
+          "a value that is an object",
+          { key: "title", value: { pl: "Partie" } },
+        ],
+        ["a value that is a list", { key: "title", value: ["Partie"] }],
+      ])("skips a pair with %s and keeps the others", (_, pair) => {
+        expect(
+          readOne({ values: [pair, { key: "marker", value: 20 }] }).values,
+        ).toStrictEqual({ marker: 20 });
       });
     });
 
-    describe("given parameters that are missing or are not an object", () => {
+    describe("given the same key twice in one record", () => {
+      it("counts the first", () => {
+        expect(
+          readOne({
+            values: [
+              { key: "marker", value: 20 },
+              { key: "title", value: "Pierwszy" },
+              { key: "marker", value: 80 },
+              { key: "title", value: "Drugi" },
+            ],
+          }).values,
+        ).toStrictEqual({ marker: 20, title: "Pierwszy" });
+      });
+
+      it("keeps the same key of another record apart", () => {
+        expect(
+          read([
+            createRecord({ id: "a", values: [toTitle("Pierwszy")] }),
+            createRecord({ id: "b", values: [toTitle("Drugi")], position: 1 }),
+          ]).map(({ values }) => values.title),
+        ).toEqual(["Pierwszy", "Drugi"]);
+      });
+    });
+
+    describe("given values that are missing or are not a list", () => {
       it.each([
         [undefined],
         [null],
@@ -342,71 +378,86 @@ describe("readResultModules()", () => {
         ["marker"],
         [7],
         [true],
-        [[["marker", 20]]],
-      ])("reads %j as no parameters", (params) => {
-        expect(readOne({ params }).params).toEqual({});
+        [{ marker: 20, title: "Partie" }],
+        [{ 0: { key: "marker", value: 20 }, length: 1 }],
+      ])("reads %j as no values", (values) => {
+        expect(readOne({ values }).values).toStrictEqual({});
       });
     });
 
-    describe("given a name the type of the record does not read, or one the app does not know", () => {
-      it("keeps it on the record, and checks no value against its name", () => {
-        const params = { marker: 250, selection: "nobody", sortBy: "name" };
+    describe("given a key the type of the record does not read, or one the app does not know", () => {
+      const values = [
+        { key: "marker", value: 250 },
+        { key: "selection", value: "nobody" },
+        { key: "label.centre", value: " \n " },
+        { key: "label.link", value: "  Zobacz stronę\n" },
+        { key: "color.topLeft", value: "url(https://example.com/a.png)" },
+        { key: "sortBy", value: "name" },
+      ];
+      const byKey = {
+        marker: 250,
+        selection: "nobody",
+        "label.centre": " \n ",
+        "label.link": "  Zobacz stronę\n",
+        "color.topLeft": "url(https://example.com/a.png)",
+        sortBy: "name",
+      };
 
-        expect(readOne({ type: "horizontal_bar", params }).params).toEqual(
-          params,
-        );
-        expect(readOne({ type: "header", params }).params).toEqual(params);
+      it.each([
+        ["horizontal_bar"],
+        ["header"],
+        ["nolan_chart"],
+        ["traits"],
+      ])("keeps it on a %s record, and never interprets it: no value is checked, trimmed or dropped", (type) => {
+        expect(readOne({ type, values }).values).toStrictEqual(byKey);
       });
     });
 
-    describe("given a record that sends its settings as fields, as the first version of the contract had them", () => {
+    describe("given a record that sends its title, description, parameters, labels or colours as fields, as the earlier versions of the contract had it", () => {
       const fields = {
+        title: "Kompas",
+        description: "Dwie osie.",
+        params: { groupBy: "category", marker: null, visibleRows: 5 },
+        labels: { centre: "Centrum", link: "Zobacz stronę" },
+        colors: { topLeft: "#ef4444" },
         selection: "linked_to_leader",
         groupBy: "category",
         marker: null,
         visibleRows: 5,
       };
 
-      it("does not read them when it sends no parameters", () => {
-        expect(readOne(fields)).toEqual(readOne({}));
-        expect(readOne(fields).params).toEqual({});
-      });
-
-      it("does not read them beside its parameters: only the parameters count", () => {
-        const params = { groupBy: "none", visibleRows: 2 };
-
-        expect(readOne({ ...fields, params })).toEqual(readOne({ params }));
-      });
-    });
-
-    describe("given a title or a description that is missing, empty or only space", () => {
       it.each([
-        [undefined],
-        [null],
-        [""],
-        [" \n\t "],
-        [7],
-      ])("has neither for %j", (text) => {
-        const record = readOne({ title: text, description: text });
+        ["nolan_chart"],
+        ["header"],
+        ["horizontal_bar"],
+      ])("does not read them on a %s record that sends no values", (type) => {
+        const record = readOne({ type, ...fields });
 
-        expect(record.title).toBeUndefined();
-        expect(record.description).toBeUndefined();
+        expect(record).toStrictEqual(readOne({ type }));
+        expect(record.values).toStrictEqual({});
+        expect(Object.keys(record).sort()).toEqual([
+          "axisIds",
+          "column",
+          "id",
+          "orientationIds",
+          "position",
+          "type",
+          "values",
+        ]);
       });
-    });
 
-    describe("given text with space or line breaks around it", () => {
-      it("trims it", () => {
-        expect(
-          readOne({
-            type: "header",
-            title: "  Twój wynik\n",
-            description: "\n\tNajbliższa ci tożsamość. ",
-            labels: { link: " Zobacz stronę\n" },
-          }),
-        ).toMatchObject({
-          title: "Twój wynik",
-          description: "Najbliższa ci tożsamość.",
-          labels: { link: "Zobacz stronę" },
+      it("does not read them beside its values: only the values count", () => {
+        const values = [
+          { key: "groupBy", value: "none" },
+          { key: "visibleRows", value: 2 },
+        ];
+
+        expect(readOne({ ...fields, values })).toStrictEqual(
+          readOne({ values }),
+        );
+        expect(readOne({ ...fields, values }).values).toStrictEqual({
+          groupBy: "none",
+          visibleRows: 2,
         });
       });
     });
@@ -462,94 +513,6 @@ describe("readResultModules()", () => {
       });
     });
 
-    describe("given labels or colours that are missing or not an object", () => {
-      it.each([
-        [undefined],
-        [null],
-        ["link"],
-        [7],
-        [["Zobacz stronę"]],
-      ])("reads %j as none", (slots) => {
-        expect(
-          readOne({ type: "header", labels: slots, colors: slots }),
-        ).toMatchObject({ labels: {}, colors: {} });
-      });
-    });
-
-    describe("given a slot the record's type does not have", () => {
-      it("drops it and keeps the slots of the type", () => {
-        expect(
-          readOne({
-            type: "header",
-            labels: { link: "Zobacz stronę", centre: "Centrum", note: "x" },
-            colors: { topLeft: "#ef4444" },
-          }),
-        ).toMatchObject({ labels: { link: "Zobacz stronę" }, colors: {} });
-        expect(
-          readOne({
-            type: "nolan_chart",
-            labels: { link: "Zobacz stronę", centre: "Centrum" },
-            colors: { topLeft: "#ef4444", centre: "#ef4444" },
-          }),
-        ).toMatchObject({
-          labels: { centre: "Centrum" },
-          colors: { topLeft: "#ef4444" },
-        });
-        expect(
-          readOne({
-            type: "horizontal_bar",
-            labels: { link: "Zobacz stronę", centre: "Centrum" },
-            colors: { topLeft: "#ef4444" },
-          }),
-        ).toMatchObject({ labels: {}, colors: {} });
-      });
-    });
-
-    describe("given a label that is not text, or blank", () => {
-      it("drops it and keeps the others", () => {
-        expect(
-          readOne({
-            type: "nolan_chart",
-            labels: {
-              centre: 7,
-              topLeftModerate: null,
-              topLeftExtreme: { pl: "Lewica" },
-              topRightModerate: "",
-              topRightExtreme: " \n ",
-              bottomLeftModerate: "Lewica wolnościowa",
-            },
-          }).labels,
-        ).toEqual({ bottomLeftModerate: "Lewica wolnościowa" });
-      });
-    });
-
-    describe("given a colour that does not pass the colour check", () => {
-      it("drops it and keeps the others", () => {
-        expect(
-          readOne({
-            type: "nolan_chart",
-            colors: {
-              topLeft: "red",
-              topRight: "var(--gi-red)",
-              bottomLeft: "#12345",
-              bottomRight: " #7c3aed ",
-            },
-          }).colors,
-        ).toEqual({ bottomRight: "#7c3aed" });
-        expect(
-          readOne({
-            type: "nolan_chart",
-            colors: {
-              topLeft: "url(https://example.com/a.png)",
-              topRight: "#ef4444; background: red",
-              bottomLeft: 7,
-              bottomRight: null,
-            },
-          }).colors,
-        ).toEqual({});
-      });
-    });
-
     describe("given items that are not records", () => {
       it("never throws, and reads the records among them", () => {
         const response = [
@@ -566,6 +529,7 @@ describe("readResultModules()", () => {
             id: "a",
             column: {},
             orientationIds: "liberal",
+            values: "red",
             labels: [],
             colors: "red",
             marker: "50",
@@ -574,7 +538,7 @@ describe("readResultModules()", () => {
         ];
 
         expect(() => read(response)).not.toThrow();
-        expect(read(response)).toEqual([
+        expect(read(response)).toStrictEqual([
           {
             id: "a",
             type: "single_axis",
@@ -582,9 +546,7 @@ describe("readResultModules()", () => {
             column: "start",
             orientationIds: [],
             axisIds: [],
-            params: {},
-            labels: {},
-            colors: {},
+            values: {},
           },
         ]);
       });
