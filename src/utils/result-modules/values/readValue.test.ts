@@ -6,7 +6,6 @@ import type {
   ResultModuleValueKind,
 } from "@/types/results";
 
-import { readBooleanValue } from "./readBooleanValue";
 import { readChoiceValue } from "./readChoiceValue";
 import { readColorValue } from "./readColorValue";
 import { readNumberValue } from "./readNumberValue";
@@ -23,8 +22,7 @@ const number: ResultModuleValueDefinition<"number"> = {
   kind: "number",
   min: 0,
   max: 10,
-  whole: true,
-  nullable: true,
+  off: { word: "none", reads: false },
   fallback: 4,
 };
 
@@ -34,17 +32,12 @@ const choice: ResultModuleValueDefinition<"choice"> = {
   fallback: "value",
 };
 
-const boolean: ResultModuleValueDefinition<"boolean"> = {
-  kind: "boolean",
-  fallback: true,
-};
-
 const color: ResultModuleValueDefinition<"color"> = { kind: "color" };
 
 // One definition of every kind there is.
 const DEFINITIONS: {
   [Kind in ResultModuleValueKind]: ResultModuleValueDefinition<Kind>;
-} = { text, localizedText, number, choice, boolean, color };
+} = { text, localizedText, number, choice, color };
 
 // A value of every sort a record may hold, and none.
 const VALUES: [ResultModuleValue | undefined][] = [
@@ -55,9 +48,6 @@ const VALUES: [ResultModuleValue | undefined][] = [
   [7],
   [7.5],
   [11],
-  [true],
-  [false],
-  [null],
   [undefined],
 ];
 
@@ -92,9 +82,9 @@ describe("readValue()", () => {
       expect(readValue(number, value)).toBe(readNumberValue(number, value));
     });
 
-    it("returns a number within the bounds, false for nothing, and the fallback for any other", () => {
+    it("returns a whole number within the bounds, false for the word that stands for off, and the fallback for any other", () => {
       expect(readValue(number, 7)).toBe(7);
-      expect(readValue(number, null)).toBe(false);
+      expect(readValue(number, "none")).toBe(false);
       expect(readValue(number, "name")).toBe(4);
     });
   });
@@ -107,17 +97,6 @@ describe("readValue()", () => {
     it("returns a listed value, and the fallback for any other", () => {
       expect(readValue(choice, "name")).toBe("name");
       expect(readValue(choice, 7)).toBe("value");
-    });
-  });
-
-  describe("given a definition of yes or no", () => {
-    it.each(VALUES)("reads %j as yes or no", (value) => {
-      expect(readValue(boolean, value)).toBe(readBooleanValue(boolean, value));
-    });
-
-    it("returns yes or no, and the fallback for any other", () => {
-      expect(readValue(boolean, false)).toBe(false);
-      expect(readValue(boolean, "false")).toBe(true);
     });
   });
 
@@ -146,7 +125,6 @@ describe("readValue()", () => {
         localizedText: undefined,
         number: 4,
         choice: "value",
-        boolean: true,
         color: undefined,
       });
     });
@@ -162,7 +140,6 @@ describe("readValue()", () => {
       >();
       expectTypeOf(readValue(number)).toEqualTypeOf<number | false>();
       expectTypeOf(readValue(choice)).toEqualTypeOf<string>();
-      expectTypeOf(readValue(boolean)).toEqualTypeOf<boolean>();
       expectTypeOf(readValue(color)).toEqualTypeOf<string | undefined>();
     });
   });

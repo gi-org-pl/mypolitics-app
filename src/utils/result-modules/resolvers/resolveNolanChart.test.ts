@@ -95,7 +95,7 @@ describe("resolveNolanChart()", () => {
         values: {
           "label.centre": " \n ",
           "label.topLeftModerate": 7,
-          "label.topRightModerate": null,
+          "label.topRightModerate": 8,
           "label.bottomLeftModerate": "Lewica wolnościowa",
           "color.topLeft": "red",
           "color.topRight": "var(--gi-red)",

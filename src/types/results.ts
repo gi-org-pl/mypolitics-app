@@ -53,9 +53,8 @@ export type ResultModuleType =
 
 export type ResultModuleColumn = "start" | "end";
 
-// A value of a record as it is saved: a text, a number, yes or no, or
-// nothing.
-export type ResultModuleValue = string | number | boolean | null;
+// A value of a record as it is saved: a string or a whole number.
+export type ResultModuleValue = string | number;
 
 // One record for every module type. Its fields are what the back-end has a
 // use for; everything else about the module - its title, its description, its
@@ -105,19 +104,16 @@ export interface ResultModuleValueRules {
   // A text the author writes in each language of the quiz. The API sends it
   // in one language, so it is read like a text.
   localizedText: Record<never, never>;
-  // A number within bounds. `nullable` says whether the author may set it to
-  // nothing, which is read as `false`.
+  // A whole number within bounds. `off` is optional: the word that stands for
+  // "off" where a key has one, and what the app reads it as.
   number: {
     min: number;
     max: number;
-    whole: boolean;
-    nullable: boolean;
+    off?: { word: string; reads: false };
     fallback: number;
   };
   // One of a list of choices.
   choice: { choices: readonly string[]; fallback: string };
-  // Yes or no.
-  boolean: { fallback: boolean };
   // A colour that passes the app's colour check.
   color: Record<never, never>;
 }
@@ -134,11 +130,14 @@ interface ResultModuleValueReadings<
 > {
   text: string | undefined;
   localizedText: string | undefined;
-  number: Definition extends { nullable: false } ? number : number | false;
+  number: Definition extends { kind: "number" }
+    ? "off" extends keyof Definition
+      ? number | false
+      : number
+    : never;
   choice: Definition extends { choices: readonly (infer Choice)[] }
     ? Choice
     : never;
-  boolean: boolean;
   color: string | undefined;
 }
 

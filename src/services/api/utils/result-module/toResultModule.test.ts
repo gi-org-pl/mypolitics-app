@@ -79,7 +79,7 @@ describe("toResultModule()", () => {
   describe("given values", () => {
     it("keeps them as saved, whatever the type of the record reads", () => {
       const values = [
-        { key: "marker", value: null },
+        { key: "marker", value: "none" },
         { key: "selection", value: "nobody" },
         { key: "visibleRows", value: 0 },
         { key: "title", value: "  Partie\n" },
@@ -88,7 +88,7 @@ describe("toResultModule()", () => {
         { key: "sortBy", value: "name" },
       ];
       const byKey = {
-        marker: null,
+        marker: "none",
         selection: "nobody",
         visibleRows: 0,
         title: "  Partie\n",

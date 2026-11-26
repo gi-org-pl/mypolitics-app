@@ -5,7 +5,6 @@ import type {
   ResultModuleValueReader,
 } from "@/types/results";
 
-import { readBooleanValue } from "./readBooleanValue";
 import { readChoiceValue } from "./readChoiceValue";
 import { readColorValue } from "./readColorValue";
 import { readNumberValue } from "./readNumberValue";
@@ -20,7 +19,6 @@ const VALUE_READERS: {
   localizedText: readTextValue,
   number: readNumberValue,
   choice: readChoiceValue,
-  boolean: readBooleanValue,
   color: readColorValue,
 };
 

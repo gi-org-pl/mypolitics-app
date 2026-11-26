@@ -185,7 +185,6 @@ const KINDS: ResultModuleValueKind[] = [
   "localizedText",
   "number",
   "choice",
-  "boolean",
   "color",
 ];
 
@@ -214,16 +213,13 @@ describe("RESULT_MODULE_VALUE_DEFINITIONS", () => {
         kind: "number",
         min: 0,
         max: 100,
-        whole: false,
-        nullable: true,
+        off: { word: "none", reads: false },
         fallback: 50,
       },
       visibleRows: {
         kind: "number",
         min: 1,
         max: Number.MAX_SAFE_INTEGER,
-        whole: true,
-        nullable: false,
         fallback: 3,
       },
       "label.link": LOCALIZED_TEXT,

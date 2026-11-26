@@ -24,8 +24,6 @@ describe("readChoiceValue()", () => {
       ["a listed value with space around it", " name "],
       ["an empty text", ""],
       ["a number", 0],
-      ["a boolean", true],
-      ["null", null],
     ])("returns the fallback for %s", (_, value) => {
       expect(readChoiceValue(definition, value)).toBe("value");
     });

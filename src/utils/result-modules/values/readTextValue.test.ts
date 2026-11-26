@@ -41,9 +41,6 @@ describe("readTextValue()", () => {
       it.each([
         ["a number", 7],
         ["zero", 0],
-        ["true", true],
-        ["false", false],
-        ["null", null],
       ])("returns nothing for %s", (_, value) => {
         expect(readTextValue(definition, value)).toBeUndefined();
       });

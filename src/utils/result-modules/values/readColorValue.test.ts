@@ -44,9 +44,6 @@ describe("readColorValue()", () => {
     it.each([
       ["a number", 7],
       ["a number that would read as a hex", 123_456],
-      ["true", true],
-      ["false", false],
-      ["null", null],
     ])("returns nothing for %s", (_, value) => {
       expect(readColorValue(definition, value)).toBeUndefined();
     });

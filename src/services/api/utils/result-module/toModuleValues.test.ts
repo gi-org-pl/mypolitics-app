@@ -8,16 +8,14 @@ describe("toModuleValues()", () => {
       expect(
         toModuleValues([
           { key: "title", value: "  Partie\n" },
-          { key: "marker", value: 37.5 },
-          { key: "isFolded", value: false },
-          { key: "nothing", value: null },
+          { key: "marker", value: 37 },
+          { key: "visibleRows", value: 0 },
           { key: "label.link", value: "" },
         ]),
       ).toStrictEqual({
         title: "  Partie\n",
-        marker: 37.5,
-        isFolded: false,
-        nothing: null,
+        marker: 37,
+        visibleRows: 0,
         "label.link": "",
       });
     });
@@ -47,12 +45,16 @@ describe("toModuleValues()", () => {
     });
   });
 
-  describe("given a pair with a value that is not a text, a number, a boolean or null", () => {
+  describe("given a pair with a value that is not a string or a whole number", () => {
     it.each([
       ["a pair that leaves the value out", { key: "title" }],
       ["an object", { key: "title", value: { min: 1 } }],
       ["a text per language", { key: "title", value: { pl: "Partie" } }],
       ["a list", { key: "title", value: ["Partie"] }],
+      ["a fraction", { key: "title", value: 37.5 }],
+      ["true", { key: "title", value: true }],
+      ["false", { key: "title", value: false }],
+      ["null", { key: "title", value: null }],
       ["a number that is not one", { key: "title", value: Number.NaN }],
     ])("skips %s and keeps the others", (_, pair) => {
       const values = toModuleValues([pair, { key: "marker", value: 20 }]);
@@ -69,7 +71,7 @@ describe("toModuleValues()", () => {
           { key: "title", value: "Pierwszy" },
           { key: "marker", value: 20 },
           { key: "title", value: "Drugi" },
-          { key: "marker", value: null },
+          { key: "marker", value: "none" },
         ]),
       ).toStrictEqual({ title: "Pierwszy", marker: 20 });
     });
@@ -84,13 +86,13 @@ describe("toModuleValues()", () => {
       ).toStrictEqual({ title: "Drugi" });
     });
 
-    it("keeps a value that is nothing, although a later pair holds something", () => {
+    it("keeps a value that is a word, although a later pair holds a number", () => {
       expect(
         toModuleValues([
-          { key: "marker", value: null },
+          { key: "marker", value: "none" },
           { key: "marker", value: 20 },
         ]),
-      ).toStrictEqual({ marker: null });
+      ).toStrictEqual({ marker: "none" });
     });
   });
 

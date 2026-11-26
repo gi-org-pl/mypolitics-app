@@ -241,7 +241,7 @@ describe("readSurvey()", () => {
             values: [
               { key: "title", value: "Partie" },
               { key: "selection", value: "linked_to_leader" },
-              { key: "marker", value: null },
+              { key: "marker", value: "none" },
             ],
           },
         ];
@@ -274,7 +274,7 @@ describe("readSurvey()", () => {
             values: {
               title: "Partie",
               selection: "linked_to_leader",
-              marker: null,
+              marker: "none",
             },
           },
           {

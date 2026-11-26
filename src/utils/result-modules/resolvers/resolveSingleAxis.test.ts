@@ -26,7 +26,7 @@ describe("resolveSingleAxis()", () => {
 
     it("returns a marker that is switched off as it is", () => {
       expect(
-        resolve({ orientationIds: ["green"], values: { marker: null } })
+        resolve({ orientationIds: ["green"], values: { marker: "none" } })
           ?.marker,
       ).toBe(false);
     });
