@@ -35,6 +35,21 @@ const getModeTab = (page: Page, name: string) =>
     .getByRole("tablist", { name: "Tryb porównania", exact: true })
     .getByRole("tab", { name, exact: true });
 
+const getViewTab = (page: Page, name: string) =>
+  page
+    .getByRole("tablist", { name: "Widok porównania", exact: true })
+    .getByRole("tab", { name, exact: true });
+
+const getQuestions = (page: Page) =>
+  page.getByRole("main").getByRole("list", { name: "Pytania", exact: true });
+
+// The rows of the list of questions: one control per question.
+const getQuestionRows = (page: Page) => getQuestions(page).getByRole("button");
+
+// One side of an opened question.
+const getSide = (page: Page, name: string) =>
+  getQuestions(page).getByRole("group", { name, exact: true });
+
 // The marks of the friend on the bars of a module.
 const getFriendMarks = (page: Page, module: string) =>
   getModule(page, module).getByRole("img", { name: /porównanie z Znajomy/ });
@@ -257,7 +272,40 @@ test.describe("Feature: Results", () => {
       );
     });
 
-    await test.step("And the friend's result was asked for once, and is not in the address", async () => {
+    await test.step('And a choice of two views, "Wyniki" chosen', async () => {
+      await expect(getViewTab(page, "Wyniki")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      await expect(getViewTab(page, "Pytania")).toBeVisible();
+    });
+
+    await test.step('When they choose "Pytania" and open the question the two answered differently', async () => {
+      await getViewTab(page, "Pytania").click();
+      await expect(getQuestionRows(page)).toHaveCount(RESULT_QUESTIONS.length);
+      await getQuestionRows(page)
+        .filter({ hasText: RESULT_QUESTIONS[1].text })
+        .click();
+    });
+
+    await test.step("Then they see their own answer and the friend's, in place of the modules", async () => {
+      await expect(getSide(page, "Ty")).toHaveText(/Częściowo za/);
+      await expect(getSide(page, "Znajomy")).toHaveText(/Zdecydowanie przeciw/);
+      await expect(
+        getSide(page, "Znajomy").getByRole("img", {
+          name: "Niezgodność",
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(getModule(page, "Ideologie")).toHaveCount(0);
+    });
+
+    await test.step('When they choose "Wyniki" again', async () => {
+      await getViewTab(page, "Wyniki").click();
+      await expect(getFriendMarks(page, "Ideologie")).toHaveCount(2);
+    });
+
+    await test.step("Then the friend's result was asked for once, and is not in the address", async () => {
       expect(getFriendRequests(api.requests)).toHaveLength(1);
       await expect(page).toHaveURL(RESULT_PATH);
     });
@@ -339,6 +387,16 @@ test.describe("Feature: Results", () => {
       expect(api.requests).toHaveLength(2);
     });
 
+    await test.step("And every question of the quiz under the bar, with no choice of view and no module", async () => {
+      await expect(getQuestionRows(page)).toHaveText(
+        RESULT_QUESTIONS.map(({ text }) => new RegExp(`^${text}`)),
+      );
+      await expect(
+        page.getByRole("tablist", { name: "Widok porównania" }),
+      ).toHaveCount(0);
+      await expect(getModule(page, "Ideologie")).toHaveCount(0);
+    });
+
     await test.step("When they end the comparison", async () => {
       await getButton(page, "Cofnij porównanie").click();
     });
@@ -351,6 +409,97 @@ test.describe("Feature: Results", () => {
       await expect(
         page.getByRole("searchbox", { name: "Szukaj po nazwie", exact: true }),
       ).toBeVisible();
+    });
+  });
+
+  test("Scenario: A user reads where they differ from an orientation, question by question", async ({
+    page,
+  }) => {
+    const api = await mockResultsApi(page);
+
+    await test.step("Given a user compares their result with an orientation", async () => {
+      await openPage(page, RESULT_PATH);
+      await expectResult(page);
+      await page
+        .getByRole("tab", { name: "Tryb porównania", exact: true })
+        .click();
+      await getModeTab(page, "Z orientacją").click();
+      await getButton(page, "Wolny rynek").click();
+      await expect(getQuestionRows(page)).toHaveCount(RESULT_QUESTIONS.length);
+    });
+
+    await test.step('When they turn on "Tylko niezgodność"', async () => {
+      await page
+        .getByRole("switch", { name: "Tylko niezgodność", exact: true })
+        .click();
+    });
+
+    await test.step("Then only the question they disagree on is listed, collapsed", async () => {
+      // Of the two questions, the answers of one list the orientation, and
+      // the taker chose another answer of it.
+      await expect(getQuestionRows(page)).toHaveText([
+        new RegExp(`^${RESULT_QUESTIONS[0].text}`),
+      ]);
+      await expect(getQuestionRows(page).first()).toHaveAttribute(
+        "aria-expanded",
+        "false",
+      );
+    });
+
+    await test.step("When they open the first question", async () => {
+      await getQuestionRows(page).first().click();
+    });
+
+    await test.step("Then they see their own answer and the answers that orientation stands for, each with a cross", async () => {
+      const orientation = getSide(page, "Wolny rynek");
+
+      await expect(getQuestionRows(page).first()).toHaveAttribute(
+        "aria-expanded",
+        "true",
+      );
+      await expect(getSide(page, "Ty").getByRole("listitem")).toHaveText([
+        "Zdecydowanie za",
+      ]);
+      await expect(orientation.getByRole("listitem")).toHaveText([
+        "Częściowo przeciw",
+        "Zdecydowanie przeciw",
+      ]);
+      await expect(
+        orientation.getByRole("img", { name: "Niezgodność", exact: true }),
+      ).toHaveCount(2);
+    });
+
+    await test.step("When they search for a question that is not listed", async () => {
+      await page
+        .getByRole("searchbox", { name: "Szukaj", exact: true })
+        .fill("ZWIĄZKI");
+    });
+
+    await test.step("Then a line says there are no questions to show", async () => {
+      await expect(
+        page.getByRole("main").getByText("Brak pytań do pokazania."),
+      ).toBeVisible();
+      await expect(getQuestions(page)).toHaveCount(0);
+    });
+
+    await test.step('When they turn "Tylko niezgodność" off', async () => {
+      await page
+        .getByRole("switch", { name: "Tylko niezgodność", exact: true })
+        .click();
+    });
+
+    await test.step("Then the question they searched for is listed, and nothing was asked of the API", async () => {
+      await expect(getQuestionRows(page)).toHaveText([
+        new RegExp(`^${RESULT_QUESTIONS[1].text}`),
+      ]);
+      expect(api.requests).toHaveLength(2);
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
     });
   });
 

@@ -4,9 +4,10 @@ import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import {
   identityFriendComparison,
+  identityOrientationComparison,
   identityTaker,
-  twoViewComparison,
 } from "../ResultsComparison.fixtures";
+import { ComparisonView } from "../ResultsComparison.types";
 import { ComparisonViews } from "./ComparisonViews";
 
 const meta = {
@@ -28,15 +29,25 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// A friend today: the results view alone, with no switch.
-export const OneView: Story = {};
+// A friend: the switch over the view, the results first.
+export const FriendResults: Story = {};
 
-// A friend once the list of questions is drawn: the switch over the view.
-export const TwoViews: Story = {
-  args: { comparison: twoViewComparison },
+export const FriendResultsNarrow: Story = {
+  globals: { viewport: { value: "iphone5" } },
 };
 
-export const TwoViewsNarrow: Story = {
-  args: { comparison: twoViewComparison },
+export const FriendQuestions: Story = {
+  args: {
+    comparison: { ...identityFriendComparison, view: ComparisonView.Questions },
+  },
+};
+
+export const FriendQuestionsNarrow: Story = {
+  args: FriendQuestions.args,
   globals: { viewport: { value: "iphone5" } },
+};
+
+// An orientation: the questions alone, with no switch.
+export const OrientationQuestions: Story = {
+  args: { comparison: identityOrientationComparison },
 };

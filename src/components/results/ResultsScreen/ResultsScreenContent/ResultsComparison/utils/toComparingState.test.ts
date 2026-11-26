@@ -49,8 +49,11 @@ describe("toComparingState()", () => {
       );
     });
 
-    it("has the results view, and shows it", () => {
-      expect(state.views).toEqual([ComparisonView.Results]);
+    it("has both views, the results first, and shows the results", () => {
+      expect(state.views).toEqual([
+        ComparisonView.Results,
+        ComparisonView.Questions,
+      ]);
       expect(state.view).toBe(ComparisonView.Results);
     });
   });
@@ -78,9 +81,9 @@ describe("toComparingState()", () => {
       expect(state.modules).toBeUndefined();
     });
 
-    it("has no view yet", () => {
-      expect(state.views).toEqual([]);
-      expect(state.view).toBeUndefined();
+    it("has the questions view alone, and shows it", () => {
+      expect(state.views).toEqual([ComparisonView.Questions]);
+      expect(state.view).toBe(ComparisonView.Questions);
     });
   });
 

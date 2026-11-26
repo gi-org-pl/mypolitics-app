@@ -21,7 +21,6 @@ import {
   type ComparingState,
   type ComparisonContext,
   ComparisonStatus,
-  ComparisonView,
   type FetchingState,
   FriendRefusal,
   type RefusedState,
@@ -87,12 +86,12 @@ export const identityFriendComparison: ComparingState = toComparingState(
   identityTaker,
 );
 
-// A comparison with both views on its switch, as it will be once the list of
-// questions is drawn.
-export const twoViewComparison: ComparingState = {
-  ...identityFriendComparison,
-  views: [ComparisonView.Results, ComparisonView.Questions],
-};
+// The taker of the identity quiz compared with the first orientation the quiz
+// offers.
+export const identityOrientationComparison: ComparingState = toComparingState(
+  { mode: ComparisonMode.Orientation, orientation: identityOrientations[0] },
+  identityTaker,
+);
 
 const toGlyphUrl = (shape: string): string =>
   `data:image/svg+xml,${encodeURIComponent(

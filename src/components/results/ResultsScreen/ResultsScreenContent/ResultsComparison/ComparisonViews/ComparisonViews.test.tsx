@@ -12,18 +12,13 @@ import {
   type ComparingState,
   ComparisonView,
 } from "../ResultsComparison.types";
+import { ComparisonQuestions } from "./ComparisonQuestions/ComparisonQuestions";
+import { ComparisonResults } from "./ComparisonResults/ComparisonResults";
 import { ComparisonViews } from "./ComparisonViews";
 import {
   COMPARISON_VIEW_CONTENT,
   COMPARISON_VIEW_LABELS,
 } from "./ComparisonViews.constants";
-
-// A comparison with both views on its switch, as it will be once the list of
-// questions is drawn.
-const twoViews: ComparingState = {
-  ...friendComparison,
-  views: [ComparisonView.Results, ComparisonView.Questions],
-};
 
 const renderViews = (comparison: ComparingState = friendComparison) => {
   const onViewChange = vi.fn();
@@ -38,21 +33,19 @@ const renderViews = (comparison: ComparingState = friendComparison) => {
   return { ...view, onViewChange };
 };
 
-describe("<ComparisonViews />", () => {
-  describe("given a comparison with one view", () => {
-    it("shows that view", () => {
-      renderViews();
+const queryQuestions = () => screen.queryByRole("list", { name: "Pytania" });
 
-      expect(screen.getAllByRole("region")).toHaveLength(
-        moduleTaker.resolved.modules.length,
-      );
-      expect(
-        screen.getAllByRole("img", { name: /porównanie z Znajomy/ }).length,
-      ).toBeGreaterThan(0);
+describe("<ComparisonViews />", () => {
+  describe("given a comparison with one view: an orientation", () => {
+    it("shows that view: the questions", () => {
+      renderViews(orientationComparison);
+
+      expect(queryQuestions()).toBeVisible();
+      expect(screen.queryByRole("region")).not.toBeInTheDocument();
     });
 
     it("draws no switch, and is no tab panel", () => {
-      renderViews();
+      renderViews(orientationComparison);
 
       expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
       expect(screen.queryByRole("tab")).not.toBeInTheDocument();
@@ -62,15 +55,19 @@ describe("<ComparisonViews />", () => {
 
   describe("given a comparison with no view", () => {
     it("draws nothing", () => {
-      const { container } = renderViews(orientationComparison);
+      const { container } = renderViews({
+        ...orientationComparison,
+        views: [],
+        view: undefined,
+      });
 
       expect(container).toBeEmptyDOMElement();
     });
   });
 
-  describe("given a comparison with two views", () => {
+  describe("given a comparison with two views: a friend", () => {
     it("draws the switch as a tab list, the results first and chosen", () => {
-      renderViews(twoViews);
+      renderViews();
 
       expect(
         screen.getByRole("tablist", { name: "Widok porównania" }),
@@ -85,8 +82,8 @@ describe("<ComparisonViews />", () => {
       );
     });
 
-    it("shows the chosen view in the panel of its tab", () => {
-      renderViews(twoViews);
+    it("shows the results in the panel of their tab: every module with the friend laid over it", () => {
+      renderViews();
 
       const panel = screen.getByRole("tabpanel", { name: "Wyniki" });
 
@@ -94,10 +91,17 @@ describe("<ComparisonViews />", () => {
       expect(panel).toContainElement(
         screen.getByRole("region", { name: "Tożsamość" }),
       );
+      expect(screen.getAllByRole("region")).toHaveLength(
+        moduleTaker.resolved.modules.length,
+      );
+      expect(
+        screen.getAllByRole("img", { name: /porównanie z Znajomy/ }).length,
+      ).toBeGreaterThan(0);
+      expect(queryQuestions()).not.toBeInTheDocument();
     });
 
     it("draws a line under the switch that reaches the edges of the sheet", () => {
-      renderViews(twoViews);
+      renderViews();
 
       expect(screen.getByRole("tablist").nextElementSibling).toHaveClass(
         "-mx-(--results-panel-padding)",
@@ -106,7 +110,7 @@ describe("<ComparisonViews />", () => {
     });
 
     it("says which view was chosen when the other tab is pressed", () => {
-      const { onViewChange } = renderViews(twoViews);
+      const { onViewChange } = renderViews();
 
       fireEvent.click(screen.getByRole("tab", { name: "Pytania" }));
 
@@ -115,12 +119,13 @@ describe("<ComparisonViews />", () => {
       );
     });
 
-    it("shows an empty panel for a view that has nothing to draw yet", () => {
-      renderViews({ ...twoViews, view: ComparisonView.Questions });
+    it("shows the questions in the panel of their tab, in place of the modules", () => {
+      renderViews({ ...friendComparison, view: ComparisonView.Questions });
 
-      expect(
-        screen.getByRole("tabpanel", { name: "Pytania" }),
-      ).toBeEmptyDOMElement();
+      const panel = screen.getByRole("tabpanel", { name: "Pytania" });
+
+      expect(panel).toHaveAttribute("id", "panel-compared-questions");
+      expect(panel).toContainElement(queryQuestions());
       expect(screen.queryByRole("region")).not.toBeInTheDocument();
     });
   });
@@ -132,10 +137,11 @@ describe("<ComparisonViews />", () => {
       );
     });
 
-    it("draw the results, and nothing for the questions yet", () => {
-      expect(Object.keys(COMPARISON_VIEW_CONTENT)).toEqual([
-        ComparisonView.Results,
-      ]);
+    it("draw every view: the results and the questions", () => {
+      expect(COMPARISON_VIEW_CONTENT).toEqual({
+        [ComparisonView.Results]: ComparisonResults,
+        [ComparisonView.Questions]: ComparisonQuestions,
+      });
     });
   });
 });

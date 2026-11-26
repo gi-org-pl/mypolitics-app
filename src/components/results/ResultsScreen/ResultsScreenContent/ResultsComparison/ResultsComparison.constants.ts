@@ -25,13 +25,12 @@ export const IS_CHOICE_OPEN: Record<ComparisonStatus, boolean> = {
 };
 
 // The views of a comparison, by what kind the other side is, in the order of
-// the switch. A friend has a result to lay over the modules; an orientation
-// has none. The list of questions is a view of both, and is listed here once
-// it is drawn: until then a friend has one view and no switch, and an
-// orientation has the agreement bar alone.
+// the switch. A friend has a result to lay over the modules, so it has both
+// views, the results first; an orientation has no result, so it has the
+// questions alone, and no switch.
 export const COMPARISON_VIEWS: Record<ComparisonMode, ComparisonView[]> = {
-  [ComparisonMode.Friend]: [ComparisonView.Results],
-  [ComparisonMode.Orientation]: [],
+  [ComparisonMode.Friend]: [ComparisonView.Results, ComparisonView.Questions],
+  [ComparisonMode.Orientation]: [ComparisonView.Questions],
 };
 
 // The colour a friend is drawn in: a person has none of their own. A literal

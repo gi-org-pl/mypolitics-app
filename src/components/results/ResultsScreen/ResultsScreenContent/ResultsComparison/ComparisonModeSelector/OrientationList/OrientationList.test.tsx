@@ -81,12 +81,23 @@ describe("<OrientationList />", () => {
       expect(getNames()).toEqual(["Wolny rynek"]);
     });
 
-    it("lists nothing when no name contains it", () => {
+    it("lists nothing when no name contains it, and says so", () => {
       renderList();
 
       search("konserwatyzm");
 
       expect(getNames()).toEqual([]);
+      expect(screen.getByRole("status")).toHaveTextContent(
+        "Nic nie pasuje do wyszukiwania.",
+      );
+    });
+
+    it("says nothing while something is listed", () => {
+      renderList();
+
+      search("rynek");
+
+      expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
 
     it("lists everything again when the search is cleared", () => {
@@ -96,6 +107,7 @@ describe("<OrientationList />", () => {
       search("");
 
       expect(getNames()).toHaveLength(exampleOrientations.length);
+      expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
   });
 
@@ -124,6 +136,7 @@ describe("<OrientationList />", () => {
 
       expect(getNames()).toEqual([]);
       expect(getSearch()).toBeVisible();
+      expect(screen.getByRole("status")).toBeEmptyDOMElement();
     });
   });
 });
