@@ -100,6 +100,52 @@ describe("useAuthRequest()", () => {
       expect(result.current.request).toBeNull();
     });
 
+    it("drops the request when its caller drops it, and calls neither its onCancel nor its action", () => {
+      const action = vi.fn();
+      const onCancel = vi.fn();
+      const { result, setSession } = renderRequest({ status: "signed-out" });
+      let drop = () => undefined as void;
+      act(() => {
+        drop = result.current.requireAuth("create-quiz", action, { onCancel });
+      });
+
+      act(() => drop());
+      act(() => setSession(SIGNED_IN));
+
+      expect(result.current.request).toBeNull();
+      expect(onCancel).not.toHaveBeenCalled();
+      expect(action).not.toHaveBeenCalled();
+    });
+
+    it("leaves a later request open when an earlier one is dropped", () => {
+      const { result } = renderRequest({ status: "signed-out" });
+      let drop = () => undefined as void;
+      act(() => {
+        drop = result.current.requireAuth("create-quiz", vi.fn());
+      });
+      act(() => result.current.cancel());
+      act(() => {
+        result.current.requireAuth("create-quiz", vi.fn());
+      });
+
+      act(() => drop());
+
+      expect(result.current.request).toMatchObject({ intent: "create-quiz" });
+    });
+
+    it("gives a drop that does nothing for a request it ignored", () => {
+      const { result } = renderRequest({ status: "signed-out" });
+      let drop = () => undefined as void;
+      act(() => {
+        result.current.requireAuth("create-quiz", vi.fn());
+        drop = result.current.requireAuth("create-quiz", vi.fn());
+      });
+
+      act(() => drop());
+
+      expect(result.current.request).toMatchObject({ intent: "create-quiz" });
+    });
+
     it("does nothing on cancel when nothing is open", () => {
       const { result } = renderRequest({ status: "signed-out" });
 

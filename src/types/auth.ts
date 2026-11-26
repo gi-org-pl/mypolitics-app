@@ -125,11 +125,16 @@ export interface AuthSessionValue {
 // otherwise opens the auth dialog with the line of the intent and runs the
 // action once, after a successful sign-in. Closing the dialog runs nothing
 // and calls onCancel.
+//
+// It returns a function that drops the request it opened, for a caller that
+// goes away while the dialog is still open: the dialog closes, and neither
+// the action nor onCancel runs. It does nothing once the request is over, or
+// when the call opened none.
 export type RequireAuth = (
   intent: AuthIntentKey,
   action: () => void,
   options?: { onCancel?: () => void },
-) => void;
+) => () => void;
 
 // An action that needs an account: the line the dialog shows for it.
 export interface AuthIntent {

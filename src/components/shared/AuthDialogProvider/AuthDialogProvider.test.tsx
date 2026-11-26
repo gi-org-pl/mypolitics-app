@@ -1,10 +1,16 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  createMemoryRouter,
+  MemoryRouter,
+  Outlet,
+  RouterProvider,
+} from "react-router";
 import { describe, expect, it, vi } from "vitest";
 
 import { AuthSessionProvider } from "@/components/shared/AuthSessionProvider/AuthSessionProvider";
+import { RequireAuth } from "@/components/shared/RequireAuth/RequireAuth";
 import type { AuthClient } from "@/types/auth";
 import { useRequireAuth } from "@/utils/auth/useRequireAuth";
 import { createAuthAccount } from "@/utils/vitest/auth/createAuthAccount";
@@ -75,6 +81,49 @@ describe("AuthDialogProvider", () => {
 
       await vi.waitFor(() => expect(onCreate).toHaveBeenCalledOnce());
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a signed-out person leaves a guarded page while the dialog is open", () => {
+    it("closes the dialog and stays on the page they went to", async () => {
+      const router = createMemoryRouter(
+        [
+          {
+            element: (
+              <AuthSessionProvider client={createFakeAuthClient()}>
+                <AuthDialogProvider>
+                  <Outlet />
+                </AuthDialogProvider>
+              </AuthSessionProvider>
+            ),
+            children: [
+              { path: "/", element: <p>home</p> },
+              { path: "/about", element: <p>about</p> },
+              {
+                path: "/editor",
+                element: (
+                  <RequireAuth intent="create-quiz">
+                    <p>editor</p>
+                  </RequireAuth>
+                ),
+              },
+            ],
+          },
+        ],
+        { initialEntries: ["/", "/about", "/editor"], initialIndex: 2 },
+      );
+      render(
+        <I18nProvider i18n={i18n}>
+          <RouterProvider router={router} />
+        </I18nProvider>,
+      );
+      await screen.findByRole("dialog");
+
+      await act(() => router.navigate(-1));
+
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(router.state.location.pathname).toBe("/about");
+      expect(screen.getByText("about")).toBeInTheDocument();
     });
   });
 });
