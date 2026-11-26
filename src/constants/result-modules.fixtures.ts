@@ -6,6 +6,11 @@
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
 
+// The EuroWyborczy 2024 quiz, migrated from the old infrastructure: the API does
+// not have it yet, so these identifiers are provisional - they come from the
+// local mock survey and are replaced with the real ones once the quiz is imported.
+export const EUROWYBORCZY_SURVEY_ID = "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee";
+
 // The identifiers of the records of the app's own lists, by what each record
 // is: a test names a record, and does not repeat its identifier.
 export const OWN_RECORD_IDS = {
@@ -18,12 +23,28 @@ export const OWN_RECORD_IDS = {
   presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
   presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
   presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+  eurowyborczyHeader: "c49938e2-5397-4d73-b44f-ab616d1d97f5",
+  eurowyborczyIdeologies: "b1d5534a-26c5-4d51-9078-11d947e30122",
+  eurowyborczyAxis: "c1dd1bee-e599-440c-a0ca-241579beab49",
 } as const;
 
 export const LIVE_QUIZ_IDS: Record<
   string,
   { orientationIds: string[]; axisIds: string[] }
 > = {
+  [EUROWYBORCZY_SURVEY_ID]: {
+    orientationIds: [
+      "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+      "bc741023-18d2-49e9-971f-54248a4e4f74",
+      "70d38b28-f27d-4560-89da-bb09cd974c91",
+      "07f653eb-ed71-4561-a676-ba5027441a19",
+      "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+    ],
+    axisIds: [
+      "072cacde-0863-4865-95b1-67cf8bdd0d0f",
+      "c152ab88-9df2-452d-bf42-16a7d870bcb4",
+    ],
+  },
   [IDENTITY_SURVEY_ID]: {
     orientationIds: [
       "cb5e42d2-f2b6-4725-9cbb-21ab7fef818c",

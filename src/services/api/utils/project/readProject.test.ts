@@ -7,6 +7,7 @@ import { SurveyLoadStatus } from "@/types/survey";
 import { readProject } from "./readProject";
 import {
   electionQuizProject,
+  eurowyborczyQuizProject,
   identityQuizProject,
   presidentialQuizProject,
 } from "./readProject.fixtures";
@@ -136,6 +137,18 @@ describe("readProject()", () => {
       });
     });
 
+    it("reads the project of the migrated EuroWyborczy 2024 quiz", () => {
+      expect(
+        readProject(eurowyborczyQuizProject, QUIZ_PROJECT_IDS.eurowyborczy2024),
+      ).toEqual({
+        status: SurveyLoadStatus.Ready,
+        project: {
+          id: "c5d0fe74-348b-4d6c-a4f0-e9b90e7bdea9",
+          latestSurveyId: "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+        },
+      });
+    });
+
     it("reads a project that names no latest survey", () => {
       expect(readProject(electionQuizProject, electionQuizProject.id)).toEqual({
         status: SurveyLoadStatus.Ready,
@@ -145,7 +158,11 @@ describe("readProject()", () => {
 
     it("has a fixture for every project of the map", () => {
       expect(
-        [identityQuizProject, presidentialQuizProject].map(({ id }) => id),
+        [
+          identityQuizProject,
+          presidentialQuizProject,
+          eurowyborczyQuizProject,
+        ].map(({ id }) => id),
       ).toEqual(Object.values(QUIZ_PROJECT_IDS));
     });
   });
