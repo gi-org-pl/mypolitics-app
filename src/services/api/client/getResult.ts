@@ -1,3 +1,7 @@
+import {
+  buildMock2137ResultResponse,
+  MOCK_2137_TEST_RESULT_ID,
+} from "@/mocks/mock2137Values";
 import { isNotFound } from "@/services/api/utils/error/isNotFound";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
@@ -13,6 +17,23 @@ export const getResult = async (
   resultId: string,
   options?: ApiRequestOptions,
 ): Promise<ResultLoadResult> => {
+  if (resultId === MOCK_2137_TEST_RESULT_ID) {
+    return readResult(buildMock2137ResultResponse(), resultId);
+  }
+
+  try {
+    const saved = sessionStorage.getItem(`mock-result:${resultId}`);
+    if (saved !== null) {
+      const answers = JSON.parse(saved) as Array<{
+        questionId: string;
+        answerId: string;
+      }>;
+      return readResult(buildMock2137ResultResponse(answers), resultId);
+    }
+  } catch {
+    // ignore storage errors
+  }
+
   try {
     const { data } = await apiClient.get<unknown>(
       `/v1/result/${encodeURIComponent(resultId)}`,

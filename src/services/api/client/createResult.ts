@@ -1,5 +1,5 @@
 import { HttpStatusCode } from "axios";
-
+import { MOCK_2137_SURVEY_ID } from "@/mocks/mock2137Values";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
 import { ApiFailureKind, type ApiRequestOptions } from "@/types/api";
@@ -11,6 +11,19 @@ export const createResult = async (
   input: ResultInput,
   options?: ApiRequestOptions,
 ): Promise<CreateResultOutcome> => {
+  if (input.surveyId === MOCK_2137_SURVEY_ID) {
+    try {
+      sessionStorage.setItem(
+        `mock-result:${input.sessionId}`,
+        JSON.stringify(input.answers),
+      );
+    } catch {
+      // ignore storage errors
+    }
+
+    return CreateResultOutcome.Stored;
+  }
+
   try {
     const { status } = await apiClient.post<unknown>(
       "/v1/result",

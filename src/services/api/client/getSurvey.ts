@@ -1,3 +1,7 @@
+import {
+  MOCK_2137_SURVEY_ID,
+  MOCK_2137_SURVEY_RESPONSE,
+} from "@/mocks/mock2137Values";
 import { isNotFound } from "@/services/api/utils/error/isNotFound";
 import { isRefusal } from "@/services/api/utils/error/isRefusal";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
@@ -13,6 +17,10 @@ export const getSurvey = async (
   language: string,
   options?: ApiRequestOptions,
 ): Promise<SurveyLoadResult> => {
+  if (surveyId === MOCK_2137_SURVEY_ID) {
+    return readSurvey(MOCK_2137_SURVEY_RESPONSE, surveyId, language);
+  }
+
   const url = `/v1/survey/${encodeURIComponent(surveyId)}`;
   const config = toRequestConfig(options);
 
