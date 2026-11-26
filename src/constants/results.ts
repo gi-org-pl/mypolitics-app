@@ -83,7 +83,8 @@ export const RESULT_MODULE_DEFAULTS = {
   column: "start",
 } as const satisfies Partial<ResultModule>;
 
-// The one type that stands outside the order of the modules.
+// The header: the one module type that stands outside the order of the
+// modules.
 export const HEADER_MODULE_TYPE = "header" satisfies ResultModuleType;
 
 // The values of a record. Everything about a module beyond what it is, where
