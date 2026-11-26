@@ -43,6 +43,15 @@ describe("<SurveyDemographicsField />", () => {
       expect(field).toHaveTextContent("Płeć");
     });
 
+    it("wraps the field name onto more lines instead of cutting it", () => {
+      const { field } = renderField();
+
+      expect(field).toHaveClass(
+        "[&>div]:whitespace-normal",
+        "[&>div]:wrap-break-word",
+      );
+    });
+
     it("has no description", () => {
       const { field } = renderField();
 

@@ -2,10 +2,14 @@ import { Trans } from "@lingui/react/macro";
 
 import avatarsImage from "@/assets/images/survey/demographics-avatars.png";
 
+// The card over the fields: the heading with the picture beside it, and the
+// line under them. The heading never breaks inside a word: it is never
+// narrower than its longest word, and on a narrow screen the picture gives way
+// to it first.
 export const SurveyDemographicsHeader = () => (
   <div className="flex flex-col gap-2.5 rounded-2xl bg-gi-dark-ash p-4 text-gi-primary">
     <div className="flex items-center justify-between gap-2.5">
-      <h2 className="w-min min-w-0 text-2xl leading-[29px] font-bold wrap-break-word">
+      <h2 className="w-min text-2xl leading-[29px] font-bold wrap-break-word">
         <Trans>Twoja tożsamość</Trans>
       </h2>
       <img
@@ -13,7 +17,7 @@ export const SurveyDemographicsHeader = () => (
         alt=""
         width={104}
         height={64}
-        className="h-16 w-26 shrink-0"
+        className="h-auto w-26 min-w-0 shrink object-contain"
       />
     </div>
     <hr className="-mb-px border-gi-dark-gray/10" />

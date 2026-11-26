@@ -173,6 +173,17 @@ export const NoColor: Story = {
   },
 };
 
+// Two sides the quiz gives no colour: the end side takes the lighter grey,
+// so that the two can be told apart.
+export const DoubleNoColor: Story = {
+  args: {
+    card: createDoubleCard(
+      { orientation: { ...euroscepticism, color: undefined }, value: 69 },
+      { orientation: { ...federalism, color: undefined }, value: 31 },
+    ),
+  },
+};
+
 export const LongNames: Story = {
   args: {
     card: createDoubleCard(

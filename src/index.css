@@ -37,3 +37,12 @@ body {
   inherits: false;
   initial-value: 0px;
 }
+
+/* The page keeps the room of the scrollbar at every height, so that a page
+   that grows or shrinks past the height of the window - a longer question, a
+   shorter answer - does not move its centred column sideways where the
+   scrollbar takes room. There is no utility for it, and it belongs to the
+   whole document. */
+html {
+  scrollbar-gutter: stable;
+}

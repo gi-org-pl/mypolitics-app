@@ -430,7 +430,7 @@ describe("<DoubleAxisChart />", () => {
   });
 
   describe("given long names", () => {
-    it("truncates the labels and keeps the full names for assistive technology", () => {
+    it("wraps the labels instead of cutting them, and keeps the full names for assistive technology", () => {
       renderChart(
         50,
         50,
@@ -440,8 +440,8 @@ describe("<DoubleAxisChart />", () => {
 
       const labels = within(screen.getByTestId("universal-axis-labels"));
 
-      expect(labels.getByText(LONG_START_NAME)).toHaveClass("truncate");
-      expect(labels.getByText(LONG_END_NAME)).toHaveClass("truncate");
+      expect(labels.getByText(LONG_START_NAME)).toHaveClass("wrap-break-word");
+      expect(labels.getByText(LONG_END_NAME)).toHaveClass("wrap-break-word");
       expect(
         screen.getByRole("region", {
           name: `${LONG_START_NAME} / ${LONG_END_NAME}`,
