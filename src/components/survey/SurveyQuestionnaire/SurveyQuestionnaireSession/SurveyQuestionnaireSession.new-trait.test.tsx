@@ -2,6 +2,7 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { NewTraitCheckpointCard } from "@/types/checkpoint";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -62,7 +63,9 @@ const renderCardUp = () => {
   );
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+    ),
     survey,
     getSession: store.getState,
   };
@@ -160,7 +163,9 @@ describe("<SurveyQuestionnaireSession /> - the new trait card", () => {
       const { survey, unmount } = renderCardUp();
 
       unmount();
-      renderWithI18n(<SurveyQuestionnaireSession survey={survey} />);
+      renderWithI18n(
+        <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+      );
 
       expectNewTraitCard();
     });
@@ -171,7 +176,9 @@ describe("<SurveyQuestionnaireSession /> - the new trait card", () => {
       const { survey, store } = createQuiz();
 
       store.setState(createStartedSession(survey), true);
-      renderWithI18n(<SurveyQuestionnaireSession survey={survey} />);
+      renderWithI18n(
+        <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+      );
 
       for (const _question of survey.questions) {
         answerQuestion();

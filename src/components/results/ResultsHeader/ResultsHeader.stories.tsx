@@ -172,3 +172,33 @@ export const ImageFailsToLoad: Story = {
     orientation: { ...orientation, imageUrl: "data:image/png;base64," },
   },
 };
+
+const LOW_MATCH_NOTICE =
+  "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).";
+
+// A header set to name its orientation below a partial match: the name, the
+// confidence in the colour of that band, the slogan, and the line for it.
+// The name and the slogan are the longest pair of the identity quiz: 25 and
+// 42 characters, which neither line holds at a narrow width.
+export const LowMatchNamed: Story = {
+  globals: narrow,
+  args: {
+    orientation: {
+      ...orientation,
+      name: "Międzynarodowy socjalista",
+      slogan: "Pracownicy wszystkich narodów łączcie się!",
+    },
+    confidence: 43.67,
+    lowMatch: "named",
+    lowMatchLabel: LOW_MATCH_NOTICE,
+  },
+};
+
+export const LowMatchNamedDesktop: Story = {
+  args: LowMatchNamed.args,
+};
+
+export const LowMatchNamedNoNotice: Story = {
+  globals: narrow,
+  args: { ...LowMatchNamed.args, lowMatchLabel: undefined },
+};

@@ -1,17 +1,32 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { type Survey, SurveyLoadStatus } from "@/types/survey";
+import { createResult } from "@/services/api/client/createResult";
+import { getResult } from "@/services/api/client/getResult";
+import {
+  CreateResultOutcome,
+  type Survey,
+  SurveyLoadStatus,
+} from "@/types/survey";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { SurveyQuestionnaire } from "./SurveyQuestionnaire";
 import type { SurveyQuestionnaireProps } from "./SurveyQuestionnaire.types";
 
+vi.mock("@/services/api/client/createResult");
+vi.mock("@/services/api/client/getResult");
+
 const PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
+// The stay of the loader: five lines, one every 1.2 seconds.
+const LOADER_LINE_MS = 1200;
+const LOADER_MIN_LINES = 5;
+
+const onResultOpen = vi.fn<(resultId: string) => void>();
 
 // The stores live as long as the module does, so every test takes a quiz of
 // its own.
@@ -22,7 +37,11 @@ const getScreenElement = (
   onRetry: () => void,
 ) => (
   <I18nProvider i18n={i18n}>
-    <SurveyQuestionnaire load={load} onRetry={onRetry} />
+    <SurveyQuestionnaire
+      load={load}
+      onRetry={onRetry}
+      onResultOpen={onResultOpen}
+    />
   </I18nProvider>
 );
 
@@ -40,6 +59,8 @@ const renderScreen = (load: SurveyQuestionnaireProps["load"]) => {
 
 describe("<SurveyQuestionnaire />", () => {
   afterEach(() => {
+    vi.useRealTimers();
+    vi.resetAllMocks();
     sessionStorage.clear();
   });
 
@@ -194,6 +215,37 @@ describe("<SurveyQuestionnaire />", () => {
           "EN Państwo powinno dopłacać do kredytów mieszkaniowych.",
         ),
       ).toBeVisible();
+    });
+  });
+
+  describe("when the result of the session is calculated and the stay of the loader is over", () => {
+    it("opens the result of the session, once", async () => {
+      vi.useFakeTimers();
+      vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
+      vi.mocked(getResult).mockResolvedValue(
+        createResultLoad({ isCalculated: true }),
+      );
+
+      const survey = createQuiz();
+      const store = getSurveySessionStore(survey);
+
+      store.setState(
+        {
+          ...createStartedSession(survey, survey.questions.length),
+          phase: "results-calculation",
+        },
+        true,
+      );
+      renderScreen({ status: SurveyLoadStatus.Ready, survey });
+
+      expect(onResultOpen).not.toHaveBeenCalled();
+
+      for (let line = 0; line < LOADER_MIN_LINES; line += 1) {
+        await act(() => vi.advanceTimersByTimeAsync(LOADER_LINE_MS));
+      }
+
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledWith(store.getState().id);
     });
   });
 

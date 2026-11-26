@@ -65,11 +65,11 @@ msgstr "{name}: {percent}%"
 msgid "{name}: {quadrant}"
 msgstr "{name}: {quadrant}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "{name}: {value}%"
 msgstr "{name}: {value}%"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:161
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:165
 msgid "{name}: brak wyniku"
 msgstr "{name}: brak wyniku"
 
@@ -276,17 +276,26 @@ msgid "Bez pudła"
 msgstr "Bez pudła"
 
 #: src/components/results/Archetype/ArchetypeLeader/ArchetypeLeader.tsx:32
-#: src/components/results/ResultsHeader/ResultsHeader.tsx:31
+#: src/components/results/ResultsHeader/ResultsHeader.tsx:34
 msgid "Brak dopasowania"
 msgstr "Brak dopasowania"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/Side/Answer/Answer.tsx:33
 #: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:12
 msgid "Brak odpowiedzi"
 msgstr "Brak odpowiedzi"
 
+#: src/constants/comparison.ts:12
+msgid "Brak porównania"
+msgstr "Brak porównania"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionList.tsx:28
+msgid "Brak pytań do pokazania."
+msgstr "Brak pytań do pokazania."
+
 #: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryHeading/HorizontalBarChartCategoryHeading.tsx:28
 #: src/components/results/NolanChart/utils/useNolanTitle.ts:17
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:178
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:182
 msgid "Brak wyniku"
 msgstr "Brak wyniku"
 
@@ -307,6 +316,10 @@ msgstr "Checkpoint"
 msgctxt "checkpoint-nolan-path-partial"
 msgid "Co ja tu robię?"
 msgstr "Co ja tu robię?"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/AgreementBar/AgreementBar.tsx:38
+msgid "Cofnij porównanie"
+msgstr "Cofnij porównanie"
 
 #: src/components/account/SignInPanel/SignInPanelError/SignInPanelError.tsx:16
 msgid "Coś poszło nie tak"
@@ -330,11 +343,11 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 msgstr "Cztery ćwiartki kompasu zaliczone, a quiz jeszcze trwa."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:45
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
 msgid "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz {quizName} od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:44
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:43
 msgid "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 msgstr "Czy na pewno chcesz rozpocząć quiz od nowa? Twoje odpowiedzi nie zostaną zapisane."
 
@@ -400,7 +413,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Dookoła kompasu"
 msgstr "Dookoła kompasu"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:33
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:38
 msgid "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 msgstr "Dzięki Twoim odpowiedziom w tej sekcji będziemy mogli przeanalizować Twoje wyniki w przyszłości w celu poprawienia działania quizu, a także przygotowania analiz na data.mypolitics.pl."
 
@@ -434,6 +447,10 @@ msgstr "Google"
 msgid "Gotowe"
 msgstr "Gotowe"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendForm.tsx:56
+msgid "Identyfikator wyników znajomego"
+msgstr "Identyfikator wyników znajomego"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireCategorySelect/SurveyQuestionnaireCategorySelect.tsx:26
 msgid "Idziemy dalej"
 msgstr "Idziemy dalej"
@@ -442,6 +459,7 @@ msgstr "Idziemy dalej"
 msgid "Ilustracja misia — błąd 404"
 msgstr "Ilustracja misia — błąd 404"
 
+#: src/components/results/ResultsColumns/ResultsColumn/ResultsModule/ModuleDrawing/ModuleInfoDialog/ModuleInfoDialog.tsx:39
 #: src/components/shared/ModuleWrapper/ModuleWrapper.tsx:59
 msgid "Informacje"
 msgstr "Informacje"
@@ -591,8 +609,8 @@ msgstr "Liczymy, ale się cieszymy"
 msgid "Liczymy, nie oceniamy"
 msgstr "Liczymy, nie oceniamy"
 
-#: src/root.tsx:58
-#: src/root.tsx:61
+#: src/root.tsx:62
+#: src/root.tsx:65
 msgid "Logo myPolitics"
 msgstr "Logo myPolitics"
 
@@ -642,6 +660,10 @@ msgstr "Miasto powyżej 500 tys. mieszkańców"
 #: src/constants/home.ts:70
 msgid "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
 msgstr "Milionom Polek i Polaków pomogliśmy poszerzyć świadomość polityczną poprzez quizy światopoglądowe."
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendForm.tsx:50
+msgid "Mój identyfikator wyników"
+msgstr "Mój identyfikator wyników"
 
 #: src/components/shared/Error404/Error404.tsx:27
 msgid "My tym błędem otwieramy oczy niedowiarkom! Mówimy: to jest nasz błąd, przez nas zrobiony, i to nie jest nasze ostatnie słowo!"
@@ -702,6 +724,10 @@ msgstr "Nazwa"
 msgid "Nazwa musi mieć co najmniej 2 znaki."
 msgstr "Nazwa musi mieć co najmniej 2 znaki."
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:38
+msgid "Nic nie pasuje do wyszukiwania."
+msgstr "Nic nie pasuje do wyszukiwania."
+
 #. A word underlined in a quiz statement wherever it stands as a whole word. Translate it as the negation of the language.
 #: src/components/survey/SurveyQuestion/SurveyQuestionStatement/SurveyQuestionStatement.constants.ts:5
 msgctxt "survey question: emphasised phrase"
@@ -717,9 +743,17 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Nie tym razem"
 msgstr "Nie tym razem"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormIdentifier/FriendFormIdentifier.constants.ts:11
+msgid "Nie udało się skopiować. Zaznacz identyfikator i skopiuj go ręcznie."
+msgstr "Nie udało się skopiować. Zaznacz identyfikator i skopiuj go ręcznie."
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:16
 msgid "Nie udało się wczytać quizu"
 msgstr "Nie udało się wczytać quizu"
+
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:34
+msgid "Nie udało się wczytać wyniku"
+msgstr "Nie udało się wczytać wyniku"
 
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:25
 msgid "Nie udało się wysłać linku na Twój e-mail. Twoje wyniki są gotowe. Zapisz adres strony z wynikami, żeby móc do nich wrócić."
@@ -741,6 +775,14 @@ msgstr "Nie udało się zapisać konta. Spróbuj jeszcze raz."
 msgid "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
 msgstr "Nie udało się zapisać Twoich odpowiedzi. Sprawdź połączenie i spróbuj ponownie."
 
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:21
+msgid "Nie znaleźliśmy takiego wyniku"
+msgstr "Nie znaleźliśmy takiego wyniku"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:13
+msgid "Nie znaleźliśmy takiego wyniku."
+msgstr "Nie znaleźliśmy takiego wyniku."
+
 #: src/constants/checkpoint.ts:454
 msgctxt "checkpoint-axis-puzzle-miss"
 msgid "Niespodzianka"
@@ -750,6 +792,10 @@ msgstr "Niespodzianka"
 msgctxt "checkpoint-stats-for"
 msgid "Niewielu Was"
 msgstr "Niewielu Was"
+
+#: src/constants/comparison.ts:11
+msgid "Niezgodność"
+msgstr "Niezgodność"
 
 #: src/constants/checkpoint.ts:266
 msgctxt "checkpoint-nolan-path-partial"
@@ -868,11 +914,11 @@ msgstr "Pokaż grupę"
 msgid "Pokaż grupę: {name}"
 msgstr "Pokaż grupę: {name}"
 
-#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:33
 msgid "Pokaż kategorię"
 msgstr "Pokaż kategorię"
 
-#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:37
+#: src/components/results/HorizontalBarChart/HorizontalBarChartCategories/HorizontalBarChartCategoryList/HorizontalBarChartCategoryList.tsx:33
 msgid "Pokaż kategorię: {name}"
 msgstr "Pokaż kategorię: {name}"
 
@@ -915,11 +961,15 @@ msgstr "Pomiń"
 msgid "Poprzednie pytanie"
 msgstr "Poprzednie pytanie"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:168
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ResultsComparison.tsx:7
+#~ msgid "Porównanie będzie dostępne wkrótce."
+#~ msgstr "Porównanie będzie dostępne wkrótce."
+
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:172
 msgid "porównanie z {name}"
 msgstr "porównanie z {name}"
 
-#: src/components/shared/UniversalAxis/UniversalAxis.tsx:170
+#: src/components/shared/UniversalAxis/UniversalAxis.tsx:174
 msgid "porównanie z {name}: {value}%"
 msgstr "porównanie z {name}: {value}%"
 
@@ -983,6 +1033,11 @@ msgctxt "checkpoint-position-puzzle-miss"
 msgid "Pudło!"
 msgstr "Pudło!"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionList.tsx:31
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:16
+msgid "Pytania"
+msgstr "Pytania"
+
 #: src/components/shared/Header/HeaderNav/HeaderNav.constants.ts:30
 msgid "Quizy"
 msgstr "Quizy"
@@ -1000,7 +1055,7 @@ msgstr "Regulamin"
 msgid "Remis"
 msgstr "Remis"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:61
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:60
 msgid "Resetuj quiz"
 msgstr "Resetuj quiz"
 
@@ -1017,7 +1072,7 @@ msgstr "Rodzaje quizów"
 msgid "Rozdajemy 100 milionów"
 msgstr "Rozdajemy 100 milionów"
 
-#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:39
+#: src/components/survey/SurveyControls/SurveyControlsResetModal/SurveyControlsResetModal.tsx:38
 msgid "Rozpocząć od nowa?"
 msgstr "Rozpocząć od nowa?"
 
@@ -1056,6 +1111,14 @@ msgstr "Skala „{orientation}”: jak dotąd wysoki wynik."
 msgid "Skala „{orientation}”: wysoki wynik"
 msgstr "Skala „{orientation}”: wysoki wynik"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormIdentifier/FriendFormIdentifier.constants.ts:10
+msgid "Skopiowano identyfikator."
+msgstr "Skopiowano identyfikator."
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormIdentifier/FriendFormIdentifier.tsx:33
+msgid "Skopiuj identyfikator"
+msgstr "Skopiuj identyfikator"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:29
 msgid "Słuchamy wywiadów w telewizji"
 msgstr "Słuchamy wywiadów w telewizji"
@@ -1064,7 +1127,7 @@ msgstr "Słuchamy wywiadów w telewizji"
 msgid "Sondaże"
 msgstr "Sondaże"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:9
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:15
 msgid "Społecznościowe"
 msgstr "Społecznościowe"
 
@@ -1076,6 +1139,10 @@ msgstr "Sprawdź połączenie z internetem i spróbuj ponownie."
 msgid "Sprawdź wyjaśnienie"
 msgstr "Sprawdź wyjaśnienie"
 
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:22
+msgid "Sprawdź, czy adres jest pełny."
+msgstr "Sprawdź, czy adres jest pełny."
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:20
 msgid "Sprawdzamy czy przekraczasz próg"
 msgstr "Sprawdzamy czy przekraczasz próg"
@@ -1085,6 +1152,7 @@ msgctxt "checkpoint-axis-puzzle-ask"
 msgid "Sprawdźmy intuicję"
 msgstr "Sprawdźmy intuicję"
 
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.tsx:34
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoadError/SurveyQuestionnaireLoadError.tsx:28
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:8
 msgid "Spróbuj ponownie"
@@ -1116,6 +1184,14 @@ msgctxt "checkpoint-axis-closeness-double"
 msgid "Szala się przechyla"
 msgstr "Szala się przechyla"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/ComparisonQuestions.tsx:43
+msgid "Szukaj"
+msgstr "Szukaj"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/OrientationList/OrientationList.tsx:30
+msgid "Szukaj po nazwie"
+msgstr "Szukaj po nazwie"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:15
 msgid "Szukamy Twojej ćwiartki"
 msgstr "Szukamy Twojej ćwiartki"
@@ -1133,6 +1209,14 @@ msgstr "Tak, na tym etapie quizu prowadzi u Ciebie strona „{leading}”."
 msgctxt "checkpoint-axis-closeness-double"
 msgid "Tego już jesteśmy pewni"
 msgstr "Tego już jesteśmy pewni"
+
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:40
+msgid "Ten quiz nie ma jeszcze widoku wyników"
+msgstr "Ten quiz nie ma jeszcze widoku wyników"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:12
+msgid "Ten wynik pochodzi z innego quizu."
+msgstr "Ten wynik pochodzi z innego quizu."
 
 #: src/constants/checkpoint.ts:143
 msgctxt "checkpoint-halfway"
@@ -1159,6 +1243,10 @@ msgstr "to"
 msgid "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 msgstr "To jest błąd 404 <0>na miarę naszych możliwości</0>!"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:11
+msgid "To jest Twój identyfikator."
+msgstr "To jest Twój identyfikator."
+
 #: src/constants/checkpoint.ts:129
 msgctxt "checkpoint-halfway"
 msgid "To już prawie koniec, pozostałe pytania zajmą ok. {minutes} min."
@@ -1172,6 +1260,10 @@ msgstr "To już wiemy"
 #: src/components/account/SignInPanel/SignInPanel.tsx:43
 msgid "To konto już istnieje"
 msgstr "To konto już istnieje"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:10
+msgid "To nie jest identyfikator wyników."
+msgstr "To nie jest identyfikator wyników."
 
 #: src/constants/checkpoint.ts:569
 msgctxt "checkpoint-position-puzzle-miss"
@@ -1203,6 +1295,7 @@ msgid "Trochę Cię nosi"
 msgstr "Trochę Cię nosi"
 
 #: src/components/results/ResultsHeader/ResultsHeaderTabs/ResultsHeaderTabs.tsx:28
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.tsx:44
 msgid "Tryb porównania"
 msgstr "Tryb porównania"
 
@@ -1234,7 +1327,7 @@ msgstr "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
 msgid "Twoja tożsamość"
 msgstr "Twoja tożsamość"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:41
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:46
 msgid "Twoje dane pozostaną całkowicie anonimowe."
 msgstr "Twoje dane pozostaną całkowicie anonimowe."
 
@@ -1252,6 +1345,10 @@ msgstr "Twoje odpowiedzi wskazują jak dotąd na stronę „{leading}”."
 msgid "Twoje wyniki"
 msgstr "Twoje wyniki"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionList/QuestionRow/QuestionRow.tsx:67
+msgid "Ty"
+msgstr "Ty"
+
 #: src/constants/checkpoint.ts:371
 msgctxt "checkpoint-stats-against"
 msgid "Tylko {percent}% osób jest przeciw tezie „{thesis}”."
@@ -1266,6 +1363,10 @@ msgstr "Tylko {percent}% osób jest za tezą „{thesis}”."
 msgctxt "checkpoint-position-puzzle-ask"
 msgid "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
 msgstr "Tylko do jednej z tych opcji jest Ci naprawdę blisko. Wskaż ją!"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonQuestions/QuestionFilter/QuestionFilter.tsx:27
+msgid "Tylko niezgodność"
+msgstr "Tylko niezgodność"
 
 #: src/components/results/NolanChart/OpenControl/OpenControl.tsx:26
 msgid "Ukryj osie"
@@ -1288,9 +1389,18 @@ msgstr "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgid "Warszawski Radar Wyborczy"
 msgstr "Warszawski Radar Wyborczy"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:9
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:15
+msgid "Wczytujemy wynik…"
+msgstr "Wczytujemy wynik…"
+
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireLoading/SurveyQuestionnaireLoading.tsx:14
 msgid "Wczytywanie quizu"
 msgstr "Wczytywanie quizu"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.tsx:39
+msgid "Widok porównania"
+msgstr "Widok porównania"
 
 #: src/components/survey/SurveyDemographics/SurveyDemographics.constants.ts:6
 msgid "Wiek"
@@ -1337,7 +1447,7 @@ msgstr "Wróć do grup, zamknij grupę: {name}"
 msgid "Wróć do kategorii"
 msgstr "Wróć do kategorii"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:7
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:13
 msgid "Wszystkie"
 msgstr "Wszystkie"
 
@@ -1354,7 +1464,7 @@ msgstr "Wybierz inny sposób"
 msgid "Wybierz wszystkie cztery pola albo pomiń"
 msgstr "Wybierz wszystkie cztery pola albo pomiń"
 
-#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:8
+#: src/components/home/QuizSection/QuizSectionTabs/QuizSectionTabs.constants.ts:14
 msgid "Wyborcze"
 msgstr "Wyborcze"
 
@@ -1369,6 +1479,18 @@ msgstr "Wykształcenie"
 #: src/components/survey/SurveyCheckpoint/SurveyCheckpoint.tsx:121
 msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:8
+msgid "Wymień się identyfikatorami wyników ze znajomym, aby porównać wzajemnie swoje odpowiedzi."
+msgstr "Wymień się identyfikatorami wyników ze znajomym, aby porównać wzajemnie swoje odpowiedzi."
+
+#: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:28
+msgid "Wynik nie jest jeszcze gotowy"
+msgstr "Wynik nie jest jeszcze gotowy"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonViews/ComparisonViews.constants.ts:15
+msgid "Wyniki"
+msgstr "Wyniki"
 
 #: src/components/survey/SurveyEmailCapture/SurveyEmailCaptureConsent/SurveyEmailCaptureConsent.tsx:30
 msgid "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja."
@@ -1396,6 +1518,10 @@ msgstr "Wyższe"
 msgid "X"
 msgstr "X"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.constants.ts:16
+msgid "Z orientacją"
+msgstr "Z orientacją"
+
 #: src/components/survey/SurveyCheckpointStats/utils/useStatsSliceNames.ts:10
 msgid "Za"
 msgstr "Za"
@@ -1413,7 +1539,7 @@ msgstr "Zagadka trwa"
 msgid "Zaglądamy do teczek"
 msgstr "Zaglądamy do teczek"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:24
+#: src/components/survey/SurveyDemographics/SurveyDemographicsModal/SurveyDemographicsModal.tsx:29
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
@@ -1426,6 +1552,7 @@ msgid "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 
 #: src/components/account/AuthCard/AuthCard.tsx:51
+#: src/components/results/ResultsColumns/ResultsColumn/ResultsModule/ModuleDrawing/ModuleInfoDialog/ModuleInfoDialog.tsx:49
 msgid "Zamknij"
 msgstr "Zamknij"
 
@@ -1441,6 +1568,10 @@ msgstr "Zapisz swoje wyniki!"
 msgid "Zasadnicze zawodowe"
 msgstr "Zasadnicze zawodowe"
 
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/ComparisonModeSelector.constants.ts:15
+msgid "Ze znajomym"
+msgstr "Ze znajomym"
+
 #: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:17
 msgid "Żeby założyć konto, zaakceptuj Regulamin i Politykę prywatności."
 msgstr "Żeby założyć konto, zaakceptuj Regulamin i Politykę prywatności."
@@ -1453,6 +1584,16 @@ msgstr "Zgadnij, kto to"
 #: src/components/survey/SurveyQuestionnaire/SurveyQuestionnaireSession/SurveyQuestionnaireResultsCalculation/SurveyQuestionnaireResultsCalculation.constants.ts:27
 msgid "Zgłaszamy wniosek formalny"
 msgstr "Zgłaszamy wniosek formalny"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/AgreementBar/AgreementBar.tsx:23
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/AgreementBar/AgreementBar.tsx:28
+#: src/constants/comparison.ts:10
+msgid "Zgodność"
+msgstr "Zgodność"
+
+#: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/utils/useResultsComparison.ts:43
+msgid "Znajomy"
+msgstr "Znajomy"
 
 #: src/constants/checkpoint.ts:421
 msgctxt "checkpoint-axis-puzzle-hit"
@@ -1467,6 +1608,10 @@ msgstr "Zobacz więcej"
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:26
 msgid "Zobacz wyniki"
 msgstr "Zobacz wyniki"
+
+#: src/components/results/ResultsColumns/ResultsColumn/ResultsModule/ModuleDrawing/ModuleDrawing.tsx:18
+msgid "Zweryfikowany"
+msgstr "Zweryfikowany"
 
 #: src/components/quiz/QuizCard/QuizCardHeader/QuizCardToggle/QuizCardToggle.tsx:29
 msgid "Zwiń"

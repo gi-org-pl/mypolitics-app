@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_VISIBLE_ROWS } from "../../HorizontalBarChart.constants";
+import { DEFAULT_VISIBLE_ROWS } from "@/constants/results";
+
 import { getVisibleRows } from "./getVisibleRows";
 
 describe("getVisibleRows()", () => {
