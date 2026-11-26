@@ -1,0 +1,25 @@
+{
+  "ids": {
+    "project": "c5d0fe74-348b-4d6c-a4f0-e9b90e7bdea9",
+    "survey": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+    "orientations": {
+      "PE": "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+      "AE": "bc741023-18d2-49e9-971f-54248a4e4f74",
+      "F": "70d38b28-f27d-4560-89da-bb09cd974c91",
+      "P": "07f653eb-ed71-4561-a676-ba5027441a19",
+      "E": "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"
+    },
+    "axes": [
+      {
+        "id": "072cacde-0863-4865-95b1-67cf8bdd0d0f",
+        "type": "axis",
+        "name": "Federalizm - Eurosceptycyzm"
+      },
+      {
+        "id": "c152ab88-9df2-452d-bf42-16a7d870bcb4",
+        "type": "compass_x_axis",
+        "name": "Federalizm-Eurosceptycyzm"
+      }
+    ]
+  }
+}
