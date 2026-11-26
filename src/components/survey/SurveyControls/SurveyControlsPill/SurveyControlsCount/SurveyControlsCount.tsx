@@ -13,6 +13,10 @@ import {
 } from "./SurveyControlsCount.constants";
 import { useNumberRoll } from "./utils/useNumberRoll";
 
+// The number of questions left, after the icon of a card. When the row of the
+// controls is narrower than the 340 px the design draws it at, the icon gives
+// its room to the name in the pill; the number stays, and so does the
+// sentence that says what it is.
 export const SurveyControlsCount = ({ count }: SurveyControlsCountProps) => {
   const { t } = useLingui();
   const { value, previousValue, direction } = useNumberRoll(count);
@@ -22,7 +26,7 @@ export const SurveyControlsCount = ({ count }: SurveyControlsCountProps) => {
     <span className="flex shrink-0 items-center gap-1">
       <span
         aria-hidden="true"
-        className={`${PILL_ICON_CLASS_NAME} h-5.25 w-[23.16px]`}
+        className={`${PILL_ICON_CLASS_NAME} h-5.25 w-[23.16px] @max-[21.25rem]:hidden`}
         style={getIconMaskStyle(cardQuestionIcon)}
       />
       <span className="sr-only">{t`Pozostałe pytania w kategorii: ${count}`}</span>

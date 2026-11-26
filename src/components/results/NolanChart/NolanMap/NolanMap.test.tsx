@@ -67,6 +67,14 @@ describe("<NolanMap />", () => {
     vi.mocked(CompassMap).mockClear();
   });
 
+  it("is a container, so that the pills of the axes follow the width of the map", () => {
+    renderMap(MODERATE);
+
+    expect(screen.getByRole("img", { name: DESCRIPTION })).toHaveClass(
+      "@container",
+    );
+  });
+
   it("renders CompassMap with the quadrants, the position and the other side", () => {
     renderMap(MODERATE, OTHER);
 
