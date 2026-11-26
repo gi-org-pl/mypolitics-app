@@ -1,8 +1,7 @@
 import { useState } from "react";
-
+import { ResultsColumns } from "../../ResultsColumns/ResultsColumns";
 import { ResultsHeader } from "../../ResultsHeader/ResultsHeader";
 import type { ResultsTab } from "../../ResultsHeader/ResultsHeader.types";
-import { ResultsColumns } from "./ResultsColumns/ResultsColumns";
 import { ResultsComparison } from "./ResultsComparison/ResultsComparison";
 import { ResultsPanel } from "./ResultsPanel/ResultsPanel";
 import { ResultsQuizName } from "./ResultsQuizName/ResultsQuizName";
@@ -13,13 +12,16 @@ import type { ResultsScreenContentProps } from "./ResultsScreenContent.types";
 // bottom. A quiz with no header record has no tabs, and shows its modules.
 //
 // The modules stay in the page while the other tab is shown, so a list that
-// was unfolded is still unfolded when the taker comes back to it.
+// was unfolded is still unfolded when the taker comes back to it. The same
+// holds for the comparison: one that runs is still running when the taker
+// goes to their results and back.
 //
 // The sheet is a container: what is inside follows the width of the sheet,
 // whatever the page around it does. Its outline is drawn over its content,
 // as in the design, so it takes none of the width.
 export const ResultsScreenContent = ({
   survey,
+  result,
   resolved,
 }: ResultsScreenContentProps) => {
   const [activeTab, setActiveTab] = useState<ResultsTab>("results");
@@ -46,7 +48,11 @@ export const ResultsScreenContent = ({
         isActive={activeTab === "comparison"}
         hasTabs={hasTabs}
       >
-        <ResultsComparison />
+        <ResultsComparison
+          survey={survey}
+          result={result}
+          resolved={resolved}
+        />
       </ResultsPanel>
       <ResultsQuizName name={survey.name} />
     </div>

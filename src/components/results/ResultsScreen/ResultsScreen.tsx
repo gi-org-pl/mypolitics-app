@@ -23,6 +23,7 @@ export const ResultsScreen = ({ resultId }: ResultsScreenProps) => {
     <ResultsScreenContent
       key={state.result.id}
       survey={state.survey}
+      result={state.result}
       resolved={state.resolved}
     />
   ) : (

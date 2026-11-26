@@ -1,5 +1,5 @@
 import { ResultLoadStatus } from "@/types/survey";
-
+import { isResultId } from "@/utils/results/isResultId";
 import {
   FAILED_STATE,
   NOT_FOUND_STATE,
@@ -7,7 +7,6 @@ import {
   UNREAD_RESULT_STATES,
 } from "../ResultsScreen.constants";
 import type { ResultsScreenState } from "../ResultsScreen.types";
-import { isResultId } from "./isResultId";
 import { readCalculatedResult } from "./readCalculatedResult";
 import { readResultSurvey } from "./readResultSurvey";
 import { toResultsScreenState } from "./toResultsScreenState";

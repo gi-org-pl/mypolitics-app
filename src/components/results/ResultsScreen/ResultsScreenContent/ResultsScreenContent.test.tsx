@@ -10,6 +10,7 @@ import {
   LONG_CORNER_NAME,
   longCornerNameResults,
   noMatchResults,
+  RESULT_ID,
 } from "./ResultsScreenContent.fixtures";
 import type { ResultsScreenContentProps } from "./ResultsScreenContent.types";
 
@@ -79,12 +80,13 @@ describe("<ResultsScreenContent />", () => {
       );
     });
 
-    it("does not say that comparison is coming while the results are shown", () => {
+    it("keeps the comparison out of sight while the results are shown", () => {
       renderContent();
 
+      expect(screen.getByText(RESULT_ID)).not.toBeVisible();
       expect(
-        screen.getByText("Porównanie będzie dostępne wkrótce."),
-      ).not.toBeVisible();
+        screen.queryByRole("tab", { name: "Ze znajomym" }),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -102,20 +104,65 @@ describe("<ResultsScreenContent />", () => {
   });
 
   describe("when the comparison tab is chosen", () => {
-    it("selects the tab and shows the line of the comparison in its panel", () => {
+    it("selects the tab and shows the mode selector in its panel, with the identifier of the result to hand over", () => {
       renderContent();
 
       fireEvent.click(getTab("Tryb porównania"));
+
+      const panel = within(
+        screen.getByRole("tabpanel", { name: "Tryb porównania" }),
+      );
 
       expect(getTab("Tryb porównania")).toHaveAttribute(
         "aria-selected",
         "true",
       );
+      expect(panel.getByRole("tab", { name: "Ze znajomym" })).toBeVisible();
+      expect(panel.getByRole("tab", { name: "Z orientacją" })).toBeVisible();
+      expect(panel.getByText(RESULT_ID)).toBeVisible();
+    });
+
+    it("compares the result that is shown: with the quiz, the answers and the modules of the taker", () => {
+      renderContent();
+
+      fireEvent.click(getTab("Tryb porównania"));
+      fireEvent.click(screen.getByRole("tab", { name: "Z orientacją" }));
+      fireEvent.click(
+        screen
+          .getAllByRole("button", { name: /./ })
+          .find((button) => button.closest("li")) as HTMLElement,
+      );
+
       expect(
-        within(
-          screen.getByRole("tabpanel", { name: "Tryb porównania" }),
-        ).getByText("Porównanie będzie dostępne wkrótce."),
-      ).toBeVisible();
+        within(screen.getByRole("region", { name: "Zgodność" })).getByRole(
+          "img",
+          { name: /: \d+%$/ },
+        ),
+      ).toBeInTheDocument();
+    });
+
+    it("keeps a running comparison while the taker goes to their results and back", () => {
+      renderContent();
+
+      fireEvent.click(getTab("Tryb porównania"));
+      fireEvent.click(screen.getByRole("tab", { name: "Z orientacją" }));
+      fireEvent.click(
+        screen
+          .getAllByRole("button", { name: /./ })
+          .find((button) => button.closest("li")) as HTMLElement,
+      );
+      fireEvent.click(getTab("Twoje wyniki"));
+
+      expect(
+        screen.queryByRole("region", { name: "Zgodność" }),
+      ).not.toBeInTheDocument();
+
+      fireEvent.click(getTab("Tryb porównania"));
+
+      expect(screen.getByRole("region", { name: "Zgodność" })).toBeVisible();
+      expect(
+        screen.queryByRole("tab", { name: "Ze znajomym" }),
+      ).not.toBeInTheDocument();
     });
 
     it("hides the modules, and keeps the header and the name of the quiz", () => {
@@ -186,9 +233,7 @@ describe("<ResultsScreenContent />", () => {
       expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
       expect(screen.queryByRole("tabpanel")).not.toBeInTheDocument();
       expect(screen.getByRole("region", { name: "Ideologie" })).toBeVisible();
-      expect(
-        screen.getByText("Porównanie będzie dostępne wkrótce."),
-      ).not.toBeVisible();
+      expect(screen.getByText(RESULT_ID)).not.toBeVisible();
     });
   });
 

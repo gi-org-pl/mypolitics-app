@@ -41,6 +41,16 @@ describe("<ResultsPanel />", () => {
       );
     });
 
+    it("publishes the space it keeps around its content, so a line of the content can reach the edges of the sheet", () => {
+      renderPanel();
+
+      expect(screen.getByRole("tabpanel")).toHaveClass(
+        "p-(--results-panel-padding)",
+        "[--results-panel-padding:--spacing(4)]",
+        "@[44rem]:[--results-panel-padding:--spacing(6)]",
+      );
+    });
+
     it("takes the identity of the tab it is given", () => {
       renderPanel({ tab: "comparison" });
 

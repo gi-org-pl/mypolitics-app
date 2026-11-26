@@ -2,7 +2,9 @@ import type { Page } from "@playwright/test";
 
 import { CORS_HEADERS } from "../survey/mockSurveyApi";
 import {
+  createFriendResultResponse,
   createResultResponse,
+  FRIEND_RESULT_ID,
   RESULT_ID,
   resultSurveyFixture,
 } from "./result.fixture";
@@ -18,13 +20,20 @@ export interface ResultsApiMock {
 const getLastPart = (address: string): string =>
   decodeURIComponent(new URL(address).pathname.split("/").at(-1) ?? "");
 
-// Stands in for the read of a result: the calculated result of the fixture
-// for the identifiers it is told of, and "no such result" for any other.
-// Routes registered later are asked first, so this one answers before the
-// read of a result the questionnaire's mock registers.
+// The results the mocked API of the result screen holds, by identifier: the
+// taker's, and the one of a friend who took the same quiz.
+const RESULT_RESPONSES: Record<string, () => unknown> = {
+  [RESULT_ID]: () => createResultResponse(RESULT_ID),
+  [FRIEND_RESULT_ID]: createFriendResultResponse,
+};
+
+// Stands in for the read of a result: the calculated result it is told of
+// for an identifier, and "no such result" for an identifier it is told
+// nothing of. Routes registered later are asked first, so this one answers
+// before the read of a result the questionnaire's mock registers.
 export const mockResultRead = async (
   page: Page,
-  isKnown: (resultId: string) => boolean,
+  readResult: (resultId: string) => unknown,
   mock: ResultsApiMock = { requests: [] },
 ): Promise<ResultsApiMock> => {
   await page.route(RESULT_READ_ADDRESS, (route) => {
@@ -38,22 +47,19 @@ export const mockResultRead = async (
 
     mock.requests.push(request.url());
 
-    const resultId = getLastPart(request.url());
+    const result = readResult(getLastPart(request.url()));
 
-    return isKnown(resultId)
-      ? route.fulfill({
-          json: createResultResponse(resultId),
-          headers: CORS_HEADERS,
-        })
-      : route.fulfill({ status: 404, json: {}, headers: CORS_HEADERS });
+    return result === undefined
+      ? route.fulfill({ status: 404, json: {}, headers: CORS_HEADERS })
+      : route.fulfill({ json: result, headers: CORS_HEADERS });
   });
 
   return mock;
 };
 
 // Stands in for the API of the result screen: the result of the fixture, the
-// quiz it names, and nothing else - every other request to the API is
-// aborted, so no test reaches a live address.
+// result of a friend, the quiz both name, and nothing else - every other
+// request to the API is aborted, so no test reaches a live address.
 export const mockResultsApi = async (page: Page): Promise<ResultsApiMock> => {
   const mock: ResultsApiMock = { requests: [] };
 
@@ -73,5 +79,9 @@ export const mockResultsApi = async (page: Page): Promise<ResultsApiMock> => {
     return route.fulfill({ json: resultSurveyFixture, headers: CORS_HEADERS });
   });
 
-  return mockResultRead(page, (resultId) => resultId === RESULT_ID, mock);
+  return mockResultRead(
+    page,
+    (resultId) => RESULT_RESPONSES[resultId]?.(),
+    mock,
+  );
 };
