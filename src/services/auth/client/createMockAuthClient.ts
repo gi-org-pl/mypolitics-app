@@ -1,5 +1,9 @@
-import { z } from "zod";
-
+import {
+  type MockAuthAccount,
+  type MockAuthState,
+  mockAuthStateSchema,
+} from "@/services/auth/schemas/mockAuthState";
+import { toAccount } from "@/services/auth/utils/toAccount";
 import type {
   AuthAccount,
   AuthClient,
@@ -8,8 +12,12 @@ import type {
   SignInOutcome,
 } from "@/types/auth";
 import type { TextStorage } from "@/types/storage";
+import { wait } from "@/utils/async/wait";
+import { without } from "@/utils/object/without";
+import { createMemoryStorage } from "@/utils/storage/createMemoryStorage";
 import { getSafeSessionStorage } from "@/utils/storage/getSafeSessionStorage";
 import { toJsonStorage } from "@/utils/storage/toJsonStorage";
+import { withMemory } from "@/utils/storage/withMemory";
 
 // A stand-in for the accounts API, which does not exist yet. It behaves as
 // the sign-in spec says the API will - a pending sign-up that becomes an
@@ -49,116 +57,8 @@ const MOCK_PROFILES: Record<
   x: { suggestedName: "Ala Nowak" },
 };
 
-const providerSchema = z.enum(["google", "facebook", "x"]);
-
-const stateSchema = z.object({
-  accounts: z.array(
-    z.object({
-      id: z.string(),
-      displayName: z.string(),
-      email: z.string().optional(),
-      providers: z.array(providerSchema),
-    }),
-  ),
-  session: z
-    .object({ accountId: z.string(), provider: providerSchema })
-    .optional(),
-  pendingSignUps: z
-    .record(
-      z.string(),
-      z.object({
-        provider: providerSchema,
-        suggestedName: z.string().optional(),
-        email: z.string().optional(),
-      }),
-    )
-    .default({}),
-  pendingLinks: z
-    .record(
-      z.string(),
-      z.object({
-        provider: providerSchema,
-        ownerProvider: providerSchema,
-        accountId: z.string(),
-      }),
-    )
-    .default({}),
-  // Completed sign-ups, so a repeated completion answers with its account.
-  completed: z
-    .record(
-      z.string(),
-      z.object({ accountId: z.string(), provider: providerSchema }),
-    )
-    .default({}),
-  nextId: z.number().default(1),
-});
-
-type MockState = z.infer<typeof stateSchema>;
-type MockAccount = MockState["accounts"][number];
-
-const createEmptyState = (): MockState => stateSchema.parse({ accounts: [] });
-
-const createMemoryStorage = (): TextStorage => {
-  const items = new Map<string, string>();
-
-  return {
-    getItem: (key) => items.get(key) ?? null,
-    setItem: (key, value) => {
-      items.set(key, value);
-    },
-    removeItem: (key) => {
-      items.delete(key);
-    },
-  };
-};
-
-// Keeps every value in memory as well as in the storage it is given, and
-// reads from memory first: a storage that refuses a write - full, or limited
-// by the browser's privacy settings - then loses nothing for this client.
-const withMemory = (storage: TextStorage): TextStorage => {
-  const memory = createMemoryStorage();
-
-  return {
-    getItem: (key) => memory.getItem(key) ?? storage.getItem(key),
-    setItem: (key, value) => {
-      memory.setItem(key, value);
-      storage.setItem(key, value);
-    },
-    removeItem: (key) => {
-      memory.removeItem(key);
-      storage.removeItem(key);
-    },
-  };
-};
-
-// Waits, or stops early with false when the signal is aborted.
-const wait = (ms: number, signal?: AbortSignal) =>
-  new Promise<boolean>((resolve) => {
-    if (signal?.aborted) {
-      resolve(false);
-      return;
-    }
-
-    const timer = setTimeout(() => resolve(true), ms);
-
-    signal?.addEventListener("abort", () => {
-      clearTimeout(timer);
-      resolve(false);
-    });
-  });
-
-const toAccount = (
-  account: MockAccount,
-  provider: IdentityProvider,
-): AuthAccount => ({
-  id: account.id,
-  displayName: account.displayName,
-  email: account.email,
-  provider,
-});
-
-const without = <Value>(record: Record<string, Value>, key: string) =>
-  Object.fromEntries(Object.entries(record).filter(([id]) => id !== key));
+const createEmptyState = (): MockAuthState =>
+  mockAuthStateSchema.parse({ accounts: [] });
 
 export const createMockAuthClient = ({
   storage = getSafeSessionStorage() ?? createMemoryStorage(),
@@ -168,21 +68,23 @@ export const createMockAuthClient = ({
 }: MockAuthClientOptions = {}): AuthClient => {
   const store = toJsonStorage<unknown>(withMemory(storage));
 
-  const read = (): MockState => {
-    const parsed = stateSchema.safeParse(store.getItem(MOCK_AUTH_STORAGE_KEY));
+  const read = (): MockAuthState => {
+    const parsed = mockAuthStateSchema.safeParse(
+      store.getItem(MOCK_AUTH_STORAGE_KEY),
+    );
 
     return parsed.success ? parsed.data : createEmptyState();
   };
 
-  const write = (state: MockState) =>
+  const write = (state: MockAuthState) =>
     store.setItem(MOCK_AUTH_STORAGE_KEY, state);
 
-  const findAccount = (state: MockState, provider: IdentityProvider) =>
+  const findAccount = (state: MockAuthState, provider: IdentityProvider) =>
     state.accounts.find((account) => account.providers.includes(provider));
 
   const signedIn = (
-    state: MockState,
-    account: MockAccount,
+    state: MockAuthState,
+    account: MockAuthAccount,
     provider: IdentityProvider,
   ): Extract<SignInOutcome, { kind: "signed-in" }> => {
     write({ ...state, session: { accountId: account.id, provider } });
@@ -193,7 +95,7 @@ export const createMockAuthClient = ({
   // The owner's sign-in after account-exists: it links the waiting provider
   // to the very account the address belongs to, or does nothing at all.
   const signInToLink = (
-    state: MockState,
+    state: MockAuthState,
     provider: IdentityProvider,
     pendingId: string,
   ): SignInOutcome => {
@@ -326,7 +228,7 @@ export const createMockAuthClient = ({
       if (!pending) return { kind: "expired" };
       if (failCompleteSignUp) return { kind: "failed" };
 
-      const account: MockAccount = {
+      const account: MockAuthAccount = {
         id: `mock-account-${state.nextId}`,
         displayName: setup.displayName,
         email: pending.email,

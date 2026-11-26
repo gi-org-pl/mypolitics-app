@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AccountSetup, AuthClient, SignInOutcome } from "@/types/auth";
 import type { TextStorage } from "@/types/storage";
 import { safely } from "@/utils/function/safely";
+import { createMemoryStorage } from "@/utils/storage/createMemoryStorage";
 
 import {
   createMockAuthClient,
@@ -15,20 +16,6 @@ const SETUP: AccountSetup = {
   hasAcceptedTerms: true,
 };
 
-const createStorage = (): TextStorage => {
-  const items = new Map<string, string>();
-
-  return {
-    getItem: (key) => items.get(key) ?? null,
-    setItem: (key, value) => {
-      items.set(key, value);
-    },
-    removeItem: (key) => {
-      items.delete(key);
-    },
-  };
-};
-
 // The storage as the app hands it over: calls that never throw.
 const getSafeStorage = (storage: TextStorage): TextStorage => ({
   getItem: (key) => safely(() => storage.getItem(key), null),
@@ -38,7 +25,12 @@ const getSafeStorage = (storage: TextStorage): TextStorage => ({
 
 const createClient = (
   options: Parameters<typeof createMockAuthClient>[0] = {},
-) => createMockAuthClient({ storage: createStorage(), delayMs: 0, ...options });
+) =>
+  createMockAuthClient({
+    storage: createMemoryStorage(),
+    delayMs: 0,
+    ...options,
+  });
 
 const pendingIdOf = (outcome: SignInOutcome) => {
   if (outcome.kind === "new-account") return outcome.signUp.id;
@@ -328,7 +320,7 @@ describe("createMockAuthClient()", () => {
 
   describe("given what is stored is not the stand-in's state", () => {
     it("starts from no accounts", async () => {
-      const storage = createStorage();
+      const storage = createMemoryStorage();
       storage.setItem(MOCK_AUTH_STORAGE_KEY, '{"accounts":"none"}');
       const client = createMockAuthClient({ storage, delayMs: 0 });
 
@@ -403,7 +395,7 @@ describe("createMockAuthClient()", () => {
 
       try {
         let isSettled = false;
-        const outcome = createMockAuthClient({ storage: createStorage() })
+        const outcome = createMockAuthClient({ storage: createMemoryStorage() })
           .signIn("google")
           .finally(() => {
             isSettled = true;
