@@ -34,6 +34,7 @@ describe("surveyResponseSchema", () => {
         categories: [{ id: "9ccd7638" }],
         axis: [{ id: "94e03d6a" }],
         questions: [question],
+        resultModules: [{ id: "f0a1", type: "header", position: 0 }],
       };
 
       expect(surveyResponseSchema.parse(survey)).toEqual(survey);
@@ -70,6 +71,21 @@ describe("surveyResponseSchema", () => {
       expect(surveyResponseSchema.parse({ questions }).questions).toEqual(
         questions,
       );
+    });
+  });
+
+  describe("given result modules", () => {
+    it.each([
+      [[undefined, null, 7, "a", {}, { id: "f0a1" }]],
+      [null],
+      ["resultModules"],
+      [7],
+      [{}],
+    ])("leaves %j as sent", (resultModules) => {
+      expect(
+        surveyResponseSchema.parse({ questions: [], resultModules })
+          .resultModules,
+      ).toEqual(resultModules);
     });
   });
 

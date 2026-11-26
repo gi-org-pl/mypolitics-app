@@ -37,10 +37,6 @@ export const MIN_LINES = 5;
 export const MAX_LINES = 8;
 
 export const CREATE_RESULT_TIMEOUT_MS = 10_000;
-// The pause between the answer to one read of the result and the next read.
-export const RESULT_READ_INTERVAL_MS = 1000;
-// How long a stored result is waited for before the run gives up.
-export const RESULT_WAIT_MS = 30_000;
 
 // The purpose of the seeded draw that orders the lines.
 export const RESULTS_CALCULATION_DRAW = "results-calculation";

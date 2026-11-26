@@ -18,4 +18,5 @@ export interface RankedRowProps {
   comparison?: AxisEntry;
   prefix?: string;
   isHeading?: boolean;
+  hasBar?: boolean; // false = a row of a list with no values: the mark of the orientation beside its name, and no bar
 }

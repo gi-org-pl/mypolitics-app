@@ -75,6 +75,35 @@ describe("<HorizontalBarChartRows />", () => {
     });
   });
 
+  describe("given a ranking none of whose entries has a value", () => {
+    it("lists the names, each with the mark of its orientation and no bar", () => {
+      renderWithI18n(
+        <ol>
+          <HorizontalBarChartRows ranking={[entry("Alfa"), entry("Beta")]} />
+        </ol>,
+      );
+
+      expect(getNames()).toEqual(["Alfa", "Beta"]);
+      expect(screen.getAllByTestId("orientation-avatar")).toHaveLength(2);
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given a ranking where only some entries have a value", () => {
+    it("draws a bar on every row, an empty one where the value is missing", () => {
+      renderWithI18n(
+        <ol>
+          <HorizontalBarChartRows ranking={RANKING} />
+        </ol>,
+      );
+
+      expect(screen.getAllByRole("img")).toHaveLength(3);
+      expect(
+        screen.queryByTestId("orientation-avatar"),
+      ).not.toBeInTheDocument();
+    });
+  });
+
   describe("given an empty ranking", () => {
     it("renders no list items", () => {
       renderWithI18n(

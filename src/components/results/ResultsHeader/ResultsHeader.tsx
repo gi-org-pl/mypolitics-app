@@ -11,6 +11,7 @@ import {
 import type { ResultsHeaderProps } from "./ResultsHeader.types";
 import { ResultsHeaderConfidence } from "./ResultsHeaderConfidence/ResultsHeaderConfidence";
 import { ResultsHeaderLinkButton } from "./ResultsHeaderLinkButton/ResultsHeaderLinkButton";
+import { ResultsHeaderLowMatchNotice } from "./ResultsHeaderLowMatchNotice/ResultsHeaderLowMatchNotice";
 import { ResultsHeaderNoMatchMark } from "./ResultsHeaderNoMatchMark/ResultsHeaderNoMatchMark";
 import { ResultsHeaderRing } from "./ResultsHeaderRing/ResultsHeaderRing";
 import { ResultsHeaderSlogan } from "./ResultsHeaderSlogan/ResultsHeaderSlogan";
@@ -22,65 +23,71 @@ export const ResultsHeader = ({
   orientation,
   confidence,
   linkLabel,
+  lowMatch,
+  lowMatchLabel,
   activeTab,
   onTabChange,
 }: ResultsHeaderProps) => {
   const { t } = useLingui();
 
-  const result = getHeaderResult(orientation, confidence);
+  const result = getHeaderResult(orientation, confidence, lowMatch);
   const name = result ? result.name : t`Brak dopasowania`;
   const sloganText = result ? toSingleLine(orientation?.slogan) : "";
   const safeLink = result
     ? getSafeLink(orientation?.websiteUrl, linkLabel)
     : null;
   const hasExtras = sloganText !== "" || safeLink !== null;
+  const noticeText = result?.band === "none" ? toSingleLine(lowMatchLabel) : "";
 
   return (
     <div className="@container w-full min-w-0">
-      <div className="flex flex-col gap-6 bg-gi-ash p-4 @xl:flex-row @xl:items-center @xl:justify-between @xl:min-h-[115px] @xl:gap-2.5 @xl:px-6 @xl:py-4.5">
-        <div className="flex min-h-[67px] min-w-0 items-center gap-4">
-          {result ? (
-            <ResultsHeaderRing
-              confidence={result.confidence}
-              band={result.band}
-              imageUrl={result.imageUrl}
-            />
-          ) : (
-            <ResultsHeaderNoMatchMark />
-          )}
-          <div className="min-w-0">
-            <h1
-              className={`line-clamp-2 leading-[1.5] font-bold wrap-break-word text-gi-primary ${NAME_SIZE_CLASS_NAME} ${hasExtras ? NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME : ""}`}
-              style={
-                {
-                  "--name-letters": Math.max(1, getLongestWordLength(name)),
-                } as CSSProperties
-              }
-            >
-              {name}
-            </h1>
-            {result && (
-              <ResultsHeaderConfidence
+      <div className="flex flex-col gap-4 bg-gi-ash p-4 @xl:px-6 @xl:py-4.5">
+        <div className="flex flex-col gap-6 @xl:min-h-[79px] @xl:flex-row @xl:items-center @xl:justify-between @xl:gap-2.5">
+          <div className="flex min-h-[67px] min-w-0 items-center gap-4">
+            {result ? (
+              <ResultsHeaderRing
                 confidence={result.confidence}
                 band={result.band}
+                imageUrl={result.imageUrl}
               />
+            ) : (
+              <ResultsHeaderNoMatchMark />
             )}
+            <div className="min-w-0">
+              <h1
+                className={`line-clamp-2 leading-[1.5] font-bold wrap-break-word text-gi-primary ${NAME_SIZE_CLASS_NAME} ${hasExtras ? NAME_SIZE_BESIDE_EXTRAS_CLASS_NAME : ""}`}
+                style={
+                  {
+                    "--name-letters": Math.max(1, getLongestWordLength(name)),
+                  } as CSSProperties
+                }
+              >
+                {name}
+              </h1>
+              {result && (
+                <ResultsHeaderConfidence
+                  confidence={result.confidence}
+                  band={result.band}
+                />
+              )}
+            </div>
           </div>
+          {hasExtras && (
+            <div
+              data-testid="results-header-extras"
+              className="flex min-w-0 flex-wrap items-center gap-2.5 @xl:max-w-1/2 @xl:shrink-0 @xl:flex-col @xl:flex-nowrap @xl:items-end"
+            >
+              {sloganText !== "" && <ResultsHeaderSlogan text={sloganText} />}
+              {safeLink && (
+                <ResultsHeaderLinkButton
+                  href={safeLink.href}
+                  label={safeLink.label}
+                />
+              )}
+            </div>
+          )}
         </div>
-        {hasExtras && (
-          <div
-            data-testid="results-header-extras"
-            className="flex min-w-0 flex-wrap items-center gap-2.5 @xl:max-w-1/2 @xl:shrink-0 @xl:flex-col @xl:flex-nowrap @xl:items-end"
-          >
-            {sloganText !== "" && <ResultsHeaderSlogan text={sloganText} />}
-            {safeLink && (
-              <ResultsHeaderLinkButton
-                href={safeLink.href}
-                label={safeLink.label}
-              />
-            )}
-          </div>
-        )}
+        {noticeText !== "" && <ResultsHeaderLowMatchNotice text={noticeText} />}
       </div>
       <ResultsHeaderTabs activeTab={activeTab} onTabChange={onTabChange} />
     </div>
