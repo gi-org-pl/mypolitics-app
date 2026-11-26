@@ -5,6 +5,7 @@ import {
   surveyResponseSchema,
 } from "@/services/api/schemas/survey";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
+import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { uniqueBy } from "@/utils/array/uniqueBy";
 import { parseItems } from "@/utils/zod/parseItems";
@@ -40,6 +41,7 @@ export const readSurvey = (
     parseItems(data.axis, axisResponseSchema),
     ({ id }) => id,
   ).map((axis) => toSurveyAxis(axis, { orientationIds }));
+  const axisIds = new Set(axes.map(({ id }) => id));
 
   // A question is dropped before the duplicates are, so that the one kept is
   // the first that can be asked.
@@ -71,6 +73,10 @@ export const readSurvey = (
       categories,
       axes,
       questions,
+      resultModules: readResultModules(data.resultModules, {
+        orientationIds,
+        axisIds,
+      }),
     },
   };
 };

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
+import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
 import { type Survey, SurveyLoadStatus } from "@/types/survey";
 
 import { readSurvey } from "./readSurvey";
@@ -196,8 +197,145 @@ describe("readSurvey()", () => {
         "name",
         "orientations",
         "questions",
+        "resultModules",
         "supportedLanguages",
       ]);
+    });
+  });
+
+  describe("result modules", () => {
+    const quiz = {
+      orientations: [{ id: "left" }, { id: "right" }, { id: "party" }],
+      axis: [{ id: "economy" }, { id: "society" }],
+    };
+
+    describe("given a list that points at the orientations and axes of the quiz", () => {
+      it("holds the records, read with readResultModules", () => {
+        const resultModules = [
+          { id: "axes", type: "multi_axis", position: 2, axisIds: ["economy"] },
+          {
+            id: "header",
+            type: "header",
+            position: 5,
+            orientationIds: ["right", "left"],
+            labels: { link: " Zobacz stronę " },
+          },
+          {
+            id: "ranking",
+            type: "horizontal_bar",
+            position: 1,
+            column: "end",
+            title: "Partie",
+            orientationIds: ["party"],
+            selection: "linked_to_leader",
+            marker: null,
+          },
+        ];
+
+        const survey = read({ ...quiz, resultModules });
+
+        expect(survey.resultModules).toEqual(
+          readResultModules(resultModules, {
+            orientationIds: new Set(["left", "right", "party"]),
+            axisIds: new Set(["economy", "society"]),
+          }),
+        );
+        expect(survey.resultModules).toEqual([
+          {
+            id: "header",
+            type: "header",
+            position: 5,
+            column: "start",
+            orientationIds: ["right", "left"],
+            axisIds: [],
+            selection: "all",
+            groupBy: "none",
+            marker: 50,
+            visibleRows: 3,
+            labels: { link: "Zobacz stronę" },
+            colors: {},
+          },
+          {
+            id: "ranking",
+            type: "horizontal_bar",
+            position: 1,
+            column: "end",
+            title: "Partie",
+            orientationIds: ["party"],
+            axisIds: [],
+            selection: "linked_to_leader",
+            groupBy: "none",
+            marker: false,
+            visibleRows: 3,
+            labels: {},
+            colors: {},
+          },
+          {
+            id: "axes",
+            type: "multi_axis",
+            position: 2,
+            column: "start",
+            orientationIds: [],
+            axisIds: ["economy"],
+            selection: "all",
+            groupBy: "none",
+            marker: 50,
+            visibleRows: 3,
+            labels: {},
+            colors: {},
+          },
+        ]);
+      });
+
+      it("keeps only the orientations and axes that were read", () => {
+        const [record] = read({
+          orientations: [{ id: "left" }, { name: "Bez identyfikatora" }],
+          axis: [{ id: "economy" }, { id: "economy" }, { name: "Bez osi" }],
+          resultModules: [
+            {
+              id: "axes",
+              type: "multi_axis",
+              position: 0,
+              orientationIds: ["left", "right", "economy"],
+              axisIds: ["economy", "society", "left"],
+            },
+          ],
+        }).resultModules;
+
+        expect(record.orientationIds).toEqual(["left"]);
+        expect(record.axisIds).toEqual(["economy"]);
+      });
+
+      it("drops a record that cannot be read and keeps the others", () => {
+        expect(
+          read({
+            ...quiz,
+            resultModules: [
+              null,
+              { id: "radar", type: "radar", position: 0 },
+              { id: "traits", type: "traits", position: 1 },
+            ],
+          }).resultModules.map(({ id }) => id),
+        ).toEqual(["traits"]);
+      });
+    });
+
+    describe("given a reply without the field", () => {
+      it("holds an empty list", () => {
+        expect(read(quiz).resultModules).toEqual([]);
+      });
+    });
+
+    describe("given a field that is not a list", () => {
+      it.each([
+        [null],
+        [""],
+        ["resultModules"],
+        [7],
+        [{}],
+      ])("holds an empty list for %j", (resultModules) => {
+        expect(read({ ...quiz, resultModules }).resultModules).toEqual([]);
+      });
     });
   });
 
@@ -620,6 +758,13 @@ describe("readSurvey()", () => {
   });
 
   describe("given the live shapes", () => {
+    it.each([
+      ["the identity quiz", identityQuizSurvey],
+      ["the presidential quiz", presidentialQuizSurvey],
+    ])("has no result modules for %s, which does not send the list yet", (_, response) => {
+      expect(read(response).resultModules).toEqual([]);
+    });
+
     it("reads the identity quiz: 102 questions, 5 plain categories, 18 axes with packed names", () => {
       const survey = read(identityQuizSurvey);
 
