@@ -1,11 +1,12 @@
 import { useState } from "react";
 
+import { getTabPanelIdentity } from "@/utils/dom/getTabPanelIdentity";
+
 import { DEFAULT_QUIZ_TAB } from "./QuizSection.constants";
 import type { QuizSectionProps, QuizTab } from "./QuizSection.types";
 import { QuizSectionActions } from "./QuizSectionActions/QuizSectionActions";
 import { QuizSectionList } from "./QuizSectionList/QuizSectionList";
 import { QuizSectionTabs } from "./QuizSectionTabs/QuizSectionTabs";
-import { getTabPanelIdentity } from "./utils/getTabPanelIdentity";
 import { getVisibleQuizzes } from "./utils/getVisibleQuizzes";
 
 export const QuizSection = ({

@@ -39,6 +39,30 @@ describe("OWN_RESULT_MODULES", () => {
     });
   });
 
+  describe("given the map of the identity quiz", () => {
+    const labels =
+      OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].find(
+        ({ type }) => type === "nolan_chart",
+      )?.labels ?? {};
+
+    it.each([
+      ["bottomLeft", "Lewicowy", "Left-wing"],
+      ["topRight", "Prawicowy", "Right-wing"],
+      ["topLeft", "Mieszany", "Mixed"],
+      ["bottomRight", "Mieszany", "Mixed"],
+    ])("names the %s corner, the same at both levels and in both languages", (corner, pl, en) => {
+      expect(labels[`${corner}Moderate`]).toEqual({ pl, en });
+      expect(labels[`${corner}Extreme`]).toEqual({ pl, en });
+    });
+
+    it("names the middle, and gives no corner a shorter form", () => {
+      expect(labels.centre).toEqual({ pl: "Centrowy", en: "Centrist" });
+      expect(
+        Object.keys(labels).filter((slot) => slot.endsWith("Short")),
+      ).toEqual([]);
+    });
+  });
+
   describe("given the list of the presidential quiz", () => {
     it("is the header, then per column the modules of the old presidential result", () => {
       expect(

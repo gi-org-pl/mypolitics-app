@@ -1,24 +1,21 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { RESULT_READ_INTERVAL_MS, RESULT_WAIT_MS } from "@/constants/survey";
 import { createResult } from "@/services/api/client/createResult";
 import { getResult } from "@/services/api/client/getResult";
 import {
   CreateResultOutcome,
+  type ResultLoadResult,
   type Survey,
-  type SurveyResult,
   SurveyResultState,
 } from "@/types/survey";
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
-import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
-import {
-  CREATE_RESULT_TIMEOUT_MS,
-  RESULT_READ_INTERVAL_MS,
-  RESULT_WAIT_MS,
-} from "../SurveyQuestionnaireResultsCalculation.constants";
+import { CREATE_RESULT_TIMEOUT_MS } from "../SurveyQuestionnaireResultsCalculation.constants";
 import { HandInState } from "../SurveyQuestionnaireResultsCalculation.types";
 import { useResultHandIn } from "./useResultHandIn";
 
@@ -28,8 +25,8 @@ vi.mock("@/services/api/client/getResult");
 const createResultMock = vi.mocked(createResult);
 const getResultMock = vi.mocked(getResult);
 
-const toResult = (isCalculated: boolean): SurveyResult =>
-  createSurveyResult({ isCalculated });
+const toResult = (isCalculated: boolean): ResultLoadResult =>
+  createResultLoad({ isCalculated });
 
 // A hand-in that the test answers by hand.
 const holdHandIn = () => {
@@ -139,11 +136,11 @@ describe("useResultHandIn()", () => {
     });
 
     it("reads again a second after each read has answered, never two at a time", async () => {
-      let answerRead: (result: SurveyResult) => void = () => undefined;
+      let answerRead: (result: ResultLoadResult) => void = () => undefined;
 
       getResultMock.mockImplementationOnce(
         () =>
-          new Promise<SurveyResult>((resolve) => {
+          new Promise<ResultLoadResult>((resolve) => {
             answerRead = resolve;
           }),
       );

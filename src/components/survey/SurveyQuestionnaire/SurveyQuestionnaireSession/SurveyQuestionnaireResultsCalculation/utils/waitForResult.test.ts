@@ -1,35 +1,32 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { RESULT_READ_INTERVAL_MS, RESULT_WAIT_MS } from "@/constants/survey";
 import { getResult } from "@/services/api/client/getResult";
-import type { SurveyResult } from "@/types/survey";
-import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
+import { type ResultLoadResult, ResultLoadStatus } from "@/types/survey";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
 
-import {
-  RESULT_READ_INTERVAL_MS,
-  RESULT_WAIT_MS,
-} from "../SurveyQuestionnaireResultsCalculation.constants";
 import { waitForResult } from "./waitForResult";
 
 vi.mock("@/services/api/client/getResult");
 
 const RESULT_ID = "0b9f3c1e-5a7d-4e2b-9c41-7f6a2d8e1b35";
-const NOT_CALCULATED = createSurveyResult({ id: RESULT_ID });
-const CALCULATED = createSurveyResult({ id: RESULT_ID, isCalculated: true });
+const NOT_CALCULATED = createResultLoad({ id: RESULT_ID });
+const CALCULATED = createResultLoad({ id: RESULT_ID, isCalculated: true });
 
 const getResultMock = vi.mocked(getResult);
 
 // A read that the test answers by hand.
 const holdRead = () => {
-  let answer: (result: SurveyResult) => void = () => undefined;
+  let answer: (result: ResultLoadResult) => void = () => undefined;
 
   getResultMock.mockImplementationOnce(
     () =>
-      new Promise<SurveyResult>((resolve) => {
+      new Promise<ResultLoadResult>((resolve) => {
         answer = resolve;
       }),
   );
 
-  return async (result: SurveyResult) => {
+  return async (result: ResultLoadResult) => {
     answer(result);
     await vi.advanceTimersByTimeAsync(0);
   };
@@ -105,6 +102,30 @@ describe("waitForResult()", () => {
 
       expect(getResultMock).toHaveBeenCalledTimes(5);
       expect(outcome.value).toBeUndefined();
+    });
+  });
+
+  describe("given a read that finds no result, or fails", () => {
+    it.each([
+      [ResultLoadStatus.NotFound],
+      [ResultLoadStatus.Failed],
+    ] as const)("counts as not calculated yet and reads again: %s", async (status) => {
+      getResultMock
+        .mockResolvedValueOnce({ status })
+        .mockResolvedValueOnce(CALCULATED);
+
+      const outcome = watch(
+        waitForResult(RESULT_ID, new AbortController().signal),
+      );
+
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(outcome.value).toBeUndefined();
+
+      await vi.advanceTimersByTimeAsync(RESULT_READ_INTERVAL_MS);
+
+      expect(outcome.value).toBe(true);
+      expect(getResultMock).toHaveBeenCalledTimes(2);
     });
   });
 
