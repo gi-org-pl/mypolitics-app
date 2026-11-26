@@ -1,3 +1,7 @@
+import type { MessageDescriptor } from "@lingui/core";
+
+import type { AUTH_INTENTS } from "@/constants/auth";
+
 // A company a person signs in with. The order of the sign-in buttons is the
 // order of AUTH_PROVIDERS, not of this union.
 export type IdentityProvider = "google" | "facebook" | "x";
@@ -121,12 +125,22 @@ export interface AuthSessionValue {
 // otherwise opens the auth dialog with the line of the intent and runs the
 // action once, after a successful sign-in. Closing the dialog runs nothing
 // and calls onCancel.
+//
+// It returns a function that drops the request it opened, for a caller that
+// goes away while the dialog is still open: the dialog closes, and neither
+// the action nor onCancel runs. It does nothing once the request is over, or
+// when the call opened none.
 export type RequireAuth = (
   intent: AuthIntentKey,
   action: () => void,
   options?: { onCancel?: () => void },
-) => void;
+) => () => void;
 
-// The actions that need an account, each with the line the dialog shows.
-// Adding one means adding a key here and its line in AUTH_INTENTS.
-export type AuthIntentKey = "create-quiz";
+// An action that needs an account: the line the dialog shows for it.
+export interface AuthIntent {
+  line: MessageDescriptor;
+}
+
+// The actions that need an account are the keys of AUTH_INTENTS: adding one
+// is one entry there.
+export type AuthIntentKey = keyof typeof AUTH_INTENTS;
