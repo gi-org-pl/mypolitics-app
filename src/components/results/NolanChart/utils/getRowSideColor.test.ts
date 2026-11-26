@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ROW_OTHER_SIDE_COLOR } from "../NolanChart.constants";
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import { getRowSideColor } from "./getRowSideColor";
 
 describe("getRowSideColor()", () => {
@@ -29,16 +29,20 @@ describe("getRowSideColor()", () => {
     });
 
     it("returns the lighter neutral when the leaning side has no colour", () => {
-      expect(getRowSideColor("end", "start")).toBe(ROW_OTHER_SIDE_COLOR);
-      expect(getRowSideColor("start", "end")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getRowSideColor("end", "start")).toBe(AXIS_OTHER_SIDE_COLOR);
+      expect(getRowSideColor("start", "end")).toBe(AXIS_OTHER_SIDE_COLOR);
     });
 
     it.each([
       "#192430",
       "#851c22",
     ])("returns the lighter neutral next to the dark %s", (color) => {
-      expect(getRowSideColor("end", "start", color)).toBe(ROW_OTHER_SIDE_COLOR);
-      expect(getRowSideColor("start", "end", color)).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getRowSideColor("end", "start", color)).toBe(
+        AXIS_OTHER_SIDE_COLOR,
+      );
+      expect(getRowSideColor("start", "end", color)).toBe(
+        AXIS_OTHER_SIDE_COLOR,
+      );
     });
   });
 

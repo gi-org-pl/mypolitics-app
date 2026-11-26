@@ -22,10 +22,25 @@ describe("<SurveyControlsPill />", () => {
   });
 
   describe("given a text longer than the pill", () => {
-    it("cuts it on one line", () => {
+    it("wraps a text of several words onto a second line, and cuts only what is longer than two lines", () => {
       renderWithI18n(<SurveyControlsPill quizName={LONG_TEXT} />);
 
-      expect(screen.getByText(LONG_TEXT)).toHaveClass("truncate", "min-w-0");
+      expect(screen.getByText(LONG_TEXT)).toHaveClass(
+        "line-clamp-2",
+        "min-w-0",
+      );
+      expect(screen.getByText(LONG_TEXT)).not.toHaveClass("truncate");
+    });
+
+    it("keeps a single word on one line, cut with an ellipsis", () => {
+      renderWithI18n(
+        <SurveyControlsPill quizName="Q" categoryName="Światopogląd" />,
+      );
+
+      expect(screen.getByText("Światopogląd")).toHaveClass(
+        "truncate",
+        "min-w-0",
+      );
     });
 
     it("keeps the full text available to assistive technology", () => {

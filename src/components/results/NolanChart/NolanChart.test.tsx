@@ -1,11 +1,9 @@
 import { fireEvent, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
 import { NolanChart } from "./NolanChart";
-import { ROW_OTHER_SIDE_COLOR } from "./NolanChart.constants";
 import type {
   NolanAxis,
   NolanChartProps,
@@ -735,7 +733,7 @@ describe("<NolanChart />", () => {
           within(row)
             .getByTestId("universal-axis-cap-end")
             .style.getPropertyValue("--axis-color"),
-        ).toBe(ROW_OTHER_SIDE_COLOR);
+        ).toBe(AXIS_OTHER_SIDE_COLOR);
       }
     });
 
