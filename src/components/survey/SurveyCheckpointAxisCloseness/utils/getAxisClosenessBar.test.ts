@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import type {
   AxisClosenessCheckpointCard,
   AxisClosenessDoubleCheckpointCard,
@@ -77,6 +78,26 @@ describe("getAxisClosenessBar()", () => {
       expect(bar?.title).toBe("Federacjonizm");
       expect(bar?.start).toBe(card.start);
       expect(bar?.end).toBe(card.end);
+    });
+
+    it("draws the end side in the lighter grey when neither side has a colour", () => {
+      const card = createDoubleCard("start");
+      const colourless = {
+        ...card,
+        start: {
+          ...card.start,
+          orientation: { ...card.start.orientation, color: undefined },
+        },
+        end: {
+          ...card.end,
+          orientation: { ...card.end.orientation, color: undefined },
+        },
+      };
+      const bar = getAxisClosenessBar(colourless);
+
+      expect(bar?.start).toBe(colourless.start);
+      expect(bar?.end?.orientation.color).toBe(AXIS_OTHER_SIDE_COLOR);
+      expect(bar?.end?.orientation.name).toBe("Federacjonizm");
     });
   });
 

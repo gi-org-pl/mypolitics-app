@@ -253,13 +253,15 @@ export const UniversalAxis = ({
       {showLabels && (
         <div
           data-testid="universal-axis-labels"
-          className={`flex h-3 gap-2 text-xs leading-none font-bold text-gi-primary/50 ${isDoubleSided ? "mt-1" : "mt-2"}`}
+          className={`grid min-h-3 grid-cols-2 gap-x-2 text-xs leading-none font-bold text-gi-primary/50 ${isDoubleSided ? "mt-1" : "mt-2"}`}
         >
           {layout.start && (
-            <span className={LABEL_CLASS_NAME}>{layout.start.name}</span>
+            <span className={`col-start-1 only:col-span-2 ${LABEL_CLASS_NAME}`}>
+              {layout.start.name}
+            </span>
           )}
           {layout.end && (
-            <span className={`ml-auto text-right ${LABEL_CLASS_NAME}`}>
+            <span className={`col-start-2 text-right ${LABEL_CLASS_NAME}`}>
               {layout.end.name}
             </span>
           )}

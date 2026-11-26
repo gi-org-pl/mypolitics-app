@@ -11,6 +11,13 @@ export const AXIS_LINE_BACKGROUND_CLASS_NAME =
 export const AXIS_LINE_BORDER_CLASS_NAME =
   "border-[color-mix(in_srgb,var(--gi-primary)_30%,white)]";
 
+// The colour of the second side of a bar whose two sides would otherwise look
+// the same - a dark side and the neutral grey of a side without a colour, or
+// two sides without one: the literal value of the palette token named beside
+// it, lighter than the neutral fallback. A bar's colour check accepts no CSS
+// variables, so the token cannot be referenced.
+export const AXIS_OTHER_SIDE_COLOR = "oklch(0.6057 0.0122 211.04)"; // --gi-gray-hover
+
 export const ONE_SIDED_FIT_THRESHOLD = 16;
 export const DOUBLE_SIDED_FIT_THRESHOLD = 20;
 

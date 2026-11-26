@@ -18,6 +18,7 @@ interface NolanMapProps {
 // The map of the result's Nolan chart with the names of its two axes beside
 // it. The map itself is `CompassMap`; the image and its description are this
 // element's, because the axis names and coordinates belong to the picture.
+// It is a container, so that the pills of the axes follow its width.
 export const NolanMap = ({
   description,
   horizontalName,
@@ -30,7 +31,7 @@ export const NolanMap = ({
   <div
     role="img"
     aria-label={description}
-    className="flex w-full min-w-0 flex-col gap-3"
+    className="@container flex w-full min-w-0 flex-col gap-3"
   >
     <div className="flex min-w-0 gap-3">
       <div className="min-w-0 flex-1">

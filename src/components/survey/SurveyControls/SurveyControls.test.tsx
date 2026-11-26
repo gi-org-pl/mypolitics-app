@@ -51,6 +51,12 @@ describe("<SurveyControls />", () => {
 
       expect(screen.getByText("Quiz Name")).toBeInTheDocument();
     });
+
+    it("is a container, so that the pill follows the width of the row and not of the window", () => {
+      const { container } = renderControls();
+
+      expect(container.firstElementChild).toHaveClass("@container");
+    });
   });
 
   describe("given a label", () => {

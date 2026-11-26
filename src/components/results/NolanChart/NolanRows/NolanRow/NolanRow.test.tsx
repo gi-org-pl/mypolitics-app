@@ -1,9 +1,7 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { AXIS_OTHER_SIDE_COLOR } from "@/constants/axis";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
-import { ROW_OTHER_SIDE_COLOR } from "../../NolanChart.constants";
 import type { NolanAxis } from "../../NolanChart.types";
 import { NolanRow } from "./NolanRow";
 
@@ -82,12 +80,12 @@ describe("<NolanRow />", () => {
       );
 
       expect(getCapColor("start")).toBe("");
-      expect(getCapColor("end")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor("end")).toBe(AXIS_OTHER_SIDE_COLOR);
       expect(
         screen
           .getByTestId("universal-axis-fill-end")
           .style.getPropertyValue("--axis-color"),
-      ).toBe(ROW_OTHER_SIDE_COLOR);
+      ).toBe(AXIS_OTHER_SIDE_COLOR);
       expect(screen.getByTestId("universal-axis-fill-start")).toHaveClass(
         "bg-gi-dark-gray",
       );
@@ -95,7 +93,7 @@ describe("<NolanRow />", () => {
       unmount();
       renderWithI18n(<NolanRow axis={axis} coordinate={0.54} lean="end" />);
 
-      expect(getCapColor("start")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor("start")).toBe(AXIS_OTHER_SIDE_COLOR);
       expect(getCapColor("end")).toBe("");
     });
 
@@ -119,7 +117,7 @@ describe("<NolanRow />", () => {
       );
 
       expect(getCapColor("start")).toBe("#192430");
-      expect(getCapColor("end")).toBe(ROW_OTHER_SIDE_COLOR);
+      expect(getCapColor("end")).toBe(AXIS_OTHER_SIDE_COLOR);
     });
   });
 

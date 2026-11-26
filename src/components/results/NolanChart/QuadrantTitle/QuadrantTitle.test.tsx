@@ -50,6 +50,22 @@ describe("<QuadrantTitle />", () => {
       expect(getTitle().style.getPropertyValue("--nolan-color")).toBe(color);
     });
 
+    it("renders the dark text on the tint of a colour too pale to be read on it", () => {
+      // The left-bottom quadrant of the identity quiz: #00d492 has about
+      // 1.8:1 on its own tint.
+      render(
+        <QuadrantTitle
+          name="Lewicowy"
+          shortName=""
+          look="moderate"
+          color="#00d492"
+        />,
+      );
+
+      expect(getTitle()).toHaveClass("text-gi-primary");
+      expect(getTitle()).not.toHaveClass("text-(--nolan-color)");
+    });
+
     it("uses the neutral fallback without a colour", () => {
       render(<QuadrantTitle name="Zielona" shortName="" look="moderate" />);
 
