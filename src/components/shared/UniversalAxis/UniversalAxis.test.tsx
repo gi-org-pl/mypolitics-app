@@ -209,35 +209,47 @@ describe("<UniversalAxis />", () => {
         <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
       );
 
-      expect(screen.getByText("Orientation A")).toHaveClass("truncate");
+      expect(screen.getByText("Orientation A")).toHaveClass("col-start-1");
       expect(screen.getByText("Orientation B")).toHaveClass(
-        "ml-auto",
+        "col-start-2",
         "text-right",
       );
     });
 
-    it("pads the box that cuts a long name, so that descenders and accents are drawn in full", () => {
-      renderWithI18n(
-        <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
-      );
-
-      for (const name of ["Orientation A", "Orientation B"]) {
-        expect(screen.getByText(name)).toHaveClass(
-          "truncate",
-          "min-w-0",
-          "py-1",
-          "-my-1",
-        );
-      }
-    });
-
-    it("keeps the row at its height when the names are present", () => {
+    it("wraps a long name in its half of the row instead of cutting it", () => {
       renderWithI18n(
         <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
       );
 
       expect(screen.getByTestId("universal-axis-labels")).toHaveClass(
-        "h-3",
+        "grid",
+        "grid-cols-2",
+      );
+
+      for (const name of ["Orientation A", "Orientation B"]) {
+        expect(screen.getByText(name)).toHaveClass(
+          "min-w-0",
+          "wrap-break-word",
+          "leading-3.5",
+          "-my-px",
+        );
+        expect(screen.getByText(name)).not.toHaveClass("truncate");
+      }
+    });
+
+    it("gives the name of a bar with one side the whole row", () => {
+      renderWithI18n(<UniversalAxis start={entryA(69)} showLabels />);
+
+      expect(screen.getByText("Orientation A")).toHaveClass("only:col-span-2");
+    });
+
+    it("keeps the row at least one line high when the names are present", () => {
+      renderWithI18n(
+        <UniversalAxis start={entryA(69)} end={entryB(31)} showLabels />,
+      );
+
+      expect(screen.getByTestId("universal-axis-labels")).toHaveClass(
+        "min-h-3",
         "leading-none",
       );
     });
@@ -247,7 +259,7 @@ describe("<UniversalAxis />", () => {
 
       const labels = screen.getByTestId("universal-axis-labels");
 
-      expect(labels).toHaveClass("h-3");
+      expect(labels).toHaveClass("min-h-3");
       expect(labels).toBeEmptyDOMElement();
     });
 
@@ -272,7 +284,7 @@ describe("<UniversalAxis />", () => {
 
       const labels = screen.getByTestId("universal-axis-labels");
 
-      expect(labels).toHaveClass("h-3");
+      expect(labels).toHaveClass("min-h-3");
       expect(labels).toHaveTextContent("");
     });
 
@@ -997,7 +1009,7 @@ describe("<UniversalAxis /> - showValues and description", () => {
           .getByTestId("universal-axis-marker")
           .style.getPropertyValue("--axis-position"),
       ).toBe("50%");
-      expect(screen.getByText("Orientation A")).toHaveClass("truncate");
+      expect(screen.getByText("Orientation A")).toHaveClass("wrap-break-word");
       expect(screen.getByText("Orientation B")).toHaveClass("text-right");
     });
 

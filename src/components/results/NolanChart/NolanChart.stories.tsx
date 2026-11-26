@@ -375,6 +375,36 @@ export const LightColorExtreme: Story = {
   play: openCard,
 };
 
+// The left-bottom quadrant of the identity quiz: a green too pale for its
+// name to be read on its tint, or for white to be read on it.
+const MID_GREEN = "#00d492";
+
+export const MidColorModerate: Story = {
+  args: {
+    quadrants: {
+      ...QUADRANTS,
+      bottomLeft: { ...QUADRANTS.bottomLeft, color: MID_GREEN },
+    },
+  },
+};
+
+export const MidColorExtreme: Story = {
+  args: {
+    ...MidColorModerate.args,
+    horizontal: createEconomy(100, 0),
+    vertical: createWorldview(100, 0),
+  },
+};
+
+// The names the axes of the identity quiz have, on the card of a 320 px
+// screen: the pills take the next size of the type, and the names are whole.
+export const IdentityQuizAxisNames: Story = {
+  args: {
+    horizontal: { ...createEconomy(89, 11), name: "gospodarczo" },
+    vertical: { ...createWorldview(75, 25), name: "światopoglądowo" },
+  },
+};
+
 export const LongNames: Story = {
   args: {
     horizontal: createAxis(

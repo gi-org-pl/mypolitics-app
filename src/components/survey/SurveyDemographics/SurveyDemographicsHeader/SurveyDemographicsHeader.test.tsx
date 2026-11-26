@@ -27,6 +27,16 @@ describe("<SurveyDemographicsHeader />", () => {
       expect(container.querySelector("img")).toHaveAttribute("alt", "");
     });
 
+    it("never lets the title shrink below its longest word, and lets the illustration give way", () => {
+      const { container } = renderWithI18n(<SurveyDemographicsHeader />);
+
+      expect(screen.getByRole("heading", { level: 2 })).not.toHaveClass(
+        "min-w-0",
+      );
+      expect(container.querySelector("img")).toHaveClass("min-w-0", "shrink");
+      expect(container.querySelector("img")).not.toHaveClass("shrink-0");
+    });
+
     it("separates the title from the description", () => {
       renderWithI18n(<SurveyDemographicsHeader />);
 
