@@ -137,6 +137,18 @@ describe("resolveHorizontalBar()", () => {
         ),
       ).toBeUndefined();
     });
+
+    it("returns nothing for a record that groups by category", () => {
+      expect(
+        resolve(
+          {
+            orientationIds: PARTY_IDS,
+            values: { ...values, groupBy: "category" },
+          },
+          moduleQuizContext,
+        ),
+      ).toBeUndefined();
+    });
   });
 
   describe("given a record that groups by category", () => {
