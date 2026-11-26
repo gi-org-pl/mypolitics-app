@@ -1,0 +1,863 @@
+[
+  {
+    "id": "606d89af9e9c380006455172",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d89e39e9c380006455719",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8a289e9c3800064561aa",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8a299e9c3800064561ab",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8a769e9c380006456e73",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8ab09e9c38000645770f",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8b0a9e9c38000645830a",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8b3f9e9c3800064588ae",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606d8b669e9c380006458b62",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eac9f9e9c3800065914d6",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606ead1c9e9c380006591b29",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eae3d9e9c380006592d8b",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eae3e9e9c380006592d8c",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eae3f9e9c380006592d8d",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eaf9e9e9c380006593e2c",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eafd99e9c3800065941c0",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb2b29e9c380006597e43",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d87af9e9c380006450830"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87d99e9c380006450cb8"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb2ed9e9c380006598564",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb39b9e9c3800065994ab",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb3c59e9c3800065998ba",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb46b9e9c38000659a81e",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb55f9e9c38000659ba43",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d86439e9c38000644d1c3"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d87629e9c38000644fd69"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb5b99e9c38000659c248",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606eb6059e9c38000659c634",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606ee7009e9c3800065eb987",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606ee8689e9c3800065edc46",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606ee88c9e9c3800065eddb1",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          },
+          {
+            "id": "606d88dc9e9c380006453104"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "606ee8f39e9c3800065ee501",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d86439e9c38000644d1c3"
+          },
+          {
+            "id": "606d87af9e9c380006450830"
+          },
+          {
+            "id": "606d88769e9c38000645208a"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d87d99e9c380006450cb8"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "607446809e9c3800069ebd09",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d88c09e9c380006452c27"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d88dc9e9c380006453104"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  },
+  {
+    "id": "6074470c9e9c3800069ec5d3",
+    "effects": {
+      "type": "FOR_AND_AGAINST",
+      "agree": {
+        "ideologies": [
+          {
+            "id": "606d88769e9c38000645208a"
+          },
+          {
+            "id": "606d86439e9c38000644d1c3"
+          }
+        ],
+        "parties": []
+      },
+      "disagree": {
+        "ideologies": [
+          {
+            "id": "606d87629e9c38000644fd69"
+          },
+          {
+            "id": "606d88a39e9c3800064525d2"
+          }
+        ],
+        "parties": []
+      }
+    }
+  }
+]

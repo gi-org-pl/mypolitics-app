@@ -1,0 +1,1028 @@
+{
+    "id": "606d83eb9e9c380006447f27",
+    "title": {
+        "pl": "Test na kraje starożytne",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+    },
+    "description": {
+        "pl": "Imperializm czy pacyfizm? Ateny czy Sparta? Sprawdź swoje poglądy z okresu starożynego!",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+    },
+    "createdAt": "2021-04-07T10:05:31.069Z",
+    "hidden": false,
+    "logoUrl": "",
+    "type": "OFFICIAL",
+    "isPublic": true,
+    "imageUrl": null,
+    "averageFinishTime": 11.0,
+    "projectId": null,
+    "version": null,
+    "algorithm": null,
+    "defaultLanguage": null,
+    "supportedLanguages": [
+        "POLISH"
+    ],
+    "orientations": [
+        {
+            "id": "606d86439e9c38000644d1c3",
+            "description": {
+                "pl": "Ideologia dążąca do rozrostu własnego państwa kosztem innych.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#f44336",
+            "generalName": {
+                "pl": "Imperializm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617790529112-Militaryzm.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d87629e9c38000644fd69",
+            "description": {
+                "pl": "Ideologia dążąca jedynie do obrony swojego terenu, nie zakłada ekspansji kosztem innych krajów.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#2196f3",
+            "generalName": {
+                "pl": "Pacyfizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617790817204-Osiad%25C5%2582o%25C5%259B%25C4%2587%25202.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d87af9e9c380006450830",
+            "description": {
+                "pl": "Rozwój militarny, stawia wyżej wojsko od gospodarki.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#000000",
+            "generalName": {
+                "pl": "Rozwój Militarny",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617790891955-Wojsko.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d87d99e9c380006450cb8",
+            "description": {
+                "pl": "Stawianie rozwoju gospodarczego jako rzecz ważniejszą od rozwoju militarnego.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ffeb3b",
+            "generalName": {
+                "pl": "Rozwój gospodarczy",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617791037622-Gospodarka.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d88769e9c38000645208a",
+            "description": {
+                "pl": "Sparta, to największy wróg Aten, zawsze rywalizowali o hegemonię w Grecji.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ff5722",
+            "generalName": {
+                "pl": "Pro-Spartańskość",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617791093313-Sparta.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d88a39e9c3800064525d2",
+            "description": {
+                "pl": "Ateny, starożytne mocarstwo rywalizujące ze Spartą, lecz czasem dla dobra Grecji jednoczyli się pod jednym sztandarem.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#03a9f4",
+            "generalName": {
+                "pl": "Pro-Ateńskość",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617791317517-Ateny.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d88c09e9c380006452c27",
+            "description": {
+                "pl": "Imperium starożytności, ich największy wróg to Kartagina.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#e91e63",
+            "generalName": {
+                "pl": "Pro-Rzymskość",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617791167980-Rzym.png",
+            "surveyId": ""
+        },
+        {
+            "id": "606d88dc9e9c380006453104",
+            "description": {
+                "pl": "Kartagina jest uważana za śmiertelnego wroga Rzymu, która prawie doprowadziła do jego upadku.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#607d8b",
+            "generalName": {
+                "pl": "Pro-Kartagińskość",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1617791193972-Kartagina.png",
+            "surveyId": ""
+        }
+    ],
+    "categories": [],
+    "axes": [
+        {
+            "id": "61b3dcb6a18edb0007035a0a",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "606d87af9e9c380006450830",
+            "negativeOrientations": "606d87d99e9c380006450cb8"
+        },
+        {
+            "id": "61b3dcb6a18edb0007035a0b",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "606d86439e9c38000644d1c3",
+            "negativeOrientations": "606d87629e9c38000644fd69"
+        },
+        {
+            "id": "61b3dcb6a18edb0007035a0c",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "606d88c09e9c380006452c27",
+            "negativeOrientations": "606d88dc9e9c380006453104"
+        },
+        {
+            "id": "61b3dcb6a18edb0007035a0d",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "606d88769e9c38000645208a",
+            "negativeOrientations": "606d88a39e9c3800064525d2"
+        }
+    ],
+    "authors": [
+        {
+            "id": "6062f21123ca4f0006d86e44",
+            "email": null,
+            "name": null
+        }
+    ],
+    "questions": [
+        {
+            "id": "606d89af9e9c380006455172",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rzymskie legiony to najlepsza formacja wojskowa.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d89e39e9c380006455719",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rozwój kulturalny jest bardzo ważny, także dzięki niemu, jesteśmy lepsi od barbarzyńców.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8a289e9c3800064561aa",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Hannibal był najlepszym starożytnym generałem.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8a299e9c3800064561ab",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Demokracja jest lepsza od oligarchii lub innych ustrojów totalitarnych.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8a769e9c380006456e73",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Ludzi powinno się dzielić na grupy majątkowe i według ich statusu materialnego przyznawać im prawa.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8ab09e9c38000645770f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Właściciel niewolników powinien robić z nimi co mu się żywnie podoba (w tym tortury).",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8b0a9e9c38000645830a",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Przewaga wojskowa jest ważniejsza na morzu, niż na lądzie.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8b3f9e9c3800064588ae",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinna być obowiązkowa służba wojskowa.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606d8b669e9c380006458b62",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwa powinny skupiać się na podbojach i rozwojach terytorialnych, a nie osiadłości i bronienia tylko skrawka terenu.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eac9f9e9c3800065914d6",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Skupianie się na rozwoju gospodarki i kultury jest bez sensu, wraz z podbojami militarnymi gospodarka automatycznie się rozwija.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606ead1c9e9c380006591b29",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Prawdziwy mężczyzna to taki, który był w wojsku i ukończył szkolenia.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eae3d9e9c380006592d8b",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W wojnach Punnickich popierałem Rzym.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eae3e9e9c380006592d8c",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W historii starożytnej Grecji bardziej lubię czasy, w których Sparta i Ateny się jednoczyły przeciw Persom, niż kiedy walczyły między sobą.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eae3f9e9c380006592d8d",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Moją ulubioną starożytną formacją wojskową jest falanga.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eaf9e9e9c380006593e2c",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "#Je*aćMacedonięGreckiegoUzurpatora",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eafd99e9c3800065941c0",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Żołnierze Spartańscy byli lepsi od Ateńskich.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb2b29e9c380006597e43",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Większość funduszy państwa powinno iść na wojsko.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb2ed9e9c380006598564",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Kartagińczycy to barbarzyńcy.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb39b9e9c3800065994ab",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W bitwie ważniejsza jest jakość niż ilość żołnierzy.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb3c59e9c3800065998ba",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rozpad imperium Rzymskiego to jedna z najgorszych rzeczy, która przydarzyła się ludzkości.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb46b9e9c38000659a81e",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Podczas narodzin dziecka trzeba sprawdzać jego posturę, jeśli będzie słabe i wątłe, trzeba się go pozbyć.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb55f9e9c38000659ba43",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "To wielkie imperia rozwijały ludzkość, tak jak Cesarstwo Rzymskie.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb5b99e9c38000659c248",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W bitwie nie potrzebna jest przewaga technologiczna i taktyczna, dobry żołnierz to podstawa.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606eb6059e9c38000659c634",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Najlepszą obroną jest atak.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606ee7009e9c3800065eb987",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Najlepiej jest, kiedy państwem rządzi jedna osoba (obojętnie, czy wybrana w demokracji czy nie, po prostu ma rządzić jedna osoba).",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606ee8689e9c3800065edc46",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wrogów trzeba zwalczać, nie starać się żyć z nimi w pokoju.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606ee88c9e9c3800065eddb1",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wolę walkę na otwartym terenie, niż oblężenia.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "606ee8f39e9c3800065ee501",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wojsko stanowi siłę państwa.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "607446809e9c3800069ebd09",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Żołnierze powinni przechodzić trening który czasem może być brutalny.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6074470c9e9c3800069ec5d3",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Żołnierz musi być wyzbyty z uczuć, dla wrogów ma być bezlitosny.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        }
+    ],
+    "traits": []
+}
