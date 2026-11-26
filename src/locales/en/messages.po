@@ -1007,7 +1007,7 @@ msgstr "This will let you compare yourself with others in the future!"
 msgid "Poznaj co wpływa na Twoją orientację"
 msgstr "Learn what shapes your orientation"
 
-#: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:28
+#: src/components/survey/SurveyControls/SurveyControlsPill/SurveyControlsCount/SurveyControlsCount.tsx:32
 msgid "Pozostałe pytania w kategorii: {count}"
 msgstr "Questions left in the category: {count}"
 
@@ -1344,7 +1344,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Twoja pozycja odwiedziła już każdą z czterech ćwiartek."
 msgstr "Your position has now visited each of the four quadrants."
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:9
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:13
 msgid "Twoja tożsamość"
 msgstr "Your identity"
 
@@ -1402,7 +1402,7 @@ msgctxt "checkpoint-nolan-path-partial"
 msgid "W trakcie wykonywania quizu Twoja pozycja przeszła już przez {count} ćwiartki kompasu!"
 msgstr "During the quiz your position has already passed through {count} quadrants of the compass!"
 
-#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:21
+#: src/components/survey/SurveyDemographics/SurveyDemographicsHeader/SurveyDemographicsHeader.tsx:25
 msgid "W tym teście otrzymasz dostosowaną pod siebie kartę tożsamości"
 msgstr "In this test you will get an identity card tailored to you"
 
