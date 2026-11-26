@@ -465,4 +465,83 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
   ],
+  "64ff89410de1e01720325717": [
+    {
+      id: "0f4e428a-3f22-4a00-a679-ee00be994e05", // the header of the 2023 parliamentary election quiz
+      type: "header",
+      position: 0,
+      orientationIds: [
+        "64ff9f1d2a4dd2000777669a", // Liberalizm
+        "64ff9f232a4dd200077766e2", // Libertarianizm
+        "64ff9f2d2a4dd200077766e7", // Konserwatyzm liberalny
+        "64ff9f332a4dd200077766e9", // Konserwatyzm
+        "64ff9f392a4dd200077766ed", // Nacjonalizm
+        "64ff9f532a4dd200077766f7", // Socjalliberalizm
+        "64ff9f5e2a4dd200077766fd", // Socjaldemokracja
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z ideologią",
+          },
+        },
+      ],
+    },
+    {
+      id: "9754127e-e082-45a5-86e1-3fe1dcdfac9b", // its axes
+      type: "multi_axis",
+      position: 1,
+      column: "start",
+      orientationIds: [],
+      axisIds: [
+        "e9832aa8-30ef-4f7e-8c34-441ffe14ba8c",
+        "d29dfd41-2750-441a-adbb-dd9ef95525f2",
+        "cda599d2-6738-46f3-b1c2-dd707e49f6e8",
+      ],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Osie polityczne",
+          },
+        },
+        {
+          key: "description",
+          value: {
+            pl: "Osie przedstawiają Twoje poglądy polityczne i gospodarcze. Dwie pierwsze tworzą kompas polityczny, a trzecia przedstawia dodatkowy wymiar poglądów gospodarczych.",
+          },
+        },
+      ],
+    },
+    {
+      id: "bb6102a9-916a-480c-8e79-69d5599e7943", // its ideologies
+      type: "horizontal_bar",
+      position: 2,
+      column: "end",
+      orientationIds: [
+        "64ff9f1d2a4dd2000777669a",
+        "64ff9f232a4dd200077766e2",
+        "64ff9f2d2a4dd200077766e7",
+        "64ff9f332a4dd200077766e9",
+        "64ff9f392a4dd200077766ed",
+        "64ff9f532a4dd200077766f7",
+        "64ff9f5e2a4dd200077766fd",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Ideologie",
+          },
+        },
+        {
+          key: "visibleRows",
+          value: 7,
+        },
+      ],
+    },
+  ],
 };

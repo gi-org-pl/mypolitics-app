@@ -5,6 +5,7 @@
 // the identifiers only, nothing else of a quiz.
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
+export const ELECTIONS_2023_SURVEY_ID = "3f0c2a52-6f7b-4d53-9a55-0d5f1b9f3c11";
 
 // The identifiers of the records of the app's own lists, by what each record
 // is: a test names a record, and does not repeat its identifier.
@@ -18,6 +19,9 @@ export const OWN_RECORD_IDS = {
   presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
   presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
   presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+  elections2023Header: "0f4e428a-3f22-4a00-a679-ee00be994e05",
+  elections2023Axes: "9754127e-e082-45a5-86e1-3fe1dcdfac9b",
+  elections2023Ideologies: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
 } as const;
 
 export const LIVE_QUIZ_IDS: Record<
@@ -131,6 +135,18 @@ export const LIVE_QUIZ_IDS: Record<
       "ba7240c9-3c0b-44cd-a941-45a93d1a6665",
       "c28e9896-ff92-4881-a650-0e7f828ec381",
       "a309edcc-327c-40ae-8ce7-a7528619a3c1",
+    ],
+    axisIds: [],
+  },
+  [ELECTIONS_2023_SURVEY_ID]: {
+    orientationIds: [
+      "64ff9f1d2a4dd2000777669a",
+      "64ff9f232a4dd200077766e2",
+      "64ff9f2d2a4dd200077766e7",
+      "64ff9f332a4dd200077766e9",
+      "64ff9f392a4dd200077766ed",
+      "64ff9f532a4dd200077766f7",
+      "64ff9f5e2a4dd200077766fd",
     ],
     axisIds: [],
   },
