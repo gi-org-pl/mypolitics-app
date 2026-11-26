@@ -535,8 +535,8 @@ msgstr "Counting, but happy about it"
 msgid "Liczymy, nie oceniamy"
 msgstr "Counting, not judging"
 
-#: src/root.tsx:61
-#: src/root.tsx:64
+#: src/root.tsx:62
+#: src/root.tsx:65
 msgid "Logo myPolitics"
 msgstr "myPolitics logo"
 
