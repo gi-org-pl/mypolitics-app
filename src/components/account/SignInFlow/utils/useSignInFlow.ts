@@ -52,6 +52,13 @@ export const useSignInFlow = ({
   const stateRef = useRef(state);
   const isMounted = useRef(true);
   const running = useRef<AbortController | null>(null);
+  // Set once the person is signed in: what was pending then is done, so
+  // letting go of the flow drops nothing.
+  const isSettled = useRef(false);
+  // The one question how a sign-in that left the page ended. Kept across a
+  // remount of the same flow (React's StrictMode mounts twice), so the client
+  // is asked once and a resumed sign-in is not used up by a first mount.
+  const resumed = useRef<Promise<SignInOutcome | null> | null>(null);
 
   stateRef.current = state;
 
@@ -72,6 +79,7 @@ export const useSignInFlow = ({
     }
 
     if (outcome.kind === "signed-in") {
+      isSettled.current = true;
       setSignedIn(outcome.account);
       onSignedIn(outcome.account);
     } else {
@@ -158,27 +166,35 @@ export const useSignInFlow = ({
 
   useEffect(() => {
     isMounted.current = true;
+    let isCurrent = true;
 
     // While the flow asks how a sign-in that left the page ended, it shows
     // nothing, so no other sign-in can start. A resumed failure is checked
-    // against the session like any other.
+    // against the session like any other. Only the mount that is current
+    // acts on the answer; after a real unmount the answer still goes to
+    // finish, which drops what it reports.
     if (resume) {
-      void client
+      resumed.current ??= client
         .resumeSignIn()
         .catch(() => null)
-        .then((outcome) => (outcome ? reconcile(outcome) : null))
-        .then((outcome) => {
-          if (outcome) finish(outcome);
-          else show({ step: "choose" });
-        });
+        .then((outcome) => (outcome ? reconcile(outcome) : null));
+
+      void resumed.current.then((outcome) => {
+        if (!isCurrent && isMounted.current) return;
+
+        if (outcome) finish(outcome);
+        else show({ step: "choose" });
+      });
     }
 
     return () => {
+      isCurrent = false;
       isMounted.current = false;
       running.current?.abort();
-      dropPending(getPendingId(stateRef.current));
+      if (!isSettled.current) dropPending(getPendingId(stateRef.current));
     };
-    // Once, when the flow is shown: it asks to resume once and lets go once.
+    // Once, when the flow is shown: it asks to resume once and lets go once
+    // (twice under StrictMode, which the refs above allow for).
   }, []);
 
   return {
