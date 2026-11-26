@@ -8,6 +8,7 @@ import { PATHS } from "@/constants/paths";
 import { useFirstViewVisit } from "@/utils/storage/useFirstViewVisit";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 import type { HeaderProps } from "./Header.types";
+import { HeaderAccount } from "./HeaderAccount/HeaderAccount";
 import { HeaderLogo } from "./HeaderLogo/HeaderLogo";
 import { HeaderNav } from "./HeaderNav/HeaderNav";
 import { useHeaderMenu } from "./utils/useHeaderMenu";
@@ -29,7 +30,10 @@ export const Header = ({ routeId }: HeaderProps) => {
           <HeaderLogo playId={isFirstVisit ? routeId : undefined} />
         </Link>
 
-        <HeaderNav variant="bar" onNavigate={close} />
+        <div className="hidden items-center gap-3 md:flex">
+          <HeaderNav variant="bar" onNavigate={close} />
+          <HeaderAccount variant="bar" />
+        </div>
 
         <Button
           ref={buttonRef}
@@ -53,12 +57,9 @@ export const Header = ({ routeId }: HeaderProps) => {
       </div>
 
       {isOpen && (
-        <HeaderNav
-          ref={menuRef}
-          id={menuId}
-          variant="menu"
-          onNavigate={close}
-        />
+        <HeaderNav ref={menuRef} id={menuId} variant="menu" onNavigate={close}>
+          <HeaderAccount variant="menu" onNavigate={close} />
+        </HeaderNav>
       )}
     </header>
   );

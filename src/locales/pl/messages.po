@@ -563,6 +563,10 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
 msgstr "Komplet!"
 
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:54
+msgid "Konto"
+msgstr "Konto"
+
 #: src/components/account/AccountSetupForm/utils/useSetupTexts.ts:16
 msgid "Konto mogą założyć osoby, które mają ukończone 16 lat."
 msgstr "Konto mogą założyć osoby, które mają ukończone 16 lat."
@@ -712,7 +716,7 @@ msgctxt "checkpoint-stats-for"
 msgid "Należysz do {percent}% osób, które popierają tezę „{thesis}”."
 msgstr "Należysz do {percent}% osób, które popierają tezę „{thesis}”."
 
-#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:15
+#: src/components/shared/Header/HeaderNav/HeaderNav.tsx:21
 msgid "Nawigacja główna"
 msgstr "Nawigacja główna"
 
@@ -758,6 +762,11 @@ msgstr "Nie udało się wczytać quizu"
 #: src/components/results/ResultsScreen/ResultsScreenNotice/ResultsScreenNotice.constants.ts:34
 msgid "Nie udało się wczytać wyniku"
 msgstr "Nie udało się wczytać wyniku"
+
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:93
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:52
+msgid "Nie udało się wylogować. Spróbuj jeszcze raz."
+msgstr "Nie udało się wylogować. Spróbuj jeszcze raz."
 
 #: src/components/survey/SurveyResultsCalculation/SurveyResultsCalculation.constants.ts:25
 msgid "Nie udało się wysłać linku na Twój e-mail. Twoje wyniki są gotowe. Zapisz adres strony z wynikami, żeby móc do nich wrócić."
@@ -864,7 +873,7 @@ msgstr "Okno {inflectedName} zostało zamknięte przed końcem logowania. Sprób
 msgid "Orientacja seksualna"
 msgstr "Orientacja seksualna"
 
-#: src/components/shared/Header/Header.tsx:42
+#: src/components/shared/Header/Header.tsx:46
 msgid "Otwórz menu nawigacji"
 msgstr "Otwórz menu nawigacji"
 
@@ -1183,7 +1192,7 @@ msgid "Statystyki: {name}"
 msgstr "Statystyki: {name}"
 
 #: src/components/shared/Error404/Error404.tsx:39
-#: src/components/shared/Header/Header.tsx:26
+#: src/components/shared/Header/Header.tsx:27
 msgid "Strona główna"
 msgstr "Strona główna"
 
@@ -1492,6 +1501,11 @@ msgstr "Wykształcenie"
 msgid "Wyłącz checkpointy"
 msgstr "Wyłącz checkpointy"
 
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:86
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:45
+msgid "Wyloguj się"
+msgstr "Wyloguj się"
+
 #: src/components/results/ResultsScreen/ResultsScreenContent/ResultsComparison/ComparisonModeSelector/FriendForm/FriendFormNotice/FriendFormNotice.constants.ts:8
 msgid "Wymień się identyfikatorami wyników ze znajomym, aby porównać wzajemnie swoje odpowiedzi."
 msgstr "Wymień się identyfikatorami wyników ze znajomym, aby porównać wzajemnie swoje odpowiedzi."
@@ -1555,6 +1569,10 @@ msgstr "Zaglądamy do teczek"
 msgid "Zakres wykorzystania danych"
 msgstr "Zakres wykorzystania danych"
 
+#: src/components/shared/Header/HeaderAccount/HeaderAccountSignIn/HeaderAccountSignIn.tsx:43
+msgid "Zaloguj się"
+msgstr "Zaloguj się"
+
 #: src/pages/login.tsx:30
 msgid "Zaloguj się lub załóż konto"
 msgstr "Zaloguj się lub załóż konto"
@@ -1572,7 +1590,7 @@ msgstr "Zamiast o politykę, pokłóćmy się o muzykę!"
 msgid "Zamknij"
 msgstr "Zamknij"
 
-#: src/components/shared/Header/Header.tsx:42
+#: src/components/shared/Header/Header.tsx:46
 msgid "Zamknij menu nawigacji"
 msgstr "Zamknij menu nawigacji"
 

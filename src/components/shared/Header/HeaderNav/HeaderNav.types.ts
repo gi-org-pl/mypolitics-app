@@ -1,5 +1,5 @@
 import type { MessageDescriptor } from "@lingui/core";
-import type { Ref } from "react";
+import type { ReactNode, Ref } from "react";
 
 export type HeaderNavEntry = {
   key: string;
@@ -22,4 +22,5 @@ export type HeaderNavProps = {
   onNavigate: () => void;
   id?: string;
   ref?: Ref<HTMLElement>;
+  children?: ReactNode; // after the entries: the account place of the phone menu
 };
