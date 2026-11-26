@@ -9,6 +9,9 @@ import type { SurveyDemographicsFieldProps } from "./SurveyDemographicsField.typ
 import { getOptionItems } from "./utils/getOptionItems";
 import { getSelectedOption } from "./utils/getSelectedOption";
 
+// One field of the step: Athena's select, as wide as its column. The select
+// keeps a minimum width of its own, which two fields side by side do not have
+// on a narrow screen; here the column decides.
 export const SurveyDemographicsField = ({
   name,
   width,
@@ -23,7 +26,9 @@ export const SurveyDemographicsField = ({
   const isBlocked = isDisabled || options.length === 0;
 
   return (
-    <div className={`flex min-w-0 flex-col ${FIELD_WIDTH_CLASS_NAME[width]}`}>
+    <div
+      className={`flex min-w-0 flex-col [&>div]:min-w-0 ${FIELD_WIDTH_CLASS_NAME[width]}`}
+    >
       <Select
         aria-label={name}
         aria-describedby={selectedOption ? valueId : undefined}
