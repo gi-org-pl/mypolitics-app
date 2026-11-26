@@ -4,7 +4,7 @@ import { msg } from "@lingui/core/macro";
 import facebookMark from "@/assets/icons/facebook-mark.svg";
 import googleMark from "@/assets/icons/google-mark.svg";
 import xMark from "@/assets/icons/x-mark.svg";
-import type { AuthIntentKey, IdentityProvider } from "@/types/auth";
+import type { AuthIntent, IdentityProvider } from "@/types/auth";
 
 export interface AuthProviderEntry {
   id: IdentityProvider;
@@ -61,10 +61,10 @@ export const DISPLAY_NAME_MIN_LENGTH = 2;
 
 // Why an account is needed, in the terms of the action: what will be kept on
 // the account, then that the first sign-in creates it. The dialog shows it
-// under its heading.
-export const AUTH_INTENTS: Record<AuthIntentKey, { line: MessageDescriptor }> =
-  {
-    "create-quiz": {
-      line: msg`Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada.`,
-    },
-  };
+// under its heading. AuthIntentKey is read from the keys, so a new action is
+// one entry here.
+export const AUTH_INTENTS = {
+  "create-quiz": {
+    line: msg`Quiz zapiszemy na Twoim koncie. Pierwsze logowanie je zakłada.`,
+  },
+} satisfies Record<string, AuthIntent>;

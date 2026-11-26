@@ -24,7 +24,8 @@ const Guarded = () => (
 // session and a requireAuth the test controls. The session is state above
 // the router, so a change reaches the page.
 const renderGuard = (initial: AuthSession, entries: string[]) => {
-  const requireAuth = vi.fn<RequireAuth>();
+  const drop = vi.fn();
+  const requireAuth = vi.fn<RequireAuth>(() => drop);
   const setter: { current: (next: AuthSession) => void } = {
     current: () => undefined,
   };
@@ -53,6 +54,7 @@ const renderGuard = (initial: AuthSession, entries: string[]) => {
   return {
     router,
     requireAuth,
+    drop,
     setSession: (next: AuthSession) => setter.current(next),
   };
 };
@@ -109,6 +111,18 @@ describe("useRequireAuthGuard()", () => {
       act(() => requireAuth.mock.calls[0][2]?.onCancel?.());
 
       expect(router.state.location.pathname).toBe("/");
+    });
+
+    it("drops its request when the page is left while the dialog is open", async () => {
+      const { router, drop } = renderGuard({ status: "signed-out" }, [
+        "/",
+        "/editor",
+      ]);
+
+      await act(() => router.navigate(-1));
+
+      expect(router.state.location.pathname).toBe("/");
+      expect(drop).toHaveBeenCalledOnce();
     });
 
     it("shows the page once signed in", () => {

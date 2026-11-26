@@ -11,7 +11,9 @@ import { doNothing } from "@/utils/function/doNothing";
 // the auth dialog with the intent's line; closing it goes back, or home when
 // the page was opened directly. Signing out while on the page goes straight
 // home, with no dialog: a change from signed in to signed out is not the
-// same as arriving signed out.
+// same as arriving signed out. Leaving the page while the dialog is open -
+// Back, Forward - drops its request, so the dialog does not stay over a page
+// that did not ask for it.
 export const useRequireAuthGuard = (intent: AuthIntentKey) => {
   const { session } = useAuthSession();
   const requireAuth = useRequireAuth();
@@ -32,7 +34,7 @@ export const useRequireAuthGuard = (intent: AuthIntentKey) => {
       return;
     }
 
-    requireAuth(intent, doNothing, {
+    return requireAuth(intent, doNothing, {
       onCancel: () => {
         // "default" is the key of the first page the app was opened on.
         if (key === "default") navigate(PATHS.home, { replace: true });
