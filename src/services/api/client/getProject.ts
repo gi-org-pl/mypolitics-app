@@ -1,3 +1,7 @@
+import {
+  MOCK_2137_PROJECT_ID,
+  MOCK_2137_SURVEY_ID,
+} from "@/mocks/mock2137Values";
 import { isNotFound } from "@/services/api/utils/error/isNotFound";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { readProject } from "@/services/api/utils/project/readProject";
@@ -13,6 +17,16 @@ export const getProject = async (
   projectId: string,
   options?: ApiRequestOptions,
 ): Promise<ProjectLoadResult> => {
+  if (projectId === MOCK_2137_PROJECT_ID) {
+    return {
+      status: SurveyLoadStatus.Ready,
+      project: {
+        id: MOCK_2137_PROJECT_ID,
+        latestSurveyId: MOCK_2137_SURVEY_ID,
+      },
+    };
+  }
+
   try {
     const { data } = await apiClient.get<unknown>(
       `/v1/project/${encodeURIComponent(projectId)}`,
