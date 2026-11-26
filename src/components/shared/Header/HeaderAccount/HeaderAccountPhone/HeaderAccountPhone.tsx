@@ -1,14 +1,12 @@
 import { Button } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
-
+import { AccountAvatar } from "@/components/account/AccountAvatar/AccountAvatar";
 import { FORCED_COLORS_BORDER_CLASS_NAME } from "@/constants/forced-colors";
 import {
   HEADER_PILL_CLASS_NAME,
   HEADER_PILL_IDLE_CLASS_NAME,
 } from "@/constants/header";
-
-import { HeaderAccountAvatar } from "../HeaderAccountAvatar/HeaderAccountAvatar";
-import { useSignOutAction } from "../utils/useSignOutAction";
+import { useSignOutAction } from "@/utils/auth/useSignOutAction";
 import type { HeaderAccountPhoneProps } from "./HeaderAccountPhone.types";
 
 // The account at the end of the phone menu: who is signed in, as a row drawn
@@ -27,7 +25,7 @@ export const HeaderAccountPhone = ({
       <div
         className={`flex min-h-10 items-center justify-center gap-2 rounded-3xl py-1 pl-1 ${HEADER_PILL_CLASS_NAME} ${HEADER_PILL_IDLE_CLASS_NAME} hover:bg-gi-light-primary/10`}
       >
-        <HeaderAccountAvatar
+        <AccountAvatar
           displayName={account.displayName}
           avatarUrl={account.avatarUrl}
           size="small"

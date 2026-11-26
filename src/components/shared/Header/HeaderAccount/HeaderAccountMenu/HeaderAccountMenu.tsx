@@ -1,15 +1,13 @@
 import { Button } from "@gi-org-pl/athena";
 import { useLingui } from "@lingui/react/macro";
-
+import { AccountAvatar } from "@/components/account/AccountAvatar/AccountAvatar";
 import { getAuthProvider } from "@/constants/auth";
 import { FOCUS_CLASS_NAME } from "@/constants/focus";
 import {
   HEADER_PILL_CLASS_NAME,
   HEADER_PILL_IDLE_CLASS_NAME,
 } from "@/constants/header";
-
-import { HeaderAccountAvatar } from "../HeaderAccountAvatar/HeaderAccountAvatar";
-import { useSignOutAction } from "../utils/useSignOutAction";
+import { useSignOutAction } from "@/utils/auth/useSignOutAction";
 import type { HeaderAccountMenuProps } from "./HeaderAccountMenu.types";
 import { useAccountMenu } from "./utils/useAccountMenu";
 
@@ -39,7 +37,7 @@ export const HeaderAccountMenu = ({ account }: HeaderAccountMenuProps) => {
         className={`${HEADER_PILL_CLASS_NAME} ${HEADER_PILL_IDLE_CLASS_NAME} gap-2 pl-1`}
         onClick={menu.toggle}
       >
-        <HeaderAccountAvatar
+        <AccountAvatar
           displayName={account.displayName}
           avatarUrl={account.avatarUrl}
           size="small"
@@ -57,7 +55,7 @@ export const HeaderAccountMenu = ({ account }: HeaderAccountMenuProps) => {
           className="absolute top-full right-0 z-50 mt-3 flex w-70 flex-col gap-1 rounded-2xl border border-gi-dark-ash bg-white p-2 text-gi-primary"
         >
           <div className="flex items-center gap-3 px-3 py-2">
-            <HeaderAccountAvatar
+            <AccountAvatar
               displayName={account.displayName}
               avatarUrl={account.avatarUrl}
               size="medium"
