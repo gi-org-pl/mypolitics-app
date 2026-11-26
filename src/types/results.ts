@@ -1,4 +1,6 @@
-import type { Orientation } from "@/types/orientation";
+import type { ScoreTotal } from "@/types/checkpoint";
+import type { DeclaredGender, Orientation } from "@/types/orientation";
+import type { ResultInputAnswer, Survey, SurveyAxis } from "@/types/survey";
 
 export interface ResultEntry {
   orientation: Orientation;
@@ -74,3 +76,119 @@ export interface ResultModuleSlots {
   labels: readonly string[];
   colors: readonly string[];
 }
+
+// A result as its modules are resolved from it.
+
+// An answer of a result: the question and the possible answer chosen for it.
+export type ResultAnswer = ResultInputAnswer;
+
+// What a result brings: for each orientation its points and its maximum, as
+// the back-end calculated them, and the answers given.
+export interface QuizResult {
+  scores: Record<string, ScoreTotal>; // by orientation identifier
+  answers: ResultAnswer[];
+}
+
+// An axis with its two poles: the negative side as the start entry, the
+// positive side as the end entry.
+export interface ResolvedAxis {
+  id: string;
+  name?: string;
+  start: ResultEntry;
+  end: ResultEntry;
+}
+
+export interface ResolvedAxisGroup {
+  name?: string; // absent = the group has no name
+  axes: ResolvedAxis[];
+}
+
+export interface ResolvedRankedEntry extends ResultEntry {
+  isOfficial: boolean;
+}
+
+export interface ResolvedCategory {
+  id: string;
+  name?: string;
+  entries: ResolvedRankedEntry[]; // each with its value inside the category
+}
+
+// What a module type is given. A horizontal bar has entries, or categories
+// when its record groups by category.
+export type ResolvedModuleContent =
+  | { type: "single_axis"; entry: ResultEntry; marker: number | false }
+  | { type: "double_axis"; axis: ResolvedAxis; marker: number | false }
+  | {
+      type: "multi_axis";
+      groups: ResolvedAxisGroup[];
+      marker: number | false;
+    }
+  | {
+      type: "horizontal_bar";
+      entries: ResolvedRankedEntry[];
+      visibleRows: number;
+    }
+  | {
+      type: "horizontal_bar";
+      categories: ResolvedCategory[];
+      visibleRows: number;
+    }
+  | {
+      type: "nolan_chart";
+      horizontal: ResolvedAxis;
+      vertical: ResolvedAxis;
+      labels: Record<string, string>; // by slot, as read
+      colors: Record<string, string>; // by slot, as read
+    }
+  | { type: "archetype"; entries: ResultEntry[] }
+  | { type: "traits"; traits: Orientation[]; earnedIds: string[] };
+
+interface ResolvedModuleBase {
+  id: string;
+  position: number;
+  column: ResultModuleColumn;
+  title?: string;
+  description?: string;
+}
+
+export type ResolvedModule = ResolvedModuleBase & ResolvedModuleContent;
+
+export interface ResolvedHeader {
+  orientation?: Orientation; // the highest of the header record's orientations. Absent = no match
+  confidence?: number; // its value
+  linkLabel?: string;
+}
+
+export interface ResolvedResult {
+  leader?: ResultEntry; // absent = nobody leads, or the highest is below a partial match
+  header?: ResolvedHeader; // absent = the quiz has no header record
+  modules: ResolvedModule[]; // only the ones that can be drawn, in the order they are drawn
+}
+
+// What follows is not part of a resolved result: it is what the functions of
+// `src/utils/result-modules/` hand to each other.
+
+// What a record is resolved against: the quiz, the result, and whose result
+// it is.
+export interface ResolutionContext {
+  survey: Survey;
+  result: QuizResult;
+  gender?: DeclaredGender; // chooses the form of a name and an image
+  leader?: ResultEntry;
+}
+
+// Axes of the quiz that stand together, before their sides are resolved.
+export interface SurveyAxisGroup {
+  name?: string;
+  axes: SurveyAxis[];
+}
+
+// The types that stand among the modules. The header is resolved on its own.
+export type DrawnModuleType = Exclude<ResultModuleType, "header">;
+
+// What a module of one type is given, or nothing when its record cannot be
+// drawn.
+export type ModuleResolver<Type extends DrawnModuleType = DrawnModuleType> = (
+  record: ResultModule,
+  context: ResolutionContext,
+) => Extract<ResolvedModuleContent, { type: Type }> | undefined;
