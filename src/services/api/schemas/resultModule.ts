@@ -10,10 +10,10 @@ const NOT_BLANK_PATTERN = /\S/;
 
 const list = z.array(z.unknown()).optional().catch(undefined);
 
-// A pair of a key and a value. A value is a string or a whole
-// number. The keys are not known here and no value is checked against what its
-// key may hold: a pair is kept as it was saved, and whoever needs a value
-// reads it by the definition of its key.
+// A pair of a key and a value. A value is a string or a whole number. The
+// keys are not known here and no value is checked against what its key may
+// hold: a pair is kept as it was saved, and whoever needs a value reads it by
+// the definition of its key.
 export const resultModulePairSchema = z.object({
   key: z.string().regex(NOT_BLANK_PATTERN),
   value: z.union([z.string(), z.number().int()]),
