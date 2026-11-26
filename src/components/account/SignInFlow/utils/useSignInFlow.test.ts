@@ -242,6 +242,23 @@ describe("useSignInFlow()", () => {
       expect(onCancel).toHaveBeenCalledOnce();
     });
 
+    it("drops nothing when the host lets go of the flow on the sign-in", async () => {
+      const client = createFakeAuthClient({
+        signIn: signingIn(NEW_ACCOUNT),
+        completeSignUp: vi
+          .fn()
+          .mockResolvedValue({ kind: "signed-in", account: ACCOUNT }),
+      });
+      const flow = renderFlow(client);
+      flow.onSignedIn.mockImplementation(() => flow.unmount());
+      await act(async () => flow.result.current.chooseProvider("google"));
+
+      await act(async () => flow.result.current.completeSetup(SETUP));
+
+      expect(flow.onSignedIn).toHaveBeenCalledWith(ACCOUNT);
+      expect(client.cancelPending).not.toHaveBeenCalled();
+    });
+
     it("drops the pending sign-up when the flow is unmounted", async () => {
       const { unmount, value } = await withStep(vi.fn());
 
@@ -388,6 +405,25 @@ describe("useSignInFlow()", () => {
       expect(onSignedIn).not.toHaveBeenCalled();
       expect(value.setSignedIn).not.toHaveBeenCalled();
       expect(value.client.cancelPending).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("given resume under StrictMode, which mounts the flow twice", () => {
+    it("asks the client once and finishes once", async () => {
+      const client = createFakeAuthClient({
+        resumeSignIn: vi
+          .fn()
+          .mockResolvedValue({ kind: "signed-in", account: ACCOUNT }),
+      });
+      const onSignedIn = vi.fn();
+      renderHook(() => useSignInFlow({ resume: true, onSignedIn }), {
+        wrapper: SessionWrapper(createSessionValue({ client })),
+        reactStrictMode: true,
+      });
+
+      await waitFor(() => expect(onSignedIn).toHaveBeenCalledWith(ACCOUNT));
+      expect(client.resumeSignIn).toHaveBeenCalledOnce();
+      expect(onSignedIn).toHaveBeenCalledOnce();
     });
   });
 
