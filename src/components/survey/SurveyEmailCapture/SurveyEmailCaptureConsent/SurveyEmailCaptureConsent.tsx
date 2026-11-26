@@ -2,9 +2,9 @@ import { Checkbox } from "@gi-org-pl/athena";
 import { Trans, useLingui } from "@lingui/react/macro";
 
 import {
-  CHECKBOX_CLASS_NAME,
+  CONSENT_CHECKBOX_CLASS_NAME,
   CONSENT_CLASS_NAME,
-} from "./SurveyEmailCaptureConsent.constants";
+} from "@/constants/form";
 import type { SurveyEmailCaptureConsentProps } from "./SurveyEmailCaptureConsent.types";
 
 // The optional consent to marketing content, the link to the privacy policy
@@ -29,7 +29,7 @@ export const SurveyEmailCaptureConsent = ({
       <Checkbox
         label={t`Wyrażam zgodę na przetwarzanie moich danych osobowych w celu przesyłania mi treści marketingowych przez Fundację Generacja Innowacja.`}
         checked={hasConsent}
-        className={CHECKBOX_CLASS_NAME}
+        className={CONSENT_CHECKBOX_CLASS_NAME}
         onCheckedChange={(isChecked) => onConsentChange(isChecked === true)}
       />{" "}
       <a

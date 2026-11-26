@@ -1,12 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
+import { mockResizeObserver } from "@/utils/vitest/mockResizeObserver";
 import { AnimatedHeight } from "./AnimatedHeight";
 import {
   HEIGHT_CHANGE_EASING,
   HEIGHT_CHANGE_MS,
 } from "./AnimatedHeight.constants";
-import { mockResizeObserver } from "./utils/mockResizeObserver";
 
 const getContent = () => screen.getByText("Treść").parentElement as HTMLElement;
 

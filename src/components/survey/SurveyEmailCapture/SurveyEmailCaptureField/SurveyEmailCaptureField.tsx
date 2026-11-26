@@ -2,12 +2,12 @@ import { Input } from "@gi-org-pl/athena";
 import { Trans, useLingui } from "@lingui/react/macro";
 
 import { AnimatedHeight } from "@/components/shared/AnimatedHeight/AnimatedHeight";
+import { TEXT_FIELD_CLASS_NAME } from "@/constants/form";
 import { isEnterPress } from "@/utils/event/isEnterPress";
 import { isEmailAddress } from "@/utils/text/isEmailAddress";
 
 import { useEmailHint } from "../utils/useEmailHint";
 import {
-  FIELD_CLASS_NAME,
   GROUP_CLASS_NAME,
   ROOM_CLASS_NAME,
 } from "./SurveyEmailCaptureField.constants";
@@ -59,7 +59,7 @@ export const SurveyEmailCaptureField = ({
                 </span>
               ) : undefined
             }
-            className={FIELD_CLASS_NAME}
+            className={TEXT_FIELD_CLASS_NAME}
             onChange={onAddressChange}
             onBlur={showHint}
             onKeyDown={(event) => {
