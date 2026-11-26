@@ -1,4 +1,4 @@
-// Local stand-in for the API, so the EuroWyborczy 2024 quiz can run and its
+// Local stand-in for the API, so the Eurowyborczy 2023 quiz can run and its
 // result page can be looked at without any write access to the real API.
 //
 //   node mocks/eurowyborczy/mock-api.mjs            # listens on :4010

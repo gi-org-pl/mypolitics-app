@@ -467,7 +467,7 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
   ],
   "664b9e8421aaa90007ed7bdd": [
     {
-      id: "c2c97a6e-7e43-43e4-865d-3dcb3b47c3cd", // the header of the EuroWyborczy 2024 quiz
+      id: "c2c97a6e-7e43-43e4-865d-3dcb3b47c3cd", // the header of the Eurowyborczy 2023 quiz
       type: "header",
       position: 0,
       orientationIds: [

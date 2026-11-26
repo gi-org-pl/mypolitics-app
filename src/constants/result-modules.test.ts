@@ -51,7 +51,7 @@ const withOrientationIds = (resolved: unknown): unknown =>
     ),
   );
 
-// The EuroWyborczy 2024 quiz: its survey, and its records in the order written.
+// The Eurowyborczy 2023 quiz: its survey, and its records in the order written.
 const EURO_SURVEY_ID = "664b9e8421aaa90007ed7bdd";
 const EURO_RECORD_IDS = [
   "c2c97a6e-7e43-43e4-865d-3dcb3b47c3cd", // header
