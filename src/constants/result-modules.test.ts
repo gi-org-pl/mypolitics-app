@@ -12,6 +12,7 @@ import {
   LIVE_QUIZ_IDS,
   OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
+  QUIZ_600_QUESTIONS_SURVEY_ID,
 } from "./result-modules.fixtures";
 import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
 
@@ -52,10 +53,11 @@ const withOrientationIds = (resolved: unknown): unknown =>
   );
 
 describe("OWN_RESULT_MODULES", () => {
-  it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
+  it("keeps a list for the quizzes with result modules", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      QUIZ_600_QUESTIONS_SURVEY_ID,
     ]);
   });
 
@@ -86,6 +88,11 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialCandidates,
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
+      ],
+      [
+        OWN_RECORD_IDS.quiz600Header,
+        OWN_RECORD_IDS.quiz600Ideologies,
+        OWN_RECORD_IDS.quiz600Archetype,
       ],
     ]);
   });
@@ -290,6 +297,8 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [OWN_RECORD_IDS.identityHeader, "lowMatch", "named"],
+      [OWN_RECORD_IDS.identityArchetype, "lowMatch", "named"],
     ]);
   });
 
