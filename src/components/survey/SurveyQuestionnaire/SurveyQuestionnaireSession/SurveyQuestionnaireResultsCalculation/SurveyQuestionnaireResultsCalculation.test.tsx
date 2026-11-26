@@ -16,6 +16,7 @@ import {
 import { buildResultInput } from "@/utils/survey/result/buildResultInput";
 import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
+import { createSurveyResult } from "@/utils/vitest/survey/createSurveyResult";
 import { renderPhaseContent } from "@/utils/vitest/survey/renderPhaseContent";
 import { SURVEY_PHASE_CONTENT } from "../SurveyQuestionnaireSession.constants";
 import { SurveyQuestionnaireResultsCalculation } from "./SurveyQuestionnaireResultsCalculation";
@@ -106,7 +107,7 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     createResultMock.mockResolvedValue(CreateResultOutcome.Stored);
-    getResultMock.mockResolvedValue({ id: "result", isCalculated: true });
+    getResultMock.mockResolvedValue(createSurveyResult({ isCalculated: true }));
     requestResultLinkMock.mockResolvedValue(ResultLinkOutcome.Accepted);
   });
 
@@ -198,7 +199,7 @@ describe("<SurveyQuestionnaireResultsCalculation />", () => {
 
   describe("when the phase is mounted again for the same session", () => {
     it("shows the same lines for the same session after a remount", async () => {
-      getResultMock.mockResolvedValue({ id: "result", isCalculated: false });
+      getResultMock.mockResolvedValue(createSurveyResult());
 
       const first = renderPhase();
 

@@ -1,7 +1,7 @@
 import type { StoreApi } from "zustand";
 
 import type { DeclaredGender, QuizOrientation } from "@/types/orientation";
-import type { ResultModule } from "@/types/results";
+import type { QuizResult, ResultModule } from "@/types/results";
 
 export type SurveyQuestionAnswerType =
   | "agree-or-disagree"
@@ -124,9 +124,13 @@ export const CreateResultOutcome = {
 export type CreateResultOutcome =
   (typeof CreateResultOutcome)[keyof typeof CreateResultOutcome];
 
-export interface SurveyResult {
+// A result as read from the API. It is a `QuizResult`, so it is handed to
+// `resolveResult` as it is: its scores are empty until it is calculated, and
+// its answers are the ones handed in.
+export interface SurveyResult extends QuizResult {
   id: string; // the identifier the result was asked for by
   isCalculated: boolean;
+  surveyId?: string; // the survey the result was handed in for
 }
 
 export type ResultLinkLanguage = "pl" | "en";
