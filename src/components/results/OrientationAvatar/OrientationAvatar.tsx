@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
 
+import { IMAGE_FIT_CLASS_NAMES } from "@/constants/image";
 import { getSafeColor } from "@/utils/color/getSafeColor";
+import { getImageKind } from "@/utils/url/getImageKind";
 import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import { AVATAR_SIZE_CLASS_NAMES } from "./OrientationAvatar.constants";
@@ -32,7 +34,7 @@ export const OrientationAvatar = ({
         <img
           src={imageUrl}
           alt=""
-          className="size-full object-cover"
+          className={`size-full ${IMAGE_FIT_CLASS_NAMES[getImageKind(imageUrl)]}`}
           onError={markFailed}
         />
       )}

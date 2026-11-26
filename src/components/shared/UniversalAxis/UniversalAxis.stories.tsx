@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
+import { GLYPHS } from "@/constants/image.fixtures";
 import type { Orientation } from "@/types/orientation";
-
 import { UniversalAxis } from "./UniversalAxis";
 
 const createAvatarUrl = (color: string): string =>
@@ -414,6 +413,53 @@ export const LabelsWithDescendersAndAccents: Story = {
     end: {
       orientation: { ...conservatism, name: "Źródła tradycji" },
       value: 31,
+    },
+    showLabels: true,
+  },
+};
+
+// The icons of a quiz in use: bare glyphs smaller than the cap, each with a
+// size of its own. They are drawn whole, at that size, in the middle of the
+// cap - a wide one at the start, a tall one at the end.
+export const Glyphs: Story = {
+  args: {
+    start: {
+      orientation: {
+        ...liberalism,
+        name: "Progresywizm",
+        color: "#9B59B6",
+        imageUrl: GLYPHS.progressivism,
+      },
+      value: 24,
+    },
+    end: {
+      orientation: {
+        ...conservatism,
+        name: "Tradycjonalizm",
+        color: "#1ABC9C",
+        imageUrl: GLYPHS.traditionalism,
+      },
+      value: 34,
+    },
+    showLabels: true,
+  },
+};
+
+// The widest glyph a quiz in use has, 21 by 19 px, on a one-sided bar, and a
+// glyph as the image of the other side of a comparison.
+export const GlyphWidestWithComparison: Story = {
+  args: {
+    start: {
+      orientation: {
+        ...socialism,
+        name: "Wolny rynek",
+        imageUrl: GLYPHS.widest,
+      },
+      value: 62,
+    },
+    comparison: {
+      orientation: { ...friend, name: "Równość", imageUrl: GLYPHS.equality },
+      value: 30,
     },
     showLabels: true,
   },

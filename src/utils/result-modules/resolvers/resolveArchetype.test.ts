@@ -41,6 +41,25 @@ describe("resolveArchetype()", () => {
     });
   });
 
+  describe("given a record that says nothing of a leader below a partial match", () => {
+    it("returns that the card says that nothing matches", () => {
+      expect(resolve({ orientationIds: ["liberal"] })?.lowMatch).toBe(
+        "no_match",
+      );
+    });
+  });
+
+  describe("given a record set to name a leader below a partial match", () => {
+    it("returns that", () => {
+      expect(
+        resolve({
+          orientationIds: ["liberal"],
+          values: { lowMatch: "named" },
+        })?.lowMatch,
+      ).toBe("named");
+    });
+  });
+
   describe("given a record left with no shown orientation", () => {
     it("returns nothing", () => {
       expect(resolve({ orientationIds: [] })).toBeUndefined();

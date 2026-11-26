@@ -4,7 +4,8 @@ import type { ModuleTexts, ResolvedModuleOf } from "../../ModuleDrawing.types";
 import { toRankedEntry } from "./toRankedEntry";
 
 // A ranking is one list, or one list per category when its record groups by
-// category.
+// category. A list left with nothing to rank carries the record's text for
+// that.
 export const toHorizontalBarProps = (
   module: ResolvedModuleOf<"horizontal_bar">,
   texts: ModuleTexts,
@@ -19,5 +20,8 @@ export const toHorizontalBarProps = (
           entries: entries.map((entry) => toRankedEntry(entry, texts)),
         })),
       }
-    : { entries: module.entries.map((entry) => toRankedEntry(entry, texts)) }),
+    : {
+        entries: module.entries.map((entry) => toRankedEntry(entry, texts)),
+        emptyLabel: module.emptyLabel,
+      }),
 });

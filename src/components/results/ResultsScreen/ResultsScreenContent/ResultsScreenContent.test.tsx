@@ -9,6 +9,7 @@ import {
   identityResults,
   LONG_CORNER_NAME,
   longCornerNameResults,
+  lowMatchResults,
   noMatchResults,
   RESULT_ID,
 } from "./ResultsScreenContent.fixtures";
@@ -66,8 +67,12 @@ describe("<ResultsScreenContent />", () => {
           (region) => region.getAttribute("aria-label"),
         );
 
-      expect(getColumnRegions("start")).toEqual(["Ideologie", "Partie"]);
-      expect(getColumnRegions("end")).toEqual(["Tożsamość", "Lewicowy"]);
+      expect(getColumnRegions("start")).toEqual(["Ideologie"]);
+      expect(getColumnRegions("end")).toEqual([
+        "Tożsamość",
+        "Lewicowy",
+        "Partie",
+      ]);
     });
 
     it("shows the name of the quiz under the modules", () => {
@@ -211,10 +216,53 @@ describe("<ResultsScreenContent />", () => {
       expect(
         screen.getByRole("region", { name: "Ideologie" }),
       ).toBeInTheDocument();
-      // The parties are tied to the leader, and nobody leads.
+      // The parties are tied to the leader, and nobody leads: the card says
+      // what its record says for that.
       expect(
-        screen.queryByRole("region", { name: "Partie" }),
-      ).not.toBeInTheDocument();
+        within(screen.getByRole("region", { name: "Partie" })).getByText(
+          "Brak najbliższej partii",
+        ),
+      ).toBeVisible();
+    });
+  });
+
+  describe("given a result whose closest identity is below a partial match", () => {
+    it("names that identity in the header all the same, with its confidence, and the notice of the quiz under it", () => {
+      renderContent(lowMatchResults);
+
+      expect(
+        screen.getByRole("heading", { level: 1, name: "Zielony postępowiec" }),
+      ).toBeInTheDocument();
+      expect(screen.getByTestId("results-header-confidence")).toHaveTextContent(
+        "44% pewności",
+      );
+      expect(
+        screen.getByTestId("results-header-low-match-notice"),
+      ).toHaveTextContent(
+        "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+      );
+    });
+
+    it("names it on the identity card as well, with its description", () => {
+      renderContent(lowMatchResults);
+
+      const card = within(screen.getByRole("region", { name: "Tożsamość" }));
+
+      expect(card.getByTestId("archetype-leader-name")).toHaveTextContent(
+        "Zielony postępowiec",
+      );
+      expect(
+        card.getByRole("img", { name: "Zielony postępowiec: 44%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("links no party to it: the parties card says that there is no closest party", () => {
+      renderContent(lowMatchResults);
+
+      const card = within(screen.getByRole("region", { name: "Partie" }));
+
+      expect(card.getByText("Brak najbliższej partii")).toBeVisible();
+      expect(card.queryByRole("listitem")).not.toBeInTheDocument();
     });
   });
 

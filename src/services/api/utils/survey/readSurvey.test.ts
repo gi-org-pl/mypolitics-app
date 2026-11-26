@@ -1,15 +1,14 @@
 import { describe, expect, it } from "vitest";
-
 import {
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
+  OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
 } from "@/constants/result-modules.fixtures";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
 import { getOwnResultModules } from "@/services/api/utils/result-module/getOwnResultModules";
 import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
 import { type Survey, SurveyLoadStatus } from "@/types/survey";
-
 import { readSurvey } from "./readSurvey";
 import {
   IDENTITY_QUIZ_AXIS_COUNT,
@@ -862,11 +861,11 @@ describe("readSurvey()", () => {
         identityQuizSurvey,
         IDENTITY_SURVEY_ID,
         [
-          "identity-header",
-          "identity-archetype",
-          "identity-ideologies",
-          "identity-compass",
-          "identity-parties",
+          OWN_RECORD_IDS.identityHeader,
+          OWN_RECORD_IDS.identityIdeologies,
+          OWN_RECORD_IDS.identityArchetype,
+          OWN_RECORD_IDS.identityCompass,
+          OWN_RECORD_IDS.identityParties,
         ],
       ],
       [
@@ -874,10 +873,10 @@ describe("readSurvey()", () => {
         presidentialQuizSurvey,
         PRESIDENTIAL_SURVEY_ID,
         [
-          "presidential-header",
-          "presidential-candidates",
-          "presidential-identity",
-          "presidential-categories",
+          OWN_RECORD_IDS.presidentialHeader,
+          OWN_RECORD_IDS.presidentialCandidates,
+          OWN_RECORD_IDS.presidentialIdentity,
+          OWN_RECORD_IDS.presidentialCategories,
         ],
       ],
     ])("holds the app's own list for %s under its own identifier", (_, response, surveyId, ids) => {

@@ -7,7 +7,11 @@ import { mockResultRead, mockResultsApi } from "./mockResultsApi";
 import {
   createResultResponse,
   FRIEND_RESULT_ID,
+  IDENTITY_NAMES,
   LEADER_NAME,
+  LOW_MATCH_NOTICE,
+  LOW_MATCH_RESULT_ID,
+  NO_PARTY_LABEL,
   PARTIES_DESCRIPTION,
   RESULT_ID,
   RESULT_QUESTIONS,
@@ -218,6 +222,64 @@ test.describe("Feature: Results", () => {
     });
   });
 
+  test("Scenario: A user who is close to no identity opens their result", async ({
+    page,
+  }) => {
+    await mockResultsApi(page);
+
+    await test.step("Given a calculated result in which the closest identity has 40 of 100", async () => {
+      // The mocked API holds it, and the quiz says what to show below a
+      // partial match.
+    });
+
+    await test.step("When the user opens its address", async () => {
+      await openPage(page, `/results/${LOW_MATCH_RESULT_ID}`);
+    });
+
+    await test.step("Then the header names the closest identity all the same, with its confidence and the notice of the quiz", async () => {
+      await expect(
+        page.getByRole("heading", { level: 1, name: LEADER_NAME, exact: true }),
+      ).toBeVisible();
+      await expect(page.getByText("40% pewności")).toBeVisible();
+      await expect(
+        page.getByRole("main").getByText(LOW_MATCH_NOTICE, { exact: true }),
+      ).toBeVisible();
+    });
+
+    await test.step("And the identity card names it with its match", async () => {
+      await expect(
+        getModule(page, "Tożsamość").getByRole("img", {
+          name: `${LEADER_NAME}: 40%`,
+          exact: true,
+        }),
+      ).toBeVisible();
+    });
+
+    await test.step("And the parties card says that there is no closest party, and lists none", async () => {
+      const parties = getModule(page, "Partie");
+
+      await expect(
+        parties.getByText(NO_PARTY_LABEL, { exact: true }),
+      ).toBeVisible();
+      await expect(parties.getByText("Zieloni")).toHaveCount(0);
+      await expect(parties.getByRole("listitem")).toHaveCount(0);
+    });
+
+    await test.step("And nothing is cut on a narrow screen", async () => {
+      await page.setViewportSize(NARROW_VIEWPORT);
+      await expect(
+        page.getByRole("main").getByText(LOW_MATCH_NOTICE, { exact: true }),
+      ).toBeVisible();
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
+    });
+  });
+
   test("Scenario: A user compares their result with a friend's", async ({
     page,
   }) => {
@@ -358,30 +420,42 @@ test.describe("Feature: Results", () => {
         .click();
     });
 
-    await test.step('When they choose "Z orientacją" and search for an orientation by name', async () => {
+    await test.step('When they choose "Z orientacją"', async () => {
       await getModeTab(page, "Z orientacją").click();
+    });
+
+    await test.step("Then the list offers the identities of the quiz, which its header is pointed at, and no ideology", async () => {
+      await expect(page.getByRole("main").getByRole("listitem")).toHaveText(
+        IDENTITY_NAMES,
+      );
+    });
+
+    await test.step("When they search for an orientation by name", async () => {
       await page
         .getByRole("searchbox", { name: "Szukaj po nazwie", exact: true })
-        .fill("INTER");
+        .fill("NARO");
     });
 
     await test.step("Then the list is narrowed to it", async () => {
       await expect(page.getByRole("main").getByRole("listitem")).toHaveText([
-        "Interwencjonizm",
+        "Narodowy konserwatysta",
       ]);
     });
 
     await test.step("When they pick it", async () => {
-      await getButton(page, "Interwencjonizm").click();
+      await getButton(page, "Narodowy konserwatysta").click();
     });
 
     await test.step("Then they see the agreement bar with the orientation and the score, and nothing was asked of the API", async () => {
       const bar = getAgreementBar(page);
 
-      // The taker's answer lists the orientation in the one question whose
-      // answers list it at all.
+      // Both questions have answers that list the orientation, and the taker
+      // chose another answer in each.
       await expect(
-        bar.getByRole("img", { name: "Interwencjonizm: 100%", exact: true }),
+        bar.getByRole("img", {
+          name: "Narodowy konserwatysta: 0%",
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(getButton(page, "Cofnij porównanie")).toBeVisible();
       expect(api.requests).toHaveLength(2);
@@ -424,7 +498,7 @@ test.describe("Feature: Results", () => {
         .getByRole("tab", { name: "Tryb porównania", exact: true })
         .click();
       await getModeTab(page, "Z orientacją").click();
-      await getButton(page, "Wolny rynek").click();
+      await getButton(page, "Pragmatyczny centrysta").click();
       await expect(getQuestionRows(page)).toHaveCount(RESULT_QUESTIONS.length);
     });
 
@@ -435,8 +509,8 @@ test.describe("Feature: Results", () => {
     });
 
     await test.step("Then only the question they disagree on is listed, collapsed", async () => {
-      // Of the two questions, the answers of one list the orientation, and
-      // the taker chose another answer of it.
+      // The taker chose an answer the orientation stands for in the second
+      // question, and another one in the first.
       await expect(getQuestionRows(page)).toHaveText([
         new RegExp(`^${RESULT_QUESTIONS[0].text}`),
       ]);
@@ -451,7 +525,7 @@ test.describe("Feature: Results", () => {
     });
 
     await test.step("Then they see their own answer and the answers that orientation stands for, each with a cross", async () => {
-      const orientation = getSide(page, "Wolny rynek");
+      const orientation = getSide(page, "Pragmatyczny centrysta");
 
       await expect(getQuestionRows(page).first()).toHaveAttribute(
         "aria-expanded",

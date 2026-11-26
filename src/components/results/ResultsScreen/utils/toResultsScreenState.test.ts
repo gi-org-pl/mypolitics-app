@@ -47,7 +47,10 @@ describe("toResultsScreenState()", () => {
       );
 
       expect(state.status).toBe(ResultsScreenStatus.Ready);
-      expect("resolved" in state && state.resolved.header).toEqual({});
+      expect("resolved" in state && state.resolved.header).toEqual({
+        lowMatch: "named",
+        lowMatchLabel: expect.any(String),
+      });
       expect("resolved" in state && state.resolved.leader).toBeUndefined();
     });
   });

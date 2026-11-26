@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
+import { GLYPHS } from "@/constants/image.fixtures";
 import { OrientationChip } from "./OrientationChip";
 
 const iconUrl = `data:image/svg+xml,${encodeURIComponent(
@@ -115,5 +115,14 @@ export const ShortName: Story = {
     name: "Radykalizm społeczno-gospodarczy",
     shortName: "Radykalizm",
     imageUrl: undefined,
+  },
+};
+
+// The icon of a quiz in use: a bare glyph of 14 by 19 px, drawn whole.
+export const Glyph: Story = {
+  args: {
+    name: "Tradycjonalizm",
+    imageUrl: GLYPHS.traditionalism,
+    color: "#1ABC9C",
   },
 };

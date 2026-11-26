@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import { OrientationAvatar } from "./OrientationAvatar";
 import type { OrientationAvatarProps } from "./OrientationAvatar.types";
 
@@ -70,6 +70,26 @@ describe("<OrientationAvatar />", () => {
 
       expect(queryImage()).not.toBeInTheDocument();
       expect(getAvatar()).toHaveStyle({ "--avatar-color": "#9b59b6" });
+    });
+  });
+});
+
+describe("<OrientationAvatar />", () => {
+  describe("given an image that is a glyph", () => {
+    it("draws it whole on the disc, at its own size", () => {
+      renderAvatar({ imageUrl: GLYPH_ADDRESS });
+
+      expect(queryImage()).toHaveClass("object-scale-down");
+      expect(queryImage()).not.toHaveClass("object-cover");
+    });
+  });
+
+  describe("given an image that is a picture", () => {
+    it("lets it cover the disc", () => {
+      renderAvatar({ imageUrl: PORTRAIT_ADDRESS });
+
+      expect(queryImage()).toHaveClass("object-cover");
+      expect(queryImage()).not.toHaveClass("object-scale-down");
     });
   });
 });

@@ -2,11 +2,11 @@ import { type AxiosAdapter, AxiosError } from "axios";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import { SurveyLoadStatus } from "@/types/survey";
 import { createApiError } from "@/utils/vitest/api/createApiError";
 import { createApiReply } from "@/utils/vitest/api/createApiReply";
-
 import { apiClient } from "./apiClient";
 import { getSurvey } from "./getSurvey";
 
@@ -120,8 +120,8 @@ describe("getSurvey()", () => {
     });
 
     it.each([
-      ["pl", ["Tożsamość", "Ideologie", "Partie"]],
-      ["en", ["Identity", "Ideologies", "Parties"]],
+      ["pl", ["Ideologie", "Tożsamość", "Partie"]],
+      ["en", ["Ideologies", "Identity", "Parties"]],
     ])("holds the app's own result modules of a quiz the API sends none for, in the language asked for: %s", async (language, titles) => {
       adapter.mockImplementationOnce(createApiReply(200, surveyResponse));
 
@@ -131,10 +131,10 @@ describe("getSurvey()", () => {
       expect(result).toMatchObject({
         survey: {
           resultModules: [
-            { id: "identity-header" },
+            { id: OWN_RECORD_IDS.identityHeader },
             { values: { title: titles[0] } },
             { values: { title: titles[1] } },
-            { id: "identity-compass" },
+            { id: OWN_RECORD_IDS.identityCompass },
             { values: { title: titles[2] } },
           ],
         },
@@ -208,11 +208,20 @@ describe("getSurvey()", () => {
       expect(await getSurvey(SURVEY_ID, "en")).toMatchObject({
         survey: {
           resultModules: [
-            { id: "identity-header" },
-            { id: "identity-archetype", values: { title: "Identity" } },
-            { id: "identity-ideologies", values: { title: "Ideologies" } },
-            { id: "identity-compass" },
-            { id: "identity-parties", values: { title: "Parties" } },
+            { id: OWN_RECORD_IDS.identityHeader },
+            {
+              id: OWN_RECORD_IDS.identityIdeologies,
+              values: { title: "Ideologies" },
+            },
+            {
+              id: OWN_RECORD_IDS.identityArchetype,
+              values: { title: "Identity" },
+            },
+            { id: OWN_RECORD_IDS.identityCompass },
+            {
+              id: OWN_RECORD_IDS.identityParties,
+              values: { title: "Parties" },
+            },
           ],
         },
       });

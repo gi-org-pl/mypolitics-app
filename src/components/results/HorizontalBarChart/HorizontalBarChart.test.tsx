@@ -799,3 +799,73 @@ describe("<HorizontalBarChart />", () => {
     });
   });
 });
+
+// The parties card of the old identity result said that there is no closest
+// party when no party was tied to the taker's identity.
+describe("<HorizontalBarChart />", () => {
+  const EMPTY = "Brak najbliższej partii";
+  const queryEmpty = () => screen.queryByTestId("horizontal-bar-chart-empty");
+
+  describe("given no entries and a text for that", () => {
+    it("says the text over an empty track, under the title", () => {
+      renderChart({ title: "Partie", entries: [], emptyLabel: EMPTY });
+
+      expect(screen.getByRole("region", { name: "Partie" })).toContainElement(
+        queryEmpty(),
+      );
+      expect(queryEmpty()).toHaveTextContent(EMPTY);
+      expect(screen.getByRole("img", { name: "Brak wyniku" })).toBeVisible();
+    });
+
+    it("draws no list and no control", () => {
+      renderChart({ entries: [], emptyLabel: EMPTY });
+
+      expect(screen.queryByRole("list")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Pokaż wszystkie" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("says it on one line, without the space around it", () => {
+      renderChart({ entries: [], emptyLabel: ` ${EMPTY}\n` });
+
+      expect(queryEmpty()?.textContent).toBe(EMPTY);
+    });
+
+    it("says it when the only entries are hidden orientations", () => {
+      renderChart({ entries: [hidden("Ukryta", 80)], emptyLabel: EMPTY });
+
+      expect(queryEmpty()).toHaveTextContent(EMPTY);
+    });
+  });
+
+  describe("given no entries and no text for that, or a blank one", () => {
+    it.each([
+      [undefined],
+      [""],
+      ["  \n"],
+    ])("draws an empty card under its title for %j", (emptyLabel) => {
+      renderChart({ entries: [], emptyLabel });
+
+      expect(queryEmpty()).not.toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given entries and a text for having none", () => {
+    it("draws the rows and not the text", () => {
+      renderChart({ entries: ENTRIES, emptyLabel: EMPTY });
+
+      expect(getNames()).toEqual(["Alfa", "Beta", "Gamma"]);
+      expect(queryEmpty()).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given categories and a text for having no entries", () => {
+    it("draws the categories and not the text, even with no category", () => {
+      renderChart({ categories: [], emptyLabel: EMPTY });
+
+      expect(queryEmpty()).not.toBeInTheDocument();
+    });
+  });
+});
