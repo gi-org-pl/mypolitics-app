@@ -51,11 +51,20 @@ const withOrientationIds = (resolved: unknown): unknown =>
     ),
   );
 
+// The Eurowyborczy 2023 quiz: its survey, and its records in the order written.
+const EURO_SURVEY_ID = "664b9e8421aaa90007ed7bdd";
+const EURO_RECORD_IDS = [
+  "c2c97a6e-7e43-43e4-865d-3dcb3b47c3cd", // header
+  "afab67e7-07a6-4e70-8cd9-c059dbf0aea9", // orientations
+  "329ba893-c3f8-4c79-8794-53f6e77f5cbb", // orientations by category
+];
+
 describe("OWN_RESULT_MODULES", () => {
   it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      EURO_SURVEY_ID,
     ]);
   });
 
@@ -87,6 +96,7 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
       ],
+      EURO_RECORD_IDS,
     ]);
   });
 
@@ -290,6 +300,9 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [EURO_RECORD_IDS[0], "lowMatch", "named"],
+      [EURO_RECORD_IDS[1], "visibleRows", 5],
+      [EURO_RECORD_IDS[2], "groupBy", "category"],
     ]);
   });
 
