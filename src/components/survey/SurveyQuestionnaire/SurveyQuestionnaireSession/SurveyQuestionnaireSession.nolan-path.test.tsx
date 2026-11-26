@@ -2,6 +2,7 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -68,7 +69,9 @@ const renderScreen = () => {
   store.setState(createStartedSession(survey), true);
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+    ),
     getSession: store.getState,
   };
 };

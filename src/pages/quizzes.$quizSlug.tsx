@@ -1,7 +1,8 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { Error404 } from "@/components/shared/Error404/Error404";
 import { SurveyQuestionnaire } from "@/components/survey/SurveyQuestionnaire/SurveyQuestionnaire";
+import { PATHS } from "@/constants/paths";
 import { SurveyLoadStatus } from "@/types/survey";
 import { getProjectId } from "@/utils/survey/getProjectId";
 import { useSurvey } from "@/utils/survey/useSurvey";
@@ -9,12 +10,15 @@ import { useSurvey } from "@/utils/survey/useSurvey";
 // The address a quiz is taken at: /quizzes/:quizSlug. The slug says which
 // quiz, and nothing else is ever in the address - not the phase, not the
 // question, not the session. A slug the app does not know and a quiz the API
-// does not have both end on the not-found page of the site.
+// does not have both end on the not-found page of the site. A taker whose
+// result is calculated is taken to the address of that result, inside the
+// app.
 //
 // The spacing around the screen is the page's, and so is its width: one
 // centred column at every width, never wider than a comfortable line of text.
 export default function QuizPage() {
   const { quizSlug } = useParams();
+  const navigate = useNavigate();
   const { load, retry } = useSurvey(getProjectId(quizSlug));
 
   if (load.status === SurveyLoadStatus.NotFound) {
@@ -23,7 +27,11 @@ export default function QuizPage() {
 
   return (
     <div className="mx-auto box-content max-w-120 px-4 pt-4 pb-8 md:pt-8 md:pb-24">
-      <SurveyQuestionnaire load={load} onRetry={retry} />
+      <SurveyQuestionnaire
+        load={load}
+        onRetry={retry}
+        onResultOpen={(resultId) => navigate(PATHS.result(resultId))}
+      />
     </div>
   );
 }

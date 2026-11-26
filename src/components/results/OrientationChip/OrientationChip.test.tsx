@@ -1,9 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
 import { OrientationChip } from "./OrientationChip";
 
 const IMAGE_URL = "https://example.com/radicalism.svg";
@@ -455,6 +454,37 @@ describe("<OrientationChip />", () => {
       expect(screen.queryByRole("button")).not.toBeInTheDocument();
       expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(chip).not.toHaveAttribute("tabindex");
+    });
+  });
+});
+
+describe("<OrientationChip />", () => {
+  describe("given an image that is a glyph", () => {
+    it("draws it whole in the place of the icon, at its own size", () => {
+      render(<OrientationChip name="Progresywizm" imageUrl={GLYPH_ADDRESS} />);
+
+      expect(screen.getByTestId("orientation-chip-image")).toHaveClass(
+        "size-8",
+        "object-scale-down",
+      );
+      expect(screen.getByTestId("orientation-chip-image")).not.toHaveClass(
+        "object-cover",
+      );
+    });
+  });
+
+  describe("given an image that is a picture", () => {
+    it("lets it cover the place of the icon", () => {
+      render(
+        <OrientationChip
+          name="Społeczny patriota"
+          imageUrl={PORTRAIT_ADDRESS}
+        />,
+      );
+
+      expect(screen.getByTestId("orientation-chip-image")).toHaveClass(
+        "object-cover",
+      );
     });
   });
 });

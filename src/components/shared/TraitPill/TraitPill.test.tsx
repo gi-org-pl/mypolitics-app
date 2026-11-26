@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { HATCH_CLASS_NAME, HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
 import { TraitPill } from "./TraitPill";
 
 const IMAGE_URL = "https://example.com/anarchism.svg";
@@ -363,6 +363,68 @@ describe("<TraitPill />", () => {
       expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(getPill()).not.toHaveAttribute("tabindex");
       expect(getPill().querySelector("[tabindex]")).toBeNull();
+    });
+  });
+});
+
+describe("<TraitPill />", () => {
+  describe("given a trait whose image is a glyph", () => {
+    it("draws it whole in the place of the icon, at its own size", () => {
+      renderWithI18n(
+        <TraitPill orientation={{ ...anarchism, imageUrl: GLYPH_ADDRESS }} />,
+      );
+
+      expect(screen.getByTestId("trait-pill-image")).toHaveClass(
+        "size-8",
+        "object-scale-down",
+      );
+      expect(screen.getByTestId("trait-pill-image")).not.toHaveClass(
+        "object-cover",
+      );
+    });
+  });
+
+  describe("given a trait whose image is a picture", () => {
+    it("lets it cover the place of the icon", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={{ ...anarchism, imageUrl: PORTRAIT_ADDRESS }}
+        />,
+      );
+
+      expect(screen.getByTestId("trait-pill-image")).toHaveClass(
+        "object-cover",
+      );
+    });
+  });
+
+  describe("given the other side of a comparison whose image is a glyph", () => {
+    it("draws it whole on the avatar of the other side", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={anarchism}
+          holder="both"
+          otherOrientation={{ ...friend, imageUrl: GLYPH_ADDRESS }}
+        />,
+      );
+
+      expect(screen.getByTestId("trait-pill-avatar")).toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+    });
+
+    it("lets a picture cover the avatar", () => {
+      renderWithI18n(
+        <TraitPill
+          orientation={anarchism}
+          holder="both"
+          otherOrientation={friend}
+        />,
+      );
+
+      expect(screen.getByTestId("trait-pill-avatar")).not.toHaveClass(
+        "[&>img]:object-scale-down",
+      );
     });
   });
 });

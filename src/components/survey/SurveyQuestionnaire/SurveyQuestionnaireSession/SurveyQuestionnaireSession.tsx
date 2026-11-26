@@ -27,12 +27,13 @@ import { useUndrawnPhase } from "./utils/useUndrawnPhase";
 // that holds for every phase registered now or later.
 export const SurveyQuestionnaireSession = ({
   survey,
+  onResultOpen,
 }: SurveyQuestionnaireSessionProps) => {
   const session = useSurveySession(survey);
   const { contentKey, direction } = useContentChange(session.session);
   const { isLocked, lock } = useScreenLock(contentKey);
   const { topRef, contentRef } = usePhaseFocus(contentKey);
-  const leave = useLeave(session);
+  const leave = useLeave(session, onResultOpen);
   const Content = SURVEY_PHASE_CONTENT[session.session.phase];
 
   useUndrawnPhase(session, Content !== undefined);

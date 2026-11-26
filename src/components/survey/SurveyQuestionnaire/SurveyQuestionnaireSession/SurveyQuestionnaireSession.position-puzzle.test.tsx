@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MATCH_BAND_COLORS } from "@/constants/results";
 import type { Survey } from "@/types/survey";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { createOrientation } from "@/utils/vitest/createOrientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
@@ -80,7 +81,9 @@ const renderScreen = (survey: Survey, isStarted = true) => {
   if (isStarted) store.setState(createStartedSession(survey), true);
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+    ),
     getSession: store.getState,
   };
 };
