@@ -1,10 +1,13 @@
-// The two quizzes the app keeps a list of result modules for: the identifier
+// The quizzes of the API the app keeps a list of result modules for: the identifier
 // of the survey, and the identifiers of every orientation and every axis it
 // has, as sent by GET https://api.mypolitics.pl/api/v1/survey/{surveyId}?lang=pl
 // on 2026-10-13, in the order of the API. Cut from the replies by a script:
 // the identifiers only, nothing else of a quiz.
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
+// The quiz of ancient states, migrated from the old site. Its identifier is
+// the one of the old quiz until the API holds it.
+export const ANCIENT_STATES_SURVEY_ID = "606d83eb9e9c380006447f27";
 
 // The identifiers of the records of the app's own lists, by what each record
 // is: a test names a record, and does not repeat its identifier.
@@ -18,6 +21,10 @@ export const OWN_RECORD_IDS = {
   presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
   presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
   presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+  ancientStatesHeader: "177a44f6-c159-4605-a515-219a88e2c6ca",
+  ancientStatesAxes: "a255052c-9d26-4f64-946d-c34b7fd6f3c9",
+  ancientStatesArchetype: "93d0ba8b-ee72-4912-a16d-546a7b8d4a12",
+  ancientStatesRanking: "9f3127f1-8c04-4c9c-bb61-783668fd3b51",
 } as const;
 
 export const LIVE_QUIZ_IDS: Record<
@@ -133,5 +140,25 @@ export const LIVE_QUIZ_IDS: Record<
       "a309edcc-327c-40ae-8ce7-a7528619a3c1",
     ],
     axisIds: [],
+  },
+  // Not in the API yet: the identifiers of the old quiz, as quiz-conversion-bot
+  // wrote them for the slug -TJxxhTS47, in its order.
+  [ANCIENT_STATES_SURVEY_ID]: {
+    orientationIds: [
+      "606d86439e9c38000644d1c3",
+      "606d87629e9c38000644fd69",
+      "606d87af9e9c380006450830",
+      "606d87d99e9c380006450cb8",
+      "606d88769e9c38000645208a",
+      "606d88a39e9c3800064525d2",
+      "606d88c09e9c380006452c27",
+      "606d88dc9e9c380006453104",
+    ],
+    axisIds: [
+      "61b3dcb6a18edb0007035a0a",
+      "61b3dcb6a18edb0007035a0b",
+      "61b3dcb6a18edb0007035a0c",
+      "61b3dcb6a18edb0007035a0d",
+    ],
   },
 };

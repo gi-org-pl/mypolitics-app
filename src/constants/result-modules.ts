@@ -465,4 +465,130 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
   ],
+  // The quiz of ancient states, migrated from the old site (slug -TJxxhTS47).
+  // Its identifiers are those of the old quiz, as quiz-conversion-bot wrote
+  // them. It has no categories and no parties: its result names the closest of
+  // the four states, and draws the four axes of the old result page.
+  "606d83eb9e9c380006447f27": [
+    {
+      id: "177a44f6-c159-4605-a515-219a88e2c6ca", // the header of the ancient states quiz
+      type: "header",
+      position: 0,
+      orientationIds: [
+        "606d88c09e9c380006452c27", // Pro-Rzymskość
+        "606d88dc9e9c380006453104", // Pro-Kartagińskość
+        "606d88769e9c38000645208a", // Pro-Spartańskość
+        "606d88a39e9c3800064525d2", // Pro-Ateńskość
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "lowMatch",
+          value: "named",
+        },
+        {
+          key: "label.lowMatch",
+          value: {
+            pl: "Twoje poglądy nie są wystarczająco podobne do żadnego z państw (mniej niż 50% pewności).",
+            en: "Your views are not similar enough to any of the states (less than 50% confidence).",
+          },
+        },
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z państwem",
+            en: "With a state",
+          },
+        },
+      ],
+    },
+    {
+      id: "a255052c-9d26-4f64-946d-c34b7fd6f3c9", // its axes
+      type: "multi_axis",
+      position: 1,
+      column: "start",
+      axisIds: [
+        "61b3dcb6a18edb0007035a0c", // Pro-Rzymskość-Pro-Kartagińskość
+        "61b3dcb6a18edb0007035a0d", // Pro-Spartańskość-Pro-Ateńskość
+        "61b3dcb6a18edb0007035a0b", // Imperializm-Pacyfizm
+        "61b3dcb6a18edb0007035a0a", // Rozwój Militarny-Rozwój gospodarczy
+      ],
+      orientationIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Poglądy",
+            en: "Views",
+          },
+        },
+        {
+          key: "description",
+          value: {
+            pl: "Oś określa, do której z dwóch postaw starożytnego świata jest Ci bliżej: do którego państwa, do polityki podbojów czy pokoju, do rozwoju wojska czy gospodarki.",
+            en: "An axis shows which of two attitudes of the ancient world you are closer to: which state, a policy of conquest or of peace, building up the army or the economy.",
+          },
+        },
+      ],
+    },
+    {
+      id: "93d0ba8b-ee72-4912-a16d-546a7b8d4a12", // its state card
+      type: "archetype",
+      position: 2,
+      column: "end",
+      orientationIds: [
+        "606d88c09e9c380006452c27", // Pro-Rzymskość
+        "606d88dc9e9c380006453104", // Pro-Kartagińskość
+        "606d88769e9c38000645208a", // Pro-Spartańskość
+        "606d88a39e9c3800064525d2", // Pro-Ateńskość
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Państwo",
+            en: "State",
+          },
+        },
+        {
+          key: "lowMatch",
+          value: "named",
+        },
+      ],
+    },
+    {
+      id: "9f3127f1-8c04-4c9c-bb61-783668fd3b51", // its states
+      type: "horizontal_bar",
+      position: 3,
+      column: "end",
+      orientationIds: [
+        "606d88c09e9c380006452c27", // Pro-Rzymskość
+        "606d88dc9e9c380006453104", // Pro-Kartagińskość
+        "606d88769e9c38000645208a", // Pro-Spartańskość
+        "606d88a39e9c3800064525d2", // Pro-Ateńskość
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Państwa",
+            en: "States",
+          },
+        },
+        {
+          key: "description",
+          value: {
+            pl: "Jak bardzo Twoje poglądy pokrywają się z każdym z czterech państw starożytności.",
+            en: "How closely your views match each of the four ancient states.",
+          },
+        },
+        {
+          key: "visibleRows",
+          value: 4,
+        },
+      ],
+    },
+  ],
 };
