@@ -1,254 +1,53 @@
-![mypolitics-app header](https://raw.githubusercontent.com/gi-org-pl/mypolitics-app/main/.github/image/header.png)
+# Quiz Filozoficzny — lokalny starter migracji
 
-# myPolitics
+**Status:** skrypt automatyzacji i testy adaptera, nie gotowy branch ani potwierdzona migracja realnych danych. W środowisku autora brak DNS dla GitHuba i API, brak Node 24 i Yarn. Nie wykonano konwersji prawdziwego quizu ani testów React/Playwright. Nie wysłano zmian do GitHuba.
 
-## Repository contents
+## Uruchomienie (Windows PowerShell)
 
-Repository contains myPolitics front-end project.
+Wymagania: Python 3.10+, Git z dostępem do prywatnego `gi-org-pl/quiz-conversion-bot`, Node.js 24+, Yarn 1.22+, działająca sieć. Uruchom z rozpakowanego folderu, w nowym katalogu roboczym:
 
-Project is using tools in versions listed below:
-
-| Technology | Version |
-| ---------- | ------- |
-| Node.js    | ^24.x   |
-| TypeScript | ^5.9    |
-| Yarn       | ^1.22   |
-
-Project's main dependencies are listed below.
-
-| Dependency   | Version |
-| -------      | ------- |
-| Vite         | ^7.2    |
-| React        | ^19.x   |
-| Tailwind CSS | ^4.x    |
-| Vitest       | ^4.x    |
-| Playwright   | ^1.x    |
-| Zod          | ^4.x    |
-| Axios        | ^1.x    |
-| Zustand      | ^5.x    |
-| Storybook    | ^10.x   |
-| Lingui       | ^6.x    |
-| @gi-org-pl/athena | ^1.x |
-
-### Package descriptions
-
-- **Vite** - Next-generation frontend build tool providing fast development experience with instant HMR and optimized production builds
-- **React** - JavaScript library for building user interfaces
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **Zod** - TypeScript-first schema validation library for runtime type checking
-- **Axios** - Promise-based HTTP client for making API requests
-- **Vitest** - Fast unit testing framework powered by Vite
-- **Playwright** - End-to-end testing framework for reliable cross-browser testing
-- **Zustand** - Lightweight state management library for React applications
-- **Storybook** - UI development environment and playground for building, previewing, and testing isolated components interactively
-- **Lingui** - Internationalization (i18n) library for React with compile-time message extraction and type-safe translations
-- **[@gi-org-pl/athena](https://www.npmjs.com/package/@gi-org-pl/athena)** - Our front-end component package, published to npm. You can [modify it here](https://github.com/gi-org-pl/athena)
-
-## Infrastructure
-
-This is a frontend-only project that runs locally using Vite development server.
-
-## Setting project up
-
-This app uses Node.js and Yarn package manager. In order to set up project, follow these steps:
-
-1. Install Node.js (v24.x or higher):
-   - Download from [nodejs.org](https://nodejs.org/)
-   - Use a version manager like [nvm](https://github.com/nvm-sh/nvm)
-
-2. Install Yarn globally:
-
-   ```shell
-   npm install --global yarn@^1.22
-   ```
-
-3. Clone project by running:
-
-   ```shell
-   git clone <your-repository-url>
-   ```
-
-4. Navigate to the project directory:
-
-   ```shell
-   cd mypolitics-app
-   ```
-
-5. Install dependencies using Yarn:
-
-   ```shell
-   yarn install
-   ```
-
-## Running the project
-
-To start the development server:
-
-```bash
-yarn dev
+```powershell
+npm install -g yarn@1.22
+python prepare.py --workspace "$HOME\mypolitics-migration"
 ```
 
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+Skrypt klonuje oba repozytoria, pobiera head PR #202 (`7ff0cb526f75f20b07a8a5ab2c2ed7cb6bdfaeed`), tworzy `feat/migration-philosophical`, uruchamia konwerter, pobiera dodatkowe przypisania odpowiedzi tylko odczytowym GraphQL, generuje mock oraz konfigurację modułów. Następnie uruchamia testy adaptera, lint, TypeScript, Vitest, Chromium E2E i osobny smoke quizu, który ma zapisać screenshoty desktop/mobile. Commit tworzy tylko jeśli wszystkie komendy przejdą; nigdy nie wykonuje push. Jeżeli któraś komenda zawiedzie, zachowuje lokalne pliki i kończy z błędem. Nie uruchamiaj ponownie w tym samym katalogu bez sprawdzenia stanu brancha; skrypt nie resetuje zmian.
 
-## Environment variables
+Opcja `--skip-app-tests` pozwala przygotować dane bez testów front-endowych i bez commita. Jeżeli zespół wskaże `main` jako nową bazę, w świeżym katalogu użyj `--base origin/main`; nie zmieniaj bazy samodzielnie przed uzgodnieniem. Head PR #202 i main mają rozbieżną historię (możliwe squash merges).
 
-The app is configured at build time with Vite variables. Every variable is optional: a variable that is unset, empty or blank falls back to its default.
+## Ręczny podgląd
 
-| Variable                 | Default                         | What it sets |
-| ------------------------ | ------------------------------- | ------------ |
-| `VITE_API_URL`           | `https://api.mypolitics.pl/api` | Base address of the myPolitics API, without a trailing slash. The default is `DEFAULT_API_URL` in `src/constants/api.ts` |
-| `VITE_RESULTS_EMAIL_URL` | none - the e-mail card is off   | Full `https` address of the endpoint that e-mails a taker the link to their results; the request is posted to it as it is. With it, the questionnaire shows the e-mail card after demographics. Without it, or with a value that is not an `https` address, the card is left out and no request is made. Read into `RESULT_LINK_URL` in `src/constants/survey.ts` |
-| `VITE_ANSWER_COUNTS_URL` | none - the stats card is off    | Full `http` or `https` address of the source of answer counts for the stats chart checkpoint; it is asked with `GET` and the query parameter `surveyId`, once per quiz and page load. With it, the questionnaire can show the stats chart card after an answer on the rare side. Without it, or with a value that is not an absolute web address, nothing is requested and the card never appears. No endpoint serves the counts yet. Read in `getAnswerCounts` in `src/services/api/client/getAnswerCounts.ts` |
+Z katalogu `mypolitics-app` otwórz dwa terminale:
 
-Vite reads the variables when `yarn dev` or `yarn build` starts, so a change needs a restart or a new build. Set them in the environment of the command:
-
-```bash
-VITE_API_URL=https://api.example.test/api yarn build
+```powershell
+python migration/filozoficzny/mock_api.py
 ```
 
-or in a `.env.local` file in the project root, which Git ignores:
-
-```bash
-VITE_API_URL=https://api.example.test/api
+```powershell
+$env:VITE_API_URL="http://127.0.0.1:8765/api"
+$env:VITE_RESULTS_EMAIL_URL=""
+$env:VITE_ANSWER_COUNTS_URL=""
+yarn dev --host 127.0.0.1
 ```
 
-Only variables prefixed with `VITE_` reach the app, and their values are public: they are written into the built files. Declare every new variable in `src/vite-env.d.ts` and add it to the table above.
+Otwórz `http://127.0.0.1:5173/quizzes/filozoficzny`. W trzecim terminalu można uruchomić `node migration/filozoficzny/smoke.mjs` (po instalacji Chromium). Mock działa wyłącznie na loopback; wyniki są przechowywane w pamięci, znikają po zatrzymaniu serwera. Nie wysyła odpowiedzi do prawdziwego API. Użyj nowych kart przeglądarki/wyczyść dane sesji przy powtarzaniu quizu.
 
-## Available scripts
+## Założenia do weryfikacji
 
-```bash
-yarn dev              # Start development server
-yarn build            # Build for production
-yarn preview          # Start production server (after build)
-yarn test             # Run unit tests with Vitest
-yarn test:coverage    # Run tests with coverage report
-yarn e2e              # Run end-to-end tests with Playwright (Chromium, Firefox, WebKit)
-yarn e2e:local        # Run them in Chromium only
-CI=1 yarn e2e:local   # The run before a pull request: builds and serves its own app
-yarn e2e:ui           # Run Playwright tests in UI mode
-yarn lint             # Run Biome linter
-yarn lint:fix         # Fix linting issues automatically
-yarn storybook        # Run Storybook in development mode
-yarn storybook:build  # Build Storybook for production
-yarn i18n:extract     # Extract messages from source files into .po catalogs
-yarn i18n:compile     # Compile .po catalogs into TypeScript message files
+- Konwerter zachowuje surowy eksport `quiz-data-yH_h8rnNix.json`, lecz sam nie eksportuje mapowań odpowiedzi. Rozszerzone zapytanie pobiera je z pól zdefiniowanych w `mypolitics-app-legacy`. Wymagane są prawdziwe ID; dane syntetyczne istnieją wyłącznie w testach adaptera.
+- Układ wyników jest generowany z faktycznych orientacji i osi. Jeżeli istnieją niezależne punktowane orientacje, bieguny osi są wykluczane z rankingu. To założenie projektowe, nie potwierdzona zgodność ze starym widokiem.
+- Osie zachowują kolejność lewo/prawo. Odpowiedzi skali mapowane według ustawienia gradacji; neutralna ma zero punktów. Punktacja mocka odwzorowuje podstawową arytmetykę nowego front-endu, nie gwarantuje zgodności z historycznym algorytmem. Przy ważeniu kategorii konieczna jest dodatkowa kontrola zgodności.
+- Skrypt celowo zatrzymuje się przy nieobsługiwanych cechach, partiach, kompasach, braku mapowań lub nieznanym ID. Nie należy zastępować braków fikcyjnymi przypisaniami.
+- UUID mockowanego projektu, survey, odpowiedzi i modułów są deterministyczne, ale nie są identyfikatorami nowego produkcyjnego API. Po migracji backendowej trzeba podstawić uzgodnione ID i zweryfikować konfigurację. Rejestracja projektu jest ograniczona do dokładnego adresu lokalnego mocka, nie aktywuje quizu produkcyjnie.
+- Smoke Playwright używa selektorów ze sprawdzonego brancha, ale nie był wykonywany na realnym quizie. Nietypowa sekwencja pytań lub checkpointów może wymagać dostosowania. Zweryfikuj screenshoty przed PR.
+
+## Push i draft PR (po przejściu wszystkich testów oraz weryfikacji)
+
+```powershell
+cd "$HOME\mypolitics-migration\mypolitics-app"
+git status
+git log -1 --oneline
+git push -u origin feat/migration-philosophical
 ```
 
-## Build
-
-This project uses Vite and React Router for building and serving the application. The build process generates optimized static assets for production deployment.
-
-Build the project with `yarn build` and preview the production build locally with `yarn preview`.
-
-## Dev site
-
-`main` is published to <https://dev.mypolitics.pl> with GitHub Pages by `.github/workflows/deploy-dev.yml`. It is the place to test the app while `mypolitics.pl` still serves the old product. It is not for search engines: the published copy carries a `robots.txt` that disallows everything.
-
-- **When** - on every push to `main`. To publish something else, start the workflow by hand from the Actions tab on `main` and give it a branch, a tag or a commit in the `ref` field: the dev site then shows that code until the next deployment.
-- **What** - the static build of `yarn build`, with a copy of the entry page as `404.html`, so an address the build has no file for (a quiz, a result) opens the app.
-- **Where it points** - the build takes its addresses from repository variables (Settings, Secrets and variables, Actions, Variables): `DEV_API_URL`, `DEV_RESULTS_EMAIL_URL` and `DEV_ANSWER_COUNTS_URL` become `VITE_API_URL`, `VITE_RESULTS_EMAIL_URL` and `VITE_ANSWER_COUNTS_URL`. Unset, each has the default of the [table above](#environment-variables).
-- **One site** - Pages has one site per repository, built for the root of a domain. There is no preview per pull request, and the app does not work under `gi-org-pl.github.io/mypolitics-app/`.
-
-Set up once, outside this repository, by an administrator:
-
-| Where | What |
-| ----- | ---- |
-| Repository settings, Pages | Source: "GitHub Actions". Custom domain: `dev.mypolitics.pl` (a `CNAME` file in the build is ignored for this kind of deployment). "Enforce HTTPS" once the certificate is issued |
-| DNS of `mypolitics.pl` | `dev` as a `CNAME` to `gi-org-pl.github.io`, not proxied |
-| The API | `https://dev.mypolitics.pl` among the origins the API allows. Without it the browser refuses the API's answers and no quiz loads |
-
-## Testing
-
-This project includes both unit testing and end-to-end testing:
-
-- **Unit Tests**: Uses Vitest with React Testing Library for component and utility testing
-- **E2E Tests**: Uses Playwright for browser-based end-to-end testing. Pull requests get no e2e job: run `CI=1 yarn e2e:local` before opening one (`CI=1` makes Playwright build and serve the current code instead of reusing whatever answers on port 4173). The full suite runs once a day on `main` (`.github/workflows/e2e.yml`)
-
-Run tests with:
-
-```bash
-yarn test              # Run unit tests
-yarn test:coverage     # Run tests with coverage
-yarn e2e               # Run E2E tests in all three browsers
-yarn e2e:local         # Run E2E tests in Chromium only
-CI=1 yarn e2e:local    # The same on a fresh build - the run before a pull request
-yarn e2e:ui            # Run E2E tests in UI mode
-```
-
-## Linting
-
-This project uses BiomeJS for code linting and formatting. Biome is a fast, all-in-one toolchain that replaces ESLint, Prettier, and other tools.
-
-- **Linter**: BiomeJS provides fast linting with TypeScript support
-- **Formatter**: Built-in code formatter with consistent style
-- **Import Organization**: Automatic import sorting and organization
-
-Run linting with:
-
-```bash
-yarn lint              # Check for linting issues
-yarn lint:fix          # Automatically fix linting and formatting issues
-```
-
-The project is configured with custom linting rules in `biome.json`, including complexity checks, style rules, and correctness validations for TypeScript files.
-
-## Pre-check
-
-Every pull request from a branch of this repository that is ready for review gets an AI pre-check (`.github/workflows/frontend-pre-check.yml`): an isolated reviewer checks the diff against [gi-tech-standards](https://github.com/gi-org-pl/gi-tech-standards) and `AGENTS.md`, comments on real findings, and posts one **Pre-check** comment with the technical decisions of the pull request and what QA should test. One label - `pre-check: clean`, `pre-check: advisory` (only non-blocking findings), `pre-check: changes` or `pre-check: human review` (CI, dependencies, build configuration, changes without a reviewable diff, or a diff too large to review) - and the check `frontend-pre-check / review` show the outcome; the check passes for "clean" and "advisory", and for "needs a person" with a warning where an approval of the head is the gate: on `main` the ruleset requires an approval of the most recent push, and on any branch an approval of the head by a person who can write to the repository, other than the author, turns the check green (a review re-derives it, without a new pre-check); it fails for "changes needed", for a run that did not finish and for a pull request that was not pre-checked. The pre-check is advisory: a person still approves, and automation reads the check of the head commit, never the label. The workflow and the reviewer's instructions live in [frontend-workflows](https://github.com/gi-org-pl/frontend-workflows), described in its [pre-check process](https://github.com/gi-org-pl/frontend-workflows/blob/main/docs/pre-check/PROCESS.md). Pull requests from forks and bots get no pre-check, because GitHub gives their runs no secrets: the check fails for them, and a person reviews and merges them. The reviewer does not open Figma: when the issue links a design, the pull request description has to show the changed views next to the Figma frames, and the pre-check checks that this comparison is there.
-
-## Visual testing
-
-This project uses Storybook for visual testing and component development. Storybook provides an isolated environment to develop, test, and document UI components independently.
-
-- **Component Development**: Build and test components in isolation
-- **Visual Testing**: Preview components with different props and states
-- **Documentation**: Auto-generate component documentation from stories
-- **Addons**: Includes accessibility, docs, and Vitest integration addons
-
-Run Storybook with:
-
-```bash
-yarn storybook        # Start Storybook development server (http://localhost:6006)
-yarn storybook:build  # Build Storybook for production deployment
-```
-
-## Internationalization
-
-This project uses LinguiJS for internationalization. The source locale is Polish (`pl`) and the supported locales are `pl` and `en`. Message catalogs are stored as `.po` files in `src/locales/{locale}/messages.po`.
-
-- **Message extraction**: Scans source files for `` t`...` `` macros and `Trans` components and updates the `.po` catalogs
-- **Compilation**: Compiles `.po` catalogs into optimized TypeScript message files used at runtime
-- **Pre-commit hook**: Extraction runs automatically on staged files before each commit
-
-Run i18n commands with:
-
-```bash
-yarn i18n:extract     # Extract messages from source files into .po catalogs
-yarn i18n:compile     # Compile .po catalogs into TypeScript message files
-```
-
-The project is configured in `lingui.config.js`.
-
-## Working with Athena
-
-`@gi-org-pl/athena` exports all ours reusable components. If you need new reusable component, please update athena package instead of creating a new component in the project. Create new components in the project only if they will be used only in this specific project.
-
-Athena is installed from npm like any other dependency, no token or `.npmrc` needed. Its styles are loaded in `src/index.css` with `@import "@gi-org-pl/athena/athena.css";`, which also imports Tailwind CSS and Athena's theme.
-
-A new Athena version is published automatically after each merge to Athena's `main` (see [releases](https://github.com/gi-org-pl/athena/releases)). To use it:
-
-```bash
-yarn upgrade @gi-org-pl/athena --latest
-```
-
-## Resources
-
-- [Vite Documentation](https://vite.dev/) - Vite build tool documentation
-- [React Router Documentation](https://reactrouter.com/) - React Router framework documentation
-- [React Documentation](https://react.dev/reference/react) - React.js reference
-- [Learn React](https://react.dev/learn) - an interactive React.js tutorial
-- [Tailwind CSS Documentation](https://tailwindcss.com/) - Tailwind CSS documentation
-- [Vitest Documentation](https://vitest.dev/) - Vitest testing framework documentation
-- [Playwright Documentation](https://playwright.dev/) - Playwright E2E testing documentation
-- [BiomeJS Documentation](https://biomejs.dev/) - BiomeJS linter and formatter documentation
-- [Storybook Documentation](https://storybook.js.org/) - Storybook component development and visual testing documentation
+Uzgodnij aktualną bazę PR. W GitHub wybierz Draft PR. Dołącz rzeczywiste screenshoty `migration/filozoficzny/screenshots/results-desktop.png` i `results-mobile.png`, oryginalny eksport i konfigurację `result-modules.json`. Nie deklaruj testów, które nie przeszły. Formularz wyboru quizu trzeba wypełnić samodzielnie.
