@@ -8,6 +8,7 @@ import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 import { OWN_RESULT_MODULES } from "./result-modules";
 import {
+  ANCIENT_STATES_SURVEY_ID,
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
   OWN_RECORD_IDS,
@@ -18,6 +19,7 @@ import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
 const SURVEYS = [
   ["the identity quiz", IDENTITY_SURVEY_ID],
   ["the presidential quiz", PRESIDENTIAL_SURVEY_ID],
+  ["the ancient states quiz", ANCIENT_STATES_SURVEY_ID],
 ] as const;
 
 // What a record held as fields of its own before everything about a module
@@ -52,10 +54,11 @@ const withOrientationIds = (resolved: unknown): unknown =>
   );
 
 describe("OWN_RESULT_MODULES", () => {
-  it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
+  it("keeps a list for the identity quiz, the presidential quiz and the ancient states quiz, and for no other", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      ANCIENT_STATES_SURVEY_ID,
     ]);
   });
 
@@ -87,6 +90,12 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
       ],
+      [
+        OWN_RECORD_IDS.ancientStatesHeader,
+        OWN_RECORD_IDS.ancientStatesAxes,
+        OWN_RECORD_IDS.ancientStatesArchetype,
+        OWN_RECORD_IDS.ancientStatesRanking,
+      ],
     ]);
   });
 
@@ -101,6 +110,10 @@ describe("OWN_RESULT_MODULES", () => {
       presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
       presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
       presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+      ancientStatesHeader: "177a44f6-c159-4605-a515-219a88e2c6ca",
+      ancientStatesAxes: "a255052c-9d26-4f64-946d-c34b7fd6f3c9",
+      ancientStatesArchetype: "93d0ba8b-ee72-4912-a16d-546a7b8d4a12",
+      ancientStatesRanking: "9f3127f1-8c04-4c9c-bb61-783668fd3b51",
     });
   });
 
@@ -223,6 +236,62 @@ describe("OWN_RESULT_MODULES", () => {
     });
   });
 
+  describe("given the list of the ancient states quiz", () => {
+    const [header, axes, archetype, ranking] =
+      OWN_RESULT_MODULES[ANCIENT_STATES_SURVEY_ID];
+
+    it("is the header, then the four axes in the first column and the closest state and the ranking of states in the second", () => {
+      expect(
+        OWN_RESULT_MODULES[ANCIENT_STATES_SURVEY_ID].map((record) => [
+          record.type,
+          record.column,
+          findValue(record, "title"),
+        ]),
+      ).toEqual([
+        ["header", undefined, undefined],
+        ["multi_axis", "start", { pl: "Poglądy", en: "Views" }],
+        ["archetype", "end", { pl: "Państwo", en: "State" }],
+        ["horizontal_bar", "end", { pl: "Państwa", en: "States" }],
+      ]);
+    });
+
+    it("draws every axis of the quiz", () => {
+      expect([...(axes.axisIds ?? [])].sort()).toEqual(
+        [...LIVE_QUIZ_IDS[ANCIENT_STATES_SURVEY_ID].axisIds].sort(),
+      );
+    });
+
+    it("names the closest of the same four states in the header, on the state card and in the ranking, which shows all four", () => {
+      const states = [
+        "606d88c09e9c380006452c27", // Pro-Rzymskość
+        "606d88dc9e9c380006453104", // Pro-Kartagińskość
+        "606d88769e9c38000645208a", // Pro-Spartańskość
+        "606d88a39e9c3800064525d2", // Pro-Ateńskość
+      ];
+
+      expect(header.orientationIds).toEqual(states);
+      expect(archetype.orientationIds).toEqual(states);
+      expect(ranking.orientationIds).toEqual(states);
+      expect(findValue(ranking, "visibleRows")).toBe(states.length);
+    });
+
+    it("names the closest state below a partial match as well, in the header with a notice and on the state card", () => {
+      expect(findValue(header, "lowMatch")).toBe("named");
+      expect(findValue(header, "label.lowMatch")).toEqual({
+        pl: "Twoje poglądy nie są wystarczająco podobne do żadnego z państw (mniej niż 50% pewności).",
+        en: "Your views are not similar enough to any of the states (less than 50% confidence).",
+      });
+      expect(findValue(archetype, "lowMatch")).toBe("named");
+    });
+
+    it("names the comparison after the states in both languages", () => {
+      expect(findValue(header, "label.compare")).toEqual({
+        pl: "Z państwem",
+        en: "With a state",
+      });
+    });
+  });
+
   // A list is written in pairs: everything about a module beyond what it is,
   // where it stands and what it points at is a key, and a key equal to its
   // default is left out.
@@ -290,6 +359,9 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [OWN_RECORD_IDS.ancientStatesHeader, "lowMatch", "named"],
+      [OWN_RECORD_IDS.ancientStatesArchetype, "lowMatch", "named"],
+      [OWN_RECORD_IDS.ancientStatesRanking, "visibleRows", 4],
     ]);
   });
 
