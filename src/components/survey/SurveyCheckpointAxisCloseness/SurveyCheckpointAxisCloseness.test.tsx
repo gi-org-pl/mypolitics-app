@@ -396,7 +396,7 @@ describe("<SurveyCheckpointAxisCloseness />", () => {
         within(screen.getByTestId("universal-axis-labels")).getByText(
           shownName,
         ),
-      ).toHaveClass("truncate");
+      ).toHaveClass("wrap-break-word");
     });
   });
 

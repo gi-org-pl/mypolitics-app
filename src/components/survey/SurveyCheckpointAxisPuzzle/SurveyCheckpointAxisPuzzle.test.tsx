@@ -645,7 +645,7 @@ describe("<SurveyCheckpointAxisPuzzle />", () => {
   });
 
   describe("given a pole name with line breaks, or longer than the room under the bar", () => {
-    it("puts it on one line, cut under the bar and whole in the option and in the description", () => {
+    it("puts it on one line, and writes it whole under the bar, in the option and in the description", () => {
       const card = createCard();
       const name = `Liberalizm \n gospodarczy  ${"i światopoglądowy ".repeat(6)}autorski`;
       const shown = name.replace(/\s+/g, " ");
@@ -653,7 +653,8 @@ describe("<SurveyCheckpointAxisPuzzle />", () => {
       renderCard({ ...card, end: withOrientation(card.end, { name }) });
 
       expect(getButton(shown)).toBeVisible();
-      expect(getLabels().lastElementChild).toHaveClass("truncate");
+      expect(getLabels().lastElementChild).toHaveTextContent(shown);
+      expect(getLabels().lastElementChild).toHaveClass("wrap-break-word");
       expect(getBar()).toHaveAccessibleName(
         `„${START_NAME}” i „${shown}”: wynik ukryty`,
       );

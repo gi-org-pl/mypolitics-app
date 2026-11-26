@@ -21,6 +21,22 @@ describe("<AxisPill />", () => {
     });
   });
 
+  describe("given a narrow map", () => {
+    it("takes the next size of the type and a tighter padding", () => {
+      render(
+        <AxisPill side="vertical" name="światopoglądowo" coordinate={-0.5} />,
+      );
+
+      expect(screen.getByTestId("nolan-chart-axis-vertical")).toHaveClass(
+        "@max-[16.5rem]:text-sm",
+        "@max-[16.5rem]:p-1.5",
+        "@max-[16.5rem]:gap-1",
+        "text-base",
+        "p-2",
+      );
+    });
+  });
+
   describe("given the vertical side", () => {
     it("runs along the map's side, centred, with the arrow turned", () => {
       render(<AxisPill side="vertical" name="Światopogląd" coordinate={1} />);
