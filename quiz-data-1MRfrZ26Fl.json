@@ -1,0 +1,2539 @@
+{
+    "id": "604d27cc4e81ee00064fc505",
+    "title": {
+        "pl": "Test polityczny lat 90",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+    },
+    "description": {
+        "pl": "To test polityczny lat 90, z tamtejszymi partiami i problemami.",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+    },
+    "createdAt": "2021-03-13T20:59:56.887Z",
+    "hidden": false,
+    "logoUrl": "",
+    "type": "OFFICIAL",
+    "isPublic": true,
+    "imageUrl": null,
+    "averageFinishTime": 8.0,
+    "projectId": null,
+    "version": null,
+    "algorithm": null,
+    "defaultLanguage": null,
+    "supportedLanguages": [
+        "POLISH"
+    ],
+    "orientations": [
+        {
+            "id": "604d29844e81ee00064fec43",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#f44336",
+            "generalName": {
+                "pl": "Socjalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615669622599-socjalis%2520logo",
+            "surveyId": ""
+        },
+        {
+            "id": "604d29d24e81ee00064ff53d",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#9c27b0",
+            "generalName": {
+                "pl": "Leseferyzm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615669702193-leseferys",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2a274e81ee00064ffc85",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#f44336",
+            "generalName": {
+                "pl": "Regulacjonizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615669770136-regulacjonizm",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2a654e81ee0006500221",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#607d8b",
+            "generalName": {
+                "pl": "Anarchizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615669851969-anarcha",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2ab54e81ee0006500920",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#3f51b5",
+            "generalName": {
+                "pl": "Autorytaryzm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615669894412-10438.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2b634e81ee000650193c",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ffc0cb",
+            "generalName": {
+                "pl": "Pacyfizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670105050-pacyfis",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2b7f4e81ee0006501cc8",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ffeb3b",
+            "generalName": {
+                "pl": "Kapitalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670141196-kapitalizm",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2bf74e81ee00065029cb",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ff9800",
+            "generalName": {
+                "pl": "Militaryzm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670253364-militaryzm",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2d2c4e81ee0006504729",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#86c1f2",
+            "generalName": {
+                "pl": "Progresywizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670503111-progres",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2d4f4e81ee0006504bbd",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#673ab7",
+            "generalName": {
+                "pl": "Tradycjonalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670601119-31061.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2da24e81ee00065052da",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#a16e12",
+            "generalName": {
+                "pl": "Nacjonalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670650080-nacjonalis",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2dc74e81ee000650570c",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#009688",
+            "generalName": {
+                "pl": "Kosmopolityzm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670723173-globalizm",
+            "surveyId": ""
+        },
+        {
+            "id": "604d2ef34e81ee000650772e",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#03a9f4",
+            "generalName": {
+                "pl": "Demokracja",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670984725-83541.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d3ba84cb55b00068e4139",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#ffca18",
+            "generalName": {
+                "pl": "Plan Balcerowicza",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615674251808-plan%2520balcerowicza.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d478f4cb55b00068f28df",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#012169",
+            "generalName": {
+                "pl": "Pro-Zachód",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615677310383-1200px-Flag_of_NATO.svg.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d492d4cb55b00068f42f0",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#fffefc",
+            "generalName": {
+                "pl": "Pro - Wschód",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615677723855-Warschauer_Pakt_470x246.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604d54ce4cb55b00068fd19a",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#8bc34a",
+            "generalName": {
+                "pl": "Globalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615680710558-globalizm",
+            "surveyId": ""
+        },
+        {
+            "id": "604d564b4cb55b00068fe605",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#585858",
+            "generalName": {
+                "pl": "Pro Gun",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615681085243-plan%2520balcerowicza.png",
+            "surveyId": ""
+        },
+        {
+            "id": "604dd9db4cb55b0006925048",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "IDEOLOGY",
+            "color": "#000000",
+            "generalName": {
+                "pl": "Pro-Choice",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": null,
+            "linkedOrientations": [],
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615714776450-Download.png",
+            "surveyId": ""
+        }
+    ],
+    "categories": [],
+    "axes": [
+        {
+            "id": "60819a2b16c87900063a3233",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d29844e81ee00064fec43",
+            "negativeOrientations": "604d2b7f4e81ee0006501cc8"
+        },
+        {
+            "id": "60819a2b16c87900063a3234",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d29d24e81ee00064ff53d",
+            "negativeOrientations": "604d2a274e81ee00064ffc85"
+        },
+        {
+            "id": "60819a2b16c87900063a3235",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d2a654e81ee0006500221",
+            "negativeOrientations": "604d2ab54e81ee0006500920"
+        },
+        {
+            "id": "60819a2b16c87900063a3236",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d2b634e81ee000650193c",
+            "negativeOrientations": "604d2bf74e81ee00065029cb"
+        },
+        {
+            "id": "60819a2b16c87900063a3237",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d2d2c4e81ee0006504729",
+            "negativeOrientations": "604d2d4f4e81ee0006504bbd"
+        },
+        {
+            "id": "60819a2b16c87900063a3238",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d2da24e81ee00065052da",
+            "negativeOrientations": "604d2dc74e81ee000650570c"
+        },
+        {
+            "id": "60819a2b16c87900063a3239",
+            "name": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "type": "axis",
+            "description": null,
+            "positiveOrientations": "604d478f4cb55b00068f28df",
+            "negativeOrientations": "604d492d4cb55b00068f42f0"
+        }
+    ],
+    "authors": [
+        {
+            "id": "604d278e4e81ee00064fbe4c",
+            "email": null,
+            "name": null
+        }
+    ],
+    "questions": [
+        {
+            "id": "604d2f074e81ee00065079a6",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwo powinno wspierać zatrudnienie bezrobotnych",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d2fcf4e81ee0006509341",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rynek powinien być regulowany, by odpowiednio chronić konsumentów",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d30624e81ee000650a085",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Osoby w skrajnej biedzie powinny liczyć na pomoc państwa",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d30f84e81ee000650aaa0",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wolny rynek korzystnie wpływa na gospodarkę",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d31894e81ee000650b71e",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram szeroko pojęty \"Plan Balcerowicza\"",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d32db4e81ee000650d0bc",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rząd powinien ograniczyć import z innych krajów by chronić Polskich przedsiębiorców",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d33434e81ee000650da85",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Podwyższenie kwoty wolnej od podatku jest lepszym rozwiązaniem niż wspieranie najbiedniejszych zasiłkami socjalnymi",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d33bc4e81ee000650e5cb",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Licencje i związki zawodowe są szkodliwe",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d34464e81ee000650f16f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram progresję podatkową i progi podatkowe",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d34d94e81ee000651008e",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwo jeśli powinno istnieć, to w ramach państwa minimum.",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d353e4e81ee0006510e1b",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram Monarchię",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d3bc14cb55b00068e4240",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram liberalizację ustawy aborcyjnej",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d3cea4cb55b00068e5e15",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinien istnieć rozdział kościoła od państwa",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d3d414cb55b00068e6462",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W gruncie rzeczy, uważam resocjalizacje za czynność ważniejszą od przeprowadzenia kary",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d3d474cb55b00068e6480",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Religia to opium dla ludu",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d3f094cb55b00068e911a",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy zacieśnić więzi z Watykanem",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d40104cb55b00068eaa26",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Postęp techniczny jest pożądany, nawet jeżeli prowadzi do gruntownych zmian społecznych, lub środowiskowych",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d405a4cb55b00068eb16b",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Małżeństwa powinny zostać zniesione",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d40a04cb55b00068eb717",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wolność człowieka kończy się tam gdzie zaczyna się wolność drugiego",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d41114cb55b00068ec097",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram depenalizację miękkich narkotyków",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d41934cb55b00068ec9b0",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy dać więcej władzy samorządom",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d41da4cb55b00068ed133",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram demokrację",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d42934cb55b00068eddc4",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwo powinno mieć kontrolę nad wszystkim",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d43b94cb55b00068ef159",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy zdecentralizować władzę",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d48174cb55b00068f336d",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram przywrócenie dobrych relacji z Rosją",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d48584cb55b00068f38b7",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy dołączyć do NATO oraz UE",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d494e4cb55b00068f442d",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Musimy bardziej skupiać się na relacjach z NATO, niż Rosją",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d49a44cb55b00068f47b5",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy się rozwijać bardziej w stronę zachodu, niż wschodu",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4a874cb55b00068f50cd",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Polscy rolnicy powinni być preferowani w marketach",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4ad24cb55b00068f5475",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Obowiązkiem każdego obywatela jest ewentualna walka za ojczyznę",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4bba4cb55b00068f6147",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Symbole narodowe mają dużą wartość",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4c6b4cb55b00068f6bbe",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Bycie dumnym ze swojego pochodzenia jest nieuzasadnione",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4d424cb55b00068f762b",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rząd powinien promować patriotyzm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4d984cb55b00068f7afe",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy odzyskać nasze dawne tereny",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4dc94cb55b00068f7c92",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Najlepszym partnerem jest osoba tej samej narodowości",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4e0d4cb55b00068f7f28",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwo powinno dysponować silną armią",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4e944cb55b00068f853d",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Defilady wojskowe są niezbędne",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d4f514cb55b00068f8d93",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy interweniować zbrojnie w krajach niedemokratyczncych",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d50304cb55b00068f9a39",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Nie powinniśmy posiadać armii",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d508e4cb55b00068f9eb7",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Nie powinny istnieć granice między państwami",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d51134cb55b00068fa5ba",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Emeryci nie powinni płacić podatków",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d52594cb55b00068fb5a3",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Jestem dumny z historii mojego kraju",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d52bd4cb55b00068fb974",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Gospodarka centralnie planowana to dobry pomysł",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d53534cb55b00068fc16f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "PRL nigdy nie powinien upaść",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d540c4cb55b00068fc79a",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Laicyzacja państwa jest zjawiskiem pożądanym",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d54534cb55b00068fcaec",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinien powstać rząd światowy",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d54e54cb55b00068fd45f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Dostęp do broni powinien być łatwiejszy",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d567c4cb55b00068fe884",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Równość klas społecznych jest priorytetem",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d56b84cb55b00068feb10",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Inwigilacja ze strony rządu jest pożądana",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604d56d74cb55b00068fecb0",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rządzić powinni ludzie, nie partie",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddb104cb55b000692680c",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Kodeks Pracy należy ograniczyć albo znieść",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddb154cb55b000692681f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Kto nie pracuje, ten nie je",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddc7d4cb55b0006927ddd",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wychowywanie w duchu wartości tradycyjnych jest kluczowe dla rozwoju naszego społeczeństwa",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddd4b4cb55b0006928f3c",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W szkołach publicznych Religia nie powinna być uczona",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604dddfd4cb55b0006929bb2",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Służba wojskowa powinna być obowiązkowa",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddedb4cb55b000692a7cc",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Prawo regionalne powinno mieć pierwszeństwo nad prawem krajowym",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604ddfe04cb55b000692bacc",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy jak najszybciej zmienić gospodarkę na gospodarkę rynkową",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604de0d14cb55b000692c8c9",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Należy rozwijać relacje z naszymi sąsiadami ze wschodu",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604de13b4cb55b000692cff3",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Silna władza jest potrzebna by utrzymać porządek w kraju",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604de1de4cb55b000692d6fb",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Rząd w pewnych sytuacjach powinien móc ograniczać wolność obywateli (np. w celu ochrony przed terroryzmem)",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604e709a4cb55b00069f24be",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram szeroko pojęty Liberalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604e71144cb55b00069f2d0f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Państwo powinno przeciwdziałać monopolom prywatnym",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604e71944cb55b00069f3697",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy zamknąć w więzieniu wszystkich komunistów",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604e71fd4cb55b00069f3ffc",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Nic o nasz bez nas",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "604e72604cb55b00069f46f0",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Celem rządu powinna być jak najszybsza demokratyzacja narodu",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "60511e3d4cb55b0006c4f563",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Popieram system jednopartyjny",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "60511e854cb55b0006c4fc1a",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "W demokracji decyzje zapadają po dłuższym czasie co jest jej istotną wadą",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "60511ee24cb55b0006c5023f",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Jeden organ powinien centralnie rządzić państwem",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "60511f244cb55b0006c50830",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Należy znieść własność prywatną",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "60511f404cb55b0006c50a54",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Wolność to istotna wartość w życiu człowieka",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6066e84223ca4f00062ad3c4",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Związki partnerskie powinny być legalne",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6066e8a123ca4f00062adb17",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Komuniści powinni zniknąć z życia publicznego",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6066e91a23ca4f00062ae41b",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy pomóc osobom, które przez transformację systemową straciły pracę",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6066e9dd23ca4f00062af3bf",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Powinniśmy lepiej współpracować z zachodem",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        },
+        {
+            "id": "6066ea5a23ca4f00062afdcd",
+            "surveyId": null,
+            "categoryId": "",
+            "text": {
+                "pl": "Reformy Balcerowicza są absurdalne",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "explanation": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "answerType": "FOR_AND_AGAINST",
+            "status": null,
+            "possibleAnswers": []
+        }
+    ],
+    "traits": [
+        {
+            "id": "604d2ef34e81ee000650772e",
+            "createdAt": "2021-03-13T21:30:27.953Z",
+            "name": {
+                "pl": "Demokracja",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "color": "#03a9f4",
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615670984725-83541.png",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            }
+        },
+        {
+            "id": "604d3ba84cb55b00068e4139",
+            "createdAt": "2021-03-13T22:24:40.677Z",
+            "name": {
+                "pl": "Plan Balcerowicza",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "color": "#ffca18",
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615674251808-plan%2520balcerowicza.png",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            }
+        },
+        {
+            "id": "604d54ce4cb55b00068fd19a",
+            "createdAt": "2021-03-14T00:11:58.195Z",
+            "name": {
+                "pl": "Globalizm",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "color": "#8bc34a",
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615680710558-globalizm",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            }
+        },
+        {
+            "id": "604dd9db4cb55b0006925048",
+            "createdAt": "2021-03-14T09:39:39.435Z",
+            "name": {
+                "pl": "Pro-Choice",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "color": "#000000",
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615714776450-Download.png",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            }
+        },
+        {
+            "id": "604d564b4cb55b00068fe605",
+            "createdAt": "2021-03-14T00:18:19.998Z",
+            "name": {
+                "pl": "Pro Gun",
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            },
+            "color": "#585858",
+            "logoUrl": "https://files.mypolitics.pl/mypolitics-3/public/icons/1615681085243-plan%2520balcerowicza.png",
+            "description": {
+                "pl": null,
+                "en": null,
+                "fr": null,
+                "pt": null,
+                "ru": null,
+                "sr": null
+            }
+        }
+    ]
+}

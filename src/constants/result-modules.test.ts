@@ -10,6 +10,7 @@ import { OWN_RESULT_MODULES } from "./result-modules";
 import {
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
+  POLISH_NINETIES_SURVEY_ID,
   OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
 } from "./result-modules.fixtures";
@@ -17,6 +18,7 @@ import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
 
 const SURVEYS = [
   ["the identity quiz", IDENTITY_SURVEY_ID],
+  ["the Polish 1990s quiz", POLISH_NINETIES_SURVEY_ID],
   ["the presidential quiz", PRESIDENTIAL_SURVEY_ID],
 ] as const;
 
@@ -56,6 +58,7 @@ describe("OWN_RESULT_MODULES", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      POLISH_NINETIES_SURVEY_ID,
     ]);
   });
 
@@ -87,6 +90,12 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
       ],
+      [
+        OWN_RECORD_IDS.polishNinetiesHeader,
+        OWN_RECORD_IDS.polishNinetiesAxes,
+        OWN_RECORD_IDS.polishNinetiesArchetype,
+        OWN_RECORD_IDS.polishNinetiesRanking,
+      ],
     ]);
   });
 
@@ -101,6 +110,10 @@ describe("OWN_RESULT_MODULES", () => {
       presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
       presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
       presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+      polishNinetiesHeader: "b66ebee5-07bb-49e7-a62a-71715fd5ca61",
+      polishNinetiesAxes: "8c05ca2d-6ebc-40cf-9b88-a636b0f4e13e",
+      polishNinetiesArchetype: "9f07d8a5-9d74-4c73-83ae-458a9aac23bc",
+      polishNinetiesRanking: "fb0e78d9-9bda-4773-929f-eb6d851df8ae",
     });
   });
 
@@ -290,6 +303,9 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [OWN_RECORD_IDS.polishNinetiesHeader, "lowMatch", "named"],
+      [OWN_RECORD_IDS.polishNinetiesArchetype, "lowMatch", "named"],
+      [OWN_RECORD_IDS.polishNinetiesRanking, "visibleRows", 8],
     ]);
   });
 

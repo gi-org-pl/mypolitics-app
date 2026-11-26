@@ -5,6 +5,7 @@
 // the identifiers only, nothing else of a quiz.
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
+export const POLISH_NINETIES_SURVEY_ID = "604d27cc4e81ee00064fc505";
 
 // The identifiers of the records of the app's own lists, by what each record
 // is: a test names a record, and does not repeat its identifier.
@@ -18,6 +19,10 @@ export const OWN_RECORD_IDS = {
   presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
   presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
   presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+  polishNinetiesHeader: "b66ebee5-07bb-49e7-a62a-71715fd5ca61",
+  polishNinetiesAxes: "8c05ca2d-6ebc-40cf-9b88-a636b0f4e13e",
+  polishNinetiesArchetype: "9f07d8a5-9d74-4c73-83ae-458a9aac23bc",
+  polishNinetiesRanking: "fb0e78d9-9bda-4773-929f-eb6d851df8ae",
 } as const;
 
 export const LIVE_QUIZ_IDS: Record<
@@ -133,5 +138,21 @@ export const LIVE_QUIZ_IDS: Record<
       "a309edcc-327c-40ae-8ce7-a7528619a3c1",
     ],
     axisIds: [],
+  },
+  [POLISH_NINETIES_SURVEY_ID]: {
+    orientationIds: [
+      "604d29844e81ee00064fec43", "604d29d24e81ee00064ff53d", "604d2a274e81ee00064ffc85",
+      "604d2a654e81ee0006500221", "604d2ab54e81ee0006500920", "604d2b634e81ee000650193c",
+      "604d2b7f4e81ee0006501cc8", "604d2bf74e81ee00065029cb", "604d2d2c4e81ee0006504729",
+      "604d2d4f4e81ee0006504bbd", "604d2da24e81ee00065052da", "604d2dc74e81ee000650570c",
+      "604d2ef34e81ee000650772e", "604d3ba84cb55b00068e4139", "604d478f4cb55b00068f28df",
+      "604d492d4cb55b00068f42f0", "604d54ce4cb55b00068fd19a", "604d564b4cb55b00068fe605",
+      "604dd9db4cb55b0006925048",
+    ],
+    axisIds: [
+      "60819a2b16c87900063a3233", "60819a2b16c87900063a3234", "60819a2b16c87900063a3235",
+      "60819a2b16c87900063a3236", "60819a2b16c87900063a3237", "60819a2b16c87900063a3238",
+      "60819a2b16c87900063a3239",
+    ],
   },
 };
