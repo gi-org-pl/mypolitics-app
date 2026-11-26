@@ -1,3 +1,4 @@
+import type { AuthCardLayout } from "@/components/account/AuthCard/AuthCard.types";
 import type { SignInError } from "@/components/account/SignInPanel/SignInPanel.types";
 import type {
   AccountSetup,
@@ -12,6 +13,7 @@ export interface SignInFlowProps {
   returnTo?: string; // where a full-page provider sign-in comes back to
   resume?: boolean; // on mount, ask the client how a sign-in that left the page ended
   headingLevel?: 1 | 2;
+  cardLayout?: AuthCardLayout;
   headingId?: string;
   descriptionId?: string;
   onClose?: () => void; // the dialog's close button, on every view

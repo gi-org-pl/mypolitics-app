@@ -16,6 +16,7 @@ export const SignInFlow = ({
   returnTo,
   resume,
   headingLevel,
+  cardLayout,
   headingId,
   descriptionId,
   onClose,
@@ -31,7 +32,13 @@ export const SignInFlow = ({
     onBusyChange,
   });
   const { state } = flow;
-  const cardProps = { headingLevel, headingId, descriptionId, onClose };
+  const cardProps = {
+    headingLevel,
+    cardLayout,
+    headingId,
+    descriptionId,
+    onClose,
+  };
 
   if (state.step === "resuming") return null;
 

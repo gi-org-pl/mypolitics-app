@@ -1,3 +1,4 @@
+import type { AuthCardLayout } from "@/components/account/AuthCard/AuthCard.types";
 import type { AccountSetup, IdentityProvider } from "@/types/auth";
 
 export interface AccountSetupFormProps {
@@ -8,6 +9,7 @@ export interface AccountSetupFormProps {
   termsHref: string;
   privacyHref: string;
   headingLevel?: 1 | 2;
+  cardLayout?: AuthCardLayout;
   headingId?: string;
   descriptionId?: string;
   onClose?: () => void; // the dialog's close button
