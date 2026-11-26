@@ -50,6 +50,10 @@ describe("createSurvey()", () => {
     expect(new Set(answerIds).size).toBe(answerIds.length);
   });
 
+  it("has no result modules", () => {
+    expect(createSurvey().resultModules).toEqual([]);
+  });
+
   it("lets the overrides replace the defaults", () => {
     const survey = createSurvey({
       id: "other",

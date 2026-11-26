@@ -1,5 +1,5 @@
 import type { Orientation } from "@/types/orientation";
-import type { RankedComparison } from "@/types/results";
+import type { RankedComparison, ResultModuleLowMatch } from "@/types/results";
 
 export interface ArchetypeEntry {
   orientation: Orientation;
@@ -9,6 +9,9 @@ export interface ArchetypeEntry {
 export interface ArchetypeProps {
   title?: string;
   archetypes: ArchetypeEntry[];
+  // What the card does with a leader below a partial match: it says that
+  // nothing matches, or names the leader with its match and its descriptions.
+  lowMatch?: ResultModuleLowMatch;
   comparison?: RankedComparison;
   onStatsClick?: () => void;
   onInfoClick?: () => void;
@@ -21,6 +24,10 @@ export type ArchetypeOpenableView = Exclude<ArchetypeView, "summary">;
 export interface ArchetypeRanking {
   leader: ArchetypeEntry | null;
   rest: ArchetypeEntry[];
+  // Whether the leader has a match of its own. A match that is absent is
+  // read as zero, and then nobody leads: the first archetype only stands
+  // first.
+  isLeaderScored: boolean;
 }
 
 export interface ArchetypeContent {

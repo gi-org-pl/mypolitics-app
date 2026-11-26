@@ -1,0 +1,367 @@
+import { describe, expect, it } from "vitest";
+
+import { getOwnResultModules } from "@/services/api/utils/result-module/getOwnResultModules";
+import { readResultModules } from "@/services/api/utils/result-module/readResultModules";
+import type { OwnResultModule } from "@/types/results";
+import { resolveResult } from "@/utils/result-modules/resolveResult";
+import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
+
+import { OWN_RESULT_MODULES } from "./result-modules";
+import {
+  IDENTITY_SURVEY_ID,
+  LIVE_QUIZ_IDS,
+  OWN_RECORD_IDS,
+  PRESIDENTIAL_SURVEY_ID,
+} from "./result-modules.fixtures";
+import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
+
+const SURVEYS = [
+  ["the identity quiz", IDENTITY_SURVEY_ID],
+  ["the presidential quiz", PRESIDENTIAL_SURVEY_ID],
+] as const;
+
+// What a record held as fields of its own before everything about a module
+// became a pair of a key and a value.
+const FIELDS_BEFORE = [
+  "title",
+  "description",
+  "params",
+  "labels",
+  "colors",
+  "selection",
+  "groupBy",
+  "marker",
+  "visibleRows",
+];
+
+// The keys that are settings: the ones the old result pages had in code.
+const SETTINGS = ["selection", "groupBy", "marker", "visibleRows", "lowMatch"];
+
+// What a record of a list holds under a key.
+const findValue = (record: OwnResultModule, key: string) =>
+  record.values.find((pair) => pair.key === key)?.value;
+
+// The same value with every orientation written as its identifier, and every
+// field that has no value left out: the form the values resolved before this
+// change are kept in.
+const withOrientationIds = (resolved: unknown): unknown =>
+  JSON.parse(
+    JSON.stringify(resolved, (key, value) =>
+      key === "orientation" ? value.id : value,
+    ),
+  );
+
+describe("OWN_RESULT_MODULES", () => {
+  it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
+    expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
+      IDENTITY_SURVEY_ID,
+      PRESIDENTIAL_SURVEY_ID,
+    ]);
+  });
+
+  // The back-end will send a UUID for a record, so the lists hold one too:
+  // the same ones the product's copy of the lists holds.
+  it("gives every record a UUID, and each list the records it is written to have, in order", () => {
+    const ids = Object.values(OWN_RESULT_MODULES).map((records) =>
+      records.map(({ id }) => id),
+    );
+
+    for (const id of ids.flat()) {
+      expect(id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      );
+    }
+
+    expect(new Set(ids.flat()).size).toBe(ids.flat().length);
+    expect(ids).toEqual([
+      [
+        OWN_RECORD_IDS.identityHeader,
+        OWN_RECORD_IDS.identityIdeologies,
+        OWN_RECORD_IDS.identityArchetype,
+        OWN_RECORD_IDS.identityCompass,
+        OWN_RECORD_IDS.identityParties,
+      ],
+      [
+        OWN_RECORD_IDS.presidentialHeader,
+        OWN_RECORD_IDS.presidentialCandidates,
+        OWN_RECORD_IDS.presidentialIdentity,
+        OWN_RECORD_IDS.presidentialCategories,
+      ],
+    ]);
+  });
+
+  it("names the records for the tests by the identifiers the product's copy of the lists holds", () => {
+    expect(OWN_RECORD_IDS).toEqual({
+      identityHeader: "e7a3dbe2-b263-444a-b686-f7c801c17879",
+      identityArchetype: "b9f37f04-1b35-4423-ba31-90d523a09664",
+      identityIdeologies: "34247794-ee0f-451b-9e48-b8685067c8de",
+      identityCompass: "9ada868c-90a5-42e1-a12a-b1f4ecd3150b",
+      identityParties: "2c5ba77b-959e-421a-8079-edf2d948a01c",
+      presidentialHeader: "1046adae-2298-4fa2-a20c-023b67fc1e23",
+      presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
+      presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
+      presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+    });
+  });
+
+  describe("given the list of the identity quiz", () => {
+    it("is the header, then per column the modules of the old identity result", () => {
+      expect(
+        OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].map((record) => [
+          record.type,
+          record.column,
+          findValue(record, "title"),
+        ]),
+      ).toEqual([
+        ["header", undefined, undefined],
+        ["multi_axis", "start", { pl: "Ideologie", en: "Ideologies" }],
+        ["archetype", "end", { pl: "Tożsamość", en: "Identity" }],
+        ["nolan_chart", "end", undefined],
+        ["horizontal_bar", "end", { pl: "Partie", en: "Parties" }],
+      ]);
+    });
+
+    // The old page drew the axes first, then the identity, the compass and
+    // the parties: that is the order on a narrow screen, and on a wide one
+    // the axes fill the first column and the other three the second.
+    it("is written in the order it is drawn in, which is the order of the old page", () => {
+      const positions = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].map(
+        ({ position }) => position,
+      );
+
+      expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    });
+
+    it("names the closest identity below a partial match as well, in the header with a notice and on the identity card", () => {
+      const [header, , archetype] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID];
+
+      expect(findValue(header, "lowMatch")).toBe("named");
+      expect(findValue(header, "label.lowMatch")).toEqual({
+        pl: "Twoje poglądy nie są wystarczająco podobne do żadnej tożsamości (mniej niż 50% pewności).",
+        en: "Your views are not similar enough to any identity (less than 50% confidence).",
+      });
+      expect(findValue(archetype, "lowMatch")).toBe("named");
+    });
+
+    it("says that there is no closest party when no party is linked to a leader", () => {
+      const parties = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].at(-1);
+
+      expect(parties && findValue(parties, "label.empty")).toEqual({
+        pl: "Brak najbliższej partii",
+        en: "No closest party",
+      });
+    });
+
+    it("explains the axes and the parties as the old page did", () => {
+      const [, axes, , , parties] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID];
+
+      expect(findValue(axes, "description")).toMatchObject({
+        pl: expect.stringMatching(/^Oś określa bliskość do ideologii\. /),
+      });
+      expect(findValue(parties, "description")).toMatchObject({
+        pl: expect.stringMatching(
+          /^Te partie zazwyczaj wybierają osoby o poglądach podobnych do Twoich\. /,
+        ),
+      });
+    });
+  });
+
+  describe("given the map of the identity quiz", () => {
+    const [map] = OWN_RESULT_MODULES[IDENTITY_SURVEY_ID].filter(
+      ({ type }) => type === "nolan_chart",
+    );
+
+    it.each([
+      ["bottomLeft", "Lewicowy", "Left-wing"],
+      ["topRight", "Prawicowy", "Right-wing"],
+      ["topLeft", "Mieszany", "Mixed"],
+      ["bottomRight", "Mieszany", "Mixed"],
+    ])("names the %s corner, the same at both levels and in both languages", (corner, pl, en) => {
+      expect(findValue(map, `label.${corner}Moderate`)).toEqual({ pl, en });
+      expect(findValue(map, `label.${corner}Extreme`)).toEqual({ pl, en });
+    });
+
+    it("names the middle, and gives no corner a shorter form or a colour", () => {
+      expect(findValue(map, "label.centre")).toEqual({
+        pl: "Centrowy",
+        en: "Centrist",
+      });
+      expect(
+        map.values.filter(
+          ({ key }) => key.endsWith("Short") || key.startsWith("color."),
+        ),
+      ).toEqual([]);
+    });
+  });
+
+  describe("given the list of the presidential quiz", () => {
+    it("is the header, then per column the modules of the old presidential result", () => {
+      expect(
+        OWN_RESULT_MODULES[PRESIDENTIAL_SURVEY_ID].map((record) => [
+          record.type,
+          record.column,
+          findValue(record, "title"),
+        ]),
+      ).toEqual([
+        ["header", undefined, undefined],
+        ["horizontal_bar", "start", { pl: "Kandydaci", en: "Candidates" }],
+        ["archetype", "end", { pl: "Prezydent", en: "President" }],
+        ["horizontal_bar", "end", { pl: "Kategorie", en: "Categories" }],
+      ]);
+    });
+
+    it("names the link of the header in both languages", () => {
+      const [header] = OWN_RESULT_MODULES[PRESIDENTIAL_SURVEY_ID];
+
+      expect(header.values).toEqual([
+        { key: "label.link", value: { pl: "Program", en: "Programme" } },
+        {
+          key: "label.compare",
+          value: { pl: "Z kandydatem", en: "With a candidate" },
+        },
+      ]);
+    });
+  });
+
+  // A list is written in pairs: everything about a module beyond what it is,
+  // where it stands and what it points at is a key, and a key equal to its
+  // default is left out.
+  describe.each(
+    SURVEYS,
+  )("given the values of the list of %s", (_, surveyId) => {
+    const records = readResultModules(getOwnResultModules(surveyId, "pl"), {
+      orientationIds: new Set(LIVE_QUIZ_IDS[surveyId].orientationIds),
+      axisIds: new Set(LIVE_QUIZ_IDS[surveyId].axisIds),
+    });
+
+    it("writes every record with a list of pairs, and none of what a record held as a field before", () => {
+      for (const record of OWN_RESULT_MODULES[surveyId]) {
+        expect(Array.isArray(record.values)).toBe(true);
+        expect(
+          Object.keys(record).filter((field) => FIELDS_BEFORE.includes(field)),
+        ).toEqual([]);
+      }
+    });
+
+    it("holds a key once in a record", () => {
+      for (const { values } of OWN_RESULT_MODULES[surveyId]) {
+        const keys = values.map(({ key }) => key);
+
+        expect(new Set(keys).size).toBe(keys.length);
+      }
+    });
+
+    it("sets only keys the type of the record reads", () => {
+      for (const record of records) {
+        expect(Object.keys(getModuleValues(record))).toEqual(
+          expect.arrayContaining(Object.keys(record.values)),
+        );
+      }
+    });
+
+    it("leaves out every key equal to its default: each one it sets is read as something else", () => {
+      for (const record of records) {
+        const set: Record<string, unknown> = getModuleValues(record);
+        const defaults: Record<string, unknown> = getModuleValues({
+          ...record,
+          values: {},
+        });
+
+        for (const key of Object.keys(record.values)) {
+          expect([key, set[key]]).not.toEqual([key, defaults[key]]);
+        }
+      }
+    });
+  });
+
+  it("sets the settings the old result pages had in code, and no other", () => {
+    expect(
+      Object.values(OWN_RESULT_MODULES).flatMap((records) =>
+        records.flatMap(({ id, values }) =>
+          values
+            .filter(({ key }) => SETTINGS.includes(key))
+            .map(({ key, value }) => [id, key, value]),
+        ),
+      ),
+    ).toEqual([
+      [OWN_RECORD_IDS.identityHeader, "lowMatch", "named"],
+      [OWN_RECORD_IDS.identityIdeologies, "groupBy", "category"],
+      [OWN_RECORD_IDS.identityArchetype, "lowMatch", "named"],
+      [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
+      [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
+      [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+    ]);
+  });
+
+  // Nothing a taker sees depends on the shape a record is saved in: the lists
+  // resolve to what is written out for them, value by value.
+  describe.each(
+    OWN_LIST_RESULTS,
+  )("given the list of %s and a result of that quiz", (_, survey, result, expected) => {
+    const resolved = resolveResult(survey, result);
+
+    it("resolves the app's own list, with every record of it", () => {
+      expect(survey.resultModules.map(({ id }) => id)).toEqual(
+        OWN_RESULT_MODULES[survey.id].map(({ id }) => id),
+      );
+    });
+
+    it("gives the header and every module what the list is written to give them", () => {
+      expect(withOrientationIds(resolved)).toEqual(expected);
+    });
+  });
+
+  // The lists match their quizzes: read against every orientation and every
+  // axis the live quiz has, a list loses nothing.
+  describe.each(
+    SURVEYS,
+  )("given the list of %s and the identifiers of that quiz", (_, surveyId) => {
+    const records = OWN_RESULT_MODULES[surveyId];
+    const known = {
+      orientationIds: new Set(LIVE_QUIZ_IDS[surveyId].orientationIds),
+      axisIds: new Set(LIVE_QUIZ_IDS[surveyId].axisIds),
+    };
+
+    describe.each(["pl", "en"])("when it is read in %s", (language) => {
+      const modules = readResultModules(
+        getOwnResultModules(surveyId, language),
+        known,
+      );
+
+      it("drops no record and keeps the order it is written in", () => {
+        expect(modules.map(({ id }) => id)).toEqual(
+          records.map(({ id }) => id),
+        );
+      });
+
+      it("drops no orientation and no axis", () => {
+        expect(
+          modules.map(({ orientationIds, axisIds }) => ({
+            orientationIds,
+            axisIds,
+          })),
+        ).toEqual(
+          records.map(({ orientationIds = [], axisIds = [] }) => ({
+            orientationIds,
+            axisIds,
+          })),
+        );
+      });
+
+      it("holds every pair by its key: a text in that language, a plain value as it is", () => {
+        expect(modules.map(({ values }) => values)).toEqual(
+          records.map(({ values }) =>
+            Object.fromEntries(
+              values.map(({ key, value }) => [
+                key,
+                typeof value === "object" && value !== null
+                  ? value[language]
+                  : value,
+              ]),
+            ),
+          ),
+        );
+      });
+    });
+  });
+});
