@@ -322,6 +322,15 @@ export const MissingValues: Story = {
   },
 };
 
+// No entry has a value - the parties linked to the identity of a result: a
+// list of names, each with its mark, and no bars.
+export const NoValues: Story = {
+  args: {
+    title: "Partie",
+    entries: [{ orientation: a }, { orientation: b }],
+  },
+};
+
 export const LongNames: Story = {
   args: {
     entries: [
@@ -363,4 +372,19 @@ export const LongCategoryNames: Story = {
 
 export const Empty: Story = {
   args: { entries: [] },
+};
+
+// A ranking with nothing to rank and a line for that: the parties of a taker
+// to whose identity no party is tied.
+export const EmptyWithLabel: Story = {
+  args: { title: "Partie", entries: [], emptyLabel: "Brak najbliższej partii" },
+};
+
+export const EmptyWithLongLabel: Story = {
+  args: {
+    title: "Partie",
+    entries: [],
+    emptyLabel:
+      "Na podstawie Twoich odpowiedzi nie potrafimy określić najbliższej partii.",
+  },
 };

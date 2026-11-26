@@ -1,8 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-
 import type { ArchetypeEntry } from "../../Archetype.types";
 import { ArchetypeRankingPreview } from "./ArchetypeRankingPreview";
 
@@ -213,6 +212,28 @@ describe("<ArchetypeRankingPreview />", () => {
 
         expect(getSources()).toEqual(["c.png"]);
       });
+    });
+  });
+});
+
+describe("<ArchetypeRankingPreview />", () => {
+  describe("given archetypes with a glyph and with a picture", () => {
+    it("draws the glyph whole and lets the picture cover its place", () => {
+      render(
+        <ArchetypeRankingPreview
+          ranking={[
+            archetype("glyph", GLYPH_ADDRESS),
+            archetype("portrait", PORTRAIT_ADDRESS),
+          ]}
+        />,
+      );
+
+      const [glyph, portrait] = screen.getAllByTestId(
+        "archetype-ranking-preview-image",
+      );
+
+      expect(glyph).toHaveClass("[&>img]:object-scale-down");
+      expect(portrait).not.toHaveClass("[&>img]:object-scale-down");
     });
   });
 });

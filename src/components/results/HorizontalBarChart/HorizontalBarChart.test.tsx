@@ -619,6 +619,52 @@ describe("<HorizontalBarChart />", () => {
     });
   });
 
+  describe("given a comparison with values by category", () => {
+    const categories: RankedCategory[] = [
+      { id: "economy", name: "Gospodarka", entries: [entry("Beta", 65)] },
+      {
+        id: "views",
+        name: "Światopogląd",
+        entries: [entry("Beta", 75), entry("Alfa", 10)],
+      },
+      { id: "law", name: "Prawo", entries: [entry("Beta", 30)] },
+    ];
+    const comparison = {
+      orientation: FRIEND,
+      values: { beta: 99 },
+      categoryValues: { economy: { beta: 20 }, views: { beta: 45, alfa: 80 } },
+    };
+
+    it("draws each category with the value of the other party inside it", () => {
+      renderChart({ categories, comparison });
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 65%, porównanie z Ania: 20%" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Beta: 75%, porównanie z Ania: 45%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("draws a category it has no values for with no overlay", () => {
+      renderChart({ categories, comparison });
+
+      expect(
+        screen.getByRole("img", { name: "Beta: 30%" }),
+      ).toBeInTheDocument();
+    });
+
+    it("draws the rows of an opened category with its values", () => {
+      renderChart({ categories, comparison });
+
+      press("Pokaż kategorię: Światopogląd");
+
+      expect(
+        screen.getByRole("img", { name: "Alfa: 10%, porównanie z Ania: 80%" }),
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("given a hidden orientation in a flat list", () => {
     it("does not draw its row and does not count it against the fold", () => {
       renderChart({
@@ -750,6 +796,76 @@ describe("<HorizontalBarChart />", () => {
       expect(control.tagName).toBe("BUTTON");
       expect(control).not.toHaveAttribute("tabindex", "-1");
       expect(control).toBeEnabled();
+    });
+  });
+});
+
+// The parties card of the old identity result said that there is no closest
+// party when no party was tied to the taker's identity.
+describe("<HorizontalBarChart />", () => {
+  const EMPTY = "Brak najbliższej partii";
+  const queryEmpty = () => screen.queryByTestId("horizontal-bar-chart-empty");
+
+  describe("given no entries and a text for that", () => {
+    it("says the text over an empty track, under the title", () => {
+      renderChart({ title: "Partie", entries: [], emptyLabel: EMPTY });
+
+      expect(screen.getByRole("region", { name: "Partie" })).toContainElement(
+        queryEmpty(),
+      );
+      expect(queryEmpty()).toHaveTextContent(EMPTY);
+      expect(screen.getByRole("img", { name: "Brak wyniku" })).toBeVisible();
+    });
+
+    it("draws no list and no control", () => {
+      renderChart({ entries: [], emptyLabel: EMPTY });
+
+      expect(screen.queryByRole("list")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Pokaż wszystkie" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("says it on one line, without the space around it", () => {
+      renderChart({ entries: [], emptyLabel: ` ${EMPTY}\n` });
+
+      expect(queryEmpty()?.textContent).toBe(EMPTY);
+    });
+
+    it("says it when the only entries are hidden orientations", () => {
+      renderChart({ entries: [hidden("Ukryta", 80)], emptyLabel: EMPTY });
+
+      expect(queryEmpty()).toHaveTextContent(EMPTY);
+    });
+  });
+
+  describe("given no entries and no text for that, or a blank one", () => {
+    it.each([
+      [undefined],
+      [""],
+      ["  \n"],
+    ])("draws an empty card under its title for %j", (emptyLabel) => {
+      renderChart({ entries: [], emptyLabel });
+
+      expect(queryEmpty()).not.toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given entries and a text for having none", () => {
+    it("draws the rows and not the text", () => {
+      renderChart({ entries: ENTRIES, emptyLabel: EMPTY });
+
+      expect(getNames()).toEqual(["Alfa", "Beta", "Gamma"]);
+      expect(queryEmpty()).not.toBeInTheDocument();
+    });
+  });
+
+  describe("given categories and a text for having no entries", () => {
+    it("draws the categories and not the text, even with no category", () => {
+      renderChart({ categories: [], emptyLabel: EMPTY });
+
+      expect(queryEmpty()).not.toBeInTheDocument();
     });
   });
 });

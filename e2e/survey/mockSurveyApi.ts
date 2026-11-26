@@ -7,7 +7,6 @@ const PROJECT_ADDRESS = "**/v1/project/**";
 const SURVEY_ADDRESS = "**/v1/survey/**";
 const RESULT_ADDRESS = "**/v1/result";
 const RESULT_READ_ADDRESS = "**/v1/result/**";
-const RESULTS_PAGE_ADDRESS = "https://mypolitics.pl/results/**";
 
 // Where the build the tests run against sends the request for the result
 // link: `playwright.config.ts` gives it to the build. The `.test` domain is
@@ -24,7 +23,7 @@ const ANSWER_COUNTS_ROUTE = `${ANSWER_COUNTS_ADDRESS}**`;
 
 // The app and the API live at different addresses, so the browser asks
 // before it posts and reads the reply only when the API allows it.
-const CORS_HEADERS = {
+export const CORS_HEADERS = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, OPTIONS",
   "access-control-allow-headers": "*",
@@ -53,13 +52,13 @@ const allowRequest = (route: Route) =>
 const getSessionId = (result: unknown): string =>
   (result as { sessionId: string }).sessionId;
 
-// Stands in for the API, for the endpoint that sends the result link and for
-// the results page: no test ever reaches a live address. The quiz is the
-// fixture, or the quiz that is handed in. A result is created with 201, and
-// with 409 when one with its identifier exists already; it is read as not
-// calculated the first time and as calculated from then on. A link is
-// accepted with 202, the results page is a stub, and every other request to
-// the API is aborted. The source of answer counts does not answer unless a
+// Stands in for the API and for the endpoint that sends the result link: no
+// test ever reaches a live address. The quiz is the fixture, or the quiz that
+// is handed in. A result is created with 201, and with 409 when one with its
+// identifier exists already; it is read as not calculated the first time and
+// as calculated from then on, and it names the survey and holds the answers
+// it was created with. A link is accepted with 202, and every other request
+// to the API is aborted. The source of answer counts does not answer unless a
 // test hands it counts, so the questionnaire goes on as without one. Routes
 // registered later are asked first, so the catch-all comes first.
 export const mockSurveyApi = async (
@@ -164,11 +163,11 @@ export const mockSurveyApi = async (
     const resultId = decodeURIComponent(
       new URL(request.url()).pathname.split("/").at(-1) ?? "",
     );
-    const isStored = mock.results.some(
-      (storedResult) => getSessionId(storedResult) === resultId,
-    );
+    const storedResult = mock.results.find(
+      (result) => getSessionId(result) === resultId,
+    ) as { surveyId: string; answers: unknown[] } | undefined;
 
-    if (!isStored) {
+    if (!storedResult) {
       return route.fulfill({ status: 404, json: {}, headers: CORS_HEADERS });
     }
 
@@ -179,8 +178,10 @@ export const mockSurveyApi = async (
 
     return route.fulfill({
       json: {
-        sessionId: resultId,
+        id: resultId,
+        surveyId: storedResult.surveyId,
         results: isCalculated ? { orientations: [] } : null,
+        answers: storedResult.answers,
       },
       headers: CORS_HEADERS,
     });
@@ -213,13 +214,6 @@ export const mockSurveyApi = async (
       ? route.abort()
       : route.fulfill({ json: answerCounts, headers: CORS_HEADERS });
   });
-
-  await page.route(RESULTS_PAGE_ADDRESS, (route) =>
-    route.fulfill({
-      contentType: "text/html; charset=utf-8",
-      body: "<!doctype html><title>Wyniki</title><h1>Wyniki</h1>",
-    }),
-  );
 
   return mock;
 };
