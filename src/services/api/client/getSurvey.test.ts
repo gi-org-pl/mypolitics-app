@@ -2,11 +2,11 @@ import { type AxiosAdapter, AxiosError } from "axios";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_TIMEOUT_MS, DEFAULT_API_URL } from "@/constants/api";
+import { OWN_RECORD_IDS } from "@/constants/result-modules.fixtures";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import { SurveyLoadStatus } from "@/types/survey";
 import { createApiError } from "@/utils/vitest/api/createApiError";
 import { createApiReply } from "@/utils/vitest/api/createApiReply";
-
 import { apiClient } from "./apiClient";
 import { getSurvey } from "./getSurvey";
 
@@ -107,7 +107,7 @@ describe("getSurvey()", () => {
 
       const result = await getSurvey(SURVEY_ID, "pl");
 
-      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID));
+      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID, "pl"));
       expect(result).toMatchObject({
         status: SurveyLoadStatus.Ready,
         survey: {
@@ -115,6 +115,28 @@ describe("getSurvey()", () => {
           name: "myPolitics Quiz Tożsamościowy",
           isOfficial: true,
           questions: [{ id: "q1", text: "Stwierdzenie." }],
+        },
+      });
+    });
+
+    it.each([
+      ["pl", ["Ideologie", "Tożsamość", "Partie"]],
+      ["en", ["Ideologies", "Identity", "Parties"]],
+    ])("holds the app's own result modules of a quiz the API sends none for, in the language asked for: %s", async (language, titles) => {
+      adapter.mockImplementationOnce(createApiReply(200, surveyResponse));
+
+      const result = await getSurvey(SURVEY_ID, language);
+
+      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID, language));
+      expect(result).toMatchObject({
+        survey: {
+          resultModules: [
+            { id: OWN_RECORD_IDS.identityHeader },
+            { values: { title: titles[0] } },
+            { values: { title: titles[1] } },
+            { id: OWN_RECORD_IDS.identityCompass },
+            { values: { title: titles[2] } },
+          ],
         },
       });
     });
@@ -174,8 +196,35 @@ describe("getSurvey()", () => {
         .mockImplementationOnce(createApiReply(200, surveyResponse));
 
       expect(await getSurvey(SURVEY_ID, "en")).toEqual(
-        readSurvey(surveyResponse, SURVEY_ID),
+        readSurvey(surveyResponse, SURVEY_ID, "en"),
       );
+    });
+
+    it("holds the app's own result modules in the language asked for, though the quiz is in its default one", async () => {
+      adapter
+        .mockImplementationOnce(createApiReply(400))
+        .mockImplementationOnce(createApiReply(200, surveyResponse));
+
+      expect(await getSurvey(SURVEY_ID, "en")).toMatchObject({
+        survey: {
+          resultModules: [
+            { id: OWN_RECORD_IDS.identityHeader },
+            {
+              id: OWN_RECORD_IDS.identityIdeologies,
+              values: { title: "Ideologies" },
+            },
+            {
+              id: OWN_RECORD_IDS.identityArchetype,
+              values: { title: "Identity" },
+            },
+            { id: OWN_RECORD_IDS.identityCompass },
+            {
+              id: OWN_RECORD_IDS.identityParties,
+              values: { title: "Parties" },
+            },
+          ],
+        },
+      });
     });
 
     it("resolves failed when the second request is refused too", async () => {

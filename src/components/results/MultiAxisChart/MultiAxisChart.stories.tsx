@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn, userEvent, within } from "storybook/test";
-
+import { GLYPHS } from "@/constants/image.fixtures";
 import type { Orientation } from "@/types/orientation";
-
 import { MultiAxisChart } from "./MultiAxisChart";
 import type { AxisGroup, AxisPair } from "./MultiAxisChart.types";
 
@@ -516,4 +515,94 @@ export const ImageFailsToLoad: Story = {
       ),
     })),
   },
+};
+
+// A category of a quiz in use, as the API sends it: the icons are bare glyphs
+// of their own sizes, and only the two ideologies of the main axis have a
+// colour. The glyphs are drawn whole, on the caps and in the preview, and the
+// axes behind the headline take its colours.
+const REAL_GROUPS: AxisGroup[] = [
+  {
+    name: "Światopogląd",
+    axes: (
+      [
+        [
+          "main",
+          "Progresywizm",
+          "progressivism",
+          "#9B59B6",
+          24,
+          "Tradycjonalizm",
+          "traditionalism",
+          "#1ABC9C",
+          34,
+        ],
+        [
+          "equality",
+          "Równość",
+          "equality",
+          undefined,
+          21,
+          "Hierarchia społeczna",
+          "widest",
+          undefined,
+          47,
+        ],
+        [
+          "peace",
+          "Pacyfizm",
+          "traditionalism",
+          undefined,
+          48,
+          "Militaryzm",
+          "progressivism",
+          undefined,
+          24,
+        ],
+      ] as const
+    ).map(
+      ([
+        id,
+        startName,
+        startGlyph,
+        startColor,
+        startValue,
+        endName,
+        endGlyph,
+        endColor,
+        endValue,
+      ]) => ({
+        id,
+        start: {
+          orientation: {
+            id: `${id}-start`,
+            type: "ideology" as const,
+            name: startName,
+            imageUrl: GLYPHS[startGlyph],
+            color: startColor,
+          },
+          value: startValue,
+        },
+        end: {
+          orientation: {
+            id: `${id}-end`,
+            type: "ideology" as const,
+            name: endName,
+            imageUrl: GLYPHS[endGlyph],
+            color: endColor,
+          },
+          value: endValue,
+        },
+      }),
+    ),
+  },
+];
+
+export const RealIcons: Story = {
+  args: { groups: REAL_GROUPS },
+};
+
+export const RealIconsGroupOpen: Story = {
+  args: RealIcons.args,
+  play: openFirstGroup,
 };

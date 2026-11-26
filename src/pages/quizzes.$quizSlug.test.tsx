@@ -3,18 +3,33 @@ import { createMemoryRouter, RouterProvider } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DEFAULT_LANGUAGE } from "@/constants/common";
+import { PATHS } from "@/constants/paths";
 import { QUIZ_PROJECT_IDS } from "@/constants/survey";
+import { createResult } from "@/services/api/client/createResult";
 import { getLatestSurvey } from "@/services/api/client/getLatestSurvey";
-import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
+import { getResult } from "@/services/api/client/getResult";
+import {
+  CreateResultOutcome,
+  type SurveyLoadResult,
+  SurveyLoadStatus,
+} from "@/types/survey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
+import { createResultLoad } from "@/utils/vitest/survey/createResultLoad";
+import { createStartedSession } from "@/utils/vitest/survey/createStartedSession";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import QuizPage from "./quizzes.$quizSlug";
 
+vi.mock("@/services/api/client/createResult");
 vi.mock("@/services/api/client/getLatestSurvey");
+vi.mock("@/services/api/client/getResult");
 
 const NOT_FOUND_HEADING = /to jest błąd 404/i;
 const PROMPT = "Wybierz 1 najważniejszy dla Ciebie temat.";
+const RESULT_PAGE = "Strona wyniku";
+// The stay of the loader: five lines, one every 1.2 seconds.
+const LOADER_STAY_MS = 5 * 1200;
 
 const getLatestSurveyMock = vi.mocked(getLatestSurvey);
 
@@ -34,7 +49,10 @@ const holdReading = () => {
 
 const renderPage = (address: string) => {
   const router = createMemoryRouter(
-    [{ path: "/quizzes/:quizSlug", element: <QuizPage /> }],
+    [
+      { path: "/quizzes/:quizSlug", element: <QuizPage /> },
+      { path: "/results/:resultId", element: <p>{RESULT_PAGE}</p> },
+    ],
     { initialEntries: [address] },
   );
 
@@ -49,6 +67,7 @@ describe("<QuizPage />", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.resetAllMocks();
     sessionStorage.clear();
   });
@@ -158,6 +177,50 @@ describe("<QuizPage />", () => {
         }),
       ).toBeInTheDocument();
       expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("when the result of the taker is calculated", () => {
+    it("opens the address of that result inside the app, as an ordinary step of the history", async () => {
+      vi.useFakeTimers();
+      vi.mocked(createResult).mockResolvedValue(CreateResultOutcome.Stored);
+      vi.mocked(getResult).mockResolvedValue(
+        createResultLoad({ isCalculated: true }),
+      );
+
+      const survey = createSurvey({ id: crypto.randomUUID() });
+      const store = getSurveySessionStore(survey);
+
+      store.setState(
+        {
+          ...createStartedSession(survey, survey.questions.length),
+          phase: "results-calculation",
+        },
+        true,
+      );
+
+      const { id } = store.getState();
+
+      getLatestSurveyMock.mockResolvedValue({
+        status: SurveyLoadStatus.Ready,
+        survey,
+      });
+
+      const router = renderPage("/quizzes/mypolitics");
+
+      // The quiz is read first; the loader starts once it is there.
+      await act(async () => undefined);
+
+      expect(router.state.location.pathname).toBe("/quizzes/mypolitics");
+
+      for (let elapsed = 0; elapsed < LOADER_STAY_MS; elapsed += 1200) {
+        await act(() => vi.advanceTimersByTimeAsync(1200));
+      }
+
+      expect(router.state.location.pathname).toBe(PATHS.result(id));
+      expect(router.state.location.pathname).toBe(`/results/${id}`);
+      expect(router.state.historyAction).toBe("PUSH");
+      expect(screen.getByText(RESULT_PAGE)).toBeInTheDocument();
     });
   });
 

@@ -261,4 +261,27 @@ describe("<RankedRow />", () => {
       ).toBeInTheDocument();
     });
   });
+
+  describe("given a row without a bar", () => {
+    it("draws the mark of the orientation beside its name, and no bar", () => {
+      renderRow({ value: undefined }, { hasBar: false });
+
+      expect(screen.getByTestId("ranked-row-name")).toHaveTextContent(
+        "Liberalizm",
+      );
+      expect(
+        screen.getByTestId("orientation-avatar").querySelector("img"),
+      ).toHaveAttribute("src", IMAGE_URL);
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("universal-axis-track"),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("draws no mark beside the name of a row with a bar", () => {
+    renderRow();
+
+    expect(screen.queryByTestId("orientation-avatar")).not.toBeInTheDocument();
+  });
 });

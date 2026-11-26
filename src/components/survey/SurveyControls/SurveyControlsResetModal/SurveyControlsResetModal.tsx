@@ -3,10 +3,9 @@ import { useLingui } from "@lingui/react/macro";
 import { useId } from "react";
 
 import resetIcon from "@/assets/icons/reset.svg";
+import { DialogPortal } from "@/components/shared/DialogPortal/DialogPortal";
 import { getIconMaskStyle } from "@/utils/style/getIconMaskStyle";
 import { toTrimmedText } from "@/utils/text/toTrimmedText";
-
-import { SurveyDialogPortal } from "../../SurveyDialogPortal/SurveyDialogPortal";
 import { BUTTON_ICON_CLASS_NAME } from "../SurveyControls.constants";
 import type { SurveyControlsResetModalProps } from "../SurveyControls.types";
 import {
@@ -27,7 +26,7 @@ export const SurveyControlsResetModal = ({
   const quizName = toTrimmedText(rawQuizName);
 
   return (
-    <SurveyDialogPortal>
+    <DialogPortal>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -62,6 +61,6 @@ export const SurveyControlsResetModal = ({
           </Button>
         }
       />
-    </SurveyDialogPortal>
+    </DialogPortal>
   );
 };

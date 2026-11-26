@@ -4,6 +4,7 @@ import { I18nProvider } from "@lingui/react";
 import type { ReactNode } from "react";
 import {
   Links,
+  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -29,7 +30,9 @@ i18n.activate(DEFAULT_LANGUAGE);
  * manifest and the tags of link previews are there for the same reason: the
  * browser and the crawlers read them from that file. The icon files live in
  * `public/`; the SVG favicon is the myPolitics logomark as the brand book
- * ships it, and the raster files are rendered from it.
+ * ships it, and the raster files are rendered from it. What a route asks of
+ * the document through its `meta` - not to be indexed, for one - is put into
+ * the head here.
  */
 export function Layout({ children }: { children: ReactNode }) {
   return (
@@ -38,6 +41,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{SITE_NAME}</title>
+        <Meta />
         <link
           rel="icon"
           href="/favicon.ico"
