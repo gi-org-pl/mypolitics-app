@@ -6,6 +6,7 @@ import { SurveyCheckpoint } from "@/components/survey/SurveyCheckpoint/SurveyChe
 import type { CheckpointCardProps } from "@/types/checkpoint";
 import type { Survey, SurveySession } from "@/types/survey";
 import { getCheckpointText } from "@/utils/checkpoint/lines/getCheckpointText";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
@@ -60,7 +61,9 @@ const renderScreen = (done = 4, overrides: Partial<SurveySession> = {}) => {
   store.setState({ ...createStartedSession(survey, done), ...overrides }, true);
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+    ),
     survey,
     getSession: store.getState,
   };
@@ -446,7 +449,9 @@ describe("<SurveyQuestionnaireSession /> - Checkpoints phase", () => {
       const text = getCardText().textContent;
 
       unmount();
-      renderWithI18n(<SurveyQuestionnaireSession survey={survey} />);
+      renderWithI18n(
+        <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+      );
 
       expect(within(getCard()).getByText("55%")).toBeVisible();
       expect(getCardText().textContent).toBe(text);

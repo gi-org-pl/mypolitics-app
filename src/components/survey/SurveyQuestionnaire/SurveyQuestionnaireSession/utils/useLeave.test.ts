@@ -2,15 +2,14 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
-import { getResultsUrl } from "@/utils/survey/result/getResultsUrl";
 import { getSessionStorageKey } from "@/utils/survey/session/getSessionStorageKey";
+import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { useSurveySession } from "@/utils/survey/session/useSurveySession";
-import { openAddress } from "@/utils/url/openAddress";
 import { createSurvey } from "@/utils/vitest/survey/createSurvey";
 
 import { useLeave } from "./useLeave";
 
-vi.mock("@/utils/url/openAddress");
+const onResultOpen = vi.fn<(resultId: string) => void>();
 
 // The stores live as long as the module does, so every test takes a quiz of
 // its own.
@@ -20,14 +19,7 @@ const renderLeave = (survey: Survey) =>
   renderHook(() => {
     const session = useSurveySession(survey);
 
-    return { session, leave: useLeave(session) };
-  });
-
-const showPage = (isFromMemory: boolean) =>
-  act(() => {
-    window.dispatchEvent(
-      new PageTransitionEvent("pageshow", { persisted: isFromMemory }),
-    );
+    return { session, leave: useLeave(session, onResultOpen) };
   });
 
 describe("useLeave()", () => {
@@ -37,7 +29,7 @@ describe("useLeave()", () => {
   });
 
   describe("when onLeave is called", () => {
-    it("removes the stored session, then opens the results address of that session in the same tab", () => {
+    it("removes the stored session, then opens the result of that session", () => {
       const survey = createQuiz();
       const storageKey = getSessionStorageKey(survey.id);
       const { result } = renderLeave(survey);
@@ -48,13 +40,13 @@ describe("useLeave()", () => {
 
       expect(sessionStorage.getItem(storageKey)).not.toBeNull();
 
-      vi.mocked(openAddress).mockImplementation(() => {
+      onResultOpen.mockImplementation(() => {
         stored.push(sessionStorage.getItem(storageKey));
       });
       act(() => result.current.leave());
 
-      expect(openAddress).toHaveBeenCalledTimes(1);
-      expect(openAddress).toHaveBeenCalledWith(getResultsUrl(id));
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledWith(id);
       expect(stored).toEqual([null]);
     });
 
@@ -71,13 +63,13 @@ describe("useLeave()", () => {
       expect(result.current.session.session).toEqual(session);
     });
 
-    it("navigates once when called twice", () => {
+    it("opens the result once when called twice", () => {
       const { result } = renderLeave(createQuiz());
 
       act(() => result.current.leave());
       act(() => result.current.leave());
 
-      expect(openAddress).toHaveBeenCalledTimes(1);
+      expect(onResultOpen).toHaveBeenCalledTimes(1);
     });
 
     it("keeps the same function between renders", () => {
@@ -90,75 +82,70 @@ describe("useLeave()", () => {
     });
   });
 
-  describe("when the page is shown again from the memory of the browser after leaving", () => {
-    it("starts over: a new session in the first phase", () => {
+  describe("when the screen is gone after leaving", () => {
+    it("starts over: a taker who comes back finds a new session in the first phase", () => {
       const survey = createQuiz();
-      const { result } = renderLeave(survey);
+      const { result, unmount } = renderLeave(survey);
 
       act(() => result.current.session.skipCategories());
 
       const { id } = result.current.session.session;
 
       act(() => result.current.leave());
-      showPage(true);
+      unmount();
 
-      expect(result.current.session.session.id).not.toBe(id);
-      expect(result.current.session.session.phase).toBe("category-select");
-      expect(result.current.session.session.entries).toEqual([]);
+      const { result: next } = renderLeave(survey);
+
+      expect(next.current.session.session.id).not.toBe(id);
+      expect(next.current.session.session.phase).toBe("category-select");
+      expect(next.current.session.session.entries).toEqual([]);
     });
 
-    it("can leave again from the new session", () => {
-      const { result } = renderLeave(createQuiz());
-
-      act(() => result.current.leave());
-      showPage(true);
-
-      const { id } = result.current.session.session;
-
-      act(() => result.current.leave());
-
-      expect(openAddress).toHaveBeenCalledTimes(2);
-      expect(openAddress).toHaveBeenLastCalledWith(getResultsUrl(id));
-    });
-  });
-
-  describe("when the page is shown again and the taker never left", () => {
-    it("keeps the session", () => {
-      const { result } = renderLeave(createQuiz());
-      const { id } = result.current.session.session;
-
-      showPage(true);
-
-      expect(result.current.session.session.id).toBe(id);
-    });
-  });
-
-  describe("when the page is shown by an ordinary load", () => {
-    it("keeps the session, also after leaving", () => {
-      const { result } = renderLeave(createQuiz());
-      const { id } = result.current.session.session;
-
-      act(() => result.current.leave());
-      showPage(false);
-
-      expect(result.current.session.session.id).toBe(id);
-    });
-  });
-
-  describe("when unmounted", () => {
-    it("stops listening for the page being shown", () => {
-      const { result, unmount } = renderLeave(createQuiz());
-      const removeListener = vi.spyOn(window, "removeEventListener");
+    it("stores nothing of the new session", () => {
+      const survey = createQuiz();
+      const { result, unmount } = renderLeave(survey);
 
       act(() => result.current.leave());
       unmount();
 
-      expect(removeListener).toHaveBeenCalledWith(
-        "pageshow",
-        expect.any(Function),
-      );
+      expect(
+        sessionStorage.getItem(getSessionStorageKey(survey.id)),
+      ).toBeNull();
+    });
 
-      removeListener.mockRestore();
+    it("can leave again from the new session", () => {
+      const survey = createQuiz();
+      const { result, unmount } = renderLeave(survey);
+
+      act(() => result.current.leave());
+      unmount();
+
+      const { result: next } = renderLeave(survey);
+      const { id } = next.current.session.session;
+
+      act(() => next.current.leave());
+
+      expect(onResultOpen).toHaveBeenCalledTimes(2);
+      expect(onResultOpen).toHaveBeenLastCalledWith(id);
+    });
+  });
+
+  describe("when the screen is gone and the taker never left", () => {
+    it("keeps the session, in memory and in the storage of the tab", () => {
+      const survey = createQuiz();
+      const storageKey = getSessionStorageKey(survey.id);
+      const { result, unmount } = renderLeave(survey);
+
+      act(() => result.current.session.skipCategories());
+
+      const { session } = result.current.session;
+      const stored = sessionStorage.getItem(storageKey);
+
+      unmount();
+
+      expect(getSurveySessionStore(survey).getState()).toEqual(session);
+      expect(sessionStorage.getItem(storageKey)).toBe(stored);
+      expect(stored).not.toBeNull();
     });
   });
 });

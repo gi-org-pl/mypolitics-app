@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { HATCH_CLASS_NAME } from "@/constants/hatch";
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import type { NolanPosition } from "@/types/results";
 import { createOrientation } from "@/utils/vitest/createOrientation";
-
 import { OrientationMarker } from "./OrientationMarker";
 
 const at = (x: number, y: number) => ({ x, y }) as NolanPosition;
@@ -116,5 +116,33 @@ describe("<OrientationMarker />", () => {
     expect(
       getImage().querySelectorAll(":scope > [aria-hidden=true]"),
     ).toHaveLength(getImage().children.length);
+  });
+});
+
+describe("<OrientationMarker />", () => {
+  describe("given an orientation whose image is a glyph", () => {
+    it("draws it whole on the marker, at its own size", () => {
+      render(
+        <OrientationMarker
+          orientation={{ ...friend, imageUrl: GLYPH_ADDRESS }}
+          position={at(0, 0)}
+        />,
+      );
+
+      expect(getImage()).toHaveClass("[&>img]:object-scale-down");
+    });
+  });
+
+  describe("given an orientation whose image is a picture", () => {
+    it("lets it cover the marker", () => {
+      render(
+        <OrientationMarker
+          orientation={{ ...friend, imageUrl: PORTRAIT_ADDRESS }}
+          position={at(0, 0)}
+        />,
+      );
+
+      expect(getImage()).not.toHaveClass("[&>img]:object-scale-down");
+    });
   });
 });

@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAnswerCounts } from "@/services/api/client/getAnswerCounts";
 import type { CheckpointAggregates } from "@/types/checkpoint";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
@@ -48,7 +49,9 @@ const renderScreen = async (done = 4) => {
 
   store.setState(createStartedSession(survey, done), true);
 
-  const view = renderWithI18n(<SurveyQuestionnaireSession survey={survey} />);
+  const view = renderWithI18n(
+    <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+  );
 
   await flushCounts();
 

@@ -97,7 +97,7 @@ export const useSurveySession = (survey: Survey): SurveySessionApi => {
       setResultState: bindSessionAction(store, survey, setSessionResultState),
       reset: bindSessionAction(store, survey, resetSession),
       // Only the record goes. The session in memory stays, so the screen keeps
-      // showing what it showed until the browser has navigated away.
+      // showing what it showed until the result takes its place.
       leave: () =>
         getSafeSessionStorage()?.removeItem(getSessionStorageKey(survey.id)),
       // Nothing is carried over, the checkpoint opt-out included.
