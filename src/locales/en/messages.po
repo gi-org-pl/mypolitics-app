@@ -563,7 +563,7 @@ msgctxt "checkpoint-nolan-path-full"
 msgid "Komplet!"
 msgstr "Full set!"
 
-#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:56
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:54
 msgid "Konto"
 msgstr "Account"
 
@@ -763,8 +763,8 @@ msgstr "The quiz could not be loaded"
 msgid "Nie udało się wczytać wyniku"
 msgstr "The result could not be loaded"
 
-#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:95
-#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:54
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:93
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:52
 msgid "Nie udało się wylogować. Spróbuj jeszcze raz."
 msgstr "Signing out did not work. Please try again."
 
@@ -1501,8 +1501,8 @@ msgstr "Education"
 msgid "Wyłącz checkpointy"
 msgstr "Turn off checkpoints"
 
-#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:88
-#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:47
+#: src/components/shared/Header/HeaderAccount/HeaderAccountMenu/HeaderAccountMenu.tsx:86
+#: src/components/shared/Header/HeaderAccount/HeaderAccountPhone/HeaderAccountPhone.tsx:45
 msgid "Wyloguj się"
 msgstr "Sign out"
 
