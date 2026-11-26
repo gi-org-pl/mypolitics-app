@@ -5,10 +5,10 @@ import {
   AXIS_LINE_BACKGROUND_CLASS_NAME,
   AXIS_LINE_BORDER_CLASS_NAME,
 } from "@/constants/axis";
+import { GLYPH_ADDRESS, PORTRAIT_ADDRESS } from "@/constants/image.fixtures";
 import type { AxisEntry } from "@/types/axis";
 import type { Orientation } from "@/types/orientation";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
-
 import { UniversalAxis } from "./UniversalAxis";
 
 const orientationA: Orientation = {
@@ -1423,6 +1423,71 @@ describe("<UniversalAxis /> - isMasked", () => {
       expect(screen.getAllByTestId("universal-axis-marker")).toHaveLength(2);
       expect(screen.getAllByRole("img")[0]).toHaveAccessibleName(
         "Orientation A: 69%, Orientation B: 31%, porównanie z Ania: 90%",
+      );
+    });
+  });
+});
+
+// What quizzes in use send: the icon of an ideology is a bare glyph smaller
+// than the cap, the portrait of an identity a picture larger than it.
+describe("<UniversalAxis />", () => {
+  const withImage = (imageUrl: string): AxisEntry => ({
+    orientation: { ...orientationA, imageUrl },
+    value: 60,
+  });
+
+  describe("given an orientation whose image is a glyph", () => {
+    it("draws the glyph whole on the cap, at its own size, instead of covering the cap with it", () => {
+      renderWithI18n(<UniversalAxis start={withImage(GLYPH_ADDRESS)} />);
+
+      expect(screen.getByTestId("universal-axis-cap-start")).toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+    });
+
+    it("does so on both caps of a double-sided bar", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={withImage(GLYPH_ADDRESS)}
+          end={withImage(GLYPH_ADDRESS)}
+        />,
+      );
+
+      for (const side of ["start", "end"]) {
+        expect(screen.getByTestId(`universal-axis-cap-${side}`)).toHaveClass(
+          "[&>img]:object-scale-down",
+        );
+      }
+    });
+  });
+
+  describe("given an orientation whose image is a picture", () => {
+    it("lets the picture cover the cap", () => {
+      renderWithI18n(<UniversalAxis start={withImage(PORTRAIT_ADDRESS)} />);
+
+      expect(screen.getByTestId("universal-axis-cap-start")).not.toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+    });
+  });
+
+  describe("given a comparison with an orientation whose image is a glyph", () => {
+    it("draws the glyph whole at the other side's position", () => {
+      renderWithI18n(
+        <UniversalAxis
+          start={withImage(PORTRAIT_ADDRESS)}
+          comparison={{
+            orientation: { ...orientationB, imageUrl: GLYPH_ADDRESS },
+            value: 20,
+          }}
+        />,
+      );
+
+      expect(screen.getByTestId("universal-axis-comparison-image")).toHaveClass(
+        "[&>img]:object-scale-down",
+      );
+      expect(screen.getByTestId("universal-axis-cap-start")).not.toHaveClass(
+        "[&>img]:object-scale-down",
       );
     });
   });

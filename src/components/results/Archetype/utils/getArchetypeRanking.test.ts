@@ -134,6 +134,7 @@ describe("getArchetypeRanking()", () => {
       expect(getArchetypeRanking([hidden("a", 80), hidden("b", 60)])).toEqual({
         leader: null,
         rest: [],
+        isLeaderScored: false,
       });
     });
   });
@@ -148,14 +149,23 @@ describe("getArchetypeRanking()", () => {
   });
 
   it("returns no leader for an empty list", () => {
-    expect(getArchetypeRanking([])).toEqual({ leader: null, rest: [] });
+    expect(getArchetypeRanking([])).toEqual({
+      leader: null,
+      rest: [],
+      isLeaderScored: false,
+    });
   });
 
   it("returns no leader for a missing or malformed list", () => {
-    expect(getArchetypeRanking()).toEqual({ leader: null, rest: [] });
+    expect(getArchetypeRanking()).toEqual({
+      leader: null,
+      rest: [],
+      isLeaderScored: false,
+    });
     expect(getArchetypeRanking("x" as unknown as ArchetypeEntry[])).toEqual({
       leader: null,
       rest: [],
+      isLeaderScored: false,
     });
     expect(
       ids(
@@ -167,5 +177,45 @@ describe("getArchetypeRanking()", () => {
         ]).rest,
       ),
     ).toEqual(["a"]);
+  });
+});
+
+describe("getArchetypeRanking()", () => {
+  describe("given a leader with a match of its own", () => {
+    it("says that the leader is scored, at zero as well", () => {
+      expect(
+        getArchetypeRanking([archetype("a", 20), archetype("b")])
+          .isLeaderScored,
+      ).toBe(true);
+      expect(
+        getArchetypeRanking([archetype("a", 0), archetype("b")]).isLeaderScored,
+      ).toBe(true);
+    });
+  });
+
+  describe("given archetypes none of which has a match", () => {
+    it("still puts the first one first, at zero, and says that it is not scored", () => {
+      const ranking = getArchetypeRanking([archetype("a"), archetype("b")]);
+
+      expect(ranking.leader).toMatchObject({
+        orientation: { id: "a" },
+        match: 0,
+      });
+      expect(ranking.isLeaderScored).toBe(false);
+    });
+
+    it("says the same of a match that is not a number", () => {
+      expect(
+        getArchetypeRanking([archetype("a", Number.NaN)]).isLeaderScored,
+      ).toBe(false);
+    });
+  });
+
+  describe("given no archetype to rank", () => {
+    it("says that nobody is scored", () => {
+      expect(getArchetypeRanking([]).isLeaderScored).toBe(false);
+      expect(getArchetypeRanking(undefined).isLeaderScored).toBe(false);
+      expect(getArchetypeRanking([hidden("a", 90)]).isLeaderScored).toBe(false);
+    });
   });
 });

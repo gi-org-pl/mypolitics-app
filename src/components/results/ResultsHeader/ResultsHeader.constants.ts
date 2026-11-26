@@ -4,6 +4,7 @@ export const MIN_CONFIDENCE = 0;
 export const MAX_CONFIDENCE = 100;
 
 export const BAND_CLASS_NAME: Record<ResultsHeaderBand, string> = {
+  none: "text-gi-red",
   partial: "text-gi-orange",
   match: "text-gi-green",
 };

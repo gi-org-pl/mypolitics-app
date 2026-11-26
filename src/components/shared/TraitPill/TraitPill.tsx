@@ -2,9 +2,14 @@ import { Avatar } from "@gi-org-pl/athena";
 import type { CSSProperties } from "react";
 
 import { HATCH_CLASS_NAME, HATCH_LIGHT_CLASS_NAME } from "@/constants/hatch";
+import {
+  AVATAR_IMAGE_FIT_CLASS_NAMES,
+  IMAGE_FIT_CLASS_NAMES,
+} from "@/constants/image";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { isLightColor } from "@/utils/color/isLightColor";
 import { toSingleLine } from "@/utils/text/toSingleLine";
+import { getImageKind } from "@/utils/url/getImageKind";
 import { useUrlFailure } from "@/utils/url/useUrlFailure";
 
 import type { TraitPillProps } from "./TraitPill.types";
@@ -56,7 +61,7 @@ export const TraitPill = ({
             src={orientation.imageUrl}
             alt=""
             onError={markFailed}
-            className={`-mx-2 size-8 shrink-0 object-cover ${isLight ? "brightness-0" : ""}`}
+            className={`-mx-2 size-8 shrink-0 ${IMAGE_FIT_CLASS_NAMES[getImageKind(orientation.imageUrl)]} ${isLight ? "brightness-0" : ""}`}
           />
         )}
         <span
@@ -72,7 +77,7 @@ export const TraitPill = ({
           size="small"
           src={otherOrientation?.imageUrl}
           dataTestId="trait-pill-avatar"
-          className="-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash has-[>img]:bg-gi-primary"
+          className={`-ml-[11px] size-[22px] shrink-0 rounded-full border border-gi-primary bg-gi-ash has-[>img]:bg-gi-primary ${AVATAR_IMAGE_FIT_CLASS_NAMES[getImageKind(otherOrientation?.imageUrl)]}`}
         />
       )}
     </div>

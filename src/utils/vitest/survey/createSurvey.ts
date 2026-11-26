@@ -112,5 +112,6 @@ export const createSurvey = (overrides: Partial<Survey> = {}): Survey => ({
       ],
     },
   ],
+  resultModules: [],
   ...overrides,
 });
