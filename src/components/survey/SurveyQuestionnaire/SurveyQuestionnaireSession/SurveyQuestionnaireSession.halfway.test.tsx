@@ -2,6 +2,7 @@ import { act, fireEvent, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Survey } from "@/types/survey";
+import { doNothing } from "@/utils/function/doNothing";
 import { getSurveySessionStore } from "@/utils/survey/session/getSurveySessionStore";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 import { createNineQuestionSurvey } from "@/utils/vitest/survey/createNineQuestionSurvey";
@@ -37,7 +38,9 @@ const renderScreen = (done = 4, overrides: Partial<Survey> = {}) => {
   store.setState(createStartedSession(survey, done), true);
 
   return {
-    ...renderWithI18n(<SurveyQuestionnaireSession survey={survey} />),
+    ...renderWithI18n(
+      <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+    ),
     survey,
     getSession: store.getState,
   };
@@ -163,7 +166,9 @@ describe("<SurveyQuestionnaireSession /> - the halfway card", () => {
       answerQuestion();
       press(CONTINUE);
       unmount();
-      renderWithI18n(<SurveyQuestionnaireSession survey={survey} />);
+      renderWithI18n(
+        <SurveyQuestionnaireSession survey={survey} onResultOpen={doNothing} />,
+      );
 
       expect(screen.getByText(SIXTH_STATEMENT)).toBeVisible();
       expect(queryCard()).not.toBeInTheDocument();

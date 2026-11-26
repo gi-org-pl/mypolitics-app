@@ -5,6 +5,7 @@ import {
   surveyResponseSchema,
 } from "@/services/api/schemas/survey";
 import { readQuizOrientations } from "@/services/api/utils/orientation/readQuizOrientations";
+import { readSurveyResultModules } from "@/services/api/utils/result-module/readSurveyResultModules";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
 import { uniqueBy } from "@/utils/array/uniqueBy";
 import { parseItems } from "@/utils/zod/parseItems";
@@ -16,9 +17,13 @@ import { toSurveyQuestion } from "./toSurveyQuestion";
 
 const OFFICIAL_SURVEY_TYPE = "OFFICIAL";
 
+// `language` is the one the quiz was asked for in. The API has already put
+// its texts into one language; the app's own list of result modules is put
+// into this one.
 export const readSurvey = (
   response: unknown,
   surveyId: string,
+  language: string,
 ): SurveyLoadResult => {
   const { success, data } = surveyResponseSchema.safeParse(response);
 
@@ -40,6 +45,7 @@ export const readSurvey = (
     parseItems(data.axis, axisResponseSchema),
     ({ id }) => id,
   ).map((axis) => toSurveyAxis(axis, { orientationIds }));
+  const axisIds = new Set(axes.map(({ id }) => id));
 
   // A question is dropped before the duplicates are, so that the one kept is
   // the first that can be asked.
@@ -71,6 +77,11 @@ export const readSurvey = (
       categories,
       axes,
       questions,
+      resultModules: readSurveyResultModules(
+        data.resultModules,
+        { id: surveyId, language },
+        { orientationIds, axisIds },
+      ),
     },
   };
 };

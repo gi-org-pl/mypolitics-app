@@ -147,7 +147,7 @@ describe("getLatestSurvey()", () => {
 
       const result = await getLatestSurvey(PROJECT_ID, "pl");
 
-      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID));
+      expect(result).toEqual(readSurvey(surveyResponse, SURVEY_ID, "pl"));
       expect(result).toMatchObject({
         status: SurveyLoadStatus.Ready,
         survey: {
@@ -212,7 +212,7 @@ describe("getLatestSurvey()", () => {
         .mockImplementationOnce(createApiReply(200, surveyResponse));
 
       expect(await getLatestSurvey(PROJECT_ID, "en")).toEqual(
-        readSurvey(surveyResponse, SURVEY_ID),
+        readSurvey(surveyResponse, SURVEY_ID, "en"),
       );
       expect(getRequests()).toEqual([
         {

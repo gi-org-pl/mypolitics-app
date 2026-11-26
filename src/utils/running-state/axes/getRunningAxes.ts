@@ -6,10 +6,10 @@ import type {
 } from "@/types/checkpoint";
 import type { Orientation } from "@/types/orientation";
 import type { Survey } from "@/types/survey";
+import { toResultEntry } from "@/utils/results/toResultEntry";
 import { getFedOrientationIds } from "@/utils/running-state/orientations/getFedOrientationIds";
 import { getOrientationIds } from "@/utils/running-state/orientations/getOrientationIds";
 import { getQuestionMaximums } from "@/utils/running-state/scores/getQuestionMaximums";
-import { getSideValue } from "@/utils/running-state/scores/getSideValue";
 import { getAxisPoles } from "./getAxisPoles";
 import { toKnownAxis } from "./toKnownAxis";
 import { toRunningAxis } from "./toRunningAxis";
@@ -30,7 +30,7 @@ export const getRunningAxes = (
 
   const toEntry = (orientation?: Orientation): AxisEntry | undefined =>
     orientation && fedIds.has(orientation.id)
-      ? { orientation, value: getSideValue(scores, [orientation.id]) }
+      ? toResultEntry(orientation, scores)
       : undefined;
 
   return survey.axes.flatMap((axis) => {
