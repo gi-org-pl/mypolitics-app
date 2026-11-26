@@ -465,4 +465,86 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
   ],
+  "664b9e8421aaa90007ed7bdd": [
+    {
+      id: "c2c97a6e-7e43-43e4-865d-3dcb3b47c3cd", // the header of the EuroWyborczy 2024 quiz
+      type: "header",
+      position: 0,
+      orientationIds: [
+        "664b9ebc21aaa90007ed7c2d",
+        "664b9ec021aaa90007ed7c2e",
+        "664b9ecb21aaa90007ed7c30",
+        "664b9ed321aaa90007ed7c33",
+        "664b9ee021aaa90007ed7c34",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "lowMatch",
+          value: "named",
+        },
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z orientacją",
+            en: "With an orientation",
+          },
+        },
+      ],
+    },
+    {
+      id: "afab67e7-07a6-4e70-8cd9-c059dbf0aea9", // its orientations
+      type: "horizontal_bar",
+      position: 1,
+      column: "start",
+      orientationIds: [
+        "664b9ebc21aaa90007ed7c2d",
+        "664b9ec021aaa90007ed7c2e",
+        "664b9ecb21aaa90007ed7c30",
+        "664b9ed321aaa90007ed7c33",
+        "664b9ee021aaa90007ed7c34",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Orientacje",
+            en: "Orientations",
+          },
+        },
+        {
+          key: "visibleRows",
+          value: 5,
+        },
+      ],
+    },
+    {
+      id: "329ba893-c3f8-4c79-8794-53f6e77f5cbb", // its orientations by category
+      type: "horizontal_bar",
+      position: 2,
+      column: "end",
+      orientationIds: [
+        "664b9ebc21aaa90007ed7c2d",
+        "664b9ec021aaa90007ed7c2e",
+        "664b9ecb21aaa90007ed7c30",
+        "664b9ed321aaa90007ed7c33",
+        "664b9ee021aaa90007ed7c34",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Kategorie",
+            en: "Categories",
+          },
+        },
+        {
+          key: "groupBy",
+          value: "category",
+        },
+      ],
+    },
+  ],
 };
