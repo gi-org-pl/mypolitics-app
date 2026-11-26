@@ -17,6 +17,7 @@ import { getResultLinkUrl } from "@/utils/survey/email-capture/getResultLinkUrl"
 export const QUIZ_PROJECT_IDS: Record<string, string> = {
   mypolitics: "5ab50822-e95e-4c7c-a1d6-14aceb68f108",
   prezydencki2025: "69ef6c38-7292-4096-a9ef-a58e682dbfde",
+  eurowyborczy2024: "c5d0fe74-348b-4d6c-a4f0-e9b90e7bdea9",
 };
 
 // The seven phases of a session, in their fixed order.

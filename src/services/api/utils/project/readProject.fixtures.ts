@@ -22,3 +22,11 @@ export const electionQuizProject = {
   id: "044a0a2b-8fce-4308-927e-7f4a4c29be84",
   latestSurveyId: null,
 };
+
+// "#EuroWyborczy2024", migrated from the old infrastructure. The API does not have
+// this project yet: it is what the local mock sends, and the identifiers are
+// provisional until the quiz is imported.
+export const eurowyborczyQuizProject = {
+  id: "c5d0fe74-348b-4d6c-a4f0-e9b90e7bdea9",
+  latestSurveyId: "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+};

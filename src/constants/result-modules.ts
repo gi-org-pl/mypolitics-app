@@ -2,7 +2,8 @@ import type { OwnResultModule } from "@/types/results";
 
 // The API sends no result modules yet. Until it does, the app keeps the list
 // of each quiz it knows, by the identifier of the survey: the identity quiz
-// first, the presidential quiz second. Each list says what the result page of
+// first, the presidential quiz second, the EuroWyborczy 2024 quiz third. Each
+// list says what the result page of
 // the old site showed for its quiz: which cards, in which order, with which
 // explanations, and what happens below a partial match - the identity quiz
 // named the closest identity all the same, with a notice, and said that there
@@ -461,6 +462,81 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
         {
           key: "groupBy",
           value: "category",
+        },
+      ],
+    },
+  ],
+  "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee": [
+    {
+      id: "c49938e2-5397-4d73-b44f-ab616d1d97f5", // the header of the EuroWyborczy 2024 quiz
+      type: "header",
+      position: 0,
+      orientationIds: [
+        "fefa25d8-6dd3-4e51-8903-1c20c05047f4", // Pro-Euro
+        "bc741023-18d2-49e9-971f-54248a4e4f74", // Anty-Euro
+        "70d38b28-f27d-4560-89da-bb09cd974c91", // Federalizm
+        "07f653eb-ed71-4561-a676-ba5027441a19", // Paneuropeizm
+        "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8", // Eurosceptycyzm
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "label.compare",
+          value: {
+            pl: "Z ideologią",
+            en: "With an ideology",
+          },
+        },
+      ],
+    },
+    {
+      id: "b1d5534a-26c5-4d51-9078-11d947e30122", // its ideologies
+      type: "horizontal_bar",
+      position: 1,
+      column: "start",
+      orientationIds: [
+        "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+        "bc741023-18d2-49e9-971f-54248a4e4f74",
+        "70d38b28-f27d-4560-89da-bb09cd974c91",
+        "07f653eb-ed71-4561-a676-ba5027441a19",
+        "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+      ],
+      axisIds: [],
+      values: [
+        {
+          key: "title",
+          value: {
+            pl: "Ideologie",
+            en: "Ideologies",
+          },
+        },
+        {
+          key: "description",
+          value: {
+            pl: "Pokazujemy, jak blisko Twoich odpowiedzi jest każda z pięciu postaw wobec Unii Europejskiej. Im dłuższy pasek, tym więcej Twoich odpowiedzi wskazuje na tę postawę.",
+            en: "This shows how close each of the five attitudes to the European Union is to your answers. The longer the bar, the more of your answers point to that attitude.",
+          },
+        },
+        {
+          key: "visibleRows",
+          value: 5,
+        },
+      ],
+    },
+    {
+      id: "c1dd1bee-e599-440c-a0ca-241579beab49", // its axis
+      type: "double_axis",
+      position: 2,
+      column: "end",
+      orientationIds: [],
+      axisIds: ["072cacde-0863-4865-95b1-67cf8bdd0d0f"], // Federalizm - Eurosceptycyzm
+      values: [
+        {
+          key: "description",
+          value: {
+            pl: "Oś pokazuje, czy Twoje poglądy są bliższe Federalizmowi, czy Eurosceptycyzmowi.",
+            en: "The axis shows whether your views are closer to Federalism or to Euroscepticism.",
+          },
         },
       ],
     },

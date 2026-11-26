@@ -8,6 +8,7 @@ import { getModuleValues } from "@/utils/result-modules/values/getModuleValues";
 
 import { OWN_RESULT_MODULES } from "./result-modules";
 import {
+  EUROWYBORCZY_SURVEY_ID,
   IDENTITY_SURVEY_ID,
   LIVE_QUIZ_IDS,
   OWN_RECORD_IDS,
@@ -18,6 +19,7 @@ import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
 const SURVEYS = [
   ["the identity quiz", IDENTITY_SURVEY_ID],
   ["the presidential quiz", PRESIDENTIAL_SURVEY_ID],
+  ["the EuroWyborczy 2024 quiz", EUROWYBORCZY_SURVEY_ID],
 ] as const;
 
 // What a record held as fields of its own before everything about a module
@@ -52,10 +54,11 @@ const withOrientationIds = (resolved: unknown): unknown =>
   );
 
 describe("OWN_RESULT_MODULES", () => {
-  it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
+  it("keeps a list for the identity quiz, the presidential quiz and the migrated EuroWyborczy 2024 quiz, and for no other", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      EUROWYBORCZY_SURVEY_ID,
     ]);
   });
 
@@ -87,6 +90,11 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
       ],
+      [
+        OWN_RECORD_IDS.eurowyborczyHeader,
+        OWN_RECORD_IDS.eurowyborczyIdeologies,
+        OWN_RECORD_IDS.eurowyborczyAxis,
+      ],
     ]);
   });
 
@@ -101,6 +109,9 @@ describe("OWN_RESULT_MODULES", () => {
       presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
       presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
       presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+      eurowyborczyHeader: "c49938e2-5397-4d73-b44f-ab616d1d97f5",
+      eurowyborczyIdeologies: "b1d5534a-26c5-4d51-9078-11d947e30122",
+      eurowyborczyAxis: "c1dd1bee-e599-440c-a0ca-241579beab49",
     });
   });
 
@@ -274,7 +285,7 @@ describe("OWN_RESULT_MODULES", () => {
     });
   });
 
-  it("sets the settings the old result pages had in code, and no other", () => {
+  it("sets the settings the old result pages had in code and the one the migrated quiz chooses, and no other", () => {
     expect(
       Object.values(OWN_RESULT_MODULES).flatMap((records) =>
         records.flatMap(({ id, values }) =>
@@ -290,6 +301,7 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [OWN_RECORD_IDS.eurowyborczyIdeologies, "visibleRows", 5],
     ]);
   });
 

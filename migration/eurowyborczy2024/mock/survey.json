@@ -1,0 +1,1337 @@
+{
+  "title": "#EuroWyborczy2024. Test poglądów na wybory europarlamentarne",
+  "type": "OFFICIAL",
+  "averageFinishTime": 10,
+  "algorithm": "default",
+  "defaultLanguage": "pl",
+  "supportedLanguages": ["pl"],
+  "orientations": [
+    {
+      "id": "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+      "type": "IDEOLOGY",
+      "color": "#d7c314",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-pro_euro_762c7f1d08.png",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "generalName": "Pro-Euro",
+      "explanation": null,
+      "linkedOrientations": []
+    },
+    {
+      "id": "bc741023-18d2-49e9-971f-54248a4e4f74",
+      "type": "IDEOLOGY",
+      "color": "#f44336",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-anty_euro_f4e4da13d0.png",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "generalName": "Anty-Euro",
+      "explanation": null,
+      "linkedOrientations": []
+    },
+    {
+      "id": "70d38b28-f27d-4560-89da-bb09cd974c91",
+      "type": "IDEOLOGY",
+      "color": "#3f51b5",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-federacja_c96aac7bff.png",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "generalName": "Federalizm",
+      "explanation": null,
+      "linkedOrientations": []
+    },
+    {
+      "id": "07f653eb-ed71-4561-a676-ba5027441a19",
+      "type": "IDEOLOGY",
+      "color": "#03a9f4",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-paneuropeizm_9e054c64de.png",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "generalName": "Paneuropeizm",
+      "explanation": null,
+      "linkedOrientations": []
+    },
+    {
+      "id": "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+      "type": "IDEOLOGY",
+      "color": "#795548",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-eurosceptyzm_8a826bb682.png",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "generalName": "Eurosceptycyzm",
+      "explanation": null,
+      "linkedOrientations": []
+    }
+  ],
+  "categories": [
+    {
+      "id": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "name": "Ustrój",
+      "weight": 1
+    },
+    {
+      "id": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "name": "Energetyka",
+      "weight": 1
+    },
+    {
+      "id": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "name": "Klimat",
+      "weight": 1
+    },
+    {
+      "id": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "name": "Migracja",
+      "weight": 1
+    },
+    {
+      "id": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "name": "Obronność",
+      "weight": 1
+    }
+  ],
+  "axis": [
+    {
+      "id": "072cacde-0863-4865-95b1-67cf8bdd0d0f",
+      "name": "Federalizm - Eurosceptycyzm",
+      "type": "axis",
+      "description": null,
+      "positiveOrientations": ["70d38b28-f27d-4560-89da-bb09cd974c91"],
+      "negativeOrientations": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+    },
+    {
+      "id": "c152ab88-9df2-452d-bf42-16a7d870bcb4",
+      "name": "Federalizm-Eurosceptycyzm",
+      "type": "compass_x_axis",
+      "description": null,
+      "positiveOrientations": ["70d38b28-f27d-4560-89da-bb09cd974c91"],
+      "negativeOrientations": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+    }
+  ],
+  "questions": [
+    {
+      "id": "67642b63-b1f2-44ce-894d-9fcfee4f138a",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "Polska powinna wejść do strefy Euro",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "7c5ccded-f764-4219-a357-d145fec7bce6",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "67642b63-b1f2-44ce-894d-9fcfee4f138a",
+          "orientationIds": ["fefa25d8-6dd3-4e51-8903-1c20c05047f4"]
+        },
+        {
+          "id": "a3886d4a-ad9b-44eb-883c-9f55d2e1f5aa",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "67642b63-b1f2-44ce-894d-9fcfee4f138a",
+          "orientationIds": ["fefa25d8-6dd3-4e51-8903-1c20c05047f4"]
+        },
+        {
+          "id": "77d172c9-c4af-48b2-bcea-3ae851dba4e5",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "67642b63-b1f2-44ce-894d-9fcfee4f138a",
+          "orientationIds": ["bc741023-18d2-49e9-971f-54248a4e4f74"]
+        },
+        {
+          "id": "a97b9970-654d-4b52-9dee-56c2d19c799a",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "67642b63-b1f2-44ce-894d-9fcfee4f138a",
+          "orientationIds": ["bc741023-18d2-49e9-971f-54248a4e4f74"]
+        }
+      ]
+    },
+    {
+      "id": "62bfd320-c42c-48ba-b3c6-1a0def185952",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "UE powinna mieć możliwość nakładania własnych podatków",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "1b837988-2776-40d8-b032-c747bb260631",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "62bfd320-c42c-48ba-b3c6-1a0def185952",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "9db22371-1acb-4278-83fe-4686c47a3dab",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "62bfd320-c42c-48ba-b3c6-1a0def185952",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "4bf327fa-6b1a-4cd4-a42c-4306310d10d4",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "62bfd320-c42c-48ba-b3c6-1a0def185952",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "ba085a10-8a6c-4d10-bf04-1ad8bb0fe12b",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "62bfd320-c42c-48ba-b3c6-1a0def185952",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "54aeb113-8b9b-4d91-b78f-156cb8f3ae45",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "Decyzje związane z polityką zagraniczną powinny na szczeblu UE być podejmowane wyłącznie jednomyślnie",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "a564e79c-6528-4d5b-bd97-3898f388a348",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "54aeb113-8b9b-4d91-b78f-156cb8f3ae45",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "8e71aca2-349a-476d-8cf0-aefe38d510d0",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "54aeb113-8b9b-4d91-b78f-156cb8f3ae45",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "329b2396-8800-417e-b1ef-a8ddef56804e",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "54aeb113-8b9b-4d91-b78f-156cb8f3ae45",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "1472496e-f521-4eca-be8a-699b42f008cb",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "54aeb113-8b9b-4d91-b78f-156cb8f3ae45",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        }
+      ]
+    },
+    {
+      "id": "3a1de9b5-1a9c-4048-9189-7c54d33a0e32",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "Prawo UE powinno przestać mieć pierwszeństwo nad prawem krajowym",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "afc8bbd3-011f-40be-a501-ffe3f894d26a",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "3a1de9b5-1a9c-4048-9189-7c54d33a0e32",
+          "orientationIds": [
+            "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+            "bc741023-18d2-49e9-971f-54248a4e4f74"
+          ]
+        },
+        {
+          "id": "01f8a1bc-5ce5-4bc2-8679-4c6e9f4a5c0d",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "3a1de9b5-1a9c-4048-9189-7c54d33a0e32",
+          "orientationIds": [
+            "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+            "bc741023-18d2-49e9-971f-54248a4e4f74"
+          ]
+        },
+        {
+          "id": "506324c0-6f2a-44fc-a3b6-2a084fd426b8",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "3a1de9b5-1a9c-4048-9189-7c54d33a0e32",
+          "orientationIds": [
+            "70d38b28-f27d-4560-89da-bb09cd974c91",
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4"
+          ]
+        },
+        {
+          "id": "f0f544b3-834d-4e1f-8038-3a1abb3e581d",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "3a1de9b5-1a9c-4048-9189-7c54d33a0e32",
+          "orientationIds": [
+            "70d38b28-f27d-4560-89da-bb09cd974c91",
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ecffbca7-6566-4a1a-a314-a3520b36a788",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "UE w obecnej formie stanowi zagrożenie dla suwerenności państw członkowskich",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "f467d534-644d-44ad-99fd-3165f89ee8db",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "ecffbca7-6566-4a1a-a314-a3520b36a788",
+          "orientationIds": [
+            "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+            "bc741023-18d2-49e9-971f-54248a4e4f74"
+          ]
+        },
+        {
+          "id": "5bc20ac9-08ca-4f28-abf0-c758880ae21f",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "ecffbca7-6566-4a1a-a314-a3520b36a788",
+          "orientationIds": [
+            "174bd82a-4b51-4cb3-8c7a-2b443c3c37e8",
+            "bc741023-18d2-49e9-971f-54248a4e4f74"
+          ]
+        },
+        {
+          "id": "dee668dc-bbba-44ee-ae2a-00bca4509960",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "ecffbca7-6566-4a1a-a314-a3520b36a788",
+          "orientationIds": [
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "d0f46da4-ab4b-4ab9-86a5-72f7791387fd",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "ecffbca7-6566-4a1a-a314-a3520b36a788",
+          "orientationIds": [
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1529cca8-bc09-44a1-b582-c0681f1d1c1e",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "8343d6e0-20a7-4e1e-8fcf-32eaf6f6af0d",
+      "text": "W całej UE powinna obowiązywać taka sama płaca minimalna",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "26d9d46a-a1be-475c-857c-9da24b3d0410",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "1529cca8-bc09-44a1-b582-c0681f1d1c1e",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "74bc3337-0c26-4faa-ad3d-0d59037096f1",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "1529cca8-bc09-44a1-b582-c0681f1d1c1e",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "3727ee1a-cf96-422e-a889-5633146dabde",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "1529cca8-bc09-44a1-b582-c0681f1d1c1e",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "cb6f3dcd-9aaf-4c08-84b2-bdb24eb7de64",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "1529cca8-bc09-44a1-b582-c0681f1d1c1e",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "5f571ffa-8c83-4cf8-b093-053a3b5bff2f",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "UE powinna dążyć do pełnej niezależności energetycznej",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "b8cf90c9-0ac8-40bf-964c-f46d7582fd0a",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "5f571ffa-8c83-4cf8-b093-053a3b5bff2f",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "bdfc75f4-d16f-4d6f-8610-b3aed89a6732",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "5f571ffa-8c83-4cf8-b093-053a3b5bff2f",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "24217458-7da9-4937-98e7-14b3dee6cb22",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "5f571ffa-8c83-4cf8-b093-053a3b5bff2f",
+          "orientationIds": []
+        },
+        {
+          "id": "34eb7446-04df-4d47-899f-bc4549d7af7a",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "5f571ffa-8c83-4cf8-b093-053a3b5bff2f",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "d180eacd-0692-47ec-9a58-4322d2327202",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "Należy jak najszybciej odejść od paliw kopalnych w całej UE",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "ddec2efb-ca86-484d-8fd2-1ba20997aa69",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "d180eacd-0692-47ec-9a58-4322d2327202",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "36da683c-426e-456f-a958-6a40ef08db2f",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "d180eacd-0692-47ec-9a58-4322d2327202",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "8349369f-9428-4251-bece-32cd23465c8c",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "d180eacd-0692-47ec-9a58-4322d2327202",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "97f495fe-1a51-4d6d-a3f9-9ad9259b4762",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "d180eacd-0692-47ec-9a58-4322d2327202",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "b2b5ec1d-c754-44b5-b886-4786f219dd47",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "UE powinna móc ingerować w politykę energetyczną państw członkowskich",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "2e26ed75-f698-4db4-a7cb-cbef504b3887",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "b2b5ec1d-c754-44b5-b886-4786f219dd47",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "a9c99b7a-94f6-492e-8435-7ea6a780d1be",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "b2b5ec1d-c754-44b5-b886-4786f219dd47",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "af6f96da-14c2-49ef-b03a-ef2c4beb0e96",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "b2b5ec1d-c754-44b5-b886-4786f219dd47",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "fde139e9-e62a-409b-9d7b-1d8693f8c1b6",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "b2b5ec1d-c754-44b5-b886-4786f219dd47",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "7a14105e-76b5-49d9-9779-010da784ee58",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "Energia jądrowa powinna być priorytetowo uwzględniona w europejskiej transformacji energetycznej",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "8a469f49-044b-4578-8355-feb89b2667cc",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "7a14105e-76b5-49d9-9779-010da784ee58",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "14be3eab-722b-475d-9089-4c4f6c9f548f",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "7a14105e-76b5-49d9-9779-010da784ee58",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "eae17951-07a1-4696-a462-b432ca42f940",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "7a14105e-76b5-49d9-9779-010da784ee58",
+          "orientationIds": []
+        },
+        {
+          "id": "287a1d64-05ac-4af2-aaef-42f427d52c35",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "7a14105e-76b5-49d9-9779-010da784ee58",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "17041902-8631-411b-b4cf-ddd7e78d4d5d",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "UE powinna obligatoryjnie wymagać instalacji fotowoltaicznych przy budowie nowych budynków",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "6326bb6a-4acc-4a7a-89fe-4ae0a7d03093",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "17041902-8631-411b-b4cf-ddd7e78d4d5d",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "57c5adf9-f920-4034-86c2-79d2fc940c30",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "17041902-8631-411b-b4cf-ddd7e78d4d5d",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "cf74b554-44c5-4a94-acf3-04b3c65f8004",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "17041902-8631-411b-b4cf-ddd7e78d4d5d",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "b400ea37-04c1-4736-94e2-80689a69ca46",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "17041902-8631-411b-b4cf-ddd7e78d4d5d",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "766f950b-f897-4860-b23f-a1aca3c2cbfb",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "4c061524-34db-4a1a-ac62-f20c9dbc2515",
+      "text": "UE powinna w większym stopniu dotować transformację energetyczną mniej zamożnych członków wspólnoty",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "aef331bd-9e50-48ea-955b-a659b1d10ea9",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "766f950b-f897-4860-b23f-a1aca3c2cbfb",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "b5f5c6a1-14d1-49df-86cc-8aed2de69736",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "766f950b-f897-4860-b23f-a1aca3c2cbfb",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "a3961bd8-03c9-4025-8efe-c3aca765cd17",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "766f950b-f897-4860-b23f-a1aca3c2cbfb",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "686e0115-1ad2-478f-bcc5-436b1e10eb1b",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "766f950b-f897-4860-b23f-a1aca3c2cbfb",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "47c0d09f-5b97-4533-b6ab-d52c0037c554",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "UE powinna utrzymać zakaz produkcji nowych samochodów spalinowych od roku 2035",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "5f6995f5-d467-401b-bddc-50d19e7d8abd",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "47c0d09f-5b97-4533-b6ab-d52c0037c554",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "1aa54b23-bfa4-494a-8797-8f17d1915e03",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "47c0d09f-5b97-4533-b6ab-d52c0037c554",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "9c6f3855-a3c6-49b3-8fef-6efcf954085b",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "47c0d09f-5b97-4533-b6ab-d52c0037c554",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "17d02c50-c8cc-4779-a9ba-7e13a1bf99d6",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "47c0d09f-5b97-4533-b6ab-d52c0037c554",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "73b2e334-1fac-4387-a907-102f592439ad",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "Należy nałożyć cła na chińskie \"zielone towary\" takie jak fotowoltaika i elektryczne samochody w celu ochrony europejskich producentów",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "dd8dd894-93ab-4f91-b080-e05a9aa3e5a6",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "73b2e334-1fac-4387-a907-102f592439ad",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "a45840cd-34f9-44f9-9d66-a212d30a5de9",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "73b2e334-1fac-4387-a907-102f592439ad",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "00348b98-a55c-49e2-b84b-de646447ecea",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "73b2e334-1fac-4387-a907-102f592439ad",
+          "orientationIds": []
+        },
+        {
+          "id": "a79e657a-1df9-45bf-babd-4b4709b07051",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "73b2e334-1fac-4387-a907-102f592439ad",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "89febad0-d180-4696-a0b2-afed9137f02d",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "Priorytetem dla UE powinna być walka ze zmianami klimatu",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "2d5642c7-71e8-464e-9ce3-73ebdfbc2e95",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "89febad0-d180-4696-a0b2-afed9137f02d",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "40fba85b-f239-40b3-9787-028dca54dbbe",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "89febad0-d180-4696-a0b2-afed9137f02d",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "1f12ad62-285a-4f15-abcc-5e03a33117b7",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "89febad0-d180-4696-a0b2-afed9137f02d",
+          "orientationIds": []
+        },
+        {
+          "id": "560afa44-5260-4597-b7a6-168b56df08d7",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "89febad0-d180-4696-a0b2-afed9137f02d",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "ca8b13f5-d2cf-4f72-9a34-003c1ea59169",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "Czy popierasz cel Zielonego Ładu, jakim jest osiągnięcie neutralności klimatycznej UE do roku 2050?",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "c4ba56ea-3b56-4a9e-91d3-b2aa7ec4a588",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "ca8b13f5-d2cf-4f72-9a34-003c1ea59169",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "2e0f13ee-8d2e-4ce6-88bd-397a28de0639",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "ca8b13f5-d2cf-4f72-9a34-003c1ea59169",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "674289ab-614d-4b6f-b62d-83323f536c7d",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "ca8b13f5-d2cf-4f72-9a34-003c1ea59169",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "8a0d26be-366c-4cac-9226-cdfd36484d6e",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "ca8b13f5-d2cf-4f72-9a34-003c1ea59169",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "5e0f487a-1016-4e9a-925d-9205d8e1b8b7",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "UE powinna wymagać tworzenia stref czystego transportu w największych miastach krajów członkowskich",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "d5a4b75e-bcd8-46e4-b6b7-fd677be2f737",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "5e0f487a-1016-4e9a-925d-9205d8e1b8b7",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "18dfb251-c227-4161-937e-c8c58cb99b71",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "5e0f487a-1016-4e9a-925d-9205d8e1b8b7",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "b0ed3186-b5ca-44cd-bea0-12fdbac02c00",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "5e0f487a-1016-4e9a-925d-9205d8e1b8b7",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "140d3a88-731b-4b66-9277-7a9bd2d1cde0",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "5e0f487a-1016-4e9a-925d-9205d8e1b8b7",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "684c8531-2277-4d10-aa33-9bc63db629fa",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "ba2155af-ff2d-4cab-93f1-9115bb0a2559",
+      "text": "UE powinna zapewniać młodym darmowe przejazdy koleją",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "a757322e-effa-4cf9-aee7-a07484b72489",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "684c8531-2277-4d10-aa33-9bc63db629fa",
+          "orientationIds": [
+            "70d38b28-f27d-4560-89da-bb09cd974c91",
+            "07f653eb-ed71-4561-a676-ba5027441a19"
+          ]
+        },
+        {
+          "id": "5678c1f9-81ca-4a68-bdd6-172b90b3fe5b",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "684c8531-2277-4d10-aa33-9bc63db629fa",
+          "orientationIds": [
+            "70d38b28-f27d-4560-89da-bb09cd974c91",
+            "07f653eb-ed71-4561-a676-ba5027441a19"
+          ]
+        },
+        {
+          "id": "d659c6c6-59ce-4c94-b8c7-ea2f0e61cdca",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "684c8531-2277-4d10-aa33-9bc63db629fa",
+          "orientationIds": []
+        },
+        {
+          "id": "f02836f2-8f5d-41a3-9c49-c31d783ad1f3",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "684c8531-2277-4d10-aa33-9bc63db629fa",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "e5f5438a-0bc0-4285-beee-1bf4805a134b",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "Państwa członkowskie powinny zachować pełną suwerenność w zakresie polityki imigracyjnej",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "65370ce5-c952-4110-a857-8db15d9b094b",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "e5f5438a-0bc0-4285-beee-1bf4805a134b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "3d061c36-859f-40aa-848b-37dfc0b91386",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "e5f5438a-0bc0-4285-beee-1bf4805a134b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "28bb25dd-7fe1-4e21-9b72-40128ebfd338",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "e5f5438a-0bc0-4285-beee-1bf4805a134b",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "9e99367f-2f79-4304-817d-fac228c8a597",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "e5f5438a-0bc0-4285-beee-1bf4805a134b",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        }
+      ]
+    },
+    {
+      "id": "e61fbc84-62da-4eff-8cd5-28f53d7bb02b",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "Migranci powinni być relokowani między państwami członkowskimi UE w ramach paktu migracyjnego",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "71aaf605-7528-4a9e-addf-c735bd63ff4d",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "e61fbc84-62da-4eff-8cd5-28f53d7bb02b",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "33db80ed-f5ad-4e2a-b0aa-2dde05446e54",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "e61fbc84-62da-4eff-8cd5-28f53d7bb02b",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "66d5b3d3-7b9b-48c3-998b-858d0cd99915",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "e61fbc84-62da-4eff-8cd5-28f53d7bb02b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "3b3c2023-07f3-42e4-bac7-e399c3a39352",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "e61fbc84-62da-4eff-8cd5-28f53d7bb02b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "07d80376-8a70-410c-8cf3-1c7f1118a763",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "UE powinna dotować programy integracyjne uczące migrantów języków, kultury i wartości państw członkowskich",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "57fd1419-a910-4104-9beb-d825dd1f0e03",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "07d80376-8a70-410c-8cf3-1c7f1118a763",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "9be1a457-ae5d-4427-8383-1291b22ab0ef",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "07d80376-8a70-410c-8cf3-1c7f1118a763",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "b98b2361-3533-4d8b-a480-2556c3c8d175",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "07d80376-8a70-410c-8cf3-1c7f1118a763",
+          "orientationIds": []
+        },
+        {
+          "id": "3db31f8b-2642-42f4-ac93-2540be8dca38",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "07d80376-8a70-410c-8cf3-1c7f1118a763",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "332ce3f2-a216-48cf-8206-02c7aaa76e44",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "UE powinna udzielać wsparcia finansowego krajom przyjmujących najwięcej uchodźców",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "c614c02e-1829-477e-bec3-71b84b213bdf",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "332ce3f2-a216-48cf-8206-02c7aaa76e44",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "e04a5a68-ae43-4cdc-9a5a-77211ebd3a0f",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "332ce3f2-a216-48cf-8206-02c7aaa76e44",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "6f107932-c724-42d9-a3b4-5338a02ad656",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "332ce3f2-a216-48cf-8206-02c7aaa76e44",
+          "orientationIds": []
+        },
+        {
+          "id": "322b836e-b7a4-4fdd-ad29-b4f4cc0e799b",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "332ce3f2-a216-48cf-8206-02c7aaa76e44",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "576eb03d-8fd2-4871-b3eb-2b51026ca1eb",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "Polska powinna być zwolniona z obligatoryjnej relokacji migrantów za przyjęcie wielu uchodźców z Ukrainy",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "316bd2aa-60c3-4d4b-b461-1f86704160ba",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "576eb03d-8fd2-4871-b3eb-2b51026ca1eb",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "d7832004-401b-442d-a9c0-5376081dc4a8",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "576eb03d-8fd2-4871-b3eb-2b51026ca1eb",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "51f5361f-7121-40c5-91bf-4e8cbe7fa5a9",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "576eb03d-8fd2-4871-b3eb-2b51026ca1eb",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "86d2b3b4-346d-43a7-9098-ef8b1d41ab75",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "576eb03d-8fd2-4871-b3eb-2b51026ca1eb",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        }
+      ]
+    },
+    {
+      "id": "5a0cd947-a0e1-45e2-985e-0df9c7b94548",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b763e633-eae2-4bef-9736-fd51e74be35d",
+      "text": "UE powinna zachęcać do migracji wysoko wykwalifikowanych specjalistów",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "dafe248e-221e-4eef-910b-7156f0c5c9d6",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "5a0cd947-a0e1-45e2-985e-0df9c7b94548",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "2085a04b-4035-4fc6-bdbc-14deaac874cf",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "5a0cd947-a0e1-45e2-985e-0df9c7b94548",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "479cc576-443d-445a-857f-ba87bdfe3f32",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "5a0cd947-a0e1-45e2-985e-0df9c7b94548",
+          "orientationIds": []
+        },
+        {
+          "id": "26126c7a-7d1e-4471-a6f9-486d31945780",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "5a0cd947-a0e1-45e2-985e-0df9c7b94548",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "f532e6c4-d64a-4fb5-8e63-9c3cd2e233b6",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "Należy utworzyć wspólną armię UE",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "2c860b35-bf8e-4cb9-8a11-96eb7205534d",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "f532e6c4-d64a-4fb5-8e63-9c3cd2e233b6",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "bb0905dd-5214-4481-8d91-da6c46bdc1d8",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "f532e6c4-d64a-4fb5-8e63-9c3cd2e233b6",
+          "orientationIds": ["70d38b28-f27d-4560-89da-bb09cd974c91"]
+        },
+        {
+          "id": "529624f4-2146-42d0-a730-a63521724d19",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "f532e6c4-d64a-4fb5-8e63-9c3cd2e233b6",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "ae9fba10-d662-42ea-9dce-fa7e28eb2b7f",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "f532e6c4-d64a-4fb5-8e63-9c3cd2e233b6",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "73b5dda2-5828-42c7-acc7-92d1b0be3c23",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "UE powinna w większym stopniu wspierać finansowo obronność Ukrainy",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "26631fff-c44f-4696-bfba-5dc8888b3a6c",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "73b5dda2-5828-42c7-acc7-92d1b0be3c23",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "ff2bd721-ce05-4ca6-817f-4ae1b1b08d1e",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "73b5dda2-5828-42c7-acc7-92d1b0be3c23",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "94119b82-7913-4141-beed-e4d6d1a9e41b",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "73b5dda2-5828-42c7-acc7-92d1b0be3c23",
+          "orientationIds": []
+        },
+        {
+          "id": "79568776-214f-40f8-81c1-925d3df813c6",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "73b5dda2-5828-42c7-acc7-92d1b0be3c23",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "eca8d658-ce2f-4f72-94c4-4a8b1b7bbd39",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "Polska powinna wspierać jak najszybsze dołączenie Ukrainy do UE",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "ad73f0b4-a141-4b28-9a92-121a9ca93358",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "eca8d658-ce2f-4f72-94c4-4a8b1b7bbd39",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4"
+          ]
+        },
+        {
+          "id": "30f02b8b-1f46-411b-8738-01b79c1a2e1d",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "eca8d658-ce2f-4f72-94c4-4a8b1b7bbd39",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "fefa25d8-6dd3-4e51-8903-1c20c05047f4"
+          ]
+        },
+        {
+          "id": "7994c71b-a72a-42fd-ab5e-ef8538a0e8df",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "eca8d658-ce2f-4f72-94c4-4a8b1b7bbd39",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "72135ffc-9764-4f69-bf64-6c04583e5b0b",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "eca8d658-ce2f-4f72-94c4-4a8b1b7bbd39",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "1c59173f-b23e-4a6a-8814-2bb006624402",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "UE powinna wspierać finansowo obronność krajów graniczących z wrogimi państwami",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "cb7fa797-50e5-4340-8c23-7346a4cc9858",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "1c59173f-b23e-4a6a-8814-2bb006624402",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "8ce7f3ea-dc9c-4b60-a31a-867db378a7b1",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "1c59173f-b23e-4a6a-8814-2bb006624402",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "e8fd0425-2edf-45a9-9bff-c9e3de6e85ab",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "1c59173f-b23e-4a6a-8814-2bb006624402",
+          "orientationIds": []
+        },
+        {
+          "id": "190edee0-2cd2-4360-b20e-9f0e527b3a8b",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "1c59173f-b23e-4a6a-8814-2bb006624402",
+          "orientationIds": []
+        }
+      ]
+    },
+    {
+      "id": "610cff3a-3488-496c-8069-86a4fc35cd2b",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "W przypadku ataku na jakiekolwiek państwo UE, np. Estonię i Łotwę, wszystkie kraje członkowskie powinny obligatoryjnie wysłać swoje wojska na pomoc",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "214f52f4-7871-4f92-8b76-7f847447ee9c",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "610cff3a-3488-496c-8069-86a4fc35cd2b",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "404d1609-690b-4d33-b80a-191a27e23482",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "610cff3a-3488-496c-8069-86a4fc35cd2b",
+          "orientationIds": [
+            "07f653eb-ed71-4561-a676-ba5027441a19",
+            "70d38b28-f27d-4560-89da-bb09cd974c91"
+          ]
+        },
+        {
+          "id": "e6bb59ae-b84d-4d29-b4be-fcd9b3a754cd",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "610cff3a-3488-496c-8069-86a4fc35cd2b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        },
+        {
+          "id": "983073e5-be2b-4019-a4e9-d2a920e87305",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "610cff3a-3488-496c-8069-86a4fc35cd2b",
+          "orientationIds": ["174bd82a-4b51-4cb3-8c7a-2b443c3c37e8"]
+        }
+      ]
+    },
+    {
+      "id": "0d17edef-f3c0-41b8-b013-8b7af55268a3",
+      "surveyId": "d562c695-c1e5-4b1f-b841-8f8cf7fda1ee",
+      "categoryId": "b2b525a0-5d4e-4da2-b22e-4f850c834ecd",
+      "text": "W przypadku sytuacji podobnych do kryzysu na granicy polsko-białoruskiej, kraje członkowskie UE powinny bezwzględnie bronić granic",
+      "explanation": null,
+      "answerType": "AGREE_OR_DISAGREE",
+      "status": "LIVE",
+      "possibleAnswers": [
+        {
+          "id": "601d8153-adf2-495c-921e-0b0699cd8ce0",
+          "text": "Zdecydowanie za",
+          "weight": 4,
+          "questionId": "0d17edef-f3c0-41b8-b013-8b7af55268a3",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "bf48df35-ca1f-4a9d-9993-847a49f2f3ce",
+          "text": "Częściowo za",
+          "weight": 2,
+          "questionId": "0d17edef-f3c0-41b8-b013-8b7af55268a3",
+          "orientationIds": ["07f653eb-ed71-4561-a676-ba5027441a19"]
+        },
+        {
+          "id": "c121660f-17a5-45d8-9d3e-2a6908d33633",
+          "text": "Częściowo przeciw",
+          "weight": 2,
+          "questionId": "0d17edef-f3c0-41b8-b013-8b7af55268a3",
+          "orientationIds": []
+        },
+        {
+          "id": "9cd7d871-257c-4518-9679-ae5b16965b00",
+          "text": "Zdecydowanie przeciw",
+          "weight": 4,
+          "questionId": "0d17edef-f3c0-41b8-b013-8b7af55268a3",
+          "orientationIds": []
+        }
+      ]
+    }
+  ]
+}

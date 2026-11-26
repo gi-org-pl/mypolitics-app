@@ -1,0 +1,1049 @@
+{
+  "id": "664b9e8421aaa90007ed7bdd",
+  "title": {
+    "pl": "#EuroWyborczy2024. Test poglądów na wybory europarlamentarne",
+    "en": null,
+    "fr": null,
+    "pt": null,
+    "ru": null,
+    "sr": null
+  },
+  "description": {
+    "pl": "Nadchodzą wybory europarlamentarne! Nie wiesz na kogo zagłosować? Sprawdź quiz na wybory europarlamentarne, test poglądów który pozwoli ci określić do kogo jest Ci najbliżej. Wykonanie quizu zajmie Ci tylko 10 minut!",
+    "en": null,
+    "fr": null,
+    "pt": null,
+    "ru": null,
+    "sr": null
+  },
+  "createdAt": "2024-05-20T19:03:32.277Z",
+  "hidden": false,
+  "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-ew24_7a1297384c.png",
+  "type": "OFFICIAL",
+  "isPublic": true,
+  "imageUrl": null,
+  "averageFinishTime": 10.0,
+  "projectId": null,
+  "version": null,
+  "algorithm": null,
+  "defaultLanguage": null,
+  "supportedLanguages": ["POLISH"],
+  "orientations": [
+    {
+      "id": "664b9ebc21aaa90007ed7c2d",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "IDEOLOGY",
+      "color": "#d7c314",
+      "generalName": {
+        "pl": "Pro-Euro",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": null,
+      "linkedOrientations": [],
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-pro_euro_762c7f1d08.png",
+      "surveyId": ""
+    },
+    {
+      "id": "664b9ec021aaa90007ed7c2e",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "IDEOLOGY",
+      "color": "#f44336",
+      "generalName": {
+        "pl": "Anty-Euro",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": null,
+      "linkedOrientations": [],
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-anty_euro_f4e4da13d0.png",
+      "surveyId": ""
+    },
+    {
+      "id": "664b9ecb21aaa90007ed7c30",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "IDEOLOGY",
+      "color": "#3f51b5",
+      "generalName": {
+        "pl": "Federalizm",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": null,
+      "linkedOrientations": [],
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-federacja_c96aac7bff.png",
+      "surveyId": ""
+    },
+    {
+      "id": "664b9ed321aaa90007ed7c33",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "IDEOLOGY",
+      "color": "#03a9f4",
+      "generalName": {
+        "pl": "Paneuropeizm",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": null,
+      "linkedOrientations": [],
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-paneuropeizm_9e054c64de.png",
+      "surveyId": ""
+    },
+    {
+      "id": "664b9ee021aaa90007ed7c34",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "IDEOLOGY",
+      "color": "#795548",
+      "generalName": {
+        "pl": "Eurosceptycyzm",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": null,
+      "linkedOrientations": [],
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-eurosceptyzm_8a826bb682.png",
+      "surveyId": ""
+    }
+  ],
+  "categories": [
+    {
+      "id": "664b9efe21aaa90007ed7c3a",
+      "name": {
+        "pl": "Ustrój",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "weight": 1
+    },
+    {
+      "id": "664b9f0621aaa90007ed7c3c",
+      "name": {
+        "pl": "Energetyka",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "weight": 1
+    },
+    {
+      "id": "664b9f0a21aaa90007ed7c3e",
+      "name": {
+        "pl": "Klimat",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "weight": 1
+    },
+    {
+      "id": "664b9f0f21aaa90007ed7c40",
+      "name": {
+        "pl": "Migracja",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "weight": 1
+    },
+    {
+      "id": "664b9f1421aaa90007ed7c42",
+      "name": {
+        "pl": "Obronność",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "weight": 1
+    }
+  ],
+  "axes": [
+    {
+      "id": "691a07b478b07f00071caf12",
+      "name": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "axis",
+      "description": null,
+      "positiveOrientations": "664b9ecb21aaa90007ed7c30",
+      "negativeOrientations": "664b9ee021aaa90007ed7c34"
+    },
+    {
+      "id": "8fb2fc66-4c93-4bbb-9ff1-d5a8b4a7b743",
+      "name": {
+        "pl": "Federalizm-Eurosceptycyzm",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "type": "compass_x_axis",
+      "description": null,
+      "positiveOrientations": "664b9ecb21aaa90007ed7c30",
+      "negativeOrientations": "664b9ee021aaa90007ed7c34"
+    }
+  ],
+  "authors": [
+    {
+      "id": "64598abd615c5b000609bb6a",
+      "email": null,
+      "name": null
+    }
+  ],
+  "questions": [
+    {
+      "id": "664b9f1621aaa90007ed7c43",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "Polska powinna wejść do strefy Euro",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1721aaa90007ed7c44",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "UE powinna mieć możliwość nakładania własnych podatków",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1821aaa90007ed7c45",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "Decyzje związane z polityką zagraniczną powinny na szczeblu UE być podejmowane wyłącznie jednomyślnie",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1821aaa90007ed7c46",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "Prawo UE powinno przestać mieć pierwszeństwo nad prawem krajowym",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1921aaa90007ed7c47",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "UE w obecnej formie stanowi zagrożenie dla suwerenności państw członkowskich",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1a21aaa90007ed7c49",
+      "surveyId": null,
+      "categoryId": "664b9efe21aaa90007ed7c3a",
+      "text": {
+        "pl": "W całej UE powinna obowiązywać taka sama płaca minimalna",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1b21aaa90007ed7d77",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "UE powinna dążyć do pełnej niezależności energetycznej",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1d21aaa90007ed7d79",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "Należy jak najszybciej odejść od paliw kopalnych w całej UE",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1e21aaa90007ed7d7a",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "UE powinna móc ingerować w politykę energetyczną państw członkowskich",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1f21aaa90007ed7d7c",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "Energia jądrowa powinna być priorytetowo uwzględniona w europejskiej transformacji energetycznej",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f1f21aaa90007ed7d7d",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "UE powinna obligatoryjnie wymagać instalacji fotowoltaicznych przy budowie nowych budynków",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2021aaa90007ed7d7e",
+      "surveyId": null,
+      "categoryId": "664b9f0621aaa90007ed7c3c",
+      "text": {
+        "pl": "UE powinna w większym stopniu dotować transformację energetyczną mniej zamożnych członków wspólnoty",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2121aaa90007ed7d7f",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "UE powinna utrzymać zakaz produkcji nowych samochodów spalinowych od roku 2035",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2121aaa90007ed7d80",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "Należy nałożyć cła na chińskie \"zielone towary\" takie jak fotowoltaika i elektryczne samochody w celu ochrony europejskich producentów",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2221aaa90007ed7d81",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "Priorytetem dla UE powinna być walka ze zmianami klimatu",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2321aaa90007ed7d82",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "Czy popierasz cel Zielonego Ładu, jakim jest osiągnięcie neutralności klimatycznej UE do roku 2050?",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2421aaa90007ed7d83",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "UE powinna wymagać tworzenia stref czystego transportu w największych miastach krajów członkowskich",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2421aaa90007ed7d85",
+      "surveyId": null,
+      "categoryId": "664b9f0a21aaa90007ed7c3e",
+      "text": {
+        "pl": "UE powinna zapewniać młodym darmowe przejazdy koleją",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2521aaa90007ed7d86",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "Państwa członkowskie powinny zachować pełną suwerenność w zakresie polityki imigracyjnej",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2521aaa90007ed7d87",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "Migranci powinni być relokowani między państwami członkowskimi UE w ramach paktu migracyjnego",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2621aaa90007ed7d88",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "UE powinna dotować programy integracyjne uczące migrantów języków, kultury i wartości państw członkowskich",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2721aaa90007ed7d89",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "UE powinna udzielać wsparcia finansowego krajom przyjmujących najwięcej uchodźców",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2721aaa90007ed7d8a",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "Polska powinna być zwolniona z obligatoryjnej relokacji migrantów za przyjęcie wielu uchodźców z Ukrainy",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2821aaa90007ed7d8b",
+      "surveyId": null,
+      "categoryId": "664b9f0f21aaa90007ed7c40",
+      "text": {
+        "pl": "UE powinna zachęcać do migracji wysoko wykwalifikowanych specjalistów",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2921aaa90007ed7d8c",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "Należy utworzyć wspólną armię UE",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2a21aaa90007ed7d8e",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "UE powinna w większym stopniu wspierać finansowo obronność Ukrainy",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2b21aaa90007ed7d8f",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "Polska powinna wspierać jak najszybsze dołączenie Ukrainy do UE",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2c21aaa90007ed7d90",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "UE powinna wspierać finansowo obronność krajów graniczących z wrogimi państwami",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2c21aaa90007ed7d91",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "W przypadku ataku na jakiekolwiek państwo UE, np. Estonię i Łotwę, wszystkie kraje członkowskie powinny obligatoryjnie wysłać swoje wojska na pomoc",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    },
+    {
+      "id": "664b9f2d21aaa90007ed7d92",
+      "surveyId": null,
+      "categoryId": "664b9f1421aaa90007ed7c42",
+      "text": {
+        "pl": "W przypadku sytuacji podobnych do kryzysu na granicy polsko-białoruskiej, kraje członkowskie UE powinny bezwzględnie bronić granic",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "explanation": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "answerType": "FOR_AND_AGAINST",
+      "status": null,
+      "possibleAnswers": []
+    }
+  ],
+  "traits": [
+    {
+      "id": "664b9ed321aaa90007ed7c33",
+      "createdAt": "2024-05-20T19:04:51.383Z",
+      "name": {
+        "pl": "Paneuropeizm",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "color": "#03a9f4",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-paneuropeizm_9e054c64de.png",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      }
+    },
+    {
+      "id": "664b9ec021aaa90007ed7c2e",
+      "createdAt": "2024-05-20T19:04:32.102Z",
+      "name": {
+        "pl": "Anty-Euro",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "color": "#f44336",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-anty_euro_f4e4da13d0.png",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      }
+    },
+    {
+      "id": "664b9ebc21aaa90007ed7c2d",
+      "createdAt": "2024-05-20T19:04:28.181Z",
+      "name": {
+        "pl": "Pro-Euro",
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      },
+      "color": "#d7c314",
+      "logoUrl": "https://orlow.fra1.digitaloceanspaces.com/mypolitics2/public-pro_euro_762c7f1d08.png",
+      "description": {
+        "pl": null,
+        "en": null,
+        "fr": null,
+        "pt": null,
+        "ru": null,
+        "sr": null
+      }
+    }
+  ]
+}
