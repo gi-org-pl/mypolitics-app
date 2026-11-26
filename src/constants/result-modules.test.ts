@@ -12,6 +12,7 @@ import {
   LIVE_QUIZ_IDS,
   OWN_RECORD_IDS,
   PRESIDENTIAL_SURVEY_ID,
+  QUIZ_600_QUESTIONS_SURVEY_ID,
 } from "./result-modules.fixtures";
 import { OWN_LIST_RESULTS } from "./result-modules-resolved.fixtures";
 
@@ -52,10 +53,11 @@ const withOrientationIds = (resolved: unknown): unknown =>
   );
 
 describe("OWN_RESULT_MODULES", () => {
-  it("keeps a list for the identity quiz and the presidential quiz, and for no other", () => {
+  it("keeps a list for the quizzes with result modules", () => {
     expect(Object.keys(OWN_RESULT_MODULES)).toEqual([
       IDENTITY_SURVEY_ID,
       PRESIDENTIAL_SURVEY_ID,
+      QUIZ_600_QUESTIONS_SURVEY_ID,
     ]);
   });
 
@@ -87,6 +89,11 @@ describe("OWN_RESULT_MODULES", () => {
         OWN_RECORD_IDS.presidentialIdentity,
         OWN_RECORD_IDS.presidentialCategories,
       ],
+      [
+        OWN_RECORD_IDS.quiz600Header,
+        OWN_RECORD_IDS.quiz600Ideologies,
+        OWN_RECORD_IDS.quiz600Archetype,
+      ],
     ]);
   });
 
@@ -101,6 +108,9 @@ describe("OWN_RESULT_MODULES", () => {
       presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
       presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
       presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+      quiz600Header: "3b1c6f52-8d0e-4c1a-9a53-2f7e41d0a6b1",
+      quiz600Ideologies: "c84d2a97-5e13-47fb-b0a8-6d9f1e3c7a24",
+      quiz600Archetype: "7e90b3d1-2a46-4f8c-8c15-a3d5e7b9f012",
     });
   });
 
@@ -290,6 +300,8 @@ describe("OWN_RESULT_MODULES", () => {
       [OWN_RECORD_IDS.identityParties, "selection", "linked_to_leader"],
       [OWN_RECORD_IDS.presidentialCandidates, "visibleRows", 13],
       [OWN_RECORD_IDS.presidentialCategories, "groupBy", "category"],
+      [OWN_RECORD_IDS.quiz600Header, "lowMatch", "named"],
+      [OWN_RECORD_IDS.quiz600Archetype, "lowMatch", "named"],
     ]);
   });
 

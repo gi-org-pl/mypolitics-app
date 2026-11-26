@@ -5,6 +5,7 @@
 // the identifiers only, nothing else of a quiz.
 export const IDENTITY_SURVEY_ID = "60beb898-a4e4-4160-88c4-07a9931ab499";
 export const PRESIDENTIAL_SURVEY_ID = "270f6c12-6551-4661-bfcf-52635a703928";
+export const QUIZ_600_QUESTIONS_SURVEY_ID = "604cdf356ab38a000755286e";
 
 // The identifiers of the records of the app's own lists, by what each record
 // is: a test names a record, and does not repeat its identifier.
@@ -18,6 +19,9 @@ export const OWN_RECORD_IDS = {
   presidentialCandidates: "26585cf4-cfb5-4755-b6f6-f997764b60c5",
   presidentialIdentity: "a9fabbef-3b68-4121-ac03-174016fd849a",
   presidentialCategories: "31a5619f-c941-4802-ac9b-4a477f5a2a90",
+  quiz600Header: "3b1c6f52-8d0e-4c1a-9a53-2f7e41d0a6b1",
+  quiz600Ideologies: "c84d2a97-5e13-47fb-b0a8-6d9f1e3c7a24",
+  quiz600Archetype: "7e90b3d1-2a46-4f8c-8c15-a3d5e7b9f012",
 } as const;
 
 export const LIVE_QUIZ_IDS: Record<

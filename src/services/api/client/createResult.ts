@@ -1,16 +1,25 @@
 import { HttpStatusCode } from "axios";
-
+import { MOCK_600_SURVEY_ID } from "@/mocks/mock600questions";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
 import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
 import { ApiFailureKind, type ApiRequestOptions } from "@/types/api";
 import { CreateResultOutcome, type ResultInput } from "@/types/survey";
-
 import { apiClient } from "./apiClient";
 
 export const createResult = async (
   input: ResultInput,
   options?: ApiRequestOptions,
 ): Promise<CreateResultOutcome> => {
+  if (input.surveyId === MOCK_600_SURVEY_ID) {
+    try {
+      sessionStorage.setItem(
+        `mock-result:${input.sessionId}`,
+        JSON.stringify(input.answers),
+      );
+    } catch {}
+    return CreateResultOutcome.Stored;
+  }
+
   try {
     const { status } = await apiClient.post<unknown>(
       "/v1/result",

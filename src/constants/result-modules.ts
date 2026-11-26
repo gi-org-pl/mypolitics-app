@@ -465,4 +465,251 @@ export const OWN_RESULT_MODULES: Record<string, OwnResultModule[]> = {
       ],
     },
   ],
+  "604cdf356ab38a000755286e": [
+    {
+      id: "3b1c6f52-8d0e-4c1a-9a53-2f7e41d0a6b1", // the header
+      type: "header",
+      position: 0,
+      orientationIds: [
+        "604eb0664cb55b0006a2ce39", // Monarchizm
+        "604eb1d44cb55b0006a2d183", // Transhumanizm
+        "604eb3264cb55b0006a2d4eb", // Komunizm
+        "604eb4af4cb55b0006a2d913", // Totalitaryzm
+        "6055d3614cb55b0006f120e4", // Socjalizm
+        "6055d3c14cb55b0006f12727", // Kapitalizm
+        "6055d44a4cb55b0006f12bb8", // Regulacjonizm
+        "6055d4a34cb55b0006f1304b", // Leseferyzm
+        "6055d5314cb55b0006f135b9", // Wolność
+        "6055d56a4cb55b0006f1390b", // Etatyzm społeczny
+        "6055d5ec4cb55b0006f13f4c", // Pacyfizm
+        "6055d6144cb55b0006f140d3", // Militaryzm
+        "6055d6624cb55b0006f1466c", // Ekologizm
+        "6055d6854cb55b0006f14816", // Industrializm
+        "6055d6e84cb55b0006f15089", // Progresywizm
+        "6055d7094cb55b0006f15330", // Tradycjonalizm
+        "6055d7394cb55b0006f154f1", // Kosmopolityzm
+        "6055d75e4cb55b0006f15634", // Nacjonalizm
+        "601c6a849f049a1090129d31", // Pro-choice
+        "601c6aae9f049a1090129d32", // Pro-gun
+        "601c6aca9f049a1090129d33", // Laicyzm
+        "6056a149bd78700007bb50f4", // Protekcjonizm
+        "6056bc27bd78700007bb99d0", // Decentralizacja
+        "6056bce1bd78700007bb9b55", // Centralizacja
+        "6056bf5abd78700007bb9dd1", // Kara
+        "6056c0b4bd78700007bba000", // Resocjalizacja
+        "605739d0bd78700007bee0ac", // Postęp techniczny
+        "60573a57bd78700007bee61f", // Prymitywizm
+        "60573cdabd78700007bf05c9", // Autorytaryzm
+        "60573d0abd78700007bf08a9", // Demokracja
+        "60573e5ebd78700007bf200d", // Rząd Światowy
+        "60574eb6bd78700007c014a6", // Autarkia
+        "605774afbd78700007c24988", // Indywidualizm
+        "6057756dbd78700007c255c1", // Kolektywizm
+        "60578483bd78700007c3163d", // Teokracja
+        "605799febd78700007c49a81", // Pro-life
+        "608b3dfe74307d00068cdd64", // Religijność (name still says "do zmiany")
+        "608b3e0f74307d00068cddff", // Sekularyzm
+        "609304ae74307d0006e76fbe", // Eurofederalizm
+        "60930f8374307d0006e86331", // Europa Tysiąca Liechtensteinów
+        "609332c974307d0006e9f95c", // Izolacjonizm
+        "6094303774307d0006f647ae", // Cenzura
+        "6095e9b474307d00060a0f32", // Państwo Opiekuńcze
+        "6095ed0474307d00060a125a", // Państwo Minimalne
+        "60996e8c74307d0006333a91", // Eurosceptycyzm
+        "609a863274307d0006411d2d", // Kara Śmierci
+        "609c649074307d000657ac7b", // Demokracja bezpośrenia
+        "60a57f3374307d0006c70468", // Supremacja Rasowa
+        "60a57fb574307d0006c71370", // Egalitaryzm Rasowy
+        "60b8d5ee77a5d700068e65da", // Egalitaryzm płciowy
+        "60db9d1c1f404f0006ce5b36", // Wolność Słowa
+        "619057032999470006e11185", // Interwencjonizm
+        "61907c9e9fc83b00069ca631", // Euroreformizm
+        "61907ee39fc83b00069ca7e2", // Reprezentacja natywna
+        "6190e4289fc83b00069dc219", // Dyktatura wojskowa
+        "6190e6d99fc83b00069ddd4d", // Technokracja
+        "619102ef9fc83b00069fa5c0", // Infoanarchizm
+        "61910d9a9fc83b0006a032de", // Gospodarka planowa
+        "61982f27ff32d00007b5915c", // Anarchia
+        "61982f49ff32d00007b59341", // Etatyzm
+        "6198ef95ff32d00007b8b8d9", // Panarchizm
+        "619e8443ff32d00007e62353", // Dyktatura proletariatu
+        "61afb31ea18edb0007ec24c3", // Demilitaryzacja
+        "61c113433860ef00069c5e21", // Korporacjonizm
+        "61c119633860ef00069c9626", // Syndykalizm
+        "61c48783b5431c0006f588c6", // Dzień Sznura
+        "61dc993299423e000714b546", // Laborystyczna teoria wartości
+        "61dda112cfba880007e11a5a", // Anti-gun
+        "61e4c1419c89c100078501ee", // Georgizm
+        "61f181cc19f2a100081ddfc9", // Imperializm
+        "61f2a15619f2a10008264069", // Anarchizm
+        "61f57edc6d41680008bb1b86", // Ateizm państwowy
+        "61f6a0b9e8548b00082653f9", // Korporatokracja
+        "61f6a37de8548b0008267488", // Socjalizm cytrynowy
+        "61f9b7ad33a01c00079d06e8", // Separatyzm
+        "61f9d0bf33a01c00079da311", // Agraryzm
+        "620a35fcae020a000aaa6ff1", // Obowiązkowe szczepienia
+        "6216cf5fae020a000a018505", // Oligarchia
+        "621a67260813c600088893fb", // Rewolucjonizm
+        "621a68270813c60008889817", // Reformizm
+        "622541c1d1e5680008de968e", // Antysemityzm
+        "624c08865d7fb20009f8e6bf", // Darwinizm społeczny
+        "6266c3e45d7fb200097f062c", // Antyautorytaryzm
+        "6266c4705d7fb200097f140f", // Antydemokracja
+        "62c9ac0164851f000893ff01", // Merytokracja
+        "6301714164851f0008a82acd", // Pobór
+      ],
+      axisIds: [],
+      values: [
+        { key: "lowMatch", value: "named" },
+        {
+          key: "label.lowMatch",
+          value: {
+            pl: "Twoje poglądy nie są wystarczająco podobne do żadnej ideologii (mniej niż 50% pewności).",
+            en: "Your views are not similar enough to any ideology (less than 50% confidence).",
+          },
+        },
+        {
+          key: "label.compare",
+          value: { pl: "Z ideologią", en: "With an ideology" },
+        },
+      ],
+    },
+    {
+      id: "c84d2a97-5e13-47fb-b0a8-6d9f1e3c7a24", // its axes
+      type: "multi_axis",
+      position: 1,
+      column: "start",
+      axisIds: [
+        "661864cf4d6609000888958c", // Socjalizm / Kapitalizm
+        "661864cf4d6609000888958d", // Regulacjonizm / Leseferyzm
+        "661864cf4d6609000888958e", // Wolność / Etatyzm społeczny
+        "661864cf4d6609000888958f", // Anarchia / Etatyzm
+        "661864cf4d66090008889590", // Kosmopolityzm / Nacjonalizm
+        "661864cf4d66090008889591", // Egalitaryzm rasowy / Supremacja rasowa
+        "661864cf4d66090008889592", // Interwencjonizm / Izolacjonizm
+        "661864cf4d66090008889593", // Decentralizacja / Centralizacja
+        "661864cf4d66090008889594", // Pacyfizm / Militaryzm
+        "661864cf4d66090008889595", // Demokracja / Autorytaryzm
+        "661864cf4d66090008889596", // Demokracja / Antydemokracja
+        "661864cf4d66090008889597", // Autorytaryzm / Antyautorytaryzm
+        "661864cf4d66090008889598", // Rewolucjonizm / Reformizm
+        "661864cf4d66090008889599", // Progresywizm / Tradycjonalizm
+        "661864cf4d6609000888959a", // Sekularyzm / Religijność
+        "661864cf4d6609000888959b", // Kolektywizm / Indywidualizm
+        "661864cf4d6609000888959c", // Resocjalizacja / Kara
+        "661864cf4d6609000888959d", // Ekologizm / Industrializm
+        "661864cf4d6609000888959e", // Prymitywizm / Postęp techniczny
+      ],
+      orientationIds: [],
+      values: [
+        { key: "title", value: { pl: "Ideologie", en: "Ideologies" } },
+        {
+          key: "description",
+          value: {
+            pl: "Każda oś pokazuje, do której z dwóch przeciwstawnych ideologii jest Ci bliżej.",
+            en: "Each axis shows which of two opposing ideologies you are closer to.",
+          },
+        },
+      ],
+    },
+    {
+      id: "7e90b3d1-2a46-4f8c-8c15-a3d5e7b9f012", // its closest ideology
+      type: "archetype",
+      position: 2,
+      column: "end",
+      orientationIds: [
+        "604eb0664cb55b0006a2ce39", // Monarchizm
+        "604eb1d44cb55b0006a2d183", // Transhumanizm
+        "604eb3264cb55b0006a2d4eb", // Komunizm
+        "604eb4af4cb55b0006a2d913", // Totalitaryzm
+        "6055d3614cb55b0006f120e4", // Socjalizm
+        "6055d3c14cb55b0006f12727", // Kapitalizm
+        "6055d44a4cb55b0006f12bb8", // Regulacjonizm
+        "6055d4a34cb55b0006f1304b", // Leseferyzm
+        "6055d5314cb55b0006f135b9", // Wolność
+        "6055d56a4cb55b0006f1390b", // Etatyzm społeczny
+        "6055d5ec4cb55b0006f13f4c", // Pacyfizm
+        "6055d6144cb55b0006f140d3", // Militaryzm
+        "6055d6624cb55b0006f1466c", // Ekologizm
+        "6055d6854cb55b0006f14816", // Industrializm
+        "6055d6e84cb55b0006f15089", // Progresywizm
+        "6055d7094cb55b0006f15330", // Tradycjonalizm
+        "6055d7394cb55b0006f154f1", // Kosmopolityzm
+        "6055d75e4cb55b0006f15634", // Nacjonalizm
+        "601c6a849f049a1090129d31", // Pro-choice
+        "601c6aae9f049a1090129d32", // Pro-gun
+        "601c6aca9f049a1090129d33", // Laicyzm
+        "6056a149bd78700007bb50f4", // Protekcjonizm
+        "6056bc27bd78700007bb99d0", // Decentralizacja
+        "6056bce1bd78700007bb9b55", // Centralizacja
+        "6056bf5abd78700007bb9dd1", // Kara
+        "6056c0b4bd78700007bba000", // Resocjalizacja
+        "605739d0bd78700007bee0ac", // Postęp techniczny
+        "60573a57bd78700007bee61f", // Prymitywizm
+        "60573cdabd78700007bf05c9", // Autorytaryzm
+        "60573d0abd78700007bf08a9", // Demokracja
+        "60573e5ebd78700007bf200d", // Rząd Światowy
+        "60574eb6bd78700007c014a6", // Autarkia
+        "605774afbd78700007c24988", // Indywidualizm
+        "6057756dbd78700007c255c1", // Kolektywizm
+        "60578483bd78700007c3163d", // Teokracja
+        "605799febd78700007c49a81", // Pro-life
+        "608b3dfe74307d00068cdd64", // Religijność (name still says "do zmiany")
+        "608b3e0f74307d00068cddff", // Sekularyzm
+        "609304ae74307d0006e76fbe", // Eurofederalizm
+        "60930f8374307d0006e86331", // Europa Tysiąca Liechtensteinów
+        "609332c974307d0006e9f95c", // Izolacjonizm
+        "6094303774307d0006f647ae", // Cenzura
+        "6095e9b474307d00060a0f32", // Państwo Opiekuńcze
+        "6095ed0474307d00060a125a", // Państwo Minimalne
+        "60996e8c74307d0006333a91", // Eurosceptycyzm
+        "609a863274307d0006411d2d", // Kara Śmierci
+        "609c649074307d000657ac7b", // Demokracja bezpośrenia
+        "60a57f3374307d0006c70468", // Supremacja Rasowa
+        "60a57fb574307d0006c71370", // Egalitaryzm Rasowy
+        "60b8d5ee77a5d700068e65da", // Egalitaryzm płciowy
+        "60db9d1c1f404f0006ce5b36", // Wolność Słowa
+        "619057032999470006e11185", // Interwencjonizm
+        "61907c9e9fc83b00069ca631", // Euroreformizm
+        "61907ee39fc83b00069ca7e2", // Reprezentacja natywna
+        "6190e4289fc83b00069dc219", // Dyktatura wojskowa
+        "6190e6d99fc83b00069ddd4d", // Technokracja
+        "619102ef9fc83b00069fa5c0", // Infoanarchizm
+        "61910d9a9fc83b0006a032de", // Gospodarka planowa
+        "61982f27ff32d00007b5915c", // Anarchia
+        "61982f49ff32d00007b59341", // Etatyzm
+        "6198ef95ff32d00007b8b8d9", // Panarchizm
+        "619e8443ff32d00007e62353", // Dyktatura proletariatu
+        "61afb31ea18edb0007ec24c3", // Demilitaryzacja
+        "61c113433860ef00069c5e21", // Korporacjonizm
+        "61c119633860ef00069c9626", // Syndykalizm
+        "61c48783b5431c0006f588c6", // Dzień Sznura
+        "61dc993299423e000714b546", // Laborystyczna teoria wartości
+        "61dda112cfba880007e11a5a", // Anti-gun
+        "61e4c1419c89c100078501ee", // Georgizm
+        "61f181cc19f2a100081ddfc9", // Imperializm
+        "61f2a15619f2a10008264069", // Anarchizm
+        "61f57edc6d41680008bb1b86", // Ateizm państwowy
+        "61f6a0b9e8548b00082653f9", // Korporatokracja
+        "61f6a37de8548b0008267488", // Socjalizm cytrynowy
+        "61f9b7ad33a01c00079d06e8", // Separatyzm
+        "61f9d0bf33a01c00079da311", // Agraryzm
+        "620a35fcae020a000aaa6ff1", // Obowiązkowe szczepienia
+        "6216cf5fae020a000a018505", // Oligarchia
+        "621a67260813c600088893fb", // Rewolucjonizm
+        "621a68270813c60008889817", // Reformizm
+        "622541c1d1e5680008de968e", // Antysemityzm
+        "624c08865d7fb20009f8e6bf", // Darwinizm społeczny
+        "6266c3e45d7fb200097f062c", // Antyautorytaryzm
+        "6266c4705d7fb200097f140f", // Antydemokracja
+        "62c9ac0164851f000893ff01", // Merytokracja
+        "6301714164851f0008a82acd", // Pobór
+      ],
+      axisIds: [],
+      values: [
+        { key: "title", value: { pl: "Ideologia", en: "Ideology" } },
+        { key: "lowMatch", value: "named" },
+      ],
+    },
+  ],
 };

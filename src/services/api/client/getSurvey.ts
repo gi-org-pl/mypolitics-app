@@ -1,3 +1,7 @@
+import {
+  MOCK_600_SURVEY_ID,
+  MOCK_600_SURVEY_RESPONSE,
+} from "@/mocks/mock600questions";
 import { isNotFound } from "@/services/api/utils/error/isNotFound";
 import { isRefusal } from "@/services/api/utils/error/isRefusal";
 import { toApiFailure } from "@/services/api/utils/error/toApiFailure";
@@ -5,7 +9,6 @@ import { toRequestConfig } from "@/services/api/utils/request/toRequestConfig";
 import { readSurvey } from "@/services/api/utils/survey/readSurvey";
 import type { ApiRequestOptions } from "@/types/api";
 import { type SurveyLoadResult, SurveyLoadStatus } from "@/types/survey";
-
 import { apiClient } from "./apiClient";
 
 export const getSurvey = async (
@@ -13,6 +16,10 @@ export const getSurvey = async (
   language: string,
   options?: ApiRequestOptions,
 ): Promise<SurveyLoadResult> => {
+  if (surveyId === MOCK_600_SURVEY_ID) {
+    return readSurvey(MOCK_600_SURVEY_RESPONSE, surveyId, language);
+  }
+
   const url = `/v1/survey/${encodeURIComponent(surveyId)}`;
   const config = toRequestConfig(options);
 
