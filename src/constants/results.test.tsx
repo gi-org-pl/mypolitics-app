@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 
 import { CompassMap } from "@/components/shared/CompassMap/CompassMap";
 import { UniversalAxis } from "@/components/shared/UniversalAxis/UniversalAxis";
+import { readParam } from "@/utils/result-modules/params/readParam";
 import { renderWithI18n } from "@/utils/vitest/renderWithI18n";
 
 import {
@@ -16,8 +17,8 @@ import {
   MATCH_BAND_COLORS,
   RESULT_MODULE_COLUMNS,
   RESULT_MODULE_DEFAULTS,
-  RESULT_MODULE_GROUPINGS,
-  RESULT_MODULE_SELECTIONS,
+  RESULT_MODULE_PARAM_DEFINITIONS,
+  RESULT_MODULE_PARAMS,
   RESULT_MODULE_SLOTS,
   RESULT_MODULE_TYPES,
 } from "./results";
@@ -142,26 +143,84 @@ describe("RESULT_MODULE_TYPES", () => {
 });
 
 describe("RESULT_MODULE_DEFAULTS", () => {
-  it("holds what the spec gives a field that is left out", () => {
-    expect(RESULT_MODULE_DEFAULTS).toEqual({
-      column: "start",
-      selection: "all",
-      groupBy: "none",
-      marker: 50,
-      visibleRows: 3,
-    });
-    expect(DEFAULT_VISIBLE_ROWS).toBe(3);
+  it("holds what the spec gives a field that is left out, and no parameter", () => {
+    expect(RESULT_MODULE_DEFAULTS).toEqual({ column: "start" });
   });
 
   it("holds a value the field may have", () => {
     expect(RESULT_MODULE_COLUMNS).toEqual(["start", "end"]);
-    expect(RESULT_MODULE_SELECTIONS).toEqual(["all", "linked_to_leader"]);
-    expect(RESULT_MODULE_GROUPINGS).toEqual(["none", "category"]);
     expect(RESULT_MODULE_COLUMNS).toContain(RESULT_MODULE_DEFAULTS.column);
-    expect(RESULT_MODULE_SELECTIONS).toContain(
-      RESULT_MODULE_DEFAULTS.selection,
+  });
+});
+
+describe("RESULT_MODULE_PARAM_DEFINITIONS", () => {
+  it("defines the parameters of the spec, each with what it may hold and its default", () => {
+    expect(RESULT_MODULE_PARAM_DEFINITIONS).toEqual({
+      selection: {
+        kind: "choice",
+        values: ["all", "linked_to_leader"],
+        fallback: "all",
+      },
+      groupBy: {
+        kind: "choice",
+        values: ["none", "category"],
+        fallback: "none",
+      },
+      marker: {
+        kind: "number",
+        min: 0,
+        max: 100,
+        whole: false,
+        nullable: true,
+        fallback: 50,
+      },
+      visibleRows: {
+        kind: "number",
+        min: 1,
+        max: Number.MAX_SAFE_INTEGER,
+        whole: true,
+        nullable: false,
+        fallback: 3,
+      },
+    });
+    expect(DEFAULT_VISIBLE_ROWS).toBe(3);
+  });
+
+  it.each(
+    Object.entries(RESULT_MODULE_PARAM_DEFINITIONS),
+  )("gives %s a default that its own definition reads as itself", (_, definition) => {
+    expect(readParam(definition, definition.fallback)).toBe(
+      definition.fallback,
     );
-    expect(RESULT_MODULE_GROUPINGS).toContain(RESULT_MODULE_DEFAULTS.groupBy);
+  });
+});
+
+describe("RESULT_MODULE_PARAMS", () => {
+  it("lists the parameters each module type reads, as the spec does", () => {
+    expect(RESULT_MODULE_PARAMS).toEqual({
+      header: [],
+      single_axis: ["marker"],
+      double_axis: ["marker"],
+      multi_axis: ["groupBy", "marker"],
+      horizontal_bar: ["selection", "groupBy", "visibleRows"],
+      nolan_chart: [],
+      archetype: [],
+      traits: [],
+    });
+  });
+
+  it("lists every module type, and only names that are defined", () => {
+    expect(Object.keys(RESULT_MODULE_PARAMS)).toEqual([...RESULT_MODULE_TYPES]);
+
+    for (const name of Object.values(RESULT_MODULE_PARAMS).flat()) {
+      expect(RESULT_MODULE_PARAM_DEFINITIONS).toHaveProperty(name);
+    }
+  });
+
+  it("leaves no definition unread", () => {
+    expect(
+      [...new Set(Object.values(RESULT_MODULE_PARAMS).flat())].sort(),
+    ).toEqual(Object.keys(RESULT_MODULE_PARAM_DEFINITIONS).sort());
   });
 });
 

@@ -18,8 +18,7 @@ describe("resolveMultiAxis()", () => {
       expect(
         resolve({
           axisIds: ["society-axis", "economy-axis"],
-          groupBy: "category",
-          marker: 30,
+          params: { groupBy: "category", marker: 30 },
         }),
       ).toMatchObject({
         type: "multi_axis",
@@ -78,8 +77,34 @@ describe("resolveMultiAxis()", () => {
       expect(resolve({ axisIds: [] })).toBeUndefined();
       expect(resolve({ axisIds: ["one-sided"] })).toBeUndefined();
       expect(
-        resolve({ axisIds: ["one-sided"], groupBy: "category" }),
+        resolve({ axisIds: ["one-sided"], params: { groupBy: "category" } }),
       ).toBeUndefined();
+    });
+  });
+
+  describe("given a record whose parameters are left out or are not allowed", () => {
+    it("does not group, and returns the default marker", () => {
+      const axisIds = ["society-axis", "economy-axis"];
+      const resolved = resolve({ axisIds });
+
+      expect(resolved?.groups).toHaveLength(1);
+      expect(resolved?.marker).toBe(50);
+      expect(
+        resolve({ axisIds, params: { groupBy: "axis", marker: -5 } }),
+      ).toEqual(resolved);
+    });
+  });
+
+  describe("given a record that holds a parameter of another type", () => {
+    it("does not read it", () => {
+      const axisIds = ["society-axis", "economy-axis"];
+
+      expect(
+        resolve({
+          axisIds,
+          params: { selection: "linked_to_leader", visibleRows: 1 },
+        }),
+      ).toEqual(resolve({ axisIds }));
     });
   });
 });

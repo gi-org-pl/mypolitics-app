@@ -142,27 +142,26 @@ export const moduleQuiz: Survey = createSurvey({
     createResultModule("ecology", "single_axis", {
       position: 2,
       orientationIds: ["green"],
-      marker: 60,
+      params: { marker: 60 },
     }),
     createResultModule("economy", "double_axis", {
       position: 3,
       column: "end",
       description: "Jak blisko ci do każdej ze stron osi.",
       axisIds: ["economy-axis"],
-      marker: false,
+      params: { marker: null },
     }),
     createResultModule("ideologies", "multi_axis", {
       position: 4,
       title: "Ideologie",
       axisIds: ["society-axis", "economy-axis"],
-      groupBy: "category",
+      params: { groupBy: "category" },
     }),
     createResultModule("parties", "horizontal_bar", {
       position: 5,
       title: "Partie",
       orientationIds: ["party-left", "party-right", "party-green"],
-      selection: "linked_to_leader",
-      visibleRows: 2,
+      params: { selection: "linked_to_leader", visibleRows: 2 },
     }),
     createResultModule("compass", "nolan_chart", {
       position: 6,

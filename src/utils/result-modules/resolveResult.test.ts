@@ -260,7 +260,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord("horizontal_bar", {
           orientationIds: ["liberal"],
-          groupBy: "category",
+          params: { groupBy: "category" },
         }),
       ).toMatchObject({
         categories: [
@@ -366,7 +366,7 @@ describe("resolveResult()", () => {
           header(["liberal", "socialist"]),
           createResultModule("parties", "horizontal_bar", {
             orientationIds: ["party-left", "party-green"],
-            selection: "linked_to_leader",
+            params: { selection: "linked_to_leader" },
           }),
         ],
         withScores({
@@ -417,7 +417,10 @@ describe("resolveResult()", () => {
 
     it("selects every shown orientation of the record, in the author's order, with all", () => {
       expect(
-        resolveRecord("horizontal_bar", { orientationIds, selection: "all" }),
+        resolveRecord("horizontal_bar", {
+          orientationIds,
+          params: { selection: "all" },
+        }),
       ).toMatchObject({
         entries: [
           { orientation: { id: "party-left" } },
@@ -431,7 +434,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord("horizontal_bar", {
           orientationIds,
-          selection: "linked_to_leader",
+          params: { selection: "linked_to_leader" },
         }),
       ).toMatchObject({
         entries: [
@@ -446,14 +449,14 @@ describe("resolveResult()", () => {
         resolveWith([
           createResultModule("parties", "horizontal_bar", {
             orientationIds,
-            selection: "linked_to_leader",
+            params: { selection: "linked_to_leader" },
           }),
         ]).modules,
       ).toEqual([]);
       expect(
         resolveRecord(
           "horizontal_bar",
-          { orientationIds, selection: "linked_to_leader" },
+          { orientationIds, params: { selection: "linked_to_leader" } },
           NO_RESULT,
         ),
       ).toBeUndefined();
@@ -464,7 +467,7 @@ describe("resolveResult()", () => {
     it("groups a multi axis record by the categories of the quiz that are not hidden, in the quiz's order", () => {
       const resolved = resolveRecord("multi_axis", {
         axisIds: ["society-axis", "mixed", "economy-axis"],
-        groupBy: "category",
+        params: { groupBy: "category" },
       });
 
       expect(resolved).toMatchObject({
@@ -481,7 +484,7 @@ describe("resolveResult()", () => {
     it("puts an axis whose category matches no category of the quiz in a last group with no name", () => {
       const resolved = resolveRecord("multi_axis", {
         axisIds: ["loose", "economy-axis"],
-        groupBy: "category",
+        params: { groupBy: "category" },
       });
 
       expect(resolved).toMatchObject({
@@ -496,7 +499,7 @@ describe("resolveResult()", () => {
     it("puts every axis of a multi axis record in one group with no name, with none", () => {
       const resolved = resolveRecord("multi_axis", {
         axisIds: ["society-axis", "loose", "economy-axis"],
-        groupBy: "none",
+        params: { groupBy: "none" },
       });
 
       expect(resolved).toMatchObject({
@@ -517,7 +520,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord("horizontal_bar", {
           orientationIds: ["liberal", "socialist"],
-          groupBy: "category",
+          params: { groupBy: "category" },
         }),
       ).toMatchObject({
         categories: [
@@ -544,8 +547,7 @@ describe("resolveResult()", () => {
     it("keeps a category in which none of the record's orientations has a value, with its entries and no values", () => {
       const resolved = resolveRecord("horizontal_bar", {
         orientationIds: ["party-left", "party-green"],
-        selection: "linked_to_leader",
-        groupBy: "category",
+        params: { selection: "linked_to_leader", groupBy: "category" },
       });
 
       expect(resolved).toMatchObject({
@@ -579,7 +581,7 @@ describe("resolveResult()", () => {
     it("gives a horizontal bar record entries with their values, with none", () => {
       const resolved = resolveRecord("horizontal_bar", {
         orientationIds: ["liberal", "party-left"],
-        groupBy: "none",
+        params: { groupBy: "none" },
       });
 
       expect(resolved).toMatchObject({
@@ -611,7 +613,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord("horizontal_bar", {
           orientationIds: ["party-right"],
-          selection: "linked_to_leader",
+          params: { selection: "linked_to_leader" },
         }),
       ).toBeUndefined();
     });
@@ -622,7 +624,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord(
           "horizontal_bar",
-          { orientationIds: ["liberal"], groupBy: "category" },
+          { orientationIds: ["liberal"], params: { groupBy: "category" } },
           moduleQuizResult,
           { ...moduleQuiz, categories: [control] },
         ),
@@ -644,7 +646,7 @@ describe("resolveResult()", () => {
       expect(
         resolveRecord("multi_axis", {
           axisIds: ["one-sided"],
-          groupBy: "category",
+          params: { groupBy: "category" },
         }),
       ).toBeUndefined();
     });
@@ -659,7 +661,7 @@ describe("resolveResult()", () => {
           "multi_axis",
           {
             axisIds: ["lone", "one-sided", "economy-axis"],
-            groupBy: "category",
+            params: { groupBy: "category" },
           },
           moduleQuizResult,
           { ...moduleQuiz, axes: [...moduleQuiz.axes, society] },

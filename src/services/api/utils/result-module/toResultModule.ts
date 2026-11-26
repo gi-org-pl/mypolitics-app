@@ -5,6 +5,7 @@ import type { ResultModule } from "@/types/results";
 import { getSafeColor } from "@/utils/color/getSafeColor";
 import { toTrimmedText } from "@/utils/text/toTrimmedText";
 
+import { toParamValues } from "./toParamValues";
 import { toSlotValues } from "./toSlotValues";
 
 export const toResultModule = (
@@ -24,10 +25,7 @@ export const toResultModule = (
       ...new Set(toKnownIds(response.orientationIds, known.orientationIds)),
     ],
     axisIds: [...new Set(toKnownIds(response.axisIds, known.axisIds))],
-    selection: response.selection,
-    groupBy: response.groupBy,
-    marker: response.marker ?? false,
-    visibleRows: response.visibleRows,
+    params: toParamValues(response.params),
     labels: toSlotValues(response.labels, slots.labels, toTrimmedText),
     colors: toSlotValues(response.colors, slots.colors, getSafeColor),
   };
